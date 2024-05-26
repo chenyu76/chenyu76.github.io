@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Readme Content Display</title>
-    <!-- 引入 marked 库来转换 Markdown 到 HTML -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- 引入最新版本的 marked 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.0.16/marked.min.js"></script>
 </head>
 
 <body>
@@ -16,16 +16,17 @@
         fetch('README.md')
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Failed to load readme.md: ' + response.statusText);
                 }
                 return response.text();
             })
             .then(text => {
                 // 使用 marked 库将 Markdown 转换为 HTML
-                document.getElementById('content').innerHTML = marked(text);
+                document.getElementById('content').innerHTML = marked.parse(text);
             })
             .catch(error => {
-                console.error('Error fetching and parsing file', error);
+                console.error('Error:', error);
+                document.getElementById('content').innerHTML = `<p style="color: red;">${error}</p>`;
             });
     </script>
 </body>
