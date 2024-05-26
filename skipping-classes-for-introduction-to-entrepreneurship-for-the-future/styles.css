@@ -1,0 +1,43 @@
+body {
+    background-color: #F3F2F2;
+    /* 设置背景颜色 */
+}
+
+.image-container {
+    position: relative;
+    width: 500px;
+    /* 根据你的图片调整 */
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+.text {
+    position: absolute;
+    width: 100%;
+    /* 使文本居中对齐 */
+    text-align: center;
+    /* 居中文本 */
+    font-family: 'Arial Black', Gadget, sans-serif;
+    /* 黑体字 */
+}
+
+.text1 {
+    color: rgb(72, 118, 237);
+    /* 文本1颜色 */
+    font-size: 27.5px;
+    /* 文本1大小 */
+    top: 11.3%;
+    /* 调整垂直位置 */
+}
+
+.text2 {
+    color: rgb(110, 110, 110);
+    /* 文本2颜色 */
+    font-size: 20px;
+    /* 文本2大小 */
+    top: 38.5%;
+    /* 调整垂直位置 */
+}
