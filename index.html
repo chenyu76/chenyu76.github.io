@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh_cn">
 
 <head>
     <meta charset="UTF-8">
@@ -7,6 +7,8 @@
     <title>空空的主页</title>
     <!-- 引入最新版本的 marked 库 -->
     <script src="https://cdn.jsdelivr.net/npm/marked@4.0.16/marked.min.js"></script>
+    <!-- 引用 Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- css样式 -->
     <link rel="stylesheet" href="styles.css">
     <!-- 图标 -->
@@ -15,26 +17,76 @@
 
 <body>
     <div id="spacer"></div>
+    <div id="top-buttons-wrapper">
+        <div class="top-buttons">
+            <a href="#toc.py" title="文档目录"><i class="fa-solid fa-bars"></i></a>
+            <a href="#README" title="返回主页"><i class="fas fa-home"></i></a>
+            <a href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub"><i class="fab fa-github"></i></a>
+            <a href="#about" title="关于"><i class="fa-solid fa-info"></i></a>
+        </div>
+    </div>
     <div id="content-wrapper">
         <div id="content"></div>
     </div>
+    <div class="bottom-button">
+        <button onclick="scrollToTop()" title="滚动到顶部"><i class="fas fa-arrow-up"></i></button>
+    </div>
     <script>
-        // 使用 fetch API 从同一目录加载 readme.md 文件
-        fetch('README.md')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load readme.md: ' + response.statusText);
+        function loadViewFile(file) {
+            fetch(file)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load ' + file + ': ' + response.statusText);
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    const extension = file.split('.').pop();
+                    if (extension === 'md') {
+                        // 使用 marked 库将 Markdown 转换为 HTML
+                        document.getElementById('content').innerHTML = marked.parse(text);
+                    } else {
+                        // 不是 markdown 就直接解析
+                        document.getElementById('content').innerHTML = text;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('content').innerHTML = `<p style="color: red;">${error}</p>`;
+                });
+        }
+
+        // 获取当前的哈希值
+        function getHashParam() {
+            return window.location.hash ? (function (str) { // 如果参数没有后缀就添加.md后缀
+                if (str) {
+                    if (str.includes("."))
+                        return str;
+                    else
+                        return str + ".md";
                 }
-                return response.text();
+                return str;
+            })(window.location.hash.substring(1)) : 'README.md';
+        }
+
+        // 监听 hashchange 事件以动态加载新的 Markdown 文件
+        window.addEventListener('hashchange', () => {
+            loadViewFile(getHashParam());
+        });
+
+        // 初次加载时调用
+        window.addEventListener('load', () => {
+            loadViewFile(getHashParam());
+        });
+
+        // 平滑滚动到顶部
+        function scrollToTop() {
+            document.body.scrollTo({
+                left: 0,
+                top: 0,
+                behavior: 'smooth'
             })
-            .then(text => {
-                // 使用 marked 库将 Markdown 转换为 HTML
-                document.getElementById('content').innerHTML = marked.parse(text);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('content').innerHTML = `<p style="color: red;">${error}</p>`;
-            });
+        }
     </script>
 </body>
 

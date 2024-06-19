@@ -8,6 +8,7 @@ html {
     height: 100%;
     width: 100%;
     overflow: auto;
+    /* 确保纵向滚动 */
 }
 
 #spacer {
@@ -28,6 +29,47 @@ html {
     /* 居中对齐 */
 }
 
+#top-buttons-wrapper {
+    width: 80%;
+    /* 默认宽度 */
+    max-width: 800px;
+    padding: 0px;
+    margin: 20px auto;
+}
+
 #content {
     margin: 0;
+}
+
+.top-buttons {
+    text-align: left;
+    margin: 10px 0;
+}
+
+.bottom-button {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.top-buttons a,
+.bottom-button button {
+    margin: 0 5px;
+    padding: 10px;
+    color: #101010;
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.top-buttons a:hover,
+.bottom-button button:hover {
+    color: #0056b3;
+}
+
+.top-buttons a i,
+.bottom-button button i {
+    pointer-events: none;
 }
