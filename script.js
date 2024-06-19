@@ -20,6 +20,7 @@ function loadViewFile(file) {
             console.error('Error:', error);
             document.getElementById('content').innerHTML = `<p style="color: red;">${error}</p>`;
         });
+    resolve();// 加载完后再调用动画
 }
 
 // 获取当前的哈希值
@@ -41,9 +42,10 @@ window.addEventListener('hashchange', () => {
     scrollToTop();
     spacer.classList.add('expanded');
     setTimeout(() => {
-        loadViewFile(getHashParam());
-        spacer.classList.remove('expanded');
-    }, 520);
+        loadViewFile(getHashParam()).then(() => {
+            spacer.classList.remove('expanded');
+        });
+    }, 450);
 });
 
 // 初次加载时调用
