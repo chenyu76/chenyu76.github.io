@@ -18,7 +18,7 @@ html {
 
 #anime-spacer {
     height: 1vh;
-    transition: height 0.5s ease;
+    transition: height 0.45s ease;
     /* 平滑过渡效果 */
 }
 

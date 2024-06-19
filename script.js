@@ -43,7 +43,7 @@ window.addEventListener('hashchange', () => {
     setTimeout(() => {
         loadViewFile(getHashParam());
         spacer.classList.remove('expanded');
-    }, 510);
+    }, 520);
 });
 
 // 初次加载时调用
