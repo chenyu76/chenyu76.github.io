@@ -1,26 +1,28 @@
 function loadViewFile(file) {
-    fetch(file)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load ' + file + ': ' + response.statusText);
-            }
-            return response.text();
-        })
-        .then(text => {
-            const extension = file.split('.').pop();
-            if (extension === 'md') {
-                // 使用 marked 库将 Markdown 转换为 HTML 
-                document.getElementById('content').innerHTML = marked.parse(text);
-            } else {
-                // 不是 markdown 就直接解析
-                document.getElementById('content').innerHTML = text;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            document.getElementById('content').innerHTML = `<p style="color: red;">${error}</p>`;
-        });
-    resolve();// 加载完后再调用动画
+    return new Promise((resolve, reject) => {
+        fetch(file)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load ' + file + ': ' + response.statusText);
+                }
+                return response.text();
+            })
+            .then(text => {
+                const extension = file.split('.').pop();
+                if (extension === 'md') {
+                    // 使用 marked 库将 Markdown 转换为 HTML 
+                    document.getElementById('content').innerHTML = marked.parse(text);
+                } else {
+                    // 不是 markdown 就直接解析
+                    document.getElementById('content').innerHTML = text;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('content').innerHTML = `<p style="color: red;">${error}</p>`;
+            });
+        resolve();// 加载完后再调用动画
+    });
 }
 
 // 获取当前的哈希值
