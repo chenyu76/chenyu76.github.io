@@ -16,6 +16,17 @@ html {
     /* 高度为浏览器窗口高度的30% */
 }
 
+#anime-spacer {
+    height: 1vh;
+    transition: height 0.5s ease;
+    /* 平滑过渡效果 */
+}
+
+#anime-spacer.expanded {
+    height: 62vh;
+    /* 当扩展时高度为浏览器窗口高度的100% */
+}
+
 #content-wrapper {
     background-color: white;
     /* 白色背景 */
@@ -34,7 +45,7 @@ html {
     /* 默认宽度 */
     max-width: 800px;
     padding: 0px;
-    margin: 20px auto;
+    margin: 5px auto;
 }
 
 #content {

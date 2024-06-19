@@ -37,7 +37,13 @@ function getHashParam() {
 
 // 监听 hashchange 事件以动态加载新的 Markdown 文件
 window.addEventListener('hashchange', () => {
-    loadViewFile(getHashParam());
+    const spacer = document.getElementById('anime-spacer');
+    scrollToTop();
+    spacer.classList.add('expanded');
+    setTimeout(() => {
+        loadViewFile(getHashParam());
+        spacer.classList.remove('expanded');
+    }, 510);
 });
 
 // 初次加载时调用
