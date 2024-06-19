@@ -7,10 +7,17 @@
     <title>空空的主页</title>
     <!-- 引入最新版本的 marked 库 -->
     <script src="https://cdn.jsdelivr.net/npm/marked@4.0.16/marked.min.js"></script>
+    <!-- css样式 -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- 图标 -->
+    <link rel="icon" href="favicon.png" type="image/png">
 </head>
 
 <body>
-    <div id="content" style="margin: 20px;"></div>
+    <div id="spacer"></div>
+    <div id="content-wrapper">
+        <div id="content"></div>
+    </div>
     <script>
         // 使用 fetch API 从同一目录加载 readme.md 文件
         fetch('README.md')

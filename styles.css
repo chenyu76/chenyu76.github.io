@@ -1,0 +1,33 @@
+/* styles.css */
+body,
+html {
+    background-color: #f0f0f0;
+    /* 淡灰色背景 */
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+#spacer {
+    height: 30vh;
+    /* 高度为浏览器窗口高度的30% */
+}
+
+#content-wrapper {
+    background-color: white;
+    /* 白色背景 */
+    width: 80%;
+    /* 默认宽度 */
+    max-width: 800px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin: 20px auto;
+    /* 居中对齐 */
+}
+
+#content {
+    margin: 0;
+}
