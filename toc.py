@@ -6,16 +6,7 @@
 ├──　skipping-classes-for-introduction-to-entrepreneurship-for-the-future<br/>
 │　　　└──　<a href="skipping-classes-for-introduction-to-entrepreneurship-for-the-future/index.html"> index.html </a><br/>
 ├──　<a href="#./about.md"> about </a><br/>
-├──　<a href="./toc.py"> toc.py </a><br/>
-└──　目录测试<br/>
-　　　　├──　<a href="#目录测试/测试页.md"> 测试页 </a><br/>
-　　　　├──　<a href="#目录测试/测试页2.md"> 测试页2 </a><br/>
-　　　　├──　doc<br/>
-　　　　│　　　├──　<a href="#目录测试/doc/a.md"> a </a><br/>
-　　　　│　　　└──　<a href="#目录测试/doc/b.md"> b </a><br/>
-　　　　├──　doc2<br/>
-　　　　│　　　└──　<a href="#目录测试/doc2/文本文件.md"> 文本文件 </a><br/>
-　　　　└──　<a href="目录测试/make_tree.py"> make_tree.py </a><br/></p>
+└──　<a href="./toc.py"> toc.py </a><br/></p>
 <!--'''
 # 执行此python文件以更新上面的目录
 import os
