@@ -1,20 +1,34 @@
 '''
 <h1> 文档索引 </h1>
-<p>│</br>
-├──　<a href="./index.html"> index.html </a><br/>
-├──　<a href="#./README.md"> README </a><br/>
-├──　skipping-classes-for-introduction-to-entrepreneurship-for-the-future<br/>
-│　　　└──　<a href="skipping-classes-for-introduction-to-entrepreneurship-for-the-future/index.html"> index.html </a><br/>
-├──　<a href="#./about.md"> about </a><br/>
-├──　<a href="./toc.py"> toc.py </a><br/>
-├──　文章<br/>
-│　　　├──　<a href="#文章/琐事.md"> 琐事 </a><br/>
-│　　　├──　<a href="#文章/最伟大的科幻小说.md"> 最伟大的科幻小说 </a><br/>
-│　　　├──　<a href="#文章/日暮.md"> 日暮 </a><br/>
-│　　　└──　<a href="#文章/四千三百年.md"> 四千三百年 </a><br/>
-└──　测试页<br/>
-　　　　├──　<a href="#测试页/equationtest.md"> equationtest </a><br/>
-　　　　└──　<a href="测试页/make_tree.py"> make_tree.py </a><br/></p>
+<p style="line-height:100%">│</br>
+│</br>
+├──<a href="./index.html"> index.html </a><br/>
+│</br>
+├──<a href="#./README.md"> README </a><br/>
+│</br>
+├──skipping-classes-for-introduction-to-entrepreneurship-for-the-future<br/>
+│　　│</br>
+│　　└──<a href="skipping-classes-for-introduction-to-entrepreneurship-for-the-future/index.html"> index.html </a><br/>
+│</br>
+├──<a href="#./about.md"> about </a><br/>
+│</br>
+├──<a href="./toc.py"> toc.py </a><br/>
+│</br>
+├──文章<br/>
+│　　│</br>
+│　　├──<a href="#文章/琐事.md"> 琐事 </a><br/>
+│　　│</br>
+│　　├──<a href="#文章/最伟大的科幻小说.md"> 最伟大的科幻小说 </a><br/>
+│　　│</br>
+│　　├──<a href="#文章/日暮.md"> 日暮 </a><br/>
+│　　│</br>
+│　　└──<a href="#文章/四千三百年.md"> 四千三百年 </a><br/>
+│</br>
+└──测试页<br/>
+　　　│</br>
+　　　├──<a href="#测试页/equationtest.md"> equationtest </a><br/>
+　　　│</br>
+　　　└──<a href="测试页/make_tree.py"> make_tree.py </a><br/></p>
 <!--'''
 # 执行此python文件以更新上面的目录
 import os
@@ -31,9 +45,9 @@ def folder_tree(path, depth = 0, startpath = None, line_d = 0):
         s = ""
         line = line_d
         for i in range(depth):
-            s+="│　　　" if line & 1 else "　　　　" 
+            s+="│　　" if line & 1 else "　　　" 
             line>>=1
-        style = s + ("└──　" if is_last else "├──　")
+        style = s + "│</br>\n" + s + ("└──" if is_last else "├──")
         if os.path.isdir(os.path.join(path, item)):
             table.append(style + item + "<br/>")
             table+=folder_tree(os.path.join(path, item), depth+1, startpath, (0 if is_last else 2**depth) + line_d)
@@ -45,7 +59,7 @@ def folder_tree(path, depth = 0, startpath = None, line_d = 0):
                 table.append(style + f'<a href="{os.path.join(rpath, item)}"> {item} </a><br/>')
     return table
         
-t = "\n<p>│</br>\n" + "\n".join(folder_tree(os.path.dirname(os.path.abspath(__file__)))) + "</p>\n"
+t = '\n<p style="line-height:100%">│</br>\n' + "\n".join(folder_tree(os.path.dirname(os.path.abspath(__file__)))) + "</p>\n"
 
 # 读取原始文件内容
 with open(__file__, 'r', encoding='utf-8') as file:
