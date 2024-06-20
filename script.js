@@ -58,12 +58,14 @@ window.addEventListener('hashchange', async () => {
     var tt = await parseFile(getHashParam());
 
     // 等待动画结束
-    spacer.addEventListener('transitionend', () => {
+    //spacer.addEventListener('transitionend', () => {
+    setTimeout(() => {
         loadText(tt);
         setTimeout(() => {
             spacer.classList.remove('expanded');
         }, 20);
-    }, { once: true });
+    }, 500);
+    //}, { once: true });
 });
 
 
