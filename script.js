@@ -31,7 +31,7 @@ function parseFile(file) {
 function loadText(fileContent) {
     document.getElementById('content').innerHTML = fileContent.content;
     document.title = fileContent.firstLine.replace(/^# /, '');
-    document.getElementById('footnote').innerHTML = "最后修改日期：" + fileContent.lastModified;
+    document.getElementById('footnote').innerHTML = 'lastModified' in fileContent ? "最后修改日期：" + fileContent.lastModified : "";
 }
 
 
