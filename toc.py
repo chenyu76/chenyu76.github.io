@@ -12,9 +12,9 @@
 │</br>
 ├──测试页<br/>
 │　　│</br>
-│　　└──<a href="#测试页/equationtest.md"> equationtest </a><br/>
-│</br>
-├──img<br/>
+│　　├──<a href="#测试页/equationtest.md"> equationtest </a><br/>
+│　　│</br>
+│　　└──<a href="#测试页/TODO List.md"> TODO List </a><br/>
 │</br>
 ├──<a href="#./About.md"> About </a><br/>
 │</br>
@@ -69,8 +69,10 @@ def folder_tree(path, depth = 0, startpath = None, line_d = 0):
             line>>=1
         style = s + "│</br>\n" + s + ("└──" if is_last else "├──")
         if os.path.isdir(os.path.join(path, item)):
-            table.append(style + item + "<br/>")
-            table+=folder_tree(os.path.join(path, item), depth+1, startpath, (0 if is_last else 2**depth) + line_d)
+            t = folder_tree(os.path.join(path, item), depth+1, startpath, (0 if is_last else 1<<depth) + line_d)
+            if len(t):
+                table.append(style + item + "<br/>")
+                table+=t
         else:
             rpath = os.path.relpath((startpath if startpath else path), startpath)
             if item.endswith(".md"):
