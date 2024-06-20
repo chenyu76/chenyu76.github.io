@@ -59,6 +59,16 @@ html {
     margin: 0;
 }
 
+#content img {
+    width: 80%;
+    height: auto;
+    /* 保持图片的宽高比 */
+    display: block;
+    /* 防止图片右侧多余的空白 */
+    margin: 0 auto;
+    /* 图片居中 */
+}
+
 #footnote {
     color: gray;
     /* 设置字体颜色为灰色 */
