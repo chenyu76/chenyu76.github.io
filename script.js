@@ -1,29 +1,37 @@
-function parseMarked(file) {
+function parseFile(file) {
     return fetch(file)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to load ' + file + ': ' + response.statusText);
             }
-            return response.text();
-        })
-        .then(text => {
-            const extension = file.split('.').pop();
-            if (extension === 'md') {
-                // 使用 marked 库将 Markdown 转换为 HTML 
-                return marked.parse(text);
-            } else {
-                // 不是 markdown 就直接解析
-                return text;
-            }
+            return response.text().then(text => {
+                const extension = file.split('.').pop();
+
+                return {
+                    content: extension === 'md' ? marked.parse(text) : text,
+                    lastModified: response.headers.get('Last-Modified'),
+                    firstLine: text.split('\n')[0],
+                    file: file
+                };
+            });
         })
         .catch(error => {
             console.error('Error:', error);
             document.getElementById('content').innerHTML = `<p style="color: red;">${error}</p>`;
+            return {
+                content: '',
+                lastModified: null,
+                file: file,
+                error: error.message
+            };
         });
 }
 
-function loadText(text) {
-    document.getElementById('content').innerHTML = text;
+
+function loadText(fileContent) {
+    document.getElementById('content').innerHTML = fileContent.content;
+    document.title = fileContent.firstLine.replace(/^# /, '');
+    document.getElementById('footnote').innerHTML = "最后修改日期：" + fileContent.lastModified;
 }
 
 
@@ -47,19 +55,21 @@ window.addEventListener('hashchange', async () => {
     spacer.classList.add('expanded');
 
     // 开始处理文本内容
-    var tt = await parseMarked(getHashParam());
+    var tt = await parseFile(getHashParam());
 
     // 等待动画结束
     spacer.addEventListener('transitionend', () => {
         loadText(tt);
-        spacer.classList.remove('expanded');
+        setTimeout(() => {
+            spacer.classList.remove('expanded');
+        }, 20);
     }, { once: true });
 });
 
 
 // 初次加载时调用
 window.addEventListener('load', async () => {
-    loadText(await parseMarked(getHashParam()));
+    loadText(await parseFile(getHashParam()));
 });
 
 // 平滑滚动到顶部

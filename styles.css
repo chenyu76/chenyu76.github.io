@@ -59,6 +59,13 @@ html {
     margin: 0;
 }
 
+#footnote {
+    color: gray;
+    /* 设置字体颜色为灰色 */
+    font-size: 0.8em;
+    /* 设置字体大小为普通字体的0.8倍 */
+}
+
 .top-buttons {
     text-align: left;
     margin: 10px 0;

@@ -37,7 +37,7 @@ def folder_tree(path, depth = 0, startpath = None, line_d = 0):
     table = []
     items = os.listdir(path)
     items = [
-        s for s in items if (os.path.isdir(os.path.join(path, s)) and (not s.startswith('.'))) or (os.path.isfile(os.path.join(path, s)) and any([s.endswith(x) for x in [".md", ".py", ".txt", ".tex", ".html"] ])) 
+        s for s in items if (os.path.isdir(os.path.join(path, s)) and (not s.startswith('.'))) or (os.path.isfile(os.path.join(path, s)) and any([s.endswith(x) for x in [".md", ".txt", ".tex", ".html"] ])) 
     ]
 
     for index, item in enumerate(items):
