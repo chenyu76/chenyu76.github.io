@@ -77,12 +77,14 @@ html {
 }
 
 #content a:visited {
+    text-decoration: none;
     color: #004bb3;
     /* 点击后颜色 */
 }
 
 #content a:hover {
-    color: #027cff;
+    text-decoration: underline;
+    color: #2b92ff;
     /* 悬停时颜色 */
 }
 
