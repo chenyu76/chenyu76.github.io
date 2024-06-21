@@ -1,5 +1,13 @@
-'''
+'''<h1> 最近修改 </h1>
+<p style="line-height:200%"></br>
+2024-06-21 <a href="#测试页/未命名"> 测试页/未命名 </a></br>
+2024-06-21 <a href="#文章/关于这个网站"> 文章/关于这个网站 </a></br>
+2024-06-21 <a href="#README"> README </a></br>
+2024-06-21 <a href="#摘抄/日暮"> 摘抄/日暮 </a></br>
+2024-06-21 <a href="#摘抄/琐事"> 摘抄/琐事 </a></p>
+
 <h1> 文档索引 </h1>
+
 <p style="line-height:100%"></br>│</br>
 │</br>
 ├──<a href="./index.html"> index.html </a><br/>
@@ -12,7 +20,9 @@
 │</br>
 ├──测试页<br/>
 │　　│</br>
-│　　└──<a href="#测试页/equationtest.md"> equationtest </a><br/>
+│　　├──<a href="#测试页/equationtest.md"> equationtest </a><br/>
+│　　│</br>
+│　　└──<a href="#测试页/未命名.md"> 未命名 </a><br/>
 │</br>
 ├──<a href="#./About.md"> About </a><br/>
 │</br>
@@ -54,6 +64,7 @@
 <!--'''
 # 执行此python文件以更新上面的目录
 import os
+from datetime import datetime
 
 def folder_tree(path, depth = 0, startpath = None, line_d = 0): 
     table = []
@@ -85,15 +96,42 @@ def folder_tree(path, depth = 0, startpath = None, line_d = 0):
         
 t = '\n<p style="line-height:100%"></br>│</br>\n' + "\n".join(folder_tree(os.path.dirname(os.path.abspath(__file__)))) + "</p>\n"
 
+def find_recent_markdown_files(num_files = 5, current_dir = os.path.dirname(os.path.abspath(__file__))):
+    
+    # 搜索所有的Markdown文件（非隐藏文件，非隐藏目录）
+    markdown_files = []
+    for root, dirs, files in os.walk(current_dir):
+        # 排除隐藏目录
+        dirs = [d for d in dirs if not d.startswith('.')]
+        # 获取非隐藏的Markdown文件
+        for file in files:
+            if file.endswith('.md') and not file.startswith('.'):
+                markdown_files.append(os.path.join(root, file))
+    
+    # 获取文件的修改时间并排序
+    markdown_files.sort(key=lambda x: os.path.getmtime(x), reverse=True)
+    
+    recent_files_with_dates = []
+    for file in markdown_files[:num_files]:
+        mod_time = os.path.getmtime(file)
+        mod_date = datetime.fromtimestamp(mod_time).strftime('%Y-%m-%d')
+        relative_path = os.path.relpath(file, current_dir).rstrip(".md")
+        recent_files_with_dates.append((relative_path, mod_date))
+    
+    return recent_files_with_dates
+
+
+r = '<p style="line-height:200%"></br>\n' + '</br>\n'.join([f'{i[1]} <a href="#{i[0]}"> {i[0]} </a>' for i in find_recent_markdown_files()]) + "</p>\n"
+
 # 读取原始文件内容
 with open(__file__, 'r', encoding='utf-8') as file:
     content = file.read()
 
-start_tag = "</h1>"
+start_tag = "'''"
 end_tag = "<!--"
 start_idx = content.find(start_tag) + len(start_tag)
 end_idx = content.find(end_tag)
 # 写回修改后的内容到文件
 with open(__file__, 'w', encoding='utf-8') as file:
-    file.write(content[:start_idx] + t + content[end_idx:])
+    file.write(content[:start_idx] + "<h1> 最近修改 </h1>\n" + r + "\n<h1> 文档索引 </h1>\n" + t + content[end_idx:])
 # -->
