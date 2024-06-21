@@ -69,6 +69,29 @@ html {
     /* 图片居中 */
 }
 
+#content a {
+    text-decoration: none;
+    /* 去掉下划线 */
+    color: #0056b3;
+    /* 默认颜色 */
+}
+
+#content a:visited {
+    color: #004bb3;
+    /* 点击后颜色 */
+}
+
+#content a:hover {
+    color: #027cff;
+    /* 悬停时颜色 */
+}
+
+/* 修改 p 标签的段首空两格 */
+#content p {
+    text-indent: 2em;
+    /* 段首空两格 */
+}
+
 #footnote {
     color: gray;
     /* 设置字体颜色为灰色 */
@@ -93,7 +116,7 @@ html {
     color: #101010;
     text-decoration: none;
     background-color: transparent;
-    border: none;
+    border: none#0056b3;
     border-radius: 5px;
     cursor: pointer;
     font-size: 20px;

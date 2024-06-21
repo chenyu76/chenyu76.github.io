@@ -55,17 +55,17 @@ window.addEventListener('hashchange', async () => {
     spacer.classList.add('expanded');
 
     // 开始处理文本内容
+    var start = new Date().getTime()
     var tt = await parseFile(getHashParam());
+    var end = new Date().getTime()
 
     // 等待动画结束
-    //spacer.addEventListener('transitionend', () => {
     setTimeout(() => {
         loadText(tt);
         setTimeout(() => {
             spacer.classList.remove('expanded');
         }, 20);
-    }, 500);
-    //}, { once: true });
+    }, ((a) => { return a > 0 ? a : 0; })(500 - (end - start)));
 });
 
 

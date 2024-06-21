@@ -1,6 +1,6 @@
 '''
 <h1> 文档索引 </h1>
-<p style="line-height:100%">│</br>
+<p style="line-height:100%"></br>│</br>
 │</br>
 ├──<a href="./index.html"> index.html </a><br/>
 │</br>
@@ -83,7 +83,7 @@ def folder_tree(path, depth = 0, startpath = None, line_d = 0):
                 table.append(style + f'<a href="{os.path.join(rpath, item)}"> {item} </a><br/>')
     return table
         
-t = '\n<p style="line-height:100%">│</br>\n' + "\n".join(folder_tree(os.path.dirname(os.path.abspath(__file__)))) + "</p>\n"
+t = '\n<p style="line-height:100%"></br>│</br>\n' + "\n".join(folder_tree(os.path.dirname(os.path.abspath(__file__)))) + "</p>\n"
 
 # 读取原始文件内容
 with open(__file__, 'r', encoding='utf-8') as file:
