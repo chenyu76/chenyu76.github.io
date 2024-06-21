@@ -55,9 +55,9 @@ window.addEventListener('hashchange', async () => {
     spacer.classList.add('expanded');
 
     // 开始处理文本内容
-    var start = new Date().getTime()
+    var start = performance.now();
     var tt = await parseFile(getHashParam());
-    var end = new Date().getTime()
+    var end = performance.now();
 
     // 等待动画结束
     setTimeout(() => {
