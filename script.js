@@ -8,6 +8,15 @@ function parseFile(file) {
                 const extension = file.split('.').pop();
 
                 const content = ((str) => {
+                    let firstLineEndIndex = str.indexOf('\n');
+                    let firstLine = str.substring(0, firstLineEndIndex).trim();
+
+                    // 检查第一行是否以 "# " 开头
+                    if (str.startsWith("# ")) {
+                        firstLine = str.substring(1, firstLineEndIndex).trim();
+                        str = str.substring(firstLineEndIndex + 1);
+                    }
+
                     // 从字符串末尾开始查找最后一个换行符
                     let lastIndex = str.length - 1;
                     while (lastIndex >= 0 && str[lastIndex] !== '\n') {
@@ -19,17 +28,17 @@ function parseFile(file) {
                     if (lastLine.length < 25
                         && ((lastLine.includes('月') && lastLine.includes('日'))
                             || ((lastLine.match(/\//g) || []).length === 2))) {
-                        return [str.substring(0, lastIndex).trim(), lastLine];
+                        return [firstLine, str.substring(0, lastIndex).trim(), lastLine];
                     }
                     // 如果不满足条件，返回null
-                    return [str, null];
+                    return [firstLine, str, null];
                 })(text);
 
                 return {
-                    content: extension === 'md' ? marked.parse(content[0]) : content[0],
-                    footnote: content[1],
+                    firstLine: content[0],
+                    content: extension === 'md' ? marked.parse(content[1]) : content[1],
+                    footnote: content[2],
                     lastModified: response.headers.get('Last-Modified'),
-                    firstLine: text.split('\n')[0],
                     file: file
                 };
             });
@@ -39,6 +48,7 @@ function parseFile(file) {
             document.getElementById('content').innerHTML = `<p style="color: red;">${error}</p>`;
             return {
                 content: '',
+                firstLine: null,
                 lastModified: null,
                 footnote: null,
                 file: file,
@@ -49,8 +59,9 @@ function parseFile(file) {
 
 
 function loadText(fileContent) {
+    document.getElementById('heading').innerHTML = fileContent.firstLine != null ? "<h1>" + fileContent.firstLine + "</h1>" : "";
     document.getElementById('content').innerHTML = fileContent.content;
-    document.title = fileContent.firstLine.replace(/^# /, '');
+    document.title = fileContent.firstLine;
     document.getElementById('footnote').innerHTML = (fileContent.footnote != null ? fileContent.footnote + "\n</br>" : "")
         + (fileContent.lastModified != null ? "本站最后提交于：" + fileContent.lastModified : "");
 }
