@@ -7,8 +7,27 @@ function parseFile(file) {
             return response.text().then(text => {
                 const extension = file.split('.').pop();
 
+                const content = ((str) => {
+                    // 从字符串末尾开始查找最后一个换行符
+                    let lastIndex = str.length - 1;
+                    while (lastIndex >= 0 && str[lastIndex] !== '\n') {
+                        lastIndex--;
+                    }
+                    // 提取最后一行
+                    const lastLine = str.substring(lastIndex + 1).trim();
+                    // 检查最后一行的长度是否是日期
+                    if (lastLine.length < 25
+                        && ((lastLine.includes('月') && lastLine.includes('日'))
+                            || ((lastLine.match(/\//g) || []).length === 2))) {
+                        return [str.substring(0, lastIndex).trim(), lastLine];
+                    }
+                    // 如果不满足条件，返回null
+                    return [str, null];
+                })(text);
+
                 return {
-                    content: extension === 'md' ? marked.parse(text) : text,
+                    content: extension === 'md' ? marked.parse(content[0]) : content[0],
+                    footnote: content[1],
                     lastModified: response.headers.get('Last-Modified'),
                     firstLine: text.split('\n')[0],
                     file: file
@@ -21,6 +40,7 @@ function parseFile(file) {
             return {
                 content: '',
                 lastModified: null,
+                footnote: null,
                 file: file,
                 error: error.message
             };
@@ -31,7 +51,8 @@ function parseFile(file) {
 function loadText(fileContent) {
     document.getElementById('content').innerHTML = fileContent.content;
     document.title = fileContent.firstLine.replace(/^# /, '');
-    document.getElementById('footnote').innerHTML = 'lastModified' in fileContent ? "本站最后提交于：" + fileContent.lastModified : "";
+    document.getElementById('footnote').innerHTML = (fileContent.footnote != null ? fileContent.footnote + "\n</br>" : "")
+        + (fileContent.lastModified != null ? "本站最后提交于：" + fileContent.lastModified : "");
 }
 
 
