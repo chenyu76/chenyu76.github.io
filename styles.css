@@ -1,0 +1,135 @@
+/* styles.css */
+body,
+html {
+    /*
+    background-image: url(./img/bg.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    */
+    background-color: #f0f0f0;
+    /* 淡灰色背景 */
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    /* 确保纵向滚动 */
+}
+
+#spacer {
+    height: 30vh;
+    /* 高度为浏览器窗口高度的30% */
+}
+
+#anime-spacer {
+    height: 1vh;
+    transition: height 0.5s ease;
+    /* 平滑过渡效果 */
+}
+
+#anime-spacer.expanded {
+    height: 62vh;
+    /* 当扩展时高度为浏览器窗口高度的100% */
+}
+
+#content-wrapper {
+    background-color: white;
+    /* 白色背景 */
+    width: 80%;
+    /* 默认宽度 */
+    max-width: 800px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin: 20px auto;
+    /* 居中对齐 */
+}
+
+#top-buttons-wrapper {
+    width: 80%;
+    /* 默认宽度 */
+    max-width: 800px;
+    padding: 0px;
+    margin: 5px auto;
+}
+
+#content {
+    margin: 0;
+}
+
+#content img {
+    width: 80%;
+    height: auto;
+    /* 保持图片的宽高比 */
+    display: block;
+    /* 防止图片右侧多余的空白 */
+    margin: 0 auto;
+    /* 图片居中 */
+}
+
+#content a {
+    text-decoration: none;
+    /* 去掉下划线 */
+    color: #0056b3;
+    /* 默认颜色 */
+}
+
+#content a:visited {
+    text-decoration: none;
+    color: #004bb3;
+    /* 点击后颜色 */
+}
+
+#content a:hover {
+    text-decoration: underline;
+    color: #2b92ff;
+    /* 悬停时颜色 */
+}
+
+/* 修改 p 标签的段首空两格 */
+#content p {
+    text-indent: 2em;
+    /* 段首空两格 */
+}
+
+#footnote {
+    color: gray;
+    /* 设置字体颜色为灰色 */
+    font-size: 0.8em;
+    /* 设置字体大小为普通字体的0.8倍 */
+}
+
+.top-buttons {
+    text-align: left;
+    margin: 10px 0;
+}
+
+.bottom-button {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.top-buttons a,
+.bottom-button button {
+    margin: 0 5px;
+    padding: 10px;
+    color: #101010;
+    text-decoration: none;
+    background-color: transparent;
+    border: none#0056b3;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.top-buttons a:hover,
+.bottom-button button:hover {
+    color: #0056b3;
+}
+
+.top-buttons a i,
+.bottom-button button i {
+    pointer-events: none;
+}
