@@ -47,6 +47,13 @@ html {
     /* 居中对齐 */
 }
 
+#heading {
+    width: 80%;
+    /* 默认宽度 */
+    max-width: 800px;
+    margin: auto;
+}
+
 #top-buttons-wrapper {
     width: 80%;
     /* 默认宽度 */
