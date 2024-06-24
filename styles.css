@@ -1,13 +1,13 @@
 /* styles.css */
 body,
 html {
-    /*
-    background-image: url(./img/bg.png);
+
+    background-image: url(./img/bg1.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
-    */
+
     background-color: #f0f0f0;
     /* 淡灰色背景 */
     margin: 0;
