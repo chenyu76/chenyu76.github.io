@@ -1,5 +1,5 @@
 '''
-WIP
+Github action will create toc here.
 <!--'''
 # 执行此python文件以更新上面的目录
 import os
@@ -60,7 +60,7 @@ def find_recent_markdown_files(num_files = 5, current_dir = os.path.dirname(os.p
     return recent_files_with_dates
 
 
-r = '<p style="line-height:200%"></br>\n' + '</br>\n'.join([f'{i[1]} <a href="#{i[0]}"> {i[0]} </a>' for i in find_recent_markdown_files()]) + "</p>\n"
+#r = '<p style="line-height:200%"></br>\n' + '</br>\n'.join([f'{i[1]} <a href="#{i[0]}"> {i[0]} </a>' for i in find_recent_markdown_files()]) + "</p>\n"
 
 # 读取原始文件内容
 with open(__file__, 'r', encoding='utf-8') as file:
@@ -72,5 +72,5 @@ start_idx = content.find(start_tag) + len(start_tag)
 end_idx = content.find(end_tag)
 # 写回修改后的内容到文件
 with open(__file__, 'w', encoding='utf-8') as file:
-    file.write(content[:start_idx] + "\n<h1> 最近修改 </h1>\n" + r + "</br></br>\n<h1> 文档索引 </h1>\n" + t + content[end_idx:])
+    file.write(content[:start_idx] + "\n<h1> 文档索引 </h1>\n" + t + content[end_idx:])
 # -->
