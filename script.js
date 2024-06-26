@@ -7,6 +7,7 @@ function parseFile(file) {
             return response.text().then(text => {
                 const extension = file.split('.').pop();
 
+                //划分内容为 [标题, 正文, 脚注（日期）]
                 const content = ((str) => {
                     let firstLineEndIndex = str.indexOf('\n');
                     let firstLine = str.substring(0, firstLineEndIndex).trim();
@@ -36,7 +37,26 @@ function parseFile(file) {
 
                 return {
                     firstLine: content[0],
-                    content: extension === 'md' ? marked.parse(content[1]) : content[1],
+                    content: ((htmlString) => {
+                        // 查找包含百分数的alt属性的img标签，并设置相应的width属性，使在编写md时能直接设置图片百分比大小
+                        // 创建一个临时的DOM容器来解析HTML字符串
+                        //var parser = new DOMParser();
+                        var doc = new DOMParser().parseFromString(htmlString, 'text/html');
+
+                        // 获取所有的img标签
+                        doc.querySelectorAll('img').forEach(function (img) {
+                            var altText = img.getAttribute('alt');
+
+                            // 检查alt属性是否包含百分数
+                            let match = altText.match(/(\d+)%/);
+                            if (altText && match) {
+                                img.style.width = match[1] + '%';
+                            }
+                        });
+
+                        // 返回处理后的HTML字符串
+                        return doc.body.innerHTML;
+                    })(extension === 'md' ? marked.parse(content[1]) : content[1]),
                     footnote: content[2],
                     lastModified: response.headers.get('Last-Modified'),
                     file: file
@@ -88,6 +108,7 @@ window.addEventListener('hashchange', async () => {
 
     // 开始处理文本内容
     var start = performance.now();
+    // 也许我应该使用 github action 将文本都处理好了直接下载就行而不是客户端处理
     var tt = await parseFile(getHashParam());
     var end = performance.now();
 
