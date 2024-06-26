@@ -104,7 +104,7 @@ function getHashParam() {
 window.addEventListener('hashchange', async () => {
     const spacer = document.getElementById('anime-spacer');
     scrollToTop();
-    spacer.classList.add('expanded');
+    spacer.classList.remove('shrinked');
 
     // 开始处理文本内容
     var start = performance.now();
@@ -116,7 +116,7 @@ window.addEventListener('hashchange', async () => {
     setTimeout(() => {
         loadText(tt);
         setTimeout(() => {
-            spacer.classList.remove('expanded');
+            spacer.classList.add('shrinked');
         }, 20);
     }, ((a) => { return a > 0 ? a : 0; })(500 - (end - start)));
 });
@@ -125,6 +125,8 @@ window.addEventListener('hashchange', async () => {
 // 初次加载时调用
 window.addEventListener('load', async () => {
     loadText(await parseFile(getHashParam()));
+    const spacer = document.getElementById('anime-spacer');
+    spacer.classList.add('shrinked');
 });
 
 // 平滑滚动到顶部
