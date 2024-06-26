@@ -24,13 +24,13 @@ html {
 }
 
 #anime-spacer {
-    height: 1vh;
+    height: 62vh;
     transition: height 0.5s ease;
     /* 平滑过渡效果 */
 }
 
-#anime-spacer.expanded {
-    height: 62vh;
+#anime-spacer.shrinked {
+    height: 1vh;
     /* 当扩展时高度为浏览器窗口高度的100% */
 }
 
