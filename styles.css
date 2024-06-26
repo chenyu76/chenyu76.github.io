@@ -47,7 +47,8 @@ html {
     /* 居中对齐 */
 }
 
-#heading {
+#heading,
+#dividing-line {
     width: 80%;
     /* 默认宽度 */
     max-width: 800px;
