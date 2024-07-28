@@ -27,9 +27,13 @@ def folder_tree(path, depth = 0, startpath = None, line_d = 0):
                 table+=t
         else:
             rpath = os.path.relpath((startpath if startpath else path), startpath)
-            if item.endswith(".md"):
-                table.append(style + f'<a href="#{os.path.join(rpath, item)}"> {item.rstrip(".md")} </a><br/>')
-            else:
+            withSharp = False
+            for ex in [".md", ".js"]: 
+                if item.endswith(ex):
+                    table.append(style + f'<a href="#{os.path.join(rpath, item)}"> {item.rstrip(ex)} </a><br/>')
+                    withSharp = True
+                    break
+            if not withSharp:
                 table.append(style + f'<a href="{os.path.join(rpath, item)}"> {item} </a><br/>')
     return table
         
