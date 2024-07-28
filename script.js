@@ -56,7 +56,14 @@ function parseFile(file) {
 
                         // 返回处理后的HTML字符串
                         return doc.body.innerHTML;
-                    })(extension === 'md' ? marked.parse(content[1]) : content[1]),
+                    })(extension === 'md' ?
+                        marked.parse(content[1]) :
+                        (extension === "js" ? (() => {
+                            var script = document.createElement('script');
+                            script.text = text;
+                            document.body.appendChild(script);
+                            return eval(content[0].split(" ")[1]);
+                        })() : content[1])),
                     footnote: content[2],
                     lastModified: response.headers.get('Last-Modified'),
                     file: file
@@ -67,7 +74,7 @@ function parseFile(file) {
             console.error('Error:', error);
             document.getElementById('content').innerHTML = `<p style="color: red;">${error}</p>`;
             return {
-                content: '',
+                content: "<h1>404 Page no find</h1>\n<p>" + error.message + "</p>",
                 firstLine: null,
                 lastModified: null,
                 footnote: null,
