@@ -39,7 +39,7 @@
 │</br>
 ├──文章<br/>
 │　　│</br>
-│　　├──<a href="文章/做了一些学校的LaTeX模板.js"> 做了一些学校的LaTeX模板.js </a><br/>
+│　　├──<a href="#文章/做了一些学校的LaTeX模板.js"> 做了一些学校的LaTeX模板 </a><br/>
 │　　│</br>
 │　　└──<a href="#文章/关于这个网站.md"> 关于这个网站 </a><br/>
 │</br>
@@ -49,7 +49,7 @@
 │　　│</br>
 │　　└──<a href="#测试页/equationtest.md"> equationtest </a><br/>
 │</br>
-├──<a href="./script.js"> script.js </a><br/>
+├──<a href="#./script.js"> script </a><br/>
 │</br>
 ├──<a href="#./README.md"> README </a><br/>
 │</br>
@@ -57,7 +57,7 @@
 　　　│</br>
 　　　├──<a href="skipping-classes-for-introduction-to-entrepreneurship-for-the-future/index.html"> index.html </a><br/>
 　　　│</br>
-　　　└──<a href="skipping-classes-for-introduction-to-entrepreneurship-for-the-future/script.js"> script.js </a><br/></p>
+　　　└──<a href="#skipping-classes-for-introduction-to-entrepreneurship-for-the-future/script.js"> script </a><br/></p>
 <!--'''
 # 执行此python文件以更新上面的目录
 import os
@@ -85,9 +85,13 @@ def folder_tree(path, depth = 0, startpath = None, line_d = 0):
                 table+=t
         else:
             rpath = os.path.relpath((startpath if startpath else path), startpath)
-            if item.endswith(".md"):
-                table.append(style + f'<a href="#{os.path.join(rpath, item)}"> {item.rstrip(".md")} </a><br/>')
-            else:
+            withSharp = False
+            for ex in [".md", ".js"]: 
+                if item.endswith(ex):
+                    table.append(style + f'<a href="#{os.path.join(rpath, item)}"> {item.rstrip(ex)} </a><br/>')
+                    withSharp = True
+                    break
+            if not withSharp:
                 table.append(style + f'<a href="{os.path.join(rpath, item)}"> {item} </a><br/>')
     return table
         
