@@ -9,7 +9,7 @@ function 做了一些学校LaTeX模板() {
     "
     const url = 'https://raw.githubusercontent.com/chenyu76/some-SZU-LaTeX-templates/main/README.md';
 
-    return fetch(url)
+    fetch(url)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');

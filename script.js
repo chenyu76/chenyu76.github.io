@@ -59,10 +59,14 @@ function parseFile(file) {
                     })(extension === 'md' ?
                         marked.parse(content[1]) :
                         (extension === "js" ? (() => {
-                            var script = document.createElement('script');
-                            script.text = text;
-                            document.body.appendChild(script);
-                            return eval(content[0].split(" ")[1]);
+                            var fName = content[0].split(" ")[1].split("(")[0];
+                            if (eval("typeof " + fName + " !== \"function\"")) {
+                                // 将js文件的代码加至document中
+                                var script = document.createElement('script');
+                                script.text = text;
+                                document.body.appendChild(script);
+                            }
+                            return eval(fName + "()");
                         })() : content[1])),
                     footnote: content[2],
                     lastModified: response.headers.get('Last-Modified'),
@@ -74,7 +78,7 @@ function parseFile(file) {
             console.error('Error:', error);
             document.getElementById('content').innerHTML = `<p style="color: red;">${error}</p>`;
             return {
-                content: "<h1>404 Page no find</h1>\n<p>" + error.message + "</p>",
+                content: "<h1>Error</h1>\n<p>" + error.message + "</p>",
                 firstLine: null,
                 lastModified: null,
                 footnote: null,
@@ -87,7 +91,8 @@ function parseFile(file) {
 
 function loadText(fileContent) {
     document.getElementById('heading').innerHTML = fileContent.firstLine != null ? "<h1>" + fileContent.firstLine + "</h1>" : "";
-    document.getElementById('content').innerHTML = fileContent.content;
+    if (fileContent.content !== undefined)
+        document.getElementById('content').innerHTML = fileContent.content;
     document.title = fileContent.firstLine;
     document.getElementById('footnote').innerHTML = (fileContent.footnote != null ? fileContent.footnote + "\n</br>" : "")
         + (fileContent.lastModified != null ? "本站最后提交于：" + fileContent.lastModified : "");
