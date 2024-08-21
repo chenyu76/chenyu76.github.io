@@ -1,7 +1,7 @@
 function 做了一些学校LaTeX模板() {
     info = "\n\
     \n\
-    <a href=\"https://raw.githubusercontent.com/chenyu76/some-SZU-LaTeX-templates\" target=\"_blank\" title=\"仓库地址\"><i class=\"fa-brands fa-github\"></i>仓库地址</a>\n\
+    <a href=\"https://github.com/chenyu76/some-SZU-LaTeX-templates\" target=\"_blank\" title=\"仓库地址\"><i class=\"fa-brands fa-github\"></i>仓库地址</a>\n\
     \n\
     <p>以下是仓库的readme文件，通过js fetch 原封不动的搬过来了，虽然好像不是很兼容但是勉强能看，耶！</p>\n\
     \n\

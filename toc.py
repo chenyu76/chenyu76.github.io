@@ -23,12 +23,6 @@
 │</br>
 ├──<a href="./index.html"> index.html </a><br/>
 │</br>
-├──skipping-classes-for-introduction-to-entrepreneurship-for-the-future<br/>
-│　　│</br>
-│　　├──<a href="skipping-classes-for-introduction-to-entrepreneurship-for-the-future/index.html"> index.html </a><br/>
-│　　│</br>
-│　　└──<a href="#skipping-classes-for-introduction-to-entrepreneurship-for-the-future/script.js"> script </a><br/>
-│</br>
 ├──摘抄<br/>
 │　　│</br>
 │　　├──<a href="#摘抄/Had I not seen the Sun.md"> Had I not seen the Sun </a><br/>
