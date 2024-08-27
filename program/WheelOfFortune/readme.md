@@ -22,4 +22,4 @@
 
 似乎web版无法读取本地文件，但仍可以通过手动输入粘贴文件内容代替
 
-[Start](chenyu76.github.io/program/WheelOfFortune/WheelOfFortune.html)
+[Start](https://chenyu76.github.io/program/WheelOfFortune/WheelOfFortune.html)
