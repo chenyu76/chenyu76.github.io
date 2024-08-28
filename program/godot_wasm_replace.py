@@ -1,5 +1,6 @@
 #!/bin/python
 import sys
+import os
 
 '''
 修改 godot 导出的 web 程序 js，
@@ -15,6 +16,9 @@ https://www.reddit.com/r/godot/comments/pjuqsr/html5_could_godots_wasm_file_be_h
 '''
 # 使用的wasm路径会被替换为此路径
 newpath = "/program/godot_4.3stable.wasm"
+
+# 目前固定的一些需要修改的 js 文件路径， 省去参数调用
+jspath = ["./TractorBattle3D/tb.js", "./WheelOfFortune/WheelOfFortune.js"]
 
 def replace_load_promise(file_path):
     try:
@@ -41,7 +45,11 @@ def replace_load_promise(file_path):
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: godot_wasm_replace.py <file_path>")
-    else:
+    os.chdir(os.path.dirname(__file__))
+    if len(sys.argv) == 2:
         replace_load_promise(sys.argv[1])
+    elif len(sys.argv) == 1:
+        for i in jspath:
+            replace_load_promise(i)
+    else:
+        print("Usage: godot_wasm_replace.py <file_path>")
