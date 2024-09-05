@@ -22,4 +22,6 @@ function 做了一些学校LaTeX模板() {
         .catch(error => {
             document.getElementById('content').innerHTML = 'Failed to load content: ' + error.message;
         });
+    return info + "</br>加载中";
 }
+// 2024年8月
