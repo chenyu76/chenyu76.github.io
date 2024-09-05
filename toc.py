@@ -88,7 +88,7 @@ def find_recent_markdown_files(num_files = 5, current_dir = os.path.dirname(os.p
     return recent_files_with_dates
 
 
-def random_article_js_g(path):
+def random_article_js_g(path, dir_path):
     # 读取原始文件内容
     with open(path, 'r', encoding='utf-8') as file:
         content = file.read()
@@ -103,7 +103,7 @@ def random_article_js_g(path):
         # 获取非隐藏的Markdown文件
         for file in files:
             if file.endswith('.md') and not file.startswith('.'):
-                artc.append('"#摘抄/' + file + '"')
+                artc.append('"#' + dir_path + file + '"')
     start_idx = content.find(start_tag) + len(start_tag)
     end_idx = content.find(end_tag)
     # 写回修改后的内容到文件
@@ -132,5 +132,5 @@ def rewrite_self():
 if __name__ == "__main__":
     rewrite_self()
     jspath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "摘抄/-随机一篇-.js")
-    random_article_js_g(jspath)
+    random_article_js_g(jspath, "摘抄/")
 # -->
