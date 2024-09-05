@@ -18,7 +18,12 @@ https://www.reddit.com/r/godot/comments/pjuqsr/html5_could_godots_wasm_file_be_h
 newpath = "/program/godot_4.3stable.wasm"
 
 # 目前固定的一些需要修改的 js 文件路径， 省去参数调用
-jspath = ["./TractorBattle3D/tb.js", "./WheelOfFortune/WheelOfFortune.js", "./15s-Jan-ken/jan-ken.js"]
+jspath = [
+    "./TractorBattle3D/tb.js", 
+    "./WheelOfFortune/WheelOfFortune.js", 
+    "./15s-Jan-ken/jan-ken.js",
+    "./colliding_balls/cb.js"
+]
 
 def replace_load_promise(file_path):
     try:
