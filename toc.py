@@ -16,14 +16,17 @@ def folder_tree(path, depth = 0, startpath = None, line_d = 0):
     items = [
         s for s in items if (os.path.isdir(os.path.join(path, s)) and (not s.startswith('.'))) or (os.path.isfile(os.path.join(path, s)) and any([s.endswith(x) for x in clickable_extension ])) 
     ]
+    # 排除掉 program 文件夹里的 js
+    items = [
+        i for i in items if not (i.split('.')[-1] == "js" and "program" in path)
+    ]
+
     def item_to_button():
             rpath = os.path.relpath((startpath if startpath else path), startpath) # 相对路径
             withSharp = False
             for ex in article_extension:  # 这些视为文章
                 if item.endswith(ex):
                     withSharp = True
-                    if ex == '.js' and ("program" in rpath): # js 文章需要排除指定地方的
-                        break
                     table.append(style + f'<a href="#{os.path.join(rpath, item)}"> {item.rstrip(ex)} </a><br/>')
                     break
             if not withSharp: # 其余仅为可点击项
