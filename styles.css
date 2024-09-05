@@ -65,6 +65,7 @@ html {
 
 #content {
     margin: 0;
+    line-height: 1.75;
 }
 
 #content img {
@@ -168,4 +169,10 @@ html {
 .top-buttons a i,
 .bottom-button button i {
     pointer-events: none;
+}
+
+
+.hiddenContent {
+    display: none;
+    /* 初始隐藏内容 */
 }

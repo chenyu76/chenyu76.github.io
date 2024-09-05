@@ -1,3 +1,7 @@
+function the_script() {
+    return "This is the JavaScript of the website. </br>See raw file at <a href=\"script.js\"> script.js </a>";
+}
+
 function parseFile(file) {
     return fetch(file)
         .then(response => {
@@ -90,7 +94,8 @@ function parseFile(file) {
 
 
 function loadText(fileContent) {
-    document.getElementById('heading').innerHTML = fileContent.firstLine != null ? "<h1>" + fileContent.firstLine + "</h1>" : "";
+    document.getElementById('heading').innerHTML = "<h1>" + decodeURIComponent(fileContent.file).split(".")[0] + "</h1>";
+    //document.getElementById('heading').innerHTML = fileContent.firstLine != null ? "<h1>" + fileContent.firstLine + "</h1>" : "";
     if (fileContent.content !== undefined)
         document.getElementById('content').innerHTML = fileContent.content;
     document.title = fileContent.firstLine;
@@ -148,4 +153,16 @@ function scrollToTop() {
         top: 0,
         behavior: 'smooth'
     })
+}
+
+function toggleNextNextVis(self) {
+    var content = self.nextElementSibling.nextElementSibling;
+    var style = window.getComputedStyle(content);
+    if (style.display === 'none') {
+        content.style.display = 'inline';
+        self.textContent = '显示更少';
+    } else {
+        content.style.display = 'none';
+        self.textContent = '显示全部';
+    }
 }
