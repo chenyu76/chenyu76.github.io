@@ -19,6 +19,7 @@ newpath = "/program/godot_4.3stable.wasm"
 
 # 目前固定的一些需要修改的 js 文件路径， 省去参数调用
 jspath = [
+    "./7-piece-puzzle/puzzle.js",
     "./TractorBattle3D/tb.js", 
     "./WheelOfFortune/WheelOfFortune.js", 
     "./15s-Jan-ken/jan-ken.js",
