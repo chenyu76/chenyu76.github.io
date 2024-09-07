@@ -78,6 +78,12 @@
 │　　│　　│</br>
 │　　│　　└──<a href="program/WheelOfFortune/WheelOfFortune.html"> WheelOfFortune.html </a><br/>
 │　　│</br>
+│　　├──7-piece-puzzle<br/>
+│　　│　　│</br>
+│　　│　　├──<a href="#program/7-piece-puzzle/Readme and solution.md"> Readme and solution </a><br/>
+│　　│　　│</br>
+│　　│　　└──<a href="program/7-piece-puzzle/puzzle.html"> puzzle.html </a><br/>
+│　　│</br>
 │　　└──<a href="program/counter.html"> counter.html </a><br/>
 </span>
 │</br>
