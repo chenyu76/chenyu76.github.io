@@ -1,6 +1,108 @@
 '''
-<h1> 文档索引 </h1>
+<h2> 文档索引 </h2>
 
+<p style="line-height:100%"></br>│</br>
+│</br>
+├──<a href="./index.html"> index.html </a><br/>
+│</br>
+├──<a href="#./README.md"> README </a><br/>
+│</br>
+├──<a href="#./script.js"> script </a><br/>
+│</br>
+├──测试页<br/>
+│　　│</br>
+│　　└──<a href="#测试页/equationtest.md"> equationtest </a><br/>
+│</br>
+├──<a href="#./About.md"> About </a><br/>
+│</br>
+├──摘抄<br/>
+│　　│</br>
+│　　├──<a href="#摘抄/琐事.md"> 琐事 </a><br/>
+│　　│</br>
+│　　├──<a href="#摘抄/最伟大的科幻小说.md"> 最伟大的科幻小说 </a><br/>
+│　　│</br>
+│　　├──<a href="#摘抄/日暮.md"> 日暮 </a><br/>
+│　　│</br>
+│　　├──<a href="#摘抄/四千三百年.md"> 四千三百年 </a><br/>
+│　　│</br>
+│　　├──<a href="#摘抄/Had I not seen the Sun.md"> Had I not seen the Sun </a><br/>
+│　　│</br>
+│　　├──<a href="#摘抄/《热风》随感录四十一.md"> 《热风》随感录四十一 </a><br/>
+│　　│</br>
+│　　├──<a href="#摘抄/C99 doesn't need function bodies, or 'VLAs are Turing complete’.md"> C99 doesn't need function bodies, or 'VLAs are Turing complete’ </a><br/>
+　　　<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a></br><span class="hiddenContent">
+│　　│</br>
+│　　├──<a href="#摘抄/软件幻灭.md"> 软件幻灭 </a><br/>
+│　　│</br>
+│　　├──<a href="#摘抄/不要抛弃学问.md"> 不要抛弃学问 </a><br/>
+│　　│</br>
+│　　├──<a href="#摘抄/雄辩症.md"> 雄辩症 </a><br/>
+│　　│</br>
+│　　├──<a href="#摘抄/一百岁感言.md"> 一百岁感言 </a><br/>
+│　　│</br>
+│　　├──<a href="#摘抄/给不安的你.md"> 给不安的你 </a><br/>
+│　　│</br>
+│　　├──<a href="#摘抄/想象.md"> 想象 </a><br/>
+│　　│</br>
+│　　├──<a href="#摘抄/脸与法治.md"> 脸与法治 </a><br/>
+│　　│</br>
+│　　├──<a href="#摘抄/我的戒烟.md"> 我的戒烟 </a><br/>
+│　　│</br>
+│　　└──<a href="#摘抄/-随机一篇-.js"> -随机一篇- </a><br/>
+</span>
+│</br>
+├──文章<br/>
+│　　│</br>
+│　　├──<a href="#文章/关于这个网站.md"> 关于这个网站 </a><br/>
+│　　│</br>
+│　　└──<a href="#文章/做了一些学校的LaTeX模板.js"> 做了一些学校的LaTeX模板 </a><br/>
+│</br>
+└──program<br/>
+　　　│</br>
+　　　├──skipping-classes-for-introduction-to-entrepreneurship-for-the-future<br/>
+　　　│　　│</br>
+　　　│　　└──<a href="program/skipping-classes-for-introduction-to-entrepreneurship-for-the-future/index.html"> index.html </a><br/>
+　　　│</br>
+　　　├──TractorBattle3D<br/>
+　　　│　　│</br>
+　　　│　　├──<a href="#program/TractorBattle3D/readme.md"> readme </a><br/>
+　　　│　　│</br>
+　　　│　　└──<a href="program/TractorBattle3D/tb.html"> tb.html </a><br/>
+　　　│</br>
+　　　├──WheelOfFortune<br/>
+　　　│　　│</br>
+　　　│　　├──<a href="program/WheelOfFortune/WheelOfFortune.html"> WheelOfFortune.html </a><br/>
+　　　<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a></br><span class="hiddenContent">
+　　　│　　│</br>
+　　　│　　└──<a href="#program/WheelOfFortune/readme.md"> readme </a><br/>
+　　　│</br>
+　　　├──<a href="program/counter.html"> counter.html </a><br/>
+　　　│</br>
+　　　├──15s-Jan-ken<br/>
+　　　│　　│</br>
+　　　│　　├──<a href="program/15s-Jan-ken/jan-ken.html"> jan-ken.html </a><br/>
+　　　│　　│</br>
+　　　│　　└──<a href="#program/15s-Jan-ken/README.md"> README </a><br/>
+　　　│</br>
+　　　├──colliding_balls<br/>
+　　　│　　│</br>
+　　　│　　└──<a href="program/colliding_balls/cb.html"> cb.html </a><br/>
+　　　│</br>
+　　　└──7-piece-puzzle<br/>
+　　　　　　│</br>
+　　　　　　├──<a href="#program/7-piece-puzzle/Readme and solution.md"> Readme and solution </a><br/>
+　　　　　　│</br>
+　　　　　　└──<a href="program/7-piece-puzzle/puzzle.html"> puzzle.html </a><br/>
+</span></p>
+
+<h2> 推荐阅读 </h2>
+<ul>
+<li><a href=#./program/7-piece-puzzle/Readme and solution.md>一个拼图游戏</a> <small>(09 September 2024)</small> </li>
+<li><a href=#./program/TractorBattle3D/readme.md>生成障碍阻碍对手的多人本地游戏</a> <small>(August 2024)</small> </li>
+<li><a href=#./摘抄/随机一篇.js>看看随机一篇摘抄</a> <small>(----)</small> </li>
+<li><a href=#./文章/做了一些学校的LaTeX模板.js>做了一些学校的LaTeX模板</a> <small>(August 2024)</small> </li>
+<li><a href=#./文章/关于这个网站.md>关于这个网站</a> <small>(20 June 2024)</small> </li>
+</ul>
 <!--'''
 # 执行此python文件以更新上面的目录
 import os
@@ -56,7 +158,7 @@ def folder_tree(path, depth = 0, startpath = None, line_d = 0):
                 table.append(style + item + "<br/>")
                 # 太长了就插入显示全部按钮
                 if len(t) > 10:
-                    t.insert(7, s + "│　　" + s + '''<a href="javascript:void(0);" style="font-size: 70%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a></br><span class="hiddenContent">''')
+                    t.insert(7, s + ("│　　" if line_d & 1 else "　　　" ) + s + '''<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a></br><span class="hiddenContent">''')
                     t.append("</span>")
                 table+=t
         # 这是一个文件，判断是否显示
@@ -64,33 +166,31 @@ def folder_tree(path, depth = 0, startpath = None, line_d = 0):
             item_to_button()
     return table
 
-# 未使用，修改时间是否准确？
-def find_recent_markdown_files(num_files = 5, current_dir = os.path.dirname(os.path.abspath(__file__))):
-    
-    # 搜索所有的Markdown文件（非隐藏文件，非隐藏目录）
-    markdown_files = []
-    for root, dirs, files in os.walk(current_dir):
-        # 排除隐藏目录
-        dirs = [d for d in dirs if not d.startswith('.')]
-        # 获取非隐藏的Markdown文件
-        for file in files:
-            if file.endswith('.md') and not file.startswith('.'):
-                markdown_files.append(os.path.join(root, file))
-    
-    # 获取文件的修改时间并排序
-    markdown_files.sort(key=lambda x: os.path.getmtime(x), reverse=True)
-    
-    recent_files_with_dates = []
-    for file in markdown_files[:num_files]:
-        mod_time = os.path.getmtime(file)
-        mod_date = datetime.fromtimestamp(mod_time).strftime('%Y-%m-%d')
-        # 诶这里为什么有个 .rstrip 应该可以删掉？
-        relative_path = os.path.relpath(file, current_dir).rstrip(".md")
-        recent_files_with_dates.append((relative_path, mod_date))
-    
-    return recent_files_with_dates
+def generate_recommand():
+    recommend = [
+        {"date": 20240909, "link": "./program/7-piece-puzzle/Readme and solution.md", "info": "一个拼图游戏"},
+        {"date": 202408, "link": "./program/TractorBattle3D/readme.md", "info": "生成障碍阻碍对手的多人本地游戏"},
+        {"date": 0, "link": "./摘抄/随机一篇.js", "info": "看看随机一篇摘抄"},
+        {"date": 202408, "link": "./文章/做了一些学校的LaTeX模板.js"},
+        {"date": 20240620, "link": "./文章/关于这个网站.md"},
+    ]
+
+    list = []
+    for i in recommend:
+        if i["date"] > 10000000:
+            i["date"] = datetime.strptime(str(i["date"]), "%Y%m%d").strftime("%d %B %Y")
+        elif i["date"] > 100000:
+            i["date"] = datetime.strptime(str(i["date"]), "%Y%m").strftime("%B %Y")
+        elif i["date"] > 100000 :
+            i["date"] = datetime.strptime(str(i["date"]), "%m%d").strftime("%d %B")
+        else:
+            i["date"] = "----"
+        list.append("<li>" + f"<a href=#{i["link"]}>" + (i["link"].split(".")[-2].split("/")[-1] if "info" not in i.keys() else i["info"]) + "</a> <small>(" + i["date"] + ")</small> </li>")
+
+    return "<ul>\n" + "\n".join(list) + "\n</ul>"
 
 
+# 生成 “随机一篇” 的可用文章
 def random_article_js_g(path, dir_path):
     # 读取原始文件内容
     with open(path, 'r', encoding='utf-8') as file:
@@ -119,6 +219,8 @@ def random_article_js_g(path, dir_path):
 def rewrite_self():
     # 树
     t = '\n<p style="line-height:100%"></br>│</br>\n' + "\n".join(folder_tree(os.path.dirname(os.path.abspath(__file__)))) + "</p>\n"
+    # 推荐
+    r = generate_recommand()
     # 读取原始文件内容
     with open(__file__, 'r', encoding='utf-8') as file:
         content = file.read()
@@ -129,7 +231,7 @@ def rewrite_self():
     end_idx = content.find(end_tag)
     # 写回修改后的内容到文件
     with open(__file__, 'w', encoding='utf-8') as file:
-        file.write(content[:start_idx] + "\n<h1> 文档索引 </h1>\n" + t + content[end_idx:])
+        file.write(content[:start_idx] + "\n<h2> 文档索引 </h2>\n" + t + "\n<h2> 推荐阅读 </h2>\n" + r + "\n" + content[end_idx:])
 
 
 if __name__ == "__main__":
