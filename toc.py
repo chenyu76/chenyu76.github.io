@@ -28,7 +28,7 @@
 │　　├──<a href="#摘抄/软件幻灭.md"> 软件幻灭 </a><br/>
 │　　│</br>
 │　　├──<a href="#摘抄/一百岁感言.md"> 一百岁感言 </a><br/>
-　　　<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a></br><span class="hiddenContent">
+│　　<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a></br><span class="hiddenContent">
 │　　│</br>
 │　　├──<a href="#摘抄/我的戒烟.md"> 我的戒烟 </a><br/>
 │　　│</br>
@@ -64,7 +64,7 @@
 │　　│　　├──<a href="program/TractorBattle3D/tb.html"> tb.html </a><br/>
 │　　│　　│</br>
 │　　│　　└──<a href="#program/TractorBattle3D/readme.md"> readme </a><br/>
-　　　<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a></br><span class="hiddenContent">
+│　　<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a></br><span class="hiddenContent">
 │　　│</br>
 │　　├──15s-Jan-ken<br/>
 │　　│　　│</br>
@@ -95,13 +95,13 @@
 │</br>
 └──<a href="#./README.md"> README </a><br/></p>
 
-<h2> 推荐阅读 </h2>
+<h2> 推荐内容 </h2>
 <ul>
-<li><a href=#./program/7-piece-puzzle/Readme and solution.md>一个拼图游戏</a> <small>(09 September 2024)</small> </li>
-<li><a href=#./program/TractorBattle3D/readme.md>生成障碍阻碍对手的多人本地游戏</a> <small>(August 2024)</small> </li>
-<li><a href=#./摘抄/随机一篇.js>看看随机一篇摘抄</a> <small>(----)</small> </li>
-<li><a href=#./文章/做了一些学校的LaTeX模板.js>做了一些学校的LaTeX模板</a> <small>(August 2024)</small> </li>
-<li><a href=#./文章/关于这个网站.md>关于这个网站</a> <small>(20 June 2024)</small> </li>
+<li><a href="#./program/7-piece-puzzle/Readme and solution.md">一个拼图游戏</a> <small>(09 September 2024)</small> </li>
+<li><a href="#./program/TractorBattle3D/readme.md">生成障碍阻碍对手的多人本地游戏</a> <small>(August 2024)</small> </li>
+<li><a href="#./摘抄/随机一篇.js">看看随机一篇摘抄</a> <small>(----)</small> </li>
+<li><a href="#./文章/做了一些学校的LaTeX模板.js">做了一些学校的LaTeX模板</a> <small>(August 2024)</small> </li>
+<li><a href="#./文章/关于这个网站.md">关于这个网站</a> <small>(20 June 2024)</small> </li>
 </ul>
 <!--'''
 # 执行此python文件以更新上面的目录
@@ -147,18 +147,13 @@ def folder_tree(path, depth = 0, startpath = None, line_d = 0):
         if os.path.isdir(os.path.join(path, item)):
             # item 的子项是t
             t = folder_tree(os.path.join(path, item), depth+1, startpath, (0 if is_last else 1<<depth) + line_d)
-            # 有内容才显示，
-            # 如果只有一个内容，简略显示; 未实现
-            # if len(t) == 1:
-            #     print(item)
-            #     items = os.listdir(path)
-            #     print(style + item + "/" + item_to_button(t[0]) if os.path.isfile(t[0]) else t[0])
-            #     table.append(style + item + "/" + item_to_button(t[0]) if os.path.isfile(t[0]) else t[0])
+            # 有内容才显示， 
             if len(t):
                 table.append(style + item + "<br/>")
                 # 太长了就插入显示全部按钮
                 if len(t) > 10:
-                    t.insert(7, s + ("│　　" if line_d & 1 else "　　　" ) + s + '''<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a></br><span class="hiddenContent">''')
+                    # 这里的s是本次递归调用的s,但其实应该插入 下一次递归调用时的s,但目前没有什么大问题先使用临时解决方案
+                    t.insert(7, s + "│　　" + s + '''<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a></br><span class="hiddenContent">''')
                     t.append("</span>")
                 table+=t
         # 这是一个文件，判断是否显示
@@ -185,7 +180,7 @@ def generate_recommand():
             i["date"] = datetime.strptime(str(i["date"]), "%m%d").strftime("%d %B")
         else:
             i["date"] = "----"
-        list.append("<li>" + f"<a href=#{i["link"]}>" + (i["link"].split(".")[-2].split("/")[-1] if "info" not in i.keys() else i["info"]) + "</a> <small>(" + i["date"] + ")</small> </li>")
+        list.append("<li>" + f"<a href=\"#{i["link"]}\">" + (i["link"].split(".")[-2].split("/")[-1] if "info" not in i.keys() else i["info"]) + "</a> <small>(" + i["date"] + ")</small> </li>")
 
     return "<ul>\n" + "\n".join(list) + "\n</ul>"
 
@@ -231,7 +226,7 @@ def rewrite_self():
     end_idx = content.find(end_tag)
     # 写回修改后的内容到文件
     with open(__file__, 'w', encoding='utf-8') as file:
-        file.write(content[:start_idx] + "\n<h2> 文档索引 </h2>\n" + t + "\n<h2> 推荐阅读 </h2>\n" + r + "\n" + content[end_idx:])
+        file.write(content[:start_idx] + "\n<h2> 文档索引 </h2>\n" + t + "\n<h2> 推荐内容 </h2>\n" + r + "\n" + content[end_idx:])
 
 
 if __name__ == "__main__":
