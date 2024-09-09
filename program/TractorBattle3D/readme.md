@@ -7,3 +7,5 @@
 音乐来自Godot的教程
 
 [开始](https://chenyu76.github.io/program/TractorBattle3D/tb.html)
+
+可能我的开始界面需要一些优化（在web上它好卡）
