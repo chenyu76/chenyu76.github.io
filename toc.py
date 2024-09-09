@@ -97,11 +97,11 @@
 
 <h2> 推荐内容 </h2>
 <ul>
-<li><a href="#./program/7-piece-puzzle/Readme and solution.md">一个拼图游戏</a> <small>(09 September 2024)</small> </li>
-<li><a href="#./program/TractorBattle3D/readme.md">生成障碍阻碍对手的多人本地游戏</a> <small>(August 2024)</small> </li>
-<li><a href="#./摘抄/-随机一篇-.js">看看随机一篇摘抄</a> <small>(----)</small> </li>
-<li><a href="#./文章/做了一些学校的LaTeX模板.js">做了一些学校的LaTeX模板</a> <small>(August 2024)</small> </li>
-<li><a href="#./文章/关于这个网站.md">关于这个网站</a> <small>(20 June 2024)</small> </li>
+<li><a href="#program/7-piece-puzzle/Readme and solution.md">一个拼图游戏</a> <small>(09 September 2024)</small> </li>
+<li><a href="#program/TractorBattle3D/readme.md">生成障碍阻碍对手的多人本地游戏</a> <small>(August 2024)</small> </li>
+<li><a href="#摘抄/-随机一篇-.js">看看随机一篇摘抄</a> <small>(----)</small> </li>
+<li><a href="#文章/做了一些学校的LaTeX模板.js">做了一些学校的LaTeX模板</a> <small>(August 2024)</small> </li>
+<li><a href="#文章/关于这个网站.md">关于这个网站</a> <small>(20 June 2024)</small> </li>
 </ul>
 <!--'''
 # 执行此python文件以更新上面的目录
@@ -163,11 +163,11 @@ def folder_tree(path, depth = 0, startpath = None, line_d = 0):
 
 def generate_recommand():
     recommend = [
-        {"date": 20240909, "link": "./program/7-piece-puzzle/Readme and solution.md", "info": "一个拼图游戏"},
-        {"date": 202408, "link": "./program/TractorBattle3D/readme.md", "info": "生成障碍阻碍对手的多人本地游戏"},
-        {"date": 0, "link": "./摘抄/-随机一篇-.js", "info": "看看随机一篇摘抄"},
-        {"date": 202408, "link": "./文章/做了一些学校的LaTeX模板.js"},
-        {"date": 20240620, "link": "./文章/关于这个网站.md"},
+        {"date": 20240909, "link": "program/7-piece-puzzle/Readme and solution.md", "info": "一个拼图游戏"},
+        {"date": 202408, "link": "program/TractorBattle3D/readme.md", "info": "生成障碍阻碍对手的多人本地游戏"},
+        {"date": 0, "link": "摘抄/-随机一篇-.js", "info": "看看随机一篇摘抄"},
+        {"date": 202408, "link": "文章/做了一些学校的LaTeX模板.js"},
+        {"date": 20240620, "link": "文章/关于这个网站.md"},
     ]
 
     list = []
