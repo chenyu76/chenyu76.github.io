@@ -173,6 +173,15 @@ html {
 
 
 .hiddenContent {
-    display: none;
     /* 初始隐藏内容 */
+    opacity: 0;
+    line-height: 0%;
+    display: none;
+    transition: line-height 0.5s ease, opacity 0.2s ease;
+    /* 过渡动画 */
+}
+
+.hiddenContent.show {
+    opacity: 1;
+    line-height: 100%;
 }
