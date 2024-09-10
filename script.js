@@ -173,7 +173,7 @@ function toggleNextNextVis(self) {
         content.classList.remove('show');
         setTimeout(function () {
             content.style.display = 'none'; // 在动画结束后设置 display: none
-        }, 510);
+        }, 310);
         self.textContent = '显示全部';
     }
 }

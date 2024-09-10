@@ -177,7 +177,7 @@ html {
     opacity: 0;
     line-height: 0%;
     display: none;
-    transition: line-height 0.5s ease, opacity 0.2s ease;
+    transition: line-height 0.3s ease, opacity 0.2s ease;
     /* 过渡动画 */
 }
 
