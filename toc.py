@@ -5,6 +5,7 @@
 # 执行此python文件以更新上面的目录
 import os
 from datetime import datetime
+import recommend
 
 clickable_extension = [".md", ".txt", ".tex", ".html", ".js"] # 菜单中可点击的文件后缀
 article_extension = [".md", ".js"] # 视为文章的文件后缀
@@ -59,15 +60,7 @@ def folder_tree(path, depth = 0, startpath = None, line_d = 0):
             item_to_button()
     return table
 
-def generate_recommand():
-    recommend = [
-        {"date": 20240909, "link": "program/7-piece-puzzle/Readme and solution.md", "info": "一个拼图游戏"},
-        {"date": 202408, "link": "program/TractorBattle3D/readme.md", "info": "生成障碍阻碍对手的多人本地游戏"},
-        {"date": 0, "link": "摘抄/-随机一篇-.js", "info": "看看随机一篇摘抄"},
-        {"date": 202408, "link": "文章/做了一些学校的LaTeX模板.js"},
-        {"date": 20240620, "link": "文章/关于这个网站.md"},
-    ]
-
+def generate_recommand(recommend):
     list = []
     for i in recommend:
         if i["date"] > 10000000:
@@ -111,9 +104,9 @@ def random_article_js_g(path, dir_path):
 #r = '<p style="line-height:200%"></br>\n' + '</br>\n'.join([f'{i[1]} <a href="#{i[0]}"> {i[0]} </a>' for i in find_recent_markdown_files()]) + "</p>\n"
 def rewrite_self():
     # 树
-    t = '\n<p style="line-height:100%"></br>│</br>\n' + "\n".join(folder_tree(os.path.dirname(os.path.abspath(__file__)))) + "</p>\n"
+    t = '\n<p style="text-indent: 0;line-height:100%">/root</br>\n' + "\n".join(folder_tree(os.path.dirname(os.path.abspath(__file__)))) + "</p>\n"
     # 推荐
-    r = generate_recommand()
+    r = generate_recommand(recommend.recommend)
     # 读取原始文件内容
     with open(__file__, 'r', encoding='utf-8') as file:
         content = file.read()

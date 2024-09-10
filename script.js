@@ -160,12 +160,20 @@ function scrollToTop() {
 
 function toggleNextNextVis(self) {
     var content = self.nextElementSibling.nextElementSibling;
-    var style = window.getComputedStyle(content);
-    if (style.display === 'none') {
-        content.style.display = 'inline';
+
+    if (!content.classList.contains('show')) {
+        // 开始显示内容，添加类名 'show' 以触发动画
+        content.style.display = 'inline-block';
+        setTimeout(function () {
+            content.classList.add('show');
+        }, 10);
         self.textContent = '显示更少';
     } else {
-        content.style.display = 'none';
+        // 删除类名 'show' 并设置过渡动画
+        content.classList.remove('show');
+        setTimeout(function () {
+            content.style.display = 'none'; // 在动画结束后设置 display: none
+        }, 510);
         self.textContent = '显示全部';
     }
 }
