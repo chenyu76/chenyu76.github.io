@@ -94,7 +94,10 @@ function parseFile(file) {
 
 
 function loadText(fileContent) {
-    document.getElementById('heading').innerHTML = "<h1>" + decodeURIComponent(fileContent.file).split(".")[-2] + "</h1>";
+    document.getElementById('heading').innerHTML = "<h1>" + (str => {
+        let r = str.split(".");
+        return r[r.length - 2];
+    })(decodeURIComponent(fileContent.file)) + "</h1>";
     //document.getElementById('heading').innerHTML = fileContent.firstLine != null ? "<h1>" + fileContent.firstLine + "</h1>" : "";
     if (fileContent.content !== undefined)
         document.getElementById('content').innerHTML = fileContent.content;
