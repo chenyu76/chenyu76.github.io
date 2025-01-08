@@ -1,5 +1,5 @@
 function the_script() {
-    return "This is the JavaScript of the website. </br>See raw file at <a href=\"script.js\"> script.js </a>";
+    return "This is the JavaScript file of this website. </br>See raw file at <a href=\"script.js\"> script.js </a>";
 }
 
 function parseFile(file) {
@@ -94,14 +94,41 @@ function parseFile(file) {
 
 
 function loadText(fileContent) {
+    // 标题显示
     document.getElementById('heading').innerHTML = "<h1>" + (str => {
         let r = str.split(".");
         return r[r.length - 2];
     })(decodeURIComponent(fileContent.file)) + "</h1>";
-    //document.getElementById('heading').innerHTML = fileContent.firstLine != null ? "<h1>" + fileContent.firstLine + "</h1>" : "";
+    document.getElementById('heading').innerHTML = (text => {
+        // 先找到最后一个斜杠的位置
+        const lastSlashIndex = text.lastIndexOf('/');
+        const lastDotIndex = text.lastIndexOf('.');
+
+        if (lastDotIndex != -1) {
+            text = text.slice(0, lastDotIndex);
+        }
+
+        // 如果没有斜杠，返回原文本
+        if (lastSlashIndex === -1) {
+            return `<h1>${text}</h1>`;
+        }
+
+        // 获取最后一个斜杠之后的文本，并用 <h1> 包裹
+        const lastPart = text.slice(lastSlashIndex + 1);
+        const wrappedLastPart = `<h1>${lastPart}</h1>`;
+
+        // 获取最后一个斜杠之前的文本，并用 <h5> 和 <br> 包裹
+        const firstPart = text.slice(0, lastSlashIndex);
+        const wrappedFirstPart = `<h4>/${firstPart}/</h4>`;
+
+        // 返回拼接的结果
+        return wrappedFirstPart + wrappedLastPart;
+    })(decodeURIComponent(fileContent.file));
+    // 内容
     if (fileContent.content !== undefined)
         document.getElementById('content').innerHTML = fileContent.content;
     document.title = fileContent.firstLine;
+    // 脚注
     document.getElementById('footnote').innerHTML = (fileContent.footnote != null ? fileContent.footnote + "\n</br>" : "")
         + (fileContent.lastModified != null ? "本站最后提交于：" + fileContent.lastModified : "");
 }
