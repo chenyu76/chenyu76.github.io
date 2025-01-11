@@ -30,7 +30,7 @@ function parseFile(file) {
                     // 提取最后一行
                     const lastLine = str.substring(lastIndex + 1).trim();
                     // 检查最后一行的长度是否是日期
-                    if (lastLine.length < 25
+                    if (lastLine.length < 50
                         && ((lastLine.includes('月') && lastLine.includes('日'))
                             || ((lastLine.match(/\//g) || []).length === 2))) {
                         return [firstLine, str.substring(0, lastIndex).trim(), lastLine];
@@ -61,7 +61,8 @@ function parseFile(file) {
                         // 返回处理后的HTML字符串
                         return doc.body.innerHTML;
                     })(extension === 'md' ?
-                        marked.parse(content[1]) :
+                        marked.parse(content[1]) // 调用marked库处理 markdown 文件
+                        :
                         (extension === "js" ? (() => {
                             var fName = content[0].split(" ")[1].split("(")[0];
                             if (eval("typeof " + fName + " !== \"function\"")) {
