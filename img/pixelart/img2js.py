@@ -54,11 +54,11 @@ def compress_image_to_js(image_path):
         compressed_matrix.append(row)
 
     # 将颜色列表和压缩矩阵转换为JavaScript格式
-    js_output = f"const colorList = {color_list};\n\n"
-    js_output += "const imgMatrix= [\n"
+    js_output = f"const colorList = {str(color_list).replace(" ", "")};\n"
+    js_output += "const imgMatrix= ["
     for row in compressed_matrix:
-        js_output += str(row).replace(" ", "") + ",\n"
-    js_output = js_output.rstrip(",\n") + "\n];\n\n"
+        js_output += str(row).replace(" ", "") + ","
+    js_output = js_output.rstrip(",") + "];"
     # js_output += "export { colorList, compressedMatrix };"
 
     return js_output
@@ -78,4 +78,3 @@ output_js_path = "imgMatrix.js"
 with open(output_js_path, "w", encoding="utf-8") as f:
     f.write(js_output)
 
-print(f"压缩后的颜色数据已保存到 {output_js_path}")
