@@ -1,54 +1,87 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh_cn">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>chenyu76的主页</title>
     <!-- 引入 marked 库 -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/marked@13.0.0/marked.min.js"></script> -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdn.jsdelivr.net/npm/marked@13.0.0/lib/marked.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked-katex-extension@5.0.2/lib/index.umd.js"></script>
     <script>
-        // 初始化marked
-        marked.use(markedKatex({
-            throwOnError: false, // 当KaTeX解析出错时不抛出错误
-            //displayMode: true, // 全部以显示模式渲染
-        }));
+      // 初始化marked
+      marked.use(
+        markedKatex({
+          throwOnError: false, // 当KaTeX解析出错时不抛出错误
+          //displayMode: true, // 全部以显示模式渲染
+        }),
+      );
     </script>
 
     <!-- 引用 Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
     <!-- css样式 -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
     <!-- 图标 -->
-    <link rel="icon" href="favicon.png" type="image/png">
-</head>
+    <link rel="icon" href="favicon.png" type="image/png" />
 
-<body>
+    <!-- 背景css -->
+    <link rel="stylesheet" href="./img/pixelart/styles.css" />
+  </head>
+
+  <body>
+    <!-- 背景js -->
+    <div id="pixel-art-background"></div>
+    <div id="pixel-art-foreground"></div>
+    <script src="./img/pixelart/imgMatrix.js"></script>
+    <script src="./img/pixelart/sky_element.js"></script>
+    <script src="./img/pixelart/script.js"></script>
+
     <div id="spacer"></div>
     <div id="top-buttons-wrapper">
-        <div class="top-buttons">
-            <a href="#toc.py" title="文档索引" class="fade-in"><i class="fa-solid fa-bars"></i></a>
-            <a href="#README" title="返回主页" class="fade-in"><i class="fa-solid fa-house"></i></a>
-            <a href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub" class="fade-in"><i
-                    class="fa-brands fa-github"></i></a>
-            <a href="#About" title="关于" class="fade-in"><i class="fa-solid fa-info"></i></a>
-        </div>
+      <div class="top-buttons">
+        <a href="#toc.py" title="文档索引" class="fade-in"
+          ><i class="fa-solid fa-bars"></i
+        ></a>
+        <a href="#README" title="返回主页" class="fade-in"
+          ><i class="fa-solid fa-house"></i
+        ></a>
+        <a
+          href="https://github.com/chenyu76"
+          target="_blank"
+          title="跳转到 GitHub"
+          class="fade-in"
+          ><i class="fa-brands fa-github"></i
+        ></a>
+        <a href="#About" title="关于" class="fade-in"
+          ><i class="fa-solid fa-info"></i
+        ></a>
+      </div>
     </div>
     <div id="anime-spacer"></div>
     <!-- <hr id="dividing-line" width=38% /> -->
     <div id="heading"></div>
     <div id="content-wrapper">
-        <div id="content"></div>
-        <div id="footnote"></div>
+      <div id="content"></div>
+      <div id="footnote"></div>
     </div>
     <div class="bottom-button">
-        <button onclick="scrollToTop()" title="滚动到顶部"><i class="fa-solid fa-arrow-up"></i></button>
+      <button onclick="scrollToTop()" title="滚动到顶部">
+        <i class="fa-solid fa-arrow-up"></i>
+      </button>
     </div>
     <script src="script.js"></script>
-</body>
-
+  </body>
 </html>
