@@ -2,13 +2,13 @@
 body,
 html {
 
-    background-image: url(./img/dominik-schroder-FIKD9t5_5zQ-unsplash.jpg);
+    /* background-image: url(./img/dominik-schroder-FIKD9t5_5zQ-unsplash.jpg); */
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
 
-    background-color: #f0f0f0;
+    /* background-color: #f0f0f0; */
     /* 淡灰色背景 */
     margin: 0;
     padding: 0;
