@@ -1,12 +1,8 @@
-// 获取背景和前景容器
-const background = document.getElementById("pixel-art-background");
-const foreground = document.getElementById("pixel-art-foreground");
-
 // 定义常量
 const GRID_HEIGHT = 180; // 网格高度（像素单位）
 const RECT_WIDTH_MULTIPLIER = 2; // 矩形宽度倍数
 
-const pixelSize = Math.ceil(calculatePixelSize());
+var pixelSize;
 var currentHour;
 var isNight = false;
 
@@ -161,15 +157,15 @@ function colorMultiply(c1, c2) {
 }
 
 // 计算网格宽度 x
-function calculateGridWidth() {
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
+function calculateGridWidth(h = window.innerHeight, w = window.innerWidth) {
+  const screenWidth = w;
+  const screenHeight = h;
   return Math.ceil((GRID_HEIGHT / screenHeight) * screenWidth);
 }
 
 // 计算像素单位大小
-function calculatePixelSize() {
-  const screenHeight = window.innerHeight;
+function calculatePixelSize(h = window.innerHeight) {
+  const screenHeight = h;
   return screenHeight / GRID_HEIGHT; // 每个像素单位的大小
 }
 
@@ -263,15 +259,23 @@ function createPixelMatrix(startX, startY, matrix) {
 }
 
 // 初始化
-function init(time = getDecimalHour()) {
+function imgInit(h = window.innerHeight, time = getDecimalHour()) {
+  // 获取背景和前景容器
+  const background = document.getElementById("pixel-art-background");
+  const foreground = document.getElementById("pixel-art-foreground");
+
   currentHour = time;
+  // 像素大小
+  pixelSize = Math.ceil(calculatePixelSize(h));
 
   // 横向像素宽度
-  const x = calculateGridWidth();
+  const x = calculateGridWidth(h);
   // 清空背景容器
   clearContainer(background);
   // 清空前景容器
   clearContainer(foreground);
+  background.style.height = `${h}px`;
+  foreground.style.height = `${h}px`;
 
   // 计算三个背景颜色
   bgcolors = skyColorDict.map((color) =>
@@ -282,9 +286,9 @@ function init(time = getDecimalHour()) {
 
   // 填充三个大背景矩形
   const rect = [
-    createRectangle(2 * x, 100, bgcolors[0], 0),
-    createRectangle(2 * x, 100, bgcolors[1], 90),
-    createRectangle(2 * x, 100, bgcolors[2], 150),
+    createRectangle(x, 100, bgcolors[0], 0),
+    createRectangle(x, 100, bgcolors[1], 90),
+    createRectangle(x, 100, bgcolors[2], 150),
   ];
   rect.forEach((element) => {
     background.appendChild(element);
@@ -307,37 +311,37 @@ function init(time = getDecimalHour()) {
   // 如果是晚上就生成多个星星
   if (currentHour > 20 || currentHour < 5) {
     for (let i = 0; i < 42; i++) {
-      var s = createStar();
+      let s = createStar();
       foreground.appendChild(s);
     }
     isNight = true;
   } else {
-    // 白天就是星星
+    // 白天就是云
     for (let i = 0; i < Math.floor(Math.random() * 10) + 3; i++) {
-      generateClouds(
+      let cloud = generateClouds(
         Math.round(Math.random() * x),
         Math.round((Math.random() * GRID_HEIGHT) / 2),
       );
+      foreground.appendChild(cloud);
     }
     // 每 42 秒生成一朵云
     setInterval(() => {
-      generateClouds(
+      let cloud = generateClouds(
         x,
         -CLOUD_CANVAS_SIZE[1] + Math.round((Math.random() * GRID_HEIGHT) / 3),
       );
+      foreground.appendChild(cloud);
     }, 42000);
     isNight = false;
   }
 
   // 把天子放出来 (原图高96)
-  var h = Math.ceil(window.innerHeight / pixelSize) - 96;
-  const mat = createPixelMatrix(0, h, imgMatrix);
+  const mat = createPixelMatrix(0, Math.ceil(h / pixelSize) - 96, imgMatrix);
   foreground.appendChild(mat);
-
 }
 
 // 监听窗口大小变化
 //window.addEventListener("resize", init);
 
 // 初始化页面
-init();
+// imgInit();

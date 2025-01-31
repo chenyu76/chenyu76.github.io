@@ -187,17 +187,6 @@ window.addEventListener("hashchange", async () => {
 
 // 初次加载时调用
 window.addEventListener("load", async () => {
-  // 来自背景的是否是夜晚
-  if (isNight) {
-    let div = document.getElementById("top-buttons-wrapper");
-    let children = div.querySelectorAll("*"); // 获取 div 内所有子元素
-    children.forEach((element) => {
-      element.style.color = "white";
-    });
-    let hdiv = document.getElementById("heading");
-    hdiv.style.color = "white";
-  }
-
   loadText(await parseFile(getHashParam()));
   const spacer = document.getElementById("anime-spacer");
   spacer.classList.add("shrinked");
