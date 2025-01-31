@@ -73,7 +73,6 @@ const CLOUD_CANVAS_SIZE = [80, 40];
 function generateClouds(init_x, init_y) {
   const cloud = createCloud();
   cloud.style.zoom = pixelSize;
-  foreground.appendChild(cloud);
 
   // 随机起始高度
   cloud.style.position = "absolute";
@@ -92,6 +91,7 @@ function generateClouds(init_x, init_y) {
     },
     randomNormal(3000, 600),
   ); // 每 ? 秒移动一次
+  return cloud;
 }
 
 function randomNormal(mean, stdDev) {
