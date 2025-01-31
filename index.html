@@ -57,27 +57,6 @@
     <script src="./img/pixelart/imgMatrix.js"></script>
     <script src="./img/pixelart/sky_element.js"></script>
     <script src="./img/pixelart/script.js"></script>
-    <script>
-      if (window.innerHeight > window.innerWidth) {
-        imgInit(0.382 * window.innerHeight);
-        let t = document.getElementById("title-container");
-        t.style.height = "38.2vh";
-        let s = document.getElementById("anime-spacer");
-        s.style.height = "63vh";
-      } else {
-        imgInit(0.618 * window.innerHeight);
-        // 来自背景的是否是夜晚,颜色切换
-        if (isNight) {
-          let div = document.getElementById("top-buttons-wrapper");
-          let children = div.querySelectorAll("*"); // 获取 div 内所有子元素
-          children.forEach((element) => {
-            element.style.color = "white";
-          });
-          let hdiv = document.getElementById("heading");
-          hdiv.style.color = "white";
-        }
-      }
-    </script>
 
     <div id="title-container">
       <div id="spacer"></div>
@@ -117,5 +96,28 @@
       </div>
     </div>
     <script src="script.js"></script>
+
+    <script>
+      // 是否是竖屏模式
+      if (window.innerHeight > window.innerWidth) {
+        imgInit(0.382 * window.innerHeight);
+        let t = document.getElementById("title-container");
+        t.style.height = "38.2vh";
+        let s = document.getElementById("anime-spacer");
+        s.style.height = "63vh";
+      } else {
+        imgInit(0.618 * window.innerHeight);
+      }
+      // 来自背景的是否是夜晚,颜色切换
+      if (isNight) {
+        let div = document.getElementById("top-buttons-wrapper");
+        let children = div.querySelectorAll("*"); // 获取 div 内所有子元素
+        children.forEach((element) => {
+          element.style.color = "white";
+        });
+        let hdiv = document.getElementById("heading");
+        hdiv.style.color = "white";
+      }
+    </script>
   </body>
 </html>

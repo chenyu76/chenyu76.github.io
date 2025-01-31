@@ -217,15 +217,12 @@ function createCloud() {
               : image[i] < 0.9
                 ? 3
                 : 4;
-      let c = [0, 0, 0];
-      if (intensity % 2 === 0) {
-        c = cloudColor[intensity];
-      } else {
-        c =
-          width % 2 === 1
+      let c =
+        intensity % 2 === 0
+          ? cloudColor[intensity]
+          : width % 2 === 1
             ? cloudColor[intensity + (i % 2) * 2 - 1]
             : cloudColor[intensity + ((i + Math.ceil(i / width)) % 2) * 2 - 1];
-      }
       imgData.data[i * 4] = c[0]; // R
       imgData.data[i * 4 + 1] = c[1]; // G
       imgData.data[i * 4 + 2] = c[2]; // B
