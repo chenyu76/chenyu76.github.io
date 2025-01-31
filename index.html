@@ -66,17 +66,16 @@
         s.style.height = "63vh";
       } else {
         imgInit(0.618 * window.innerHeight);
-      }
-
-      // 来自背景的是否是夜晚,颜色切换
-      if (isNight) {
-        let div = document.getElementById("top-buttons-wrapper");
-        let children = div.querySelectorAll("*"); // 获取 div 内所有子元素
-        children.forEach((element) => {
-          element.style.color = "white";
-        });
-        let hdiv = document.getElementById("heading");
-        hdiv.style.color = "white";
+        // 来自背景的是否是夜晚,颜色切换
+        if (isNight) {
+          let div = document.getElementById("top-buttons-wrapper");
+          let children = div.querySelectorAll("*"); // 获取 div 内所有子元素
+          children.forEach((element) => {
+            element.style.color = "white";
+          });
+          let hdiv = document.getElementById("heading");
+          hdiv.style.color = "white";
+        }
       }
     </script>
 
