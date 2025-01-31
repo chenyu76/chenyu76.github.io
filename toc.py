@@ -157,7 +157,7 @@ def rewrite_self():
     with open(__file__, "r", encoding="utf-8") as file:
         content = file.read()
 
-    start_tag = "'''"
+    start_tag = "\"\"\""
     end_tag = "<!--"
     start_idx = content.find(start_tag) + len(start_tag)
     end_idx = content.find(end_tag)
