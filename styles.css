@@ -1,192 +1,213 @@
 /* styles.css */
 body,
 html {
+  /* background-image: url(./img/dominik-schroder-FIKD9t5_5zQ-unsplash.jpg); */
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 
-    /* background-image: url(./img/dominik-schroder-FIKD9t5_5zQ-unsplash.jpg); */
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
+  /* 淡灰色背景 */
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  /* 确保纵向滚动 */
+}
 
-    /* background-color: #f0f0f0; */
-    /* 淡灰色背景 */
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow: auto;
-    /* 确保纵向滚动 */
+html {
+  background-color: #f0f0f0;
 }
 
 #spacer {
-    height: 30vh;
-    /* 高度为浏览器窗口高度的30% */
+  /* height: 61.8vh; */
+  /* 高度为浏览器窗口高度的30% */
+  flex-grow: 1;
+  /* 占据剩余空间 */
+}
+
+#title-container {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  max-width: 800px;
+  height: 61.8vh;
+  margin: 0px auto;
+  /* 居中对齐 */
 }
 
 #anime-spacer {
-    height: 62vh;
-    transition: height 0.5s ease;
-    /* 平滑过渡效果 */
+  height: 42vh;
+  transition: height 0.5s ease;
+  /* 平滑过渡效果 */
 }
 
 #anime-spacer.shrinked {
-    height: 1vh;
-    /* 当扩展时高度为浏览器窗口高度的100% */
+  height: 0.1vh;
+  /* 当扩展时高度为浏览器窗口高度的100% */
+}
+
+#content-wrapper-bg {
+  background-color: #f0f0f0;
+  margin: 0px 0px;
+  width: 100%;
 }
 
 #content-wrapper {
-    background-color: white;
-    /* 白色背景 */
-    width: 80%;
-    /* 默认宽度 */
-    max-width: 800px;
-    padding: 20px;
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-    border-radius: 8px;
-    margin: 20px auto;
-    /* 居中对齐 */
+  background-color: white;
+  /* 白色背景 */
+  width: 80%;
+  /* 默认宽度 */
+  max-width: 800px;
+  padding: 20px;
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+  border-radius: 8px;*/
+  margin: 0px auto;
+  /* 居中对齐 */
 }
 
-#heading,
-#dividing-line {
-    width: 80%;
-    /* 默认宽度 */
-    max-width: 800px;
-    margin: auto;
+#heading {
+  width: 80%;
+  /* 默认宽度 */
+  max-width: 800px;
+  margin: 5px 0px;
 }
 
 #top-buttons-wrapper {
-    width: 80%;
-    /* 默认宽度 */
-    max-width: 800px;
-    padding: 0px;
-    margin: 5px auto;
+  width: 80%;
+  /* 默认宽度 */
+  max-width: 800px;
+  padding: 0px;
+  margin: 5px 0px;
+  /* margin: 5px auto; */
 }
 
 #content {
-    margin: 0;
-    line-height: 1.75;
+  margin: 0;
+  line-height: 1.75;
 }
 
 #content img {
-    width: 80%;
-    height: auto;
-    /* 保持图片的宽高比 */
-    display: block;
-    /* 防止图片右侧多余的空白 */
-    margin: 0 auto;
-    /* 图片居中 */
+  width: 80%;
+  height: auto;
+  /* 保持图片的宽高比 */
+  display: block;
+  /* 防止图片右侧多余的空白 */
+  margin: 0 auto;
+  /* 图片居中 */
 }
 
 #content a {
-    text-decoration: none;
-    /* 去掉下划线 */
-    color: #0056b3;
-    /* 默认颜色 */
+  text-decoration: none;
+  /* 去掉下划线 */
+  color: #0056b3;
+  /* 默认颜色 */
 }
 
 #content a:visited {
-    text-decoration: none;
-    color: #004bb3;
-    /* 点击后颜色 */
+  text-decoration: none;
+  color: #004bb3;
+  /* 点击后颜色 */
 }
 
 #content a:hover {
-    text-decoration: underline;
-    color: #2b92ff;
-    /* 悬停时颜色 */
+  text-decoration: underline;
+  color: #2b92ff;
+  /* 悬停时颜色 */
 }
 
 /* 修改 p 标签的段首空两格 */
 #content p {
-    text-indent: 2em;
-    /* 段首空两格 */
+  text-indent: 2em;
+  /* 段首空两格 */
 }
 
 #footnote {
-    color: gray;
-    /* 设置字体颜色为灰色 */
-    font-size: 0.8em;
-    /* 设置字体大小为普通字体的0.8倍 */
+  color: gray;
+  /* 设置字体颜色为灰色 */
+  font-size: 0.8em;
+  /* 设置字体大小为普通字体的0.8倍 */
 }
 
 .top-buttons {
-    text-align: left;
-    margin: 10px 0;
+  text-align: left;
+  margin: 10px 0;
 }
 
 /* 按钮动画显现效果 */
 .fade-in {
-    opacity: 0;
-    animation: fadeIn 0.5s forwards;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
 }
 
 .fade-in:nth-child(1) {
-    animation-delay: 0.2s;
+  animation-delay: 0.2s;
 }
 
 .fade-in:nth-child(2) {
-    animation-delay: 0.3s;
+  animation-delay: 0.3s;
 }
 
 .fade-in:nth-child(3) {
-    animation-delay: 0.4s;
+  animation-delay: 0.4s;
 }
 
 .fade-in:nth-child(4) {
-    animation-delay: 0.5s;
+  animation-delay: 0.5s;
 }
 
 @keyframes fadeIn {
-    to {
-        opacity: 1;
-    }
+  to {
+    opacity: 1;
+  }
 }
 
 .bottom-button {
-    text-align: center;
-    margin: 10px 0;
+  text-align: center;
+  margin: 10px 0 50px;
 }
 
 .top-buttons a,
 .bottom-button button {
-    margin: 0 5px;
-    padding: 10px;
-    color: #101010;
-    text-decoration: none;
-    background-color: transparent;
-    border: none#0056b3;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 20px;
+  margin: 0 5px;
+  padding: 10px;
+  color: #101010;
+  text-decoration: none;
+  background-color: transparent;
+  border: none#0056b3;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
 }
 
 .top-buttons a:hover,
 .bottom-button button:hover {
-    color: #0056b3;
+  color: #0056b3;
 }
 
 .top-buttons a i,
 .bottom-button button i {
-    pointer-events: none;
+  pointer-events: none;
 }
 
-
 .hiddenContent {
-    /* 初始隐藏内容 */
-    opacity: 0;
-    line-height: 0%;
-    display: none;
-    transition: line-height 0.3s ease, opacity 0.2s ease;
-    /* 过渡动画 */
+  /* 初始隐藏内容 */
+  opacity: 0;
+  line-height: 0%;
+  display: none;
+  transition:
+    line-height 0.3s ease,
+    opacity 0.2s ease;
+  /* 过渡动画 */
 }
 
 .hiddenContent.show {
-    opacity: 1;
-    line-height: 100%;
+  opacity: 1;
+  line-height: 100%;
 }
 
 /* 在标题的路径中使用 */
 h4 {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }

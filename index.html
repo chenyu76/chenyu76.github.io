@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>chenyu76的主页</title>
     <!-- 引入 marked 库 -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/marked@13.0.0/marked.min.js"></script> -->
-    <link
+    <!-- <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css"
       crossorigin="anonymous"
@@ -16,7 +15,15 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/marked@13.0.0/lib/marked.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked-katex-extension@5.0.2/lib/index.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked-katex-extension@5.0.2/lib/index.umd.js"></script> -->
+    <link
+      rel="stylesheet"
+      href="./libs/katex.min.css"
+      crossorigin="anonymous"
+    />
+    <script src="./libs/katex.min.js" crossorigin="anonymous"></script>
+    <script src="./libs/marked.umd.js"></script>
+    <script src="./libs/index.umd.js"></script>
     <script>
       // 初始化marked
       marked.use(
@@ -51,8 +58,7 @@
     <script src="./img/pixelart/sky_element.js"></script>
     <script src="./img/pixelart/script.js"></script>
     <script>
-      //imgInit(0.6 * window.innerHeight);
-      imgInit();
+      imgInit(0.618 * window.innerHeight);
       //const background = document.getElementById("pixel-art-background");
       //const foreground = document.getElementById("pixel-art-foreground");
       //background.style.position = "sticky";
@@ -70,38 +76,42 @@
       }
     </script>
 
-    <div id="spacer"></div>
-    <div id="top-buttons-wrapper">
-      <div class="top-buttons">
-        <a href="#toc.py" title="文档索引" class="fade-in"
-          ><i class="fa-solid fa-bars"></i
-        ></a>
-        <a href="#README" title="返回主页" class="fade-in"
-          ><i class="fa-solid fa-house"></i
-        ></a>
-        <a
-          href="https://github.com/chenyu76"
-          target="_blank"
-          title="跳转到 GitHub"
-          class="fade-in"
-          ><i class="fa-brands fa-github"></i
-        ></a>
-        <a href="#About" title="关于" class="fade-in"
-          ><i class="fa-solid fa-info"></i
-        ></a>
+    <div id="title-container">
+      <div id="spacer"></div>
+      <div id="top-buttons-wrapper">
+        <div class="top-buttons">
+          <a href="#toc.py" title="文档索引" class="fade-in"
+            ><i class="fa-solid fa-bars"></i
+          ></a>
+          <a href="#README" title="返回主页" class="fade-in"
+            ><i class="fa-solid fa-house"></i
+          ></a>
+          <a
+            href="https://github.com/chenyu76"
+            target="_blank"
+            title="跳转到 GitHub"
+            class="fade-in"
+            ><i class="fa-brands fa-github"></i
+          ></a>
+          <a href="#About" title="关于" class="fade-in"
+            ><i class="fa-solid fa-info"></i
+          ></a>
+        </div>
       </div>
+      <!-- <hr id="dividing-line" width=38% /> -->
+      <div id="heading"><h1>README</h1></div>
     </div>
     <div id="anime-spacer"></div>
-    <!-- <hr id="dividing-line" width=38% /> -->
-    <div id="heading"></div>
-    <div id="content-wrapper">
-      <div id="content"></div>
-      <div id="footnote"></div>
-    </div>
-    <div class="bottom-button">
-      <button onclick="scrollToTop()" title="滚动到顶部">
-        <i class="fa-solid fa-arrow-up"></i>
-      </button>
+    <div id="content-wrapper-bg">
+      <div id="content-wrapper">
+        <div id="content"></div>
+        <div id="footnote"></div>
+      </div>
+      <div class="bottom-button">
+        <button onclick="scrollToTop()" title="滚动到顶部">
+          <i class="fa-solid fa-arrow-up"></i>
+        </button>
+      </div>
     </div>
     <script src="script.js"></script>
   </body>
