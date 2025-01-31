@@ -311,7 +311,7 @@ function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   // 如果是晚上就生成多个星星
   if (currentHour > 20 || currentHour < 5) {
     for (let i = 0; i < 42; i++) {
-      let s = createStar();
+      let s = createStar(h);
       foreground.appendChild(s);
     }
     isNight = true;

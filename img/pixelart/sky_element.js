@@ -6,12 +6,12 @@ TODO:
 */
 
 // 返回一个星星 draw a star on foreground
-function createStar() {
+function createStar(h) {
   const star = document.createElement("div");
   star.classList.add("star");
 
   const max_y = GRID_HEIGHT / 2;
-  const max_x = calculateGridWidth();
+  const max_x = calculateGridWidth(h);
 
   // 生成随机位置
   const x = Math.ceil(Math.random() * max_x) * pixelSize;
