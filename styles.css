@@ -21,8 +21,6 @@ html {
 }
 
 #spacer {
-  /* height: 61.8vh; */
-  /* 高度为浏览器窗口高度的30% */
   flex-grow: 1;
   /* 占据剩余空间 */
 }
@@ -32,13 +30,14 @@ html {
   flex-direction: column;
   width: 80%;
   max-width: 800px;
-  height: 61.8vh;
   margin: 0px auto;
   /* 居中对齐 */
+
+  height: 61.8vh;
 }
 
 #anime-spacer {
-  height: 42vh;
+  height: 40vh;
   transition: height 0.5s ease;
   /* 平滑过渡效果 */
 }
