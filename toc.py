@@ -29,7 +29,10 @@ def folder_tree(path, depth=0, startpath=None, line_d=0):
     items = [
         i
         for i in items
-        if not (i.split(".")[-1] == "js" and ("program" in path or "img" in path))
+        if not (
+            i.split(".")[-1] == "js"
+            and ("program" in path or "img" in path or "libs" in path)
+        )
     ]
 
     def item_to_button():
