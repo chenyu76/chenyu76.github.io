@@ -58,11 +58,15 @@
     <script src="./img/pixelart/sky_element.js"></script>
     <script src="./img/pixelart/script.js"></script>
     <script>
-      imgInit(0.618 * window.innerHeight);
-      //const background = document.getElementById("pixel-art-background");
-      //const foreground = document.getElementById("pixel-art-foreground");
-      //background.style.position = "sticky";
-      //foreground.style.position = "sticky";
+      if ((window.innerHeight > window, innerWidth)) {
+        imgInit(0.382 * window.innerHeight);
+        var t = document.getElementById("title-container");
+        t.style.height = "0.382vh";
+        var s = document.getElementById("anime-spacer");
+        t.style.height = "0.63vh";
+      } else {
+        imgInit(0.618 * window.innerHeight);
+      }
 
       // 来自背景的是否是夜晚,颜色切换
       if (isNight) {
