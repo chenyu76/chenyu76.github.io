@@ -90,7 +90,7 @@ function generateClouds(init_x, init_y) {
         cloud.remove(); // 超出屏幕后删除
       }
     },
-    randomNormal(2000, 400),
+    randomNormal(3000, 600),
   ); // 每 ? 秒移动一次
 }
 
