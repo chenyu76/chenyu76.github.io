@@ -62,6 +62,7 @@ const skyColorDict = [
     // 下午
     16: [210, 0.4, 0.85], // 下午：稍微减弱饱和度，偏柔和
     // 黄昏至傍晚
+    17.5: [200, 0.5, 0.87],
     18: [25, 0.7, 0.9], // 黄昏：偏暖橙色调
     20: [280, 0.6, 0.5], // 傍晚转夜：天空逐渐带点紫调
     // 深夜
@@ -76,6 +77,7 @@ const skyColorDict = [
     8: [200, 0.4, 0.75],
     12: [190, 0.25, 1.0],
     16: [200, 0.35, 0.9],
+    17.5: [190, 0.35, 0.9],
     18: [30, 0.6, 0.95],
     20: [280, 0.5, 0.55],
     22: [220, 0.7, 0.15],
@@ -89,6 +91,7 @@ const skyColorDict = [
     8: [190, 0.3, 0.8],
     12: [180, 0.2, 1.0],
     16: [190, 0.25, 0.95],
+    17.5: [190, 0.4, 0.9],
     18: [35, 0.6, 0.9],
     20: [280, 0.4, 0.6],
     22: [220, 0.6, 0.2],
@@ -156,11 +159,9 @@ function colorMultiply(c1, c2) {
   ];
 }
 
-// 计算网格宽度 x
+// 计算网格宽度 x (像素图大小的宽)
 function calculateGridWidth(h = window.innerHeight, w = window.innerWidth) {
-  const screenWidth = w;
-  const screenHeight = h;
-  return Math.ceil((GRID_HEIGHT / screenHeight) * screenWidth);
+  return Math.ceil((GRID_HEIGHT / h) * w);
 }
 
 // 计算像素单位大小
@@ -309,12 +310,18 @@ function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   });
 
   // 如果是晚上就生成多个星星
-  if (currentHour > 20 || currentHour < 5) {
-    for (let i = 0; i < 42; i++) {
-      let s = createStar(h);
-      foreground.appendChild(s);
-    }
+  if (currentHour > 19 || currentHour < 5) {
     isNight = true;
+
+    // 星星
+    let ss = document.createElement("div");
+    ss.style.right = ss.style.top = '0px';
+    ss.style.position = "absolute";
+    for (let i = 0; i < 42; i++) ss.appendChild(createStar(h));
+    foreground.appendChild(ss);
+
+    // 生成流星
+    // foreground.appendChild(generateMeteor(h));
   } else {
     // 白天就是云
     for (let i = 0; i < Math.floor(Math.random() * 10) + 3; i++) {
