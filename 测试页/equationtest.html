@@ -1,0 +1,29 @@
+<!-- child.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Child Page</title>
+    <script>
+        // 获取当前文件的URL
+let currentUrl = window.location.href;
+
+// 去除末尾的 .html
+let baseUrl = currentUrl.replace(/\.html$/, '');
+
+// 加上 .md
+let newUrl = baseUrl + '.md';
+
+// 在URL根处加上 #
+let finalUrl = newUrl.replace(/(https?:\/\/[^\/]+)/, '$1#');
+
+// 跳转到新的路径
+window.location.href = finalUrl;
+
+history.pushState(null, '', currentUrl);
+    </script>
+</head>
+<body>
+    <div id="content"></div>
+</body>
+</html>

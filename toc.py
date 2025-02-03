@@ -15,6 +15,8 @@
 │</br>
 ├──测试页<br/>
 │　　│</br>
+│　　├──<a href="测试页/equationtest.html"> equationtest.html </a><br/>
+│　　│</br>
 │　　└──<a href="#测试页/equationtest.md"> equationtest </a><br/>
 │</br>
 ├──文章<br/>
@@ -40,7 +42,9 @@
 │　　├──<a href="#摘抄/脸与法治.md"> 脸与法治 </a><br/>
 │　　│</br>
 │　　├──<a href="#摘抄/善人.md"> 善人 </a><br/>
-│　　<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a></br><span class="hiddenContent">
+│　　<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">
+显示全部</a></br>
+<span class="hiddenContent">
 │　　│</br>
 │　　├──<a href="#摘抄/给不安的你.md"> 给不安的你 </a><br/>
 │　　│</br>
@@ -63,6 +67,18 @@
 │　　└──<a href="#摘抄/琐事.md"> 琐事 </a><br/>
 </span>
 │</br>
+├──实用小技巧<br/>
+│　　│</br>
+│　　├──Arch Linux<br/>
+│　　│　　│</br>
+│　　│　　├──<a href="#实用小技巧/Arch Linux/Arch_Linux内核丢失时通过chroot重装内核by ChatGPT.md"> Arch_Linux内核丢失时通过chroot重装内核by ChatGPT </a><br/>
+│　　│　　│</br>
+│　　│　　└──<a href="#实用小技巧/Arch Linux/pacman和yay清除缓存.md"> pacman和yay清除缓存 </a><br/>
+│　　│</br>
+│　　└──QNAP<br/>
+│　　　　　│</br>
+│　　　　　└──<a href="#实用小技巧/QNAP/QNAP TS-216 autorun.sh 配置.md"> QNAP TS-216 autorun.sh 配置 </a><br/>
+│</br>
 ├──program<br/>
 │　　│</br>
 │　　├──15s-Jan-ken<br/>
@@ -78,7 +94,9 @@
 │　　│　　├──<a href="#program/TractorBattle3D/readme.md"> readme </a><br/>
 │　　│　　│</br>
 │　　│　　└──<a href="program/TractorBattle3D/tb.html"> tb.html </a><br/>
-│　　<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a></br><span class="hiddenContent">
+│　　<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">
+显示全部</a></br>
+<span class="hiddenContent">
 │　　│</br>
 │　　├──skipping-classes-for-introduction-to-entrepreneurship-for-the-future<br/>
 │　　│　　│</br>
@@ -186,15 +204,17 @@ def folder_tree(path, depth=0, startpath=None, line_d=0):
             # 有内容才显示，
             if len(t):
                 table.append(style + item + "<br/>")
-                # 太长了就插入显示全部按钮
-                if len(t) > 10:
+                # 太长且同时是根节点时就插入显示全部按钮
+                if len(t) > 10 and line_d == 0:
                     # 这里的s是本次递归调用的s,但其实应该插入 下一次递归调用时的s,但目前没有什么大问题先使用临时解决方案
                     t.insert(
                         7,
                         s
                         + "│　　"
                         + s
-                        + """<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a></br><span class="hiddenContent">""",
+                        + """<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">
+显示全部</a></br>
+<span class="hiddenContent">""",
                     )
                     t.append("</span>")
                 table += t

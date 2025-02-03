@@ -28,43 +28,82 @@ function createStar(h) {
   return star;
 }
 
-const METEOR_COLORS_A = [
-  [255, 255, 255, 50],
-  [255, 255, 255, 100],
-  [255, 255, 255, 150],
-  [255, 255, 200, 200],
-  [255, 255, 11, 255],
-];
+const METEOR_LIFE_LEN = 10;
+function METEOR_COLORS_A(index) {
+  return ((c) => `rgba(${c[0]},${c[1]},${c[2]},${c[3]})`)(
+    index >= METEOR_LIFE_LEN - 1
+      ? [255, 255, 11, 1]
+      : [255, 255, 255, (index+1) / 10],
+  );
+}
 
 /*
- * 流星：在指定位置创建一个div,然后开始移动,需要多创建几个才有效果
+ * 流星：在指定位置(pos)创建一个div,然后开始移动,需要多创建几个才有效果
  * direct:是一个二维向量，[向左几格，向下几格]
+ * delay_time : 隔多久移动一次
  * life 还能活多久，归零后移动并复活
  * return: 一个流星方块<div>
  */
-function meteor_part(pos, speed, direct, life) {
-  var mp = document.createElement("div");
+function meteor_part(pos, delay_time, direct, life) {
+  let mp = document.createElement("div");
+  mp.style.width = `${pixelSize}px`;
+  mp.style.height = `${pixelSize}px`;
+  mp.style.position = "absolute";
+  //mp.textContent = `${life}`;
+
+  let d = (direct[0] + direct[1] - 1);
+  let f_c = (l) => Math.floor(l / d) * d; 
+  let f_r = (l) => {
+    let c = f_c(l);
+    return c * direct[0] + (l - c >= direct[0] ? direct[0] : l - c);
+  };
+  let f_t = (l) => {
+    let c = f_c(l);
+    return c * direct[1] + (l - c >= direct[0] ? (direct[1] - (l - c - direct[0])) : 0);
+  };
+  let r = f_r(life);
+  let m_r = f_r(METEOR_LIFE_LEN);
+  let t = f_t(life);
+  let m_t = f_t(METEOR_LIFE_LEN);
   mp.style.width = pixelSize;
   mp.style.height = pixelSize;
-  var [l, u] = meteor_part_pos_calc(METEOR_COLORS_A.length - life);
-  mp.style.top = -1;
-}
-function meteor_part_pos_calc(remain, l = 0, u = 0) {
-  if (remain > pos[0]) {
-    l += pos[0];
-    remain -= pos[0];
-    if (remain > pos[1]) {
-      u += pos[1];
-      remain -= pos[1];
-    } else {
-      u += remain;
-      return [l, u];
+  mp.style.right = `${(r + pos[0]) * pixelSize}px`;
+  mp.style.top = `${(t + pos[1]) * pixelSize}px`;
+  mp.style.backgroundColor = METEOR_COLORS_A(life);
+  let interval = setInterval(() => {
+    life -= 1;
+    if (life < 0) {
+      life = METEOR_LIFE_LEN - 1;
+      mp.style.right = parseFloat(mp.style.right) + m_r * pixelSize + "px";
+      mp.style.top = parseFloat(mp.style.top) + m_t * pixelSize + "px";
+      if (parseFloat(mp.style.top) > window.innerHeight + pixelSize) {
+        clearInterval(interval);
+        mp.remove(); // 超出屏幕后删除
+      }
     }
-  } else {
-    l += remain;
-    return [l, u];
+    mp.style.backgroundColor = METEOR_COLORS_A(life);
+  }, delay_time);
+  return mp;
+}
+function generateMeteor(h) {
+  let m = document.createElement("div");
+  m.style.right = m.style.top = "0px";
+  m.style.position = "absolute";
+  let w = calculateGridWidth(h);
+  let pos = [Math.round(w * Math.random()), -1];
+  // let direct = [1, Math.ceil(Math.random() * 4)];
+  let direct = [1, 1];
+  let time = randomNormal(550, 50);
+  for (let i = 0; i < METEOR_LIFE_LEN; i++) {
+    m.appendChild(meteor_part(pos, time, direct, i));
   }
-  return meteor_part_pos_calc(l, u);
+  let interval = setInterval(() => {
+    if (m.children.length === 0) {
+      clearInterval(interval);
+      m.remove();
+    }
+  }, time * METEOR_LIFE_LEN);
+  return m;
 }
 
 const CLOUD_CANVAS_SIZE = [80, 40];
