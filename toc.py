@@ -74,15 +74,17 @@ def folder_tree(path, depth=0, startpath=None, line_d=0):
             # 有内容才显示，
             if len(t):
                 table.append(style + item + "<br/>")
-                # 太长了就插入显示全部按钮
-                if len(t) > 10:
+                # 太长且同时是根节点时就插入显示全部按钮
+                if len(t) > 10 and line_d == 0:
                     # 这里的s是本次递归调用的s,但其实应该插入 下一次递归调用时的s,但目前没有什么大问题先使用临时解决方案
                     t.insert(
                         7,
                         s
                         + "│　　"
                         + s
-                        + """<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a></br><span class="hiddenContent">""",
+                        + """<a href="javascript:void(0);" style="font-size: 80%;line-height:100%" onclick="toggleNextNextVis(this)">
+显示全部</a></br>
+<span class="hiddenContent">""",
                     )
                     t.append("</span>")
                 table += t
