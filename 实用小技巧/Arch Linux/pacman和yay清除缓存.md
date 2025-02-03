@@ -13,7 +13,7 @@ pacman -Sc
 pacman -Scc
 ```
 
-yay的缓存在~/.cache/yay，清理缓存的方法类似pacman：
+yay的缓存在`~/.cache/yay`，清理缓存的方法类似pacman：
 
 ```
 # 清理未安装软件包
