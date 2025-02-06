@@ -127,6 +127,7 @@
 
 <h2> 推荐内容 </h2>
 <ul>
+<li><a href="#文章/新年新主题.md">蛇年的全新网站样式！动态背景！</a> <small>(06 February 2025)</small> </li>
 <li><a href="#program/7-piece-puzzle/Readme and solution.md">一个拼图游戏</a> <small>(09 September 2024)</small> </li>
 <li><a href="#program/TractorBattle3D/readme.md">生成障碍阻碍对手的多人本地游戏</a> <small>(August 2024)</small> </li>
 <li><a href="#摘抄/-随机一篇-.js">看看随机一篇摘抄</a> <small>(----)</small> </li>
