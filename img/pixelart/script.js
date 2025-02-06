@@ -311,42 +311,48 @@ function imgInit(h = window.innerHeight, time = getDecimalHour()) {
     background.appendChild(element);
   });
 
-  // 如果是晚上就生成多个星星
   if (currentHour > 19 || currentHour < 5) {
     isNight = true;
-
-    // 星星
-    let ss = document.createElement("div");
-    ss.style.right = ss.style.top = "0px";
-    ss.style.position = "absolute";
-    for (let i = 0; i < 42; i++) ss.appendChild(createStar(h));
-    midground.appendChild(ss);
-
-    // 生成流星
-    midground.appendChild(generateMeteor(h));
-    if (is_first_img_init)
-      setInterval(() => {
-        midground.appendChild(generateMeteor(h));
-      }, 7000);
   } else {
-    // 白天就是云
-    for (let i = 0; i < Math.floor(Math.random() * 10) + 3; i++) {
-      let cloud = generateClouds(
-        Math.round(Math.random() * x),
-        Math.round((Math.random() * GRID_HEIGHT) / 2),
-      );
-      midground.appendChild(cloud);
-    }
-    // 每 42 秒生成一朵云
-    if (is_first_img_init)
-      setInterval(() => {
+    isNight = false;
+  }
+
+  if (is_first_img_init) {
+    if (isNight) {
+      // 如果是晚上就生成多个星星
+      // 星星
+      let ss = document.createElement("div");
+      ss.style.right = ss.style.top = "0px";
+      ss.style.position = "absolute";
+      for (let i = 0; i < 42; i++) ss.appendChild(createStar(h));
+      midground.appendChild(ss);
+
+      // 间隔生成流星
+      midground.appendChild(generateMeteor(h));
+      if (is_first_img_init)
+        setInterval(() => {
+          midground.appendChild(generateMeteor(h));
+        }, 7000);
+    } else {
+      // 白天就是云
+      for (let i = 0; i < Math.floor(Math.random() * 10) + 3; i++) {
         let cloud = generateClouds(
-          x + Math.round(Math.random()*10),
-          -CLOUD_CANVAS_SIZE[1] + Math.round((Math.random() * GRID_HEIGHT) / 3),
+          Math.round(Math.random() * x),
+          Math.round((Math.random() * GRID_HEIGHT) / 2),
         );
         midground.appendChild(cloud);
-      }, 42000);
-    isNight = false;
+      }
+      // 每 42 秒生成一朵云
+      if (is_first_img_init)
+        setInterval(() => {
+          let cloud = generateClouds(
+            x + Math.round(Math.random() * 10),
+            -CLOUD_CANVAS_SIZE[1] +
+              Math.round((Math.random() * GRID_HEIGHT) / 3),
+          );
+          midground.appendChild(cloud);
+        }, 42000);
+    }
   }
 
   // 把天子放出来 (原图高96)

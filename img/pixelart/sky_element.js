@@ -2,7 +2,7 @@
 TODO:
  [x] 云的边缘裁掉一个像素
  [x] 云的颜色的棋盘格纹路
- [ ] 夜晚的流星
+ [x] 夜晚的流星
 */
 
 // 返回一个星星 draw a star on foreground
