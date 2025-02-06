@@ -15,6 +15,8 @@
 │</br>
 ├──测试页<br/>
 │　　│</br>
+│　　├──<a href="#测试页/一失足成千古恨.md"> 一失足成千古恨 </a><br/>
+│　　│</br>
 │　　├──<a href="测试页/equationtest.html"> equationtest.html </a><br/>
 │　　│</br>
 │　　└──<a href="#测试页/equationtest.md"> equationtest </a><br/>
@@ -73,7 +75,7 @@
 │　　│</br>
 │　　├──Arch Linux<br/>
 │　　│　　│</br>
-│　　│　　├──<a href="#实用小技巧/Arch Linux/Arch_Linux内核丢失时通过chroot重装内核by ChatGPT.md"> Arch_Linux内核丢失时通过chroot重装内核by ChatGPT </a><br/>
+│　　│　　├──<a href="#实用小技巧/Arch Linux/Arch Linux内核丢失时通过chroot重装内核by ChatGPT.md"> Arch Linux内核丢失时通过chroot重装内核by ChatGPT </a><br/>
 │　　│　　│</br>
 │　　│　　└──<a href="#实用小技巧/Arch Linux/pacman和yay清除缓存.md"> pacman和yay清除缓存 </a><br/>
 │　　│</br>
