@@ -23,6 +23,8 @@
 │</br>
 ├──文章<br/>
 │　　│</br>
+│　　├──<a href="#文章/绘制Julia集的Qt程序.md"> 绘制Julia集的Qt程序 </a><br/>
+│　　│</br>
 │　　├──<a href="#文章/关于这个网站.md"> 关于这个网站 </a><br/>
 │　　│</br>
 │　　├──<a href="#文章/做了一些学校的LaTeX模板.js"> 做了一些学校的LaTeX模板 </a><br/>
