@@ -39,7 +39,7 @@ function parseFile(file) {
           }
           // 如果不满足条件，返回null
           return [firstLine, str, null];
-        })(text);
+        })(text.trim());
 
         return {
           firstLine: content[0],
