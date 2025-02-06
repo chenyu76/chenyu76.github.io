@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>chenyu76的主页</title>
     <!-- 引入 marked 库 -->
-    <!-- <link
+    <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css"
       crossorigin="anonymous"
@@ -15,15 +15,15 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/marked@13.0.0/lib/marked.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked-katex-extension@5.0.2/lib/index.umd.js"></script> -->
-    <link
+    <script src="https://cdn.jsdelivr.net/npm/marked-katex-extension@5.0.2/lib/index.umd.js"></script>
+    <!-- <link
       rel="stylesheet"
       href="./libs/katex.min.css"
       crossorigin="anonymous"
     />
     <script src="./libs/katex.min.js" crossorigin="anonymous"></script>
     <script src="./libs/marked.umd.js"></script>
-    <script src="./libs/index.umd.js"></script>
+    <script src="./libs/index.umd.js"></script> -->
     <script>
       // 初始化marked
       marked.use(
@@ -52,6 +52,7 @@
     <!-- 背景js -->
     <div id="pixel-art">
       <div id="pixel-art-background"></div>
+      <div id="pixel-art-midground"></div>
       <div id="pixel-art-foreground"></div>
     </div>
     <script src="./img/pixelart/imgMatrix.js"></script>
@@ -99,25 +100,30 @@
 
     <script>
       // 是否是竖屏模式
-      if (window.innerHeight > window.innerWidth) {
-        imgInit(0.382 * window.innerHeight);
-        let t = document.getElementById("title-container");
-        t.style.height = "38.2vh";
-        //let s = document.getElementById("anime-spacer");
-        //s.style.height = "63vh";
-      } else {
-        imgInit(0.618 * window.innerHeight);
-      }
-      // 来自背景的是否是夜晚,颜色切换
-      if (isNight) {
-        let div = document.getElementById("top-buttons-wrapper");
-        let children = div.querySelectorAll("*"); // 获取 div 内所有子元素
-        children.forEach((element) => {
-          element.style.color = "white";
-        });
-        let hdiv = document.getElementById("heading");
-        hdiv.style.color = "white";
-      }
+      let pixelImgInit = () => {
+        if (window.innerHeight > window.innerWidth) {
+          imgInit(0.382 * window.innerHeight);
+          let t = document.getElementById("title-container");
+          t.style.height = "38.2vh";
+          //let s = document.getElementById("anime-spacer");
+          //s.style.height = "63vh";
+        } else {
+          imgInit(0.618 * window.innerHeight);
+        }
+        // 来自背景的是否是夜晚,颜色切换
+        if (isNight) {
+          let div = document.getElementById("top-buttons-wrapper");
+          let children = div.querySelectorAll("*"); // 获取 div 内所有子元素
+          children.forEach((element) => {
+            element.style.color = "white";
+          });
+          let hdiv = document.getElementById("heading");
+          hdiv.style.color = "white";
+        }
+      };
+      pixelImgInit();
+      // 每隔十分钟更新背景
+      setInterval(pixelImgInit, 600000);
     </script>
   </body>
 </html>

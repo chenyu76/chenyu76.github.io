@@ -11,24 +11,32 @@ html {
 #pixel-art-background {
   position: absolute;
   top: 0;
-  right: 0; /* 与右边缘对齐 */
-  height: 100%; /* 高度为整个可显示面积 */
-  background-color: #f0f0f0; /* 可选：添加背景色 */
-  overflow: hidden; /* 防止溢出 */
-  z-index: -3; /* 较低的层级 */
+  right: 0;
+  /* 与右边缘对齐 */
+  height: 100%;
+  /* 高度为整个可显示面积 */
+  background-color: #f0f0f0;
+  /* 可选：添加背景色 */
+  overflow: hidden;
+  /* 防止溢出 */
+  z-index: -3;
+  /* 较低的层级 */
   pointer-events: none;
 }
 
-/* 前景容器 */
-#pixel-art-foreground {
+/* 前景与中景容器 */
+#pixel-art-foreground,
+#pixel-art-midground {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden; /* 防止溢出 */
-  pointer-events: none; /* 防止遮挡交互 */
-  z-index: -2; 
+  overflow: hidden;
+  /* 防止溢出 */
+  pointer-events: none;
+  /* 防止遮挡交互 */
+  z-index: -2;
   pointer-events: none;
 }
 
@@ -45,6 +53,7 @@ html {
     opacity: 0.2;
     /*     transform: scale(1); */
   }
+
   100% {
     opacity: 1;
     /*     transform: scale(1.5); */

@@ -2,6 +2,7 @@
 const GRID_HEIGHT = 180; // 网格高度（像素单位）
 const RECT_WIDTH_MULTIPLIER = 2; // 矩形宽度倍数
 
+var is_first_img_init = true;
 var pixelSize;
 var currentHour;
 var isNight = false;
@@ -263,6 +264,7 @@ function createPixelMatrix(startX, startY, matrix) {
 function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   // 获取背景和前景容器
   const background = document.getElementById("pixel-art-background");
+  const midground = document.getElementById("pixel-art-midground");
   const foreground = document.getElementById("pixel-art-foreground");
 
   currentHour = time;
@@ -273,7 +275,7 @@ function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   const x = calculateGridWidth(h);
   // 清空背景容器
   clearContainer(background);
-  // 清空前景容器
+  if (is_first_img_init) clearContainer(midground);
   clearContainer(foreground);
   background.style.height = `${h}px`;
   foreground.style.height = `${h}px`;
@@ -315,13 +317,17 @@ function imgInit(h = window.innerHeight, time = getDecimalHour()) {
 
     // 星星
     let ss = document.createElement("div");
-    ss.style.right = ss.style.top = '0px';
+    ss.style.right = ss.style.top = "0px";
     ss.style.position = "absolute";
     for (let i = 0; i < 42; i++) ss.appendChild(createStar(h));
-    foreground.appendChild(ss);
+    midground.appendChild(ss);
 
     // 生成流星
-    // foreground.appendChild(generateMeteor(h));
+    midground.appendChild(generateMeteor(h));
+    if (is_first_img_init)
+      setInterval(() => {
+        midground.appendChild(generateMeteor(h));
+      }, 7000);
   } else {
     // 白天就是云
     for (let i = 0; i < Math.floor(Math.random() * 10) + 3; i++) {
@@ -329,22 +335,25 @@ function imgInit(h = window.innerHeight, time = getDecimalHour()) {
         Math.round(Math.random() * x),
         Math.round((Math.random() * GRID_HEIGHT) / 2),
       );
-      foreground.appendChild(cloud);
+      midground.appendChild(cloud);
     }
     // 每 42 秒生成一朵云
-    setInterval(() => {
-      let cloud = generateClouds(
-        x,
-        -CLOUD_CANVAS_SIZE[1] + Math.round((Math.random() * GRID_HEIGHT) / 3),
-      );
-      foreground.appendChild(cloud);
-    }, 42000);
+    if (is_first_img_init)
+      setInterval(() => {
+        let cloud = generateClouds(
+          x + Math.round(Math.random()*10),
+          -CLOUD_CANVAS_SIZE[1] + Math.round((Math.random() * GRID_HEIGHT) / 3),
+        );
+        midground.appendChild(cloud);
+      }, 42000);
     isNight = false;
   }
 
   // 把天子放出来 (原图高96)
   const mat = createPixelMatrix(0, Math.ceil(h / pixelSize) - 96, imgMatrix);
   foreground.appendChild(mat);
+
+  is_first_img_init = false;
 }
 
 // 监听窗口大小变化
