@@ -151,6 +151,8 @@ function getHashParam() {
 
 // 监听 hashchange 事件以动态加载新的 Markdown 文件
 window.addEventListener("hashchange", async () => {
+  // 显示加载
+  document.getElementById("heading").innerHTML = "<h1>加载中…</h1>";
   const spacer = document.getElementById("anime-spacer");
   scrollToTop();
   spacer.classList.remove("shrinked");
