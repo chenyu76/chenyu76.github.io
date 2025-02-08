@@ -36,15 +36,19 @@ html {
   height: 61.8vh;
 }
 
-#anime-spacer {
-  height: 40vh;
-  transition: height 0.5s ease;
-  /* 平滑过渡效果 */
+/* 定义动画 */
+@keyframes shrink {
+  0% {
+    height: 50vh;
+  }
+  100% {
+    height: 0.1vh;
+  }
 }
 
-#anime-spacer.shrinked {
-  height: 0.1vh;
-  /* 当扩展时高度为浏览器窗口高度的100% */
+/* 应用动画 */
+#anime-spacer {
+  animation: shrink 0.5s ease forwards; /* forwards 保持动画结束状态 */
 }
 
 #content-wrapper-bg {
@@ -132,6 +136,11 @@ html {
 .top-buttons {
   text-align: left;
   margin: 10px 0;
+}
+
+.icon {
+  height: 1.5em; /* 高度和宽度保持一致 */
+  font-size: 16px; /* 设置字体大小与默认 i 标签大小一致 */
 }
 
 /* 按钮动画显现效果 */
