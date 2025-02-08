@@ -12,9 +12,14 @@ const __filename = fileURLToPath(import.meta.url);
 // 获取当前文件所在的目录
 const __dirname = path.dirname(__filename);
 
-const clickableExtension = [".html"]; // 这些文件会在目录里显示
-const hashExtension = [".js"]; // 这些后缀的文件会在按钮链接中加上 #
-const jsFolderBlackList = ["webGenerate", "program", "img", "libs"]; // 文件路径含有这些的js文件将不会被显示
+// 这些文件会在目录里显示
+const clickableExtension = [".html"]; 
+// 这些后缀的文件会在按钮链接中加上 #
+const hashExtension = [".js"]; 
+// 始终不显示的文件夹
+const folderBlackList = ["node_modules", "webGenerate"]; 
+// 文件路径含有这些的js文件将不会被显示
+const jsFolderBlackList = ["webGenerate", "program", "img", "libs"]; 
 
 // 创建文件目录树
 function folderTree(currentPath, depth = 0, startPath = null, lineD = 0) {
@@ -42,7 +47,17 @@ function folderTree(currentPath, depth = 0, startPath = null, lineD = 0) {
         })()
       );
       // 排除掉 program 等 文件夹里的 js
-    });
+    })
+    .filter(() => {
+      return !(() => {
+        for (let name of folderBlackList) {
+          if (currentPath.includes(name)) {
+            return true;
+          }
+        }
+        return false;
+      })();
+    }); // 去掉 node_modules
 
   function createItemButton(item, relativePath) {
     const baseName = path.basename(item, path.extname(item));
@@ -278,7 +293,7 @@ function generateHtmlFile(
   // 仅当存在代码块时引入 Highlight.js 样式
   if (/<pre><code\b/.test(htmlContent)) {
     headContent += `
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">`
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">`;
 
     /* `
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
