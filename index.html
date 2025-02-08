@@ -3,49 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>chenyu76的主页</title>
-    <!-- 引入 marked 库 -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked@13.0.0/lib/marked.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked-katex-extension@5.0.2/lib/index.umd.js"></script>
-    <!-- <link
-      rel="stylesheet"
-      href="./libs/katex.min.css"
-      crossorigin="anonymous"
-    />
-    <script src="./libs/katex.min.js" crossorigin="anonymous"></script>
-    <script src="./libs/marked.umd.js"></script>
-    <script src="./libs/index.umd.js"></script> -->
-    <script>
-      // 初始化marked
-      marked.use(
-        markedKatex({
-          throwOnError: false, // 当KaTeX解析出错时不抛出错误
-          //displayMode: true, // 全部以显示模式渲染
-        }),
-      );
-    </script>
+    <title>欢迎来到我的主页</title>
 
-    <!-- 引用 Font Awesome -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
     <!-- css样式 -->
-    <link rel="stylesheet" href="styles.css" />
-    <!-- 图标 -->
-    <link rel="icon" href="favicon.png" type="image/png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <!-- 标签页图标 -->
+    <link rel="icon" href="/favicon.png" type="image/png" />
 
     <!-- 背景css -->
-    <link rel="stylesheet" href="./img/pixelart/styles.css" />
+    <link rel="stylesheet" href="/img/pixelart/styles.css" />
+
+    
   </head>
 
   <body>
@@ -55,75 +23,103 @@
       <div id="pixel-art-midground"></div>
       <div id="pixel-art-foreground"></div>
     </div>
-    <script src="./img/pixelart/imgMatrix.js"></script>
-    <script src="./img/pixelart/sky_element.js"></script>
-    <script src="./img/pixelart/script.js"></script>
+    <script src="/img/pixelart/imgMatrix.js"></script>
+    <script src="/img/pixelart/sky_element.js"></script>
+    <script src="/img/pixelart/script.js"></script>
 
     <div id="title-container">
       <div id="spacer"></div>
-      <div id="top-buttons-wrapper">
-        <div class="top-buttons">
-          <a href="#toc.py" title="文档索引" class="fade-in"
-            ><i class="fa-solid fa-bars"></i
-          ></a>
-          <a href="#README" title="返回主页" class="fade-in"
-            ><i class="fa-solid fa-house"></i
-          ></a>
-          <a
-            href="https://github.com/chenyu76"
-            target="_blank"
-            title="跳转到 GitHub"
-            class="fade-in"
-            ><i class="fa-brands fa-github"></i
-          ></a>
-          <a href="#About" title="关于" class="fade-in"
-            ><i class="fa-solid fa-info"></i
-          ></a>
-        </div>
+      <div id="top-buttons-wrapper" class="top-buttons">
+        <a href="/toc.html" title="文档索引" class="fade-in"
+          ><img src="/img/icon/folder.svg" alt="Toc" class="icon"
+        /></a>
+        <a href="/index.html" title="返回主页" class="fade-in"
+          ><img src="/img/icon/home.svg" alt="Home" class="icon"
+        /></a>
+        <a
+          href="https://github.com/chenyu76"
+          target="_blank"
+          title="跳转到 GitHub"
+          class="fade-in"
+          ><img src="/img/icon/github.svg" alt="Github" class="icon"
+        /></a>
+        <a href="/About.html" title="关于" class="fade-in"
+          ><img src="/img/icon/info.svg" alt="Info" class="icon"
+        /></a>
       </div>
-      <!-- <hr id="dividing-line" width=38% /> -->
-      <div id="heading"><h1>README</h1></div>
+      <div id="heading"><h1>主页</h1></div>
     </div>
-    <div id="anime-spacer"></div>
+    <div id="anime-spacer" class="shrinked"></div>
     <div id="content-wrapper-bg">
       <div id="content-wrapper">
-        <div id="content"></div>
+        <div id="content"><p>欢迎来到这个首页！</p>
+<code>
+⠀⠀⠀⣠⠤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⠀⠀</br>
+⠀⠀⡜⠁⠀⠈⢢⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠋⠷⠶⠱⡄</br>
+⠀⢸⣸⣿⠀⠀⠀⠙⢦⡀⠀⠀⠀⠀⠀⠀⠀⢀⡴⠫⢀⣖⡃⢀⣸⢹</br>
+⠀⡇⣿⣿⣶⣤⡀⠀⠀⠙⢆⠀⠀⠀⠀⠀⣠⡪⢀⣤⣾⣿⣿⣿⣿⣸</br>
+⠀⡇⠛⠛⠛⢿⣿⣷⣦⣀⠀⣳⣄⠀⢠⣾⠇⣠⣾⣿⣿⣿⣿⣿⣿⣽</br>
+⠀⠯⣠⣠⣤⣤⣤⣭⣭⡽⠿⠾⠞⠛⠷⠧⣾⣿⣿⣯⣿⡛⣽⣿⡿⡼</br>
+⠀⡇⣿⣿⣿⣿⠟⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠻⣿⣿⣮⡛⢿⠃</br>
+⠀⣧⣛⣭⡾⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣿⣷⣎⡇</br>
+⠀⡸⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢿⣷⣟⡇</br>
+⣜⣿⣿⡧⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⣄⠀⠀⠀⠀⠀⣸⣿⡜⡄</br>
+⠉⠉⢹⡇⠀⠀⠀⢀⣞⠡⠀⠀⠀⠀⠀⠀⡝⣦⠀⠀⠀⠀⢿⣿⣿⣹</br>
+⠀⠀⢸⠁⠀⠀⢠⣏⣨⣉⡃⠀⠀⠀⢀⣜⡉⢉⣇⠀⠀⠀⢹⡄⠀⠀</br>
+⠀⠀⡾⠄⠀⠀⢸⣾⢏⡍⡏⠑⠆⠀⢿⣻⣿⣿⣿⠀⠀⢰⠈⡇⠀⠀</br>
+⠀⢰⢇⢀⣆⠀⢸⠙⠾⠽⠃⠀⠀⠀⠘⠿⡿⠟⢹⠀⢀⡎⠀⡇⠀⠀</br>
+⠀⠘⢺⣻⡺⣦⣫⡀⠀⠀⠀⣄⣀⣀⠀⠀⠀⠀⢜⣠⣾⡙⣆⡇⠀⠀</br>
+⠀⠀⠀⠙⢿⡿⡝⠿⢧⡢⣠⣤⣍⣀⣤⡄⢀⣞⣿⡿⣻⣿⠞⠀⠀⠀</br>
+⠀⠀⠀⢠⠏⠄⠐⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠳⢤⣉⢳⠀⠀⠀</br>
+⢀⡠⠖⠉⠀⠀⣠⠇⣿⡿⣿⡿⢹⣿⣿⣿⣿⣧⣠⡀⠀⠈⠉⢢⡀⠀</br>
+⢿⠀⠀⣠⠴⣋⡤⠚⠛⠛⠛⠛⠛⠛⠛⠛⠙⠛⠛⢿⣦⣄⠀⢈⡇⠀</br>
+⠈⢓⣤⣵⣾⠁⣀⣀⠤⣤⣀⠀⠀⠀⠀⢀⡤⠶⠤⢌⡹⠿⠷⠻⢤⡀</br>
+⢰⠋⠈⠉⠘⠋⠁⠀⠀⠈⠙⠳⢄⣀⡴⠉⠀⠀⠀⠀⠙⠂⠀⠀⢀⡇</br>
+⢸⡠⡀⠀⠒⠂⠐⠢⠀⣀⠀⠀⠀⠀⠀⢀⠤⠚⠀⠀⢸⣔⢄⠀⢾⠀</br>
+⠀⠑⠸⢿⠀⠀⠀⠀⢈⡗⠭⣖⡒⠒⢊⣱⠀⠀⠀⠀⢨⠟⠂⠚⠋⠀</br>
+⠀⠀⠀⠘⠦⣄⣀⣠⠞⠀⠀⠀⠈⠉⠉⠀⠳⠤⠤⡤⠞⠀⠀⠀⠀⠀
+</code>
+
+<p>祝你和⑨一样冰雪聪明！</p>
+<p><a href="/toc.html">文档索引</a></p>
+</br>
+<ul>
+<li><a href="/文章/新年新主题.html">蛇年的全新网站样式！动态背景！</a> <small>(February 06, 2025)</small></li>
+<li><a href="/program/7-piece-puzzle/Readme and solution.html">一个拼图游戏</a> <small>(September 09, 2024)</small></li>
+<li><a href="/program/TractorBattle3D/readme.html">生成障碍阻碍对手的多人本地游戏</a> <small>(August 2024)</small></li>
+<li><a href="/文章/关于这个网站.html">关于这个网站</a> <small>(June 20, 2024)</small></li>
+</ul></div>
         <div id="footnote"></div>
       </div>
       <div class="bottom-button">
         <button onclick="scrollToTop()" title="滚动到顶部">
-          <i class="fa-solid fa-arrow-up"></i>
+          <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
         </button>
       </div>
     </div>
-    <script src="script.js"></script>
+    <script src="/script.js"></script>
+    
+<script>
+function toggleNextNextVis(self) {
+  var content = self.nextElementSibling.nextElementSibling;
 
-    <script>
-      // 是否是竖屏模式
-      let pixelImgInit = () => {
-        if (window.innerHeight > window.innerWidth) {
-          imgInit(0.382 * window.innerHeight);
-          let t = document.getElementById("title-container");
-          t.style.height = "38.2vh";
-          //let s = document.getElementById("anime-spacer");
-          //s.style.height = "63vh";
-        } else {
-          imgInit(0.618 * window.innerHeight);
-        }
-        // 来自背景的是否是夜晚,颜色切换
-        if (isNight) {
-          let div = document.getElementById("top-buttons-wrapper");
-          let children = div.querySelectorAll("*"); // 获取 div 内所有子元素
-          children.forEach((element) => {
-            element.style.color = "white";
-          });
-          let hdiv = document.getElementById("heading");
-          hdiv.style.color = "white";
-        }
-      };
-      pixelImgInit();
-      // 每隔十分钟更新背景
-      setInterval(pixelImgInit, 600000);
-    </script>
+  if (!content.classList.contains("show")) {
+    // 开始显示内容，添加类名 'show' 以触发动画
+    content.style.display = "inline-block";
+    setTimeout(function () {
+      content.classList.add("show");
+    }, 10);
+    self.textContent = "显示更少";
+  } else {
+    // 删除类名 'show' 并设置过渡动画
+    content.classList.remove("show");
+    setTimeout(function () {
+      content.style.display = "none"; // 在动画结束后设置 display: none
+    }, 310);
+    self.textContent = "显示全部";
+  }
+}
+</script>
+
   </body>
 </html>

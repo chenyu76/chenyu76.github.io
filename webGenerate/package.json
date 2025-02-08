@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "name": "webgenerate",
+  "version": "1.0.0",
+  "description": "Deploy html file",
+  "main": "main.js",
+  "keywords": [],
+  "author": "chenyu76"
+}
