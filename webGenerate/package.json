@@ -2,8 +2,8 @@
   "type": "module",
   "name": "webgenerate",
   "version": "1.0.0",
-  "description": "",
+  "description": "Deploy html file",
   "main": "main.js",
   "keywords": [],
-  "author": "c",
+  "author": "chenyu76"
 }
