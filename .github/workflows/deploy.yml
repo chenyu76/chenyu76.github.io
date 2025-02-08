@@ -14,13 +14,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12.4'  # 选择适当的Python版本
-
-    - name: Run toc.py
-      run: python toc.py
+    - name: Use Node.js to generate website
+    uses: actions/setup-node@v4
+    with:
+        node-version: '20.x'
+    - run: npm install marked marked-highlight highlight.js marked-katex-extension
+    - run: cd ./webGenerate/
+    - run: node ./main.js
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
