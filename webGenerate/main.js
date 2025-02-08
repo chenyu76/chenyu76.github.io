@@ -13,13 +13,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // 这些文件会在目录里显示
-const clickableExtension = [".html"]; 
+const clickableExtension = [".html"];
 // 这些后缀的文件会在按钮链接中加上 #
-const hashExtension = [".js"]; 
+const hashExtension = [".js"];
 // 始终不显示的文件夹
-const folderBlackList = ["node_modules", "webGenerate"]; 
+const folderBlackList = ["node_modules", "webGenerate"];
 // 文件路径含有这些的js文件将不会被显示
-const jsFolderBlackList = ["webGenerate", "program", "img", "libs"]; 
+const jsFolderBlackList = ["webGenerate", "program", "img", "libs"];
 
 // 创建文件目录树
 function folderTree(currentPath, depth = 0, startPath = null, lineD = 0) {
@@ -37,27 +37,13 @@ function folderTree(currentPath, depth = 0, startPath = null, lineD = 0) {
     .filter((item) => {
       return !(
         path.extname(item) === ".js" &&
-        (() => {
-          for (let name of jsFolderBlackList) {
-            if (currentPath.includes(name)) {
-              return true;
-            }
-          }
-          return false;
-        })()
+        jsFolderBlackList.some((item) => currentPath.includes(item))
       );
       // 排除掉 program 等 文件夹里的 js
     })
     .filter(() => {
-      return !(() => {
-        for (let name of folderBlackList) {
-          if (currentPath.includes(name)) {
-            return true;
-          }
-        }
-        return false;
-      })();
-    }); // 去掉 node_modules
+      return !folderBlackList.some((item) => currentPath.includes(item));
+    }); // 去掉 node_modules 等
 
   function createItemButton(item, relativePath) {
     const baseName = path.basename(item, path.extname(item));
