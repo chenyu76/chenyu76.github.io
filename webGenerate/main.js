@@ -312,62 +312,51 @@ function traverseDirectory(dirPath) {
   // 模板文件
 
   // 读取目录内容
-  fs.readdir(dirPath, (err, files) => {
-    if (err) {
-      console.error("读取目录出错:", err);
-      return;
-    }
+  let files = fs.readdirSync(dirPath);
+  files.forEach((file) => {
+    const filePath = path.join(dirPath, file);
 
-    files.forEach((file) => {
-      const filePath = path.join(dirPath, file);
+    // 获取文件或文件夹的状态
+    let stats = fs.statSync(filePath);
+    if (stats.isDirectory() && !file.startsWith(".")) {
+      // 如果是文件夹且不以 . 开头，递归调用
+      traverseDirectory(filePath);
+    } else if (stats.isFile() && file.endsWith(".md")) {
+      // 如果是 .md 文件，调用处理函数
 
-      // 获取文件或文件夹的状态
-      fs.stat(filePath, (err, stats) => {
-        if (err) {
-          console.error("获取文件状态出错:", err);
-          return;
-        }
-
-        if (stats.isDirectory() && !file.startsWith(".")) {
-          // 如果是文件夹且不以 . 开头，递归调用
-          traverseDirectory(filePath);
-        } else if (stats.isFile() && file.endsWith(".md")) {
-          // 如果是 .md 文件，调用处理函数
-
-          // 获取文件不包含扩展名的名称
-          const fileNameWithoutExt = path.basename(
-            filePath,
-            path.extname(filePath),
-          );
-          // 获取文件相对于某个目录的路径
-          const relativePath = path.dirname(path.relative(rootPath, filePath));
-          // 将文件的后缀换成 .html 的完整路径
-          const htmlFilePath = path.format({
-            dir: path.dirname(filePath),
-            name: path.basename(filePath, path.extname(filePath)),
-            ext: ".html",
-          });
-          // 创建html文件
-          const content = convertMarkdown(filePath);
-          generateHtmlFile(
-            htmlFilePath,
-            templateHTML,
-            content.title,
-            "",
-            `<h3>${relativePath}</h3><h1>${fileNameWithoutExt}</h1>`,
-            content.html,
-            content.footnote,
-            "",
-          );
-        }
+      // 获取文件不包含扩展名的名称
+      const fileNameWithoutExt = path.basename(
+        filePath,
+        path.extname(filePath),
+      );
+      // 获取文件相对于某个目录的路径
+      const relativePath = path.dirname(path.relative(rootPath, filePath));
+      // 将文件的后缀换成 .html 的完整路径
+      const htmlFilePath = path.format({
+        dir: path.dirname(filePath),
+        name: path.basename(filePath, path.extname(filePath)),
+        ext: ".html",
       });
-    });
+      // 创建html文件
+      const content = convertMarkdown(filePath);
+      generateHtmlFile(
+        htmlFilePath,
+        templateHTML,
+        content.title,
+        "",
+        `<h3>${relativePath}</h3><h1>${fileNameWithoutExt}</h1>`,
+        content.html,
+        content.footnote,
+        "",
+      );
+    }
   });
 }
 
 const templateHTML = readTemplateHTML(path.join(__dirname, "template.html"));
 const rootPath = path.dirname(__dirname);
 traverseDirectory(rootPath);
+// 文件生成完成后生成目录
 const tocContent = tocGen(rootPath);
 generateHtmlFile(
   path.join(rootPath, "toc.html"),
