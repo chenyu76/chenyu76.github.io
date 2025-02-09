@@ -50,7 +50,7 @@ function folderTree(currentPath, depth = 0, startPath = null, lineD = 0) {
     return (
       (hashExtension.some((ext) => item.endsWith(ext))
         ? `<a href="#`
-        : `<a href="`) + `${relativePath}">${baseName}</a><br/>`
+        : `<a href="`) + `${relativePath}">${baseName}</a><br>`
     );
   }
 
@@ -64,7 +64,7 @@ function folderTree(currentPath, depth = 0, startPath = null, lineD = 0) {
       line >>= 1;
     }
 
-    const style = prefix + "│</br>\n" + prefix + (isLast ? "└──" : "├──");
+    const style = prefix + "│<br>\n" + prefix + (isLast ? "└──" : "├──");
     const fullPath = path.join(currentPath, item);
     const isDirectory = fs.statSync(fullPath).isDirectory();
 
@@ -77,12 +77,12 @@ function folderTree(currentPath, depth = 0, startPath = null, lineD = 0) {
       );
 
       if (children.length > 0) {
-        table.push(`${style}${item}<br/>`);
+        table.push(`${style}${item}<br>`);
         if (children.length > 10 && lineD === 0) {
           children.splice(
             7,
             0,
-            `${prefix}│　　<a href="javascript:void(0);" style="font-size:80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a></br>
+            `${prefix}│　　<a href="javascript:void(0);" style="font-size:80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a><br>
             <span class="hiddenContent">`,
           );
           children.push("</span>");
@@ -158,7 +158,7 @@ function randomArticleJsGen(jsPath, dirPath) {
 }
 
 function tocGen(dir) {
-  const tree = `<p style="text-indent:0;line-height:100%">/root<br/>\n${folderTree(
+  const tree = `<p style="text-indent:0;line-height:100%">/root<br>\n${folderTree(
     dir,
   ).join("\n")}</p>`;
 
@@ -375,7 +375,7 @@ generateHtmlFile(
   "欢迎来到我的主页",
   "",
   `<h1>主页</h1>`,
-  `${convertMarkdown(path.join(rootPath, "README.md")).html}</br>
+  `${convertMarkdown(path.join(rootPath, "README.md")).html}<br>
 ${recommendation}`,
   "",
   foldingFuncForTOC,
