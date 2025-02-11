@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pacman和yay清除缓存</title>
+    <title>autorun.sh 配置</title>
 
     <!-- css样式 -->
     <link rel="stylesheet" href="/styles.css" />
@@ -48,32 +48,19 @@
           ><img src="/img/icon/info.svg" alt="Info" class="icon"
         /></a>
       </div>
-      <div id="heading"><h3>实用小技巧/Arch Linux</h3><h1>pacman和yay清除缓存</h1></div>
+      <div id="heading"><h3>技巧/QNAP</h3><h1>QNAP TS-216 autorun.sh 配置</h1></div>
     </div>
     <div id="anime-spacer" class="shrinked"></div>
     <div id="content-wrapper-bg">
       <div id="content-wrapper">
-        <div id="content"><p>储存空间不够可以清理pacman软件包缓存，很久不清就会有几十个G.</p>
-<h2><a href="https://man.archlinux.org/man/paccache.8">paccache</a></h2>
-<p>paccache removes old packages from the pacman cache directory. By default the last three versions of a package are kept.</p>
-<pre><code class="hljs language-bash"><span class="hljs-comment"># 仅包含最近的三个版本</span>
-paccache -r
-<span class="hljs-comment"># 仅包含最近的1个版本</span>
-paccache -rk1
-</code></pre><h2>使用 pacman</h2>
-<pre><code class="hljs language-bash"><span class="hljs-comment"># 清理未安装软件包</span>
-pacman -Sc
-<span class="hljs-comment"># 清理缓存中所有内容</span>
-pacman -Scc
-</code></pre><h2>使用yay</h2>
-<p>yay的缓存在<code>~/.cache/yay</code>，清理方法类似pacman：</p>
-<pre><code class="hljs language-bash"><span class="hljs-comment"># 清理未安装软件包</span>
-yay -Sc
-<span class="hljs-comment"># 清理缓存中所有内容</span>
-yay -Scc
-</code></pre><p>See also:</p>
-<p><a href="https://wiki.archlinux.org/title/Pacman">pacman - ArchWiki</a></p>
-</div>
+        <div id="content"><pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> -i
+mount -t ext2 /dev/mmcblk0p5 /tmp/config
+vim /tmp/config/autorun.sh
+</code></pre><p>修改后保存退出</p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">chmod</span> +x /tmp/config/autorun.sh
+umount /tmp/config
+<span class="hljs-built_in">exit</span>
+</code></pre></div>
         <div id="footnote"></div>
       </div>
       <div class="bottom-button">
