@@ -45,6 +45,10 @@ This is a reference to the $\LaTeX$ guide \cite{latexguide}.
 	\bibliography{references}
 \end{frame}
 ```
+文献列表编号（而不是图标）
+```
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+```
 2. 使用`hyperref`宏包使引用标签可点击
 
 ## 完整示例
