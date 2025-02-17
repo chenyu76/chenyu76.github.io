@@ -21,7 +21,7 @@
 ```
 
 ## 引用参考文献
-在$\LaTeX$文件中，使用 `\cite{}` 命令引用参考文献。例如：
+在 $\LaTeX$ 文件中，使用 `\cite{}` 命令引用参考文献。例如：
 
 ```latex
 This is a reference to the $\LaTeX$ guide \cite{latexguide}.
@@ -53,7 +53,7 @@ This is a reference to the $\LaTeX$ guide \cite{latexguide}.
 
 ## 完整示例
 
-一个完整的例子，展示如何在$\LaTeX$中添加参考文献：
+一个完整的例子，展示如何在 $\LaTeX$ 中添加参考文献：
 
 ```latex
 \documentclass{article}
@@ -71,13 +71,13 @@ This is a reference to the $\LaTeX$ guide \cite{latexguide}.
 
 ##  编译流程
 
-在$\LaTeX$中正确处理参考文献需要多次编译。
+在 $\LaTeX$ 中正确处理参考文献需要多次编译。
 
 ### 如果没有编译过：
 
 (如果使用XeLaTeX)
 
-1. 使用 `xelatex` 编译$\LaTeX$文件，生成需要的文献列表（.aux 文件）
+1. 使用 `xelatex` 编译 $\LaTeX$ 文件，生成需要的文献列表（.aux 文件）
 2. 使用 `bibtex` 编译参考文献。
 3. 再次使用 `xelatex` 编译两次，第一次会生成参考文献，第二次确保参考文献引用和引用列表正确生成。
 
@@ -99,5 +99,5 @@ bibtex yourfile.aux
 
 ## 参考文献样式
 
-$\LaTeX$支持多种参考文献样式（如 `plain`, `unsrt`, `alpha`, `ieeetr` 等）。你可以根据需要选择不同的样式。
+ $\LaTeX$ 支持多种参考文献样式（如 `plain`, `unsrt`, `alpha`, `ieeetr` 等）。你可以根据需要选择不同的样式。
 
