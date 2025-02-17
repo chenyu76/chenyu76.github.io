@@ -48,7 +48,7 @@
           ><img src="/img/icon/info.svg" alt="Info" class="icon"
         /></a>
       </div>
-      <div id="heading"><h3>技巧/LaTeX</h3><h1>添加参考文献</h1></div>
+      <div id="heading"><h3>技巧/LaTeX</h3><h1>在LaTeX文档中添加参考文献</h1></div>
     </div>
     <div id="anime-spacer" class="shrinked"></div>
     <div id="content-wrapper-bg">
@@ -83,6 +83,8 @@
 	<span class="hljs-keyword">\bibliographystyle</span>{plain}
 	<span class="hljs-keyword">\bibliography</span>{references}
 <span class="hljs-keyword">\end</span>{frame}
+</code></pre><p>文献列表编号（而不是图标）</p>
+<pre><code class="hljs">\setbeamertemplate{bibliography item}{\insertbiblabel}
 </code></pre><ol start="2">
 <li>使用<code>hyperref</code>宏包使引用标签可点击</li>
 </ol>
