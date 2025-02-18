@@ -261,7 +261,7 @@ function createPixelMatrix(startX, startY, matrix) {
 }
 
 // 初始化
-function imgInit(h = window.innerHeight, time = getDecimalHour()) {
+async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   // 获取背景和前景容器
   const background = document.getElementById("pixel-art-background");
   const midground = document.getElementById("pixel-art-midground");
