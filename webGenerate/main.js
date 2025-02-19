@@ -220,6 +220,7 @@ function convertMarkdown(inputPath) {
   // 启用 marked-katex-extension 自动处理数学公式
   const options = {
     throwOnError: false,
+    nonStandard: true
   };
   marked.use(markedKatex(options));
 
