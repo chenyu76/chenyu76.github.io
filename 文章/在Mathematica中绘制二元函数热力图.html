@@ -73,7 +73,7 @@
 <pre><code class="hljs">ToMATLAB[ v1[x,t] , &quot;v1&quot; ]
 </code></pre><p>记得给参数赋值！</p>
 <h2>在 Matlab 里面画图</h2>
-<p>在与你导出的函数文件的同一目录下，创建matlab脚本,包含以下内容</p>
+<p>在与你导出的函数文件的同一目录下，创建matlab脚本,包含以下内容，根据自己需求修改</p>
 <pre><code class="hljs language-matlab">draw_wave(<span class="hljs-number">-3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">-0.4</span>,<span class="hljs-number">0.4</span>,<span class="hljs-number">500</span>,<span class="hljs-string">&#x27;plot title&#x27;</span>,{<span class="hljs-string">&#x27;u1&#x27;</span>, <span class="hljs-string">&#x27;u2&#x27;</span>, <span class="hljs-string">&#x27;v&#x27;</span>});
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">draw_wave</span><span class="hljs-params">(lrx, urx, lrt, urt, stps, titleName, funcNames)</span></span>
@@ -91,9 +91,12 @@
 <span class="hljs-comment">% 然后将下面的 x, t, 等号右边的内容用 mp(  ) 括起来</span>
 
 <span class="hljs-comment">% 视角参数设置</span>
-<span class="hljs-comment">% 完全俯视</span>
-az = <span class="hljs-number">0</span>;
-el = <span class="hljs-number">90</span>;
+az = <span class="hljs-number">55</span>; <span class="hljs-comment">% 方位角</span>
+el = <span class="hljs-number">8</span>; <span class="hljs-comment">% 仰角</span>
+
+<span class="hljs-comment">% 完全俯视的参数</span>
+<span class="hljs-comment">% az = 0;</span>
+<span class="hljs-comment">% el = 90;</span>
 
 <span class="hljs-comment">% 生成 x 和 t 的值</span>
 x = lrx:((urx - lrx)/stps):urx;
@@ -108,7 +111,7 @@ t = lrt:((urt - lrt)/stps):urt;
     <span class="hljs-built_in">disp</span>(strcat(<span class="hljs-string">&quot;drawing &quot;</span>, funcName))
     tic
     
-    <span class="hljs-comment">% 调用用户指定的函数</span>
+    <span class="hljs-comment">% 调用指定的函数</span>
     absu = <span class="hljs-built_in">abs</span>(feval(funcName, X, T));
     
     <span class="hljs-comment">% 创建图形窗口</span>
@@ -118,8 +121,10 @@ t = lrt:((urt - lrt)/stps):urt;
     surf(X, T, absu);
     <span class="hljs-comment">%axis square;</span>
     shading interp;
+    <span class="hljs-comment">% 设置大小</span>
     set(gca, <span class="hljs-string">&#x27;PlotBoxAspectRatio&#x27;</span>, [<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">0.7</span>]);
 
+    <span class="hljs-comment">% 设置范围</span>
     xlim([lrx urx]);
     ylim([lrt urt]);
     
@@ -131,6 +136,7 @@ t = lrt:((urt - lrt)/stps):urt;
     <span class="hljs-comment">% 使用 jet 颜色图</span>
     colormap(jet);
        
+    <span class="hljs-comment">% 保存图片</span>
     picname = [titleName, funcName, <span class="hljs-string">&#x27;.png&#x27;</span>];
     print(fig, picname, <span class="hljs-string">&#x27;-dpng&#x27;</span>, <span class="hljs-string">&#x27;-r600&#x27;</span>);
 

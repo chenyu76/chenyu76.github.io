@@ -26,7 +26,7 @@ ToMATLAB[ v1[x,t] , "v1" ]
 
 ## 在 Matlab 里面画图
 
-在与你导出的函数文件的同一目录下，创建matlab脚本,包含以下内容
+在与你导出的函数文件的同一目录下，创建matlab脚本,包含以下内容，根据自己需求修改
 ```matlab
 draw_wave(-3,3,-0.4,0.4,500,'plot title',{'u1', 'u2', 'v'});
 
@@ -45,9 +45,12 @@ function draw_wave(lrx, urx, lrt, urt, stps, titleName, funcNames)
 % 然后将下面的 x, t, 等号右边的内容用 mp(  ) 括起来
 
 % 视角参数设置
-% 完全俯视
-az = 0;
-el = 90;
+az = 55; % 方位角
+el = 8; % 仰角
+
+% 完全俯视的参数
+% az = 0;
+% el = 90;
 
 % 生成 x 和 t 的值
 x = lrx:((urx - lrx)/stps):urx;
@@ -62,7 +65,7 @@ for i = 1:length(funcNames)
     disp(strcat("drawing ", funcName))
     tic
     
-    % 调用用户指定的函数
+    % 调用指定的函数
     absu = abs(feval(funcName, X, T));
     
     % 创建图形窗口
@@ -72,8 +75,10 @@ for i = 1:length(funcNames)
     surf(X, T, absu);
     %axis square;
     shading interp;
+    % 设置大小
     set(gca, 'PlotBoxAspectRatio', [1 1 0.7]);
 
+    % 设置范围
     xlim([lrx urx]);
     ylim([lrt urt]);
     
@@ -85,6 +90,7 @@ for i = 1:length(funcNames)
     % 使用 jet 颜色图
     colormap(jet);
        
+    % 保存图片
     picname = [titleName, funcName, '.png'];
     print(fig, picname, '-dpng', '-r600');
 
