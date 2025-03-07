@@ -17,8 +17,9 @@ function getHashParam() {
     : "README.md";
 }
 
+// TODO: hash变化时跳转到指定位置（目录）
 // 监听 hashchange 事件以动态加载新的 Markdown 文件
-window.addEventListener("hashchange", async () => {
+/* window.addEventListener("hashchange", async () => {
   // 显示加载
   document.getElementById("heading").innerHTML = "<h1>加载中…</h1>";
   const spacer = document.getElementById("anime-spacer");
@@ -43,7 +44,7 @@ window.addEventListener("hashchange", async () => {
       return a > 0 ? a : 0;
     })(500 - (end - start)),
   );
-});
+}); */
 
 // 平滑滚动到顶部
 function scrollToTop() {

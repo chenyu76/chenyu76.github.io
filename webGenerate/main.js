@@ -1,5 +1,6 @@
 import path from "path";
 import fs from "fs";
+import readline from "readline";
 import { Marked } from "marked";
 import { markedHighlight } from "marked-highlight";
 import hljs from "highlight.js";
@@ -46,11 +47,27 @@ function folderTree(currentPath, depth = 0, startPath = null, lineD = 0) {
     }); // 去掉 node_modules 等
 
   function createItemButton(item, relativePath) {
+    // 文档的路径名
     const baseName = path.basename(item, path.extname(item));
+    // 如果是 md 文件，尝试读取第一行作为标题
+    const articlePath = path.join(currentPath, baseName + ".md");
+    let articleName = undefined;
+    if (fs.existsSync(articlePath)) {
+      // TODO: 我其实只需要第一行，有没有可以不用全部读取的方法？
+      // 在一开始读取文件创建html时就保存第一行 为列表
+      // 读取文件内容
+      const data = fs.readFileSync(articlePath, "utf8");
+      // 获取第一行
+      const firstLine = data.split("\n")[0];
+      if (firstLine.startsWith("# ")) {
+        articleName = firstLine.substring(2);
+      }
+    }
     return (
       (hashExtension.some((ext) => item.endsWith(ext))
         ? `<a href="#`
-        : `<a href="`) + `${relativePath}">${baseName}</a><br>`
+        : `<a href="`) +
+      `${relativePath}">${articleName === undefined ? baseName : articleName}</a><br>`
     );
   }
 
@@ -220,7 +237,7 @@ function convertMarkdown(inputPath) {
   // 启用 marked-katex-extension 自动处理数学公式
   const options = {
     throwOnError: false,
-    nonStandard: true
+    nonStandard: true,
   };
   marked.use(markedKatex(options));
 
@@ -257,7 +274,7 @@ function convertMarkdown(inputPath) {
     return [firstLine, str, ""];
   })(data.trim());
 
-  // 将 Markdown 转换为 HTML（公式和代码均已在服务端渲染）
+  // 将 Markdown 转换为 HTML
   console.log(`${inputPath} -> markdown`);
   return {
     title: content[0],
@@ -267,25 +284,47 @@ function convertMarkdown(inputPath) {
 }
 
 function generateHtmlFile(
-  outputPath,
-  templateHTML,
-  titleContent,
-  headContent,
-  headingContent,
-  htmlContent,
-  footnoteContent,
-  extraBodyContent,
+  outputPath, // 输出路径
+  templateHTML, // HTML 模板字符串
+  titleContent, // 标题内容
+  headContent, // <head> 额外内容
+  headingContent, // 文档标题内容
+  htmlContent, // 正文内容
+  footnoteContent, // 脚注内容
+  extraBodyContent, // <body> 结尾额外内容
 ) {
   // 检查生成的 HTML 中是否存在代码块（标记通常为 <pre><code ...>）
   // 仅当存在代码块时引入 Highlight.js 样式
   if (/<pre><code\b/.test(htmlContent)) {
     headContent += `
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">`;
+    // 给代码块添加复制按钮
+    extraBodyContent += `
+<script>
+document.querySelectorAll('pre').forEach(pre => {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'COPY';
+  
+  // 添加到DOM
+  pre.prepend(btn);
 
-    /* `
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
-    `;
-    extraBodyContent += "<script>hljs.highlightAll();</script>"; */
+  // 绑定点击事件
+  btn.addEventListener('click', async () => {
+    try {
+      const code = pre.querySelector('code').innerText;
+      await navigator.clipboard.writeText(code);
+      
+      btn.textContent = ' ✓ ';
+      setTimeout(() => btn.textContent = 'COPY', 1500);
+    } catch (err) {
+      btn.textContent = 'FAIL！';
+      btn.style.color = '#dc3545';
+    }
+  });
+});
+</script>
+`;
   }
   // 检查是否存在公式，marked-katex-extension 渲染后的公式标签中包含 "katex" 类
   // 仅当存在数学公式时引入 KaTeX 样式
@@ -326,10 +365,10 @@ function traverseDirectory(dirPath) {
       // 如果是 .md 文件，调用处理函数
 
       // 获取文件不包含扩展名的名称
-      const fileNameWithoutExt = path.basename(
+      /* const fileNameWithoutExt = path.basename(
         filePath,
         path.extname(filePath),
-      );
+      ); */
       // 获取文件相对于某个目录的路径
       const relativePath = path.dirname(path.relative(rootPath, filePath));
       // 将文件的后缀换成 .html 的完整路径
@@ -345,7 +384,7 @@ function traverseDirectory(dirPath) {
         templateHTML,
         content.title,
         "",
-        `<h3>${relativePath}</h3><h1>${fileNameWithoutExt}</h1>`,
+        `<h3>${relativePath}</h3><h1>${content.title}</h1>`,
         content.html,
         content.footnote,
         "",
