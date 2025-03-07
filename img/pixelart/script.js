@@ -273,6 +273,8 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
 
   // 横向像素宽度
   const x = calculateGridWidth(h);
+  // 纵向像素高度
+  const bottom = Math.ceil(h / pixelSize);
   // 清空背景容器
   clearContainer(background);
   if (is_first_img_init) clearContainer(midground);
@@ -354,16 +356,17 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
         }, 42000);
     }
   }
-
+  
+  // 背景蒲苇
+  foreground.appendChild(draw_pampas_grasses(x, bottom + 5,Math.ceil(x / 18), pixelSize));
   // 把天子放出来 (原图高96)
-  const mat = createPixelMatrix(0, Math.ceil(h / pixelSize) - 96, imgMatrix);
-  foreground.appendChild(mat);
+  foreground.appendChild(createPixelMatrix(0, bottom - 96, imgMatrix));
+  foreground.appendChild(draw_pampas_grasses(x, bottom,Math.ceil(x / 36), pixelSize));
 
   is_first_img_init = false;
 }
 
 // 监听窗口大小变化
 //window.addEventListener("resize", init);
-
 // 初始化页面
 // imgInit();

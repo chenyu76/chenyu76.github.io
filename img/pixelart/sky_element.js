@@ -1,10 +1,3 @@
-/*
-TODO:
- [x] 云的边缘裁掉一个像素
- [x] 云的颜色的棋盘格纹路
- [x] 夜晚的流星
-*/
-
 // 返回一个星星 draw a star on foreground
 function createStar(h) {
   const star = document.createElement("div");
@@ -20,6 +13,8 @@ function createStar(h) {
   star.style.top = `${y}px`;
   star.style.width = `${pixelSize}px`;
   star.style.height = `${pixelSize}px`;
+  // 随机透明度
+  star.style.backgroundColor = `rgba(255,255,255,${Math.random()*0.5 + 0.5})`;
 
   // 生成不同的动画时长
   const duration = Math.random() * 1.5 + 0.5; // 0.5s 到 2s
