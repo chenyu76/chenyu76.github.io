@@ -1,10 +1,12 @@
 # 绘制Julia集的Qt程序.md
 
+[Github链接](https://github.com/chenyu76/Qt-Julia-Set-Plot)
+
+本页面内容由tex转换而来，但看上去显示问题似乎很多，更推荐阅读此[PDF版本](/writings/julia-set.pdf)
+
 ![Mandelbrot集](/img/mandelbrot_trans_axis.png)
 
 ![julia_-0.77+0.1i_1000_1080p_Rainbow_z(0.6,0)_1.png](/img/julia_-0.77+0.1i_1000_1080p.png)
-
-[Github链接](https://github.com/chenyu76/Qt-Julia-Set-Plot)
 
 # 动力系统与Julia集
 
