@@ -272,7 +272,6 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   const foreground = document.getElementById("pixel-art-foreground");
 
   currentHour = time;
-  currentHour = 12;
   // 像素大小
   pixelSize = Math.ceil(calculatePixelSize(h));
 
