@@ -27,7 +27,7 @@
       const ctx = canvas.getContext("2d");
       ctx.imageSmoothingEnabled = false; // 禁用抗锯齿
       for (let i = 0; i < 20; i++)
-        draw_pampas_grass([Math.round(Math.random() * 500), 180], canvas);
+        draw_pampas_grass([Math.round(Math.random() * 500), 180], ctx);
       body.appendChild(canvas);
     </script>
   </body>

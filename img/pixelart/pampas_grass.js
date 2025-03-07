@@ -1,3 +1,5 @@
+const pampas_color = ["#E1D6AB", "#B5AF9F", "#6B6A54"];
+
 // 返回一个开口向右的抛物线函数,函数输入是局部输入y,返回全局坐标[x,y]
 function parabola_right(start, a) {
   return (y) => [a * y * y + start[0], -y + start[1]];
@@ -19,36 +21,9 @@ function homogeneous_cantilever_beam(start, k, L, EI, q = 1) {
   ];
 }
 
-function draw_test() {
-  const canvas = document.getElementById("myCanvas");
-  canvas.style.zoom = pixelSize;
-  const ctx = canvas.getContext("2d");
-
-  // 禁用抗锯齿
-  ctx.imageSmoothingEnabled = false;
-
-  const width = canvas.width;
-  const height = canvas.height;
-  const center = width / 2;
-  const bottom = height - 1;
-
-  let length = 30;
-  // 遍历y坐标绘制抛物线
-  let f = parabola_right([center, bottom], 0.01);
-  for (let y = 0; y < length; y++)
-    ctx.fillRect(...f(y).map((i) => Math.floor(i)), 1, 1);
-
-  let df = parabola_right_derivative(0.01);
-  for (let y = 20; y < 30; y++) {
-    let g = homogeneous_cantilever_beam(f(y), df(y) - 3, 10, 300);
-    for (let x = 0; x < 10; x++)
-      ctx.fillRect(...g(x).map((i) => Math.floor(i)), 1, 1);
-  }
-}
-
-// 在给定的画布上，画一条芦苇，返回这个画布
+// 在给定的画布ctx上，画一条芦苇，返回这个画布
 // start: 起始点坐标[x, y]
-function draw_pampas_grass(start, canvas) {
+function draw_pampas_grass(start, ctx, p_color) {
   // 来自 sky_element.js 的随机生成函数randomNormal
   const length = Math.round(randomNormal(50, 10)); // 苇草长度
   const bent = ((i) => (i > 0 ? i : 0.004))(randomNormal(0.004, 0.002)); // 苇草弯曲度
@@ -76,14 +51,35 @@ function draw_pampas_grass(start, canvas) {
         ctx.fillRect(...g(x).map((i) => Math.floor(i)), 1, 1);
     }
   };
-  draw_branch(10, "#E1D6AB", 1);
-  draw_branch(5, "#B5AF9F", 0.8);
-  draw_branch(2, "#4B4A44", 0.4);
+  draw_branch(10, p_color[0], 1);
+  draw_branch(5, p_color[1], 0.8);
+  draw_branch(2, p_color[2], 0.4);
 
-  ctx.fillStyle = "#4B4A44";
+  ctx.fillStyle = p_color[2];
   for (let y = 0; y < length; y++)
     ctx.fillRect(...f(y).map((i) => Math.floor(i)), 1, 1);
 
-  return canvas;
+  return ctx;
 }
 
+function draw_pampas_grasses(width, height, num, pixelSize) {
+  const pampas_canvas = document.createElement("canvas");
+  pampas_canvas.style.position = "absolute";
+  pampas_canvas.width = width;
+  pampas_canvas.height = height;
+  pampas_canvas.style.zoom = pixelSize;
+  const ctx = pampas_canvas.getContext("2d");
+  ctx.imageSmoothingEnabled = false; // 禁用抗锯齿
+
+  //来自主脚本的颜色
+  const light_color = interpolate_time_color(currentHour, lightColorDict); 
+  // 光线影响
+  let adjusted_color = pampas_color.map((color) =>
+    rgb2hex(...colorMultiply(hex2rgb(color), light_color)),
+  );
+
+  for (let i = 0; i < num; i++)
+    draw_pampas_grass([Math.round(Math.random() * width), height], ctx, adjusted_color);
+
+  return pampas_canvas;
+}
