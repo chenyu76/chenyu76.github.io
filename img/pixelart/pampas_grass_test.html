@@ -12,10 +12,23 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <canvas id="myCanvas" width="50" height="50"></canvas>
+    <script src="imgMatrix.js"></script>
+    <script src="sky_element.js"></script>
+    <script src="script.js"></script>
     <script src="pampas_grass.js"></script>
     <script>
-      draw_pampas_grass();
+      // 获取htmlbody,创建一个画布，画一条芦苇，返回画布
+      let body = document.getElementsByTagName("body")[0];
+      // 给body添加一个画布
+      const canvas = document.createElement("canvas");
+      canvas.width = 500;
+      canvas.height = 180;
+      canvas.style.zoom = 3;
+      const ctx = canvas.getContext("2d");
+      ctx.imageSmoothingEnabled = false; // 禁用抗锯齿
+      for (let i = 0; i < 20; i++)
+        draw_pampas_grass([Math.round(Math.random() * 500), 180], canvas);
+      body.appendChild(canvas);
     </script>
   </body>
 </html>
