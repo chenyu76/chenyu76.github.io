@@ -219,3 +219,28 @@ html {
 h4 {
   margin-bottom: 0;
 }
+
+/* 代码块的复制按钮*/
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 8px;
+  background: #DEDEDE;
+  color: #333333;
+  font-size: 0.5em;
+  border: none;
+  border-radius: 0px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.copy-btn:hover {
+  background: #0056b3;
+  color: white;
+}
+pre {
+  position: relative;  
+  padding: 0em;  
+  border-radius: 0px;
+  margin: 0em 0;
+}
