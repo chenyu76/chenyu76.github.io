@@ -12,11 +12,10 @@
 
 ---
 
-# 瑣事
+# <ruby><rb>瑣事</rb><rp>（</rp><rt>さじ</rt><rp>）</rp></ruby>
 
-人生を幸福にする為には、日常の<ruby><rb>瑣事</rb><rp>（</rp><rt>さじ</rt><rp>）</rp></ruby>を愛さなければならぬ。雲の光り、竹の<ruby><rb>戦</rb><rp>（</rp><rt>そよ</rt><rp>）</rp></ruby>ぎ、<ruby><rb>群雀</rb><rp>（</rp><rt>むらすずめ</rt><rp>）</rp></ruby>の声、行人の顔、――あらゆる日常の瑣事の中に無上の甘露味を感じなければならぬ。
+<ruby>人生<rt>じんせい</rt></ruby>を<ruby>幸福<rt>こうふく</rt></ruby>にする<ruby>為<rt>ため</rt></ruby>には、<ruby>日常<rt>にちじょう</rt></ruby>の<ruby>瑣事<rt>さじ</rt></ruby>を<ruby>愛<rt>あい</rt></ruby>さなければならぬ。<ruby>雲<rt>くも</rt></ruby>の<ruby>光<rt>ひか</rt></ruby>り、<ruby>竹<rt>たけ</rt></ruby>の<ruby>戦<rt>そよ</rt></ruby>ぎ、<ruby>群雀<rt>むらすずめ</rt></ruby>の<ruby>声<rt>こえ</rt></ruby>、<ruby>行人<rt>こうじん</rt></ruby>の<ruby>顔<rt>かお</rt></ruby>――あらゆる<ruby>日常<rt>にちじょう</rt></ruby>の<ruby>瑣事<rt>さじ</rt></ruby>の<ruby>中<rt>なか</rt></ruby>に<ruby>無上<rt>むじょう</rt></ruby>の<ruby>甘露味<rt>かんろみ</rt></ruby>を<ruby>感<rt>かん</rt></ruby>じなければならぬ。
 
-　人生を幸福にする為には？――しかし瑣事を愛するものは瑣事の為に苦しまなければならぬ。庭前の古池に飛びこんだ蛙は百年の愁を破ったであろう。が、古池を飛び出した蛙は百年の愁を与えたかも知れない。いや、芭蕉の一生は享楽の一生であると共に、誰の目にも受苦の一生である。我我も微妙に楽しむ為には、やはり又微妙に苦しまなければならぬ。
+<ruby>人生<rt>じんせい</rt></ruby>を<ruby>幸福<rt>こうふく</rt></ruby>にする<ruby>為<rt>ため</rt></ruby>には？――しかし<ruby>瑣事<rt>さじ</rt></ruby>を<ruby>愛<rt>あい</rt></ruby>するものは<ruby>瑣事<rt>さじ</rt></ruby>の<ruby>為<rt>ため</rt></ruby>に<ruby>苦<rt>くる</rt></ruby>しまなければならぬ。<ruby>庭前<rt>ていぜん</rt></ruby>の<ruby>古池<rt>ふるいけ</rt></ruby>に<ruby>飛<rt>と</rt></ruby>びこんだ<ruby>蛙<rt>かわず</rt></ruby>は<ruby>百年<rt>ひゃくねん</rt></ruby>の<ruby>愁<rt>うれい</rt></ruby>を<ruby>破<rt>やぶ</rt></ruby>ったであろう。が、<ruby>古池<rt>ふるいけ</rt></ruby>を<ruby>飛<rt>と</rt></ruby>び<ruby>出<rt>だ</rt></ruby>した<ruby>蛙<rt>かわず</rt></ruby>は<ruby>百年<rt>ひゃくねん</rt></ruby>の<ruby>愁<rt>うれい</rt></ruby>を<ruby>与<rt>あた</rt></ruby>えたかも<ruby>知<rt>し</rt></ruby>れない。いや、<ruby>芭蕉<rt>ばしょう</rt></ruby>の<ruby>一生<rt>いっしょう</rt></ruby>は<ruby>享楽<rt>きょうらく</rt></ruby>の<ruby>一生<rt>いっしょう</rt></ruby>であると<ruby>共<rt>とも</rt></ruby>に、<ruby>誰<rt>だれ</rt></ruby>の<ruby>目<rt>め</rt></ruby>にも<ruby>受苦<rt>じゅく</rt></ruby>の<ruby>一生<rt>いっしょう</rt></ruby>である。<ruby>我我<rt>われわれ</rt></ruby>も<ruby>微妙<rt>びみょう</rt></ruby>に<ruby>楽<rt>たの</rt></ruby>しむ<ruby>為<rt>ため</rt></ruby>には、やはり<ruby>又<rt>また</rt></ruby><ruby>微妙<rt>びみょう</rt></ruby>に<ruby>苦<rt>くる</rt></ruby>しまなければならぬ。
 
-　人生を幸福にする為には、日常の<ruby><rb>瑣事</rb><rp>（</rp><rt>さじ</rt><rp>）</rp></ruby>に苦しまなければならぬ。雲の光り、竹の<ruby><rb>戦</rb><rp>（</rp><rt>そよ</rt><rp>）</rp></ruby>ぎ、<ruby><rb>群雀</rb><rp>（</rp><rt>むらすずめ</rt><rp>）</rp></ruby>の声、行人の顔、――あらゆる日常の瑣事の中に堕地獄の苦痛を感じなければならぬ。
-
+<ruby>人生<rt>じんせい</rt></ruby>を<ruby>幸福<rt>こうふく</rt></ruby>にする<ruby>為<rt>ため</rt></ruby>には、<ruby>日常<rt>にちじょう</rt></ruby>の<ruby>瑣事<rt>さじ</rt></ruby>に<ruby>苦<rt>くる</rt></ruby>しまなければならぬ。<ruby>雲<rt>くも</rt></ruby>の<ruby>光<rt>ひか</rt></ruby>り、<ruby>竹<rt>たけ</rt></ruby>の<ruby>戦<rt>そよ</rt></ruby>ぎ、<ruby>群雀<rt>むらすずめ</rt></ruby>の<ruby>声<rt>こえ</rt></ruby>、<ruby>行人<rt>こうじん</rt></ruby>の<ruby>顔<rt>かお</rt></ruby>――あらゆる<ruby>日常<rt>にちじょう</rt></ruby>の<ruby>瑣事<rt>さじ</rt></ruby>の<ruby>中<rt>なか</rt></ruby>に<ruby>堕地獄<rt>だじごく</rt></ruby>の<ruby>苦痛<rt>くつう</rt></ruby>を<ruby>感<rt>かん</rt></ruby>じなければならぬ。
