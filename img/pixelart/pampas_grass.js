@@ -4,10 +4,12 @@ function parabola_right(start, a) {
 }
 
 function homogeneous_cantilever_beam(start, L, EI, q, k) {
-  return (x) => {
-    let y = (q / (24 * EI)) * x * x * (x * x - 4 * L * x + 6 * L * L) + k * x;
-    return [start[0] + x, start[1] + y];
-  };
+  return (x) => [
+    start[0] + x,
+    start[1] +
+      (q / (24 * EI)) * x * x * (x * x - 4 * L * x + 6 * L * L) +
+      k * x,
+  ];
 }
 
 function draw_pampas_grass() {
@@ -23,8 +25,9 @@ function draw_pampas_grass() {
   const center = width / 2;
   const bottom = height - 1;
 
+  let length = 30;
   // 遍历y坐标绘制抛物线
   let f = parabola_right([center, bottom], 0.01);
-  for (let y = 0; y < height; y++)
+  for (let y = 0; y < length; y++)
     ctx.fillRect(...f(y).map((i) => Math.floor(i)), 1, 1);
 }
