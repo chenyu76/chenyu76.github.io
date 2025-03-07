@@ -1,6 +1,8 @@
-# 在Mathematica中绘制二元函数热力图
+# 使用Matlab绘制Mathematica中二元函数的热力图
 
 > 给wxf写的
+
+当然你也可以直接使用Mathematica画图，但那样会比较慢，见[此处](/quick-references/mathematica/jet-colormap.html)
 
 ## 将Mathematica 程序导出到Mathlab
 

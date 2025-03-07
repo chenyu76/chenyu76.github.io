@@ -1,5 +1,6 @@
 import path from "path";
 import fs from "fs";
+import readline from "readline";
 import { Marked } from "marked";
 import { markedHighlight } from "marked-highlight";
 import hljs from "highlight.js";
@@ -46,11 +47,26 @@ function folderTree(currentPath, depth = 0, startPath = null, lineD = 0) {
     }); // 去掉 node_modules 等
 
   function createItemButton(item, relativePath) {
+    // 文档的路径名
     const baseName = path.basename(item, path.extname(item));
+    // 如果是 md 文件，尝试读取第一行作为标题
+    const articlePath = path.join(currentPath, baseName + ".md");
+    let articleName = undefined;
+    if (fs.existsSync(articlePath)) {
+      // TODO: 我其实只需要第一行，有没有可以不用全部读取的方法？
+      // 读取文件内容
+      const data = fs.readFileSync(articlePath, "utf8");  
+      // 获取第一行
+      const firstLine = data.split("\n")[0];
+      if(firstLine.startsWith("# ")) {
+        articleName = firstLine.substring(2);
+      }
+    }
     return (
       (hashExtension.some((ext) => item.endsWith(ext))
         ? `<a href="#`
-        : `<a href="`) + `${relativePath}">${baseName}</a><br>`
+        : `<a href="`) +
+      `${relativePath}">${articleName === undefined ? baseName : articleName}</a><br>`
     );
   }
 
@@ -220,7 +236,7 @@ function convertMarkdown(inputPath) {
   // 启用 marked-katex-extension 自动处理数学公式
   const options = {
     throwOnError: false,
-    nonStandard: true
+    nonStandard: true,
   };
   marked.use(markedKatex(options));
 
@@ -257,7 +273,7 @@ function convertMarkdown(inputPath) {
     return [firstLine, str, ""];
   })(data.trim());
 
-  // 将 Markdown 转换为 HTML（公式和代码均已在服务端渲染）
+  // 将 Markdown 转换为 HTML
   console.log(`${inputPath} -> markdown`);
   return {
     title: content[0],
