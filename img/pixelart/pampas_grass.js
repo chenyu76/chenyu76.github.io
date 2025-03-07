@@ -1,4 +1,6 @@
-const pampas_color = ["#E1D6AB", "#B5AF9F", "#6B6A54"];
+//const pampas_color = ["#D7D1BA", "#A89268", "#426C13"];
+//const pampas_color = ["#E1D6AB", "#B5AF9F", "#6B6A54"];
+const pampas_color = ["#F5F1E8", "#DCCBB2", "#B9A99A"];
 
 // 返回一个开口向右的抛物线函数,函数输入是局部输入y,返回全局坐标[x,y]
 function parabola_right(start, a) {
@@ -62,7 +64,13 @@ function draw_pampas_grass(start, ctx, p_color) {
   return ctx;
 }
 
-function draw_pampas_grasses(width, height, num, pixelSize) {
+function draw_pampas_grasses(
+  width,
+  height,
+  num,
+  pixelSize,
+  color_multiplyer = "#FFFFFF",
+) {
   const pampas_canvas = document.createElement("canvas");
   pampas_canvas.style.position = "absolute";
   pampas_canvas.width = width;
@@ -72,14 +80,23 @@ function draw_pampas_grasses(width, height, num, pixelSize) {
   ctx.imageSmoothingEnabled = false; // 禁用抗锯齿
 
   //来自主脚本的颜色
-  const light_color = interpolate_time_color(currentHour, lightColorDict); 
+  const light_color = interpolate_time_color(currentHour, lightColorDict);
   // 光线影响
   let adjusted_color = pampas_color.map((color) =>
-    rgb2hex(...colorMultiply(hex2rgb(color), light_color)),
+    rgb2hex(
+      ...colorMultiply(
+        colorMultiply(hex2rgb(color), light_color),
+        hex2rgb(color_multiplyer),
+      ),
+    ),
   );
 
   for (let i = 0; i < num; i++)
-    draw_pampas_grass([Math.round(Math.random() * width), height], ctx, adjusted_color);
+    draw_pampas_grass(
+      [Math.round(Math.random() * width), height],
+      ctx,
+      adjusted_color,
+    );
 
   return pampas_canvas;
 }

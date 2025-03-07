@@ -65,7 +65,8 @@ const skyColorDict = [
     // 黄昏至傍晚
     17.5: [210, 0.5, 0.87],
     18: [25, 0.7, 0.9], // 黄昏：偏暖橙色调
-    20: [280, 0.6, 0.5], // 傍晚转夜：天空逐渐带点紫调
+    19: [300, 0.5, 0.5],
+    20: [280, 0.6, 0.4], // 傍晚转夜：天空逐渐带点紫调
     // 深夜
     22: [220, 0.8, 0.1], // 夜晚：逐渐变暗
     24: [220, 0.9, 0.05], // 回到深夜
@@ -80,6 +81,7 @@ const skyColorDict = [
     16: [200, 0.35, 0.9],
     17.5: [220, 0.35, 0.9],
     18: [30, 0.6, 0.95],
+    19: [290, 0.5, 0.45],
     20: [280, 0.5, 0.55],
     22: [220, 0.7, 0.15],
     24: [220, 0.8, 0.08],
@@ -94,6 +96,7 @@ const skyColorDict = [
     16: [190, 0.25, 0.95],
     17.5: [220, 0.4, 0.9],
     18: [35, 0.6, 0.9],
+    19: [290, 0.5, 0.5],
     20: [280, 0.4, 0.6],
     22: [220, 0.6, 0.2],
     24: [220, 0.7, 0.1],
@@ -109,7 +112,8 @@ const lightColorDict = {
   11: [120, 0.07, 0.99], // 接近正午：接近白光
   12: [100, 0.05, 1.0], // 正午：最亮、接近白光
   17: [180, 0.15, 0.97], // 太阳开始变暖
-  18: [190, 0.2, 0.96], // 夕阳开始
+  18: [35, 0.15, 0.96], // 夕阳开始
+  19: [200, 0.2, 0.94], // 夕阳开始
   21: [220, 0.3, 0.93], // 变冷，亮度降低
   24: [220, 0.35, 0.91], // 回到深夜
 };
@@ -268,6 +272,7 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   const foreground = document.getElementById("pixel-art-foreground");
 
   currentHour = time;
+  currentHour = 12;
   // 像素大小
   pixelSize = Math.ceil(calculatePixelSize(h));
 
@@ -358,7 +363,7 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   }
   
   // 背景蒲苇
-  foreground.appendChild(draw_pampas_grasses(x, bottom + 5,Math.ceil(x / 18), pixelSize));
+  foreground.appendChild(draw_pampas_grasses(x, bottom + 5,Math.ceil(x / 18), pixelSize, "#EEEEEE"));
   // 把天子放出来 (原图高96)
   foreground.appendChild(createPixelMatrix(0, bottom - 96, imgMatrix));
   foreground.appendChild(draw_pampas_grasses(x, bottom,Math.ceil(x / 36), pixelSize));
