@@ -1,6 +1,7 @@
 # 在LaTeX中添加参考文献
 
 ## 创建 `.bib` 文件
+
 首先，创建一个 `.bib` 文件，包含你的参考文献条目。每个参考文献条目都遵循BibTeX格式，通常包括如作者、标题、出版年份等信息。
 
 例如，在与`.tex`相同目录下创建一个 `references.bib` 文件，内容如下：
@@ -53,7 +54,6 @@ This is a reference to the $\LaTeX$ guide \cite{latexguide}.
 
 ## 完整示例
 
-一个完整的例子，展示如何在 $\LaTeX$ 中添加参考文献：
 
 ```latex
 \documentclass{article}
@@ -96,9 +96,14 @@ xelatex yourfile.tex
 ```bash
 bibtex yourfile.aux
 ```
+即可
 
 ## 参考文献样式
 
- $\LaTeX$ 支持多种参考文献样式（如 `plain`, `unsrt`, `alpha`, `ieeetr` 等）。你可以根据需要选择不同的样式。
+ $\LaTeX$ 支持多种参考文献样式（如 `plain`, `unsrt`, `alpha`, `ieeetr` 等）：
+```
+\bibliographystyle{plain}  % 修改这里的参数
+```
+可以根据需要选择不同的样式。
 
-2025/03/07
+2025/02/20
