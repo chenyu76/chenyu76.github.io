@@ -295,26 +295,26 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
 
   // 填充三个大背景矩形
   const rect = [
-    createRectangle(x, 100, bgcolors[0], 0),
-    createRectangle(x, 100, bgcolors[1], 90),
-    createRectangle(x, 100, bgcolors[2], 150),
+    [x, 100, bgcolors[0], 0],
+    [x, 100, bgcolors[1], 90],
+    [x, 100, bgcolors[2], 150],
   ];
-  rect.forEach((element) => {
-    background.appendChild(element);
+  rect.map((elements) => {
+    background.appendChild(createRectangle(...elements));
   });
   background.style.backgroundColor = bgcolors[2];
 
   // 填充过渡棋盘格纹路
   const checkerboard = [
-    createCheckerboard(x, 10, bgcolors[1], 60, 0),
-    createCheckerboard(x, 10, bgcolors[1], 70, 1),
-    createCheckerboard(x, 10, bgcolors[1], 80, 2),
-    createCheckerboard(x, 10, bgcolors[2], 120, 0),
-    createCheckerboard(x, 10, bgcolors[2], 130, 1),
-    createCheckerboard(x, 10, bgcolors[2], 140, 2),
+    [x, 10, bgcolors[1], 60, 0],
+    [x, 10, bgcolors[1], 70, 1],
+    [x, 10, bgcolors[1], 80, 2],
+    [x, 10, bgcolors[2], 120, 0],
+    [x, 10, bgcolors[2], 130, 1],
+    [x, 10, bgcolors[2], 140, 2],
   ];
-  checkerboard.forEach((element) => {
-    background.appendChild(element);
+  checkerboard.map((elements) => {
+    background.appendChild(createCheckerboard(...elements));
   });
 
   if (currentHour > 19 || currentHour < 5) {
