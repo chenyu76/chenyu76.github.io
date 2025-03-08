@@ -1,8 +1,6 @@
-# some SZU $\LaTeX$ templates
+# some SZU LaTeX templates
 
 [仓库地址](https://github.com/chenyu76/some-SZU-LaTeX-templates)
-
-$\LaTeX$ versions of some Word documents templates of SZU
 
 一些（我自己用的）深大的照着Word版本抄的$\LaTeX$模板
 
