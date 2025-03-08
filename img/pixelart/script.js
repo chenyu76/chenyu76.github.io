@@ -356,7 +356,7 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
           let cloud = generateClouds(
             x + Math.round(Math.random() * 10),
             -CLOUD_CANVAS_SIZE[1] +
-              Math.round((Math.random() * GRID_HEIGHT) / 3),
+              Math.round((Math.random() * GRID_HEIGHT) / 2),
           );
           midground.appendChild(cloud);
         }, 42000);

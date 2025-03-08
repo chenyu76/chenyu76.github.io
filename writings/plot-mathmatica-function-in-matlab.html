@@ -67,15 +67,15 @@
       <span class="hljs-string">&quot;Conjugate&quot;</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-string">&quot;conjugate&quot;</span><span class="hljs-operator">,</span> <span class="hljs-string">&quot;Sqrt&quot;</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-string">&quot;sqrt&quot;</span><span class="hljs-operator">,</span> <span class="hljs-string">&quot;E&quot;</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-string">&quot;exp(1)&quot;</span><span class="hljs-operator">,</span> 
       <span class="hljs-string">&quot;I&quot;</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-string">&quot;(1i)&quot;</span><span class="hljs-operator">,</span> <span class="hljs-string">&quot;*&quot;</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-string">&quot;.*&quot;</span><span class="hljs-operator">,</span> <span class="hljs-string">&quot;^&quot;</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-string">&quot;.^&quot;</span><span class="hljs-operator">,</span> <span class="hljs-string">&quot;/&quot;</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-string">&quot;./&quot;</span><span class="hljs-operator">,</span> 
       <span class="hljs-string">&quot;[&quot;</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-string">&quot;(&quot;</span><span class="hljs-operator">,</span> <span class="hljs-string">&quot;]&quot;</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-string">&quot;)&quot;</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">]</span> <span class="hljs-operator">&lt;&gt;</span> <span class="hljs-string">&quot;);&quot;</span><span class="hljs-operator">,</span> <span class="hljs-string">&quot;Text&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-operator">;</span>
-<span class="hljs-variable">ToMATLAB</span><span class="hljs-punctuation">[</span> <span class="hljs-operator">&lt;</span><span class="hljs-built_in">Function</span> <span class="hljs-built_in">Symbol</span><span class="hljs-operator">&gt;</span> <span class="hljs-operator">,</span> <span class="hljs-operator">&lt;</span><span class="hljs-variable">MATLAB</span> <span class="hljs-variable">function</span> <span class="hljs-variable">name</span> <span class="hljs-variable">string</span><span class="hljs-operator">&gt;</span> <span class="hljs-punctuation">]</span>
+<span class="hljs-comment">(* ToMATLAB[ &lt;Function Symbol&gt; , &lt;MATLAB function name string&gt; ] *)</span>
 </code></pre><p>例如你的函数叫<code>v1[x,t]</code>,想导出成<code>v1.m</code>：</p>
 <pre><code class="hljs">ToMATLAB[ v1[x,t] , &quot;v1&quot; ]
 </code></pre><p>记得给参数赋值！</p>
 <h2>在 Matlab 里面画图</h2>
-<p>在与你导出的函数文件的同一目录下，创建matlab脚本,包含以下内容，根据自己需求修改</p>
-<pre><code class="hljs language-matlab">draw_wave(<span class="hljs-number">-3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">-0.4</span>,<span class="hljs-number">0.4</span>,<span class="hljs-number">500</span>,<span class="hljs-string">&#x27;plot title&#x27;</span>,{<span class="hljs-string">&#x27;u1&#x27;</span>, <span class="hljs-string">&#x27;u2&#x27;</span>, <span class="hljs-string">&#x27;v&#x27;</span>});
+<p>在与你导出的函数文件的同一目录下，创建任意名称的matlab脚本，包含以下内容，根据自己需求修改</p>
+<pre><code class="hljs language-matlab"><span class="hljs-comment">% 调用函数</span>
+draw_wave(<span class="hljs-number">-3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">-0.4</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">500</span>, <span class="hljs-string">&#x27;plot title&#x27;</span>, {<span class="hljs-string">&#x27;u1&#x27;</span>, <span class="hljs-string">&#x27;u2&#x27;</span>, <span class="hljs-string">&#x27;v&#x27;</span>});
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">draw_wave</span><span class="hljs-params">(lrx, urx, lrt, urt, stps, titleName, funcNames)</span></span>
 <span class="hljs-comment">% draw_wave 函数</span>
 <span class="hljs-comment">% 输入参数：</span>
 <span class="hljs-comment">% lrx, urx - x 的下界和上界</span>
@@ -83,6 +83,7 @@
 <span class="hljs-comment">% stps - 精度 总范围除精度即是步长（精度），由于我很懒，变量名没有修改</span>
 <span class="hljs-comment">% titleName 图像的标题名称，同时也会用这个名称保存图片</span>
 <span class="hljs-comment">% funcNames 需要绘制的函数名称列表，需要当前目录下对应的.m文件存在</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">draw_wave</span><span class="hljs-params">(lrx, urx, lrt, urt, stps, titleName, funcNames)</span></span>
 
 <span class="hljs-comment">% 如果你要用高精度包,添加这个</span>
 <span class="hljs-comment">%addpath(&#x27;C:\Users\soliton\Documents\Multiprecision Computing Toolbox\&#x27;)</span>
@@ -128,9 +129,9 @@ t = lrt:((urt - lrt)/stps):urt;
     ylim([lrt urt]);
     
     <span class="hljs-comment">% 设置坐标轴标签和标题（使用 LaTeX 解释器）</span>
-    xlabel(<span class="hljs-string">&#x27;$xCONTENT_PLACEHOLDER#x27;</span>, <span class="hljs-string">&#x27;Interpreter&#x27;</span>, <span class="hljs-string">&#x27;latex&#x27;</span>);
-    ylabel(<span class="hljs-string">&#x27;$tCONTENT_PLACEHOLDER#x27;</span>, <span class="hljs-string">&#x27;Rotation&#x27;</span>, <span class="hljs-number">0</span>, <span class="hljs-string">&#x27;Interpreter&#x27;</span>, <span class="hljs-string">&#x27;latex&#x27;</span>);
-    title(strcat(<span class="hljs-string">&#x27;$|&#x27;</span>, funcName, <span class="hljs-string">&#x27;|CONTENT_PLACEHOLDER#x27;</span>), <span class="hljs-string">&#x27;Interpreter&#x27;</span>, <span class="hljs-string">&#x27;latex&#x27;</span>);
+    xlabel(<span class="hljs-string">&#x27; $x$ &#x27;</span>, <span class="hljs-string">&#x27;Interpreter&#x27;</span>, <span class="hljs-string">&#x27;latex&#x27;</span>);
+    ylabel(<span class="hljs-string">&#x27; $t$ &#x27;</span>, <span class="hljs-string">&#x27;Rotation&#x27;</span>, <span class="hljs-number">0</span>, <span class="hljs-string">&#x27;Interpreter&#x27;</span>, <span class="hljs-string">&#x27;latex&#x27;</span>);
+    title(strcat(<span class="hljs-string">&#x27; $|&#x27;</span>, funcName, <span class="hljs-string">&#x27;|$ &#x27;</span>), <span class="hljs-string">&#x27;Interpreter&#x27;</span>, <span class="hljs-string">&#x27;latex&#x27;</span>);
 
     <span class="hljs-comment">% 使用 jet 颜色图</span>
     colormap(jet);
