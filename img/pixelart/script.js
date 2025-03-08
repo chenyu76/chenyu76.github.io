@@ -337,6 +337,7 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
       midground.appendChild(generateMeteor(h));
       if (is_first_img_init)
         setInterval(() => {
+          if (document.visibilityState !== "visible") return;
           midground.appendChild(generateMeteor(h));
         }, 7000);
     } else {
@@ -351,6 +352,7 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
       // 每 42 秒生成一朵云
       if (is_first_img_init)
         setInterval(() => {
+          if (document.visibilityState !== "visible") return;
           let cloud = generateClouds(
             x + Math.round(Math.random() * 10),
             -CLOUD_CANVAS_SIZE[1] +
@@ -360,12 +362,16 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
         }, 42000);
     }
   }
-  
+
   // 背景蒲苇
-  foreground.appendChild(draw_pampas_grasses(x, bottom + 5,Math.ceil(x / 18), pixelSize, "#EEEEEE"));
+  foreground.appendChild(
+    draw_pampas_grasses(x, bottom + 5, Math.ceil(x / 18), pixelSize, "#EEEEEE"),
+  );
   // 把天子放出来 (原图高96)
   foreground.appendChild(createPixelMatrix(0, bottom - 96, imgMatrix));
-  foreground.appendChild(draw_pampas_grasses(x, bottom,Math.ceil(x / 36), pixelSize));
+  foreground.appendChild(
+    draw_pampas_grasses(x, bottom, Math.ceil(x / 36), pixelSize),
+  );
 
   is_first_img_init = false;
 }
