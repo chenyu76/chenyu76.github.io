@@ -1,8 +1,8 @@
-# 绘制Julia集的Qt程序.md
+# Julia集的计算机艺术
 
 [Github链接](https://github.com/chenyu76/Qt-Julia-Set-Plot)
 
-本页面内容由tex转换而来，但看上去显示问题似乎很多，更推荐阅读此[PDF版本](/writings/julia-set.pdf)
+本页面内容由tex转换而来，但看上去显示问题似乎多多，更推荐阅读此[PDF版本](/writings/julia-set.pdf)
 
 ![Mandelbrot集](/img/mandelbrot_trans_axis.png)
 

@@ -4,7 +4,7 @@
 
 当然你也可以直接使用Mathematica画图，但那样会比较慢，见[此处](/quick-references/mathematica/jet-colormap.html)
 
-## 将Mathematica 程序导出到Mathlab
+## 将Mathematica 程序导出到Matlab
 
 你可以用很多种方法导出，我写了个简陋的脚本，粘到程序里就行：
 ```Mathematica
@@ -35,11 +35,12 @@ draw_wave(-3, 3, -0.4, 0.4, 500, 'plot title', {'u1', 'u2', 'v'});
 
 % draw_wave 函数
 % 输入参数：
-% lrx, urx - x 的下界和上界
-% lrt, urt - t 的下界和上界
-% stps - 精度 总范围除精度即是步长（精度），由于我很懒，变量名没有修改
-% titleName 图像的标题名称，同时也会用这个名称保存图片
-% funcNames 需要绘制的函数名称列表，需要当前目录下对应的.m文件存在
+% lrx, urx: x 的下界和上界
+% lrt, urt: t 的下界和上界
+% stps: 精度 总范围除精度即是步长（精度），由于我很懒，变量名没有修改
+% titleName: 图像的标题名称
+% funcNames: 需要绘制的函数名称列表，需要当前目录下对应的.m文件存在
+% 注意函数会被取绝对值，如果这不是你期望的行为,请把下面那行的abs删掉
 function draw_wave(lrx, urx, lrt, urt, stps, titleName, funcNames)
 
 % 如果你要用高精度包,添加这个
@@ -68,7 +69,7 @@ for i = 1:length(funcNames)
     disp(strcat("drawing ", funcName))
     tic
     
-    % 调用指定的函数
+    % 调用指定的函数并取绝对值
     absu = abs(feval(funcName, X, T));
     
     % 创建图形窗口

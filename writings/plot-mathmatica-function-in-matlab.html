@@ -55,7 +55,7 @@
 <p>给wxf写的</p>
 </blockquote>
 <p>当然你也可以直接使用Mathematica画图，但那样会比较慢，见<a href="/quick-references/mathematica/jet-colormap.html">此处</a></p>
-<h2>将Mathematica 程序导出到Mathlab</h2>
+<h2>将Mathematica 程序导出到Matlab</h2>
 <p>你可以用很多种方法导出，我写了个简陋的脚本，粘到程序里就行：</p>
 <pre><code class="hljs language-Mathematica"><span class="hljs-built_in">SetDirectory</span><span class="hljs-punctuation">[</span><span class="hljs-built_in">NotebookDirectory</span><span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">]</span><span class="hljs-operator">;</span>
 <span class="hljs-variable">ToMATLAB</span><span class="hljs-punctuation">[</span><span class="hljs-type">f_</span><span class="hljs-operator">,</span> <span class="hljs-type">name_</span><span class="hljs-punctuation">]</span> <span class="hljs-operator">:=</span> 
@@ -78,11 +78,12 @@ draw_wave(<span class="hljs-number">-3</span>, <span class="hljs-number">3</span
 
 <span class="hljs-comment">% draw_wave 函数</span>
 <span class="hljs-comment">% 输入参数：</span>
-<span class="hljs-comment">% lrx, urx - x 的下界和上界</span>
-<span class="hljs-comment">% lrt, urt - t 的下界和上界</span>
-<span class="hljs-comment">% stps - 精度 总范围除精度即是步长（精度），由于我很懒，变量名没有修改</span>
-<span class="hljs-comment">% titleName 图像的标题名称，同时也会用这个名称保存图片</span>
-<span class="hljs-comment">% funcNames 需要绘制的函数名称列表，需要当前目录下对应的.m文件存在</span>
+<span class="hljs-comment">% lrx, urx: x 的下界和上界</span>
+<span class="hljs-comment">% lrt, urt: t 的下界和上界</span>
+<span class="hljs-comment">% stps: 精度 总范围除精度即是步长（精度），由于我很懒，变量名没有修改</span>
+<span class="hljs-comment">% titleName: 图像的标题名称</span>
+<span class="hljs-comment">% funcNames: 需要绘制的函数名称列表，需要当前目录下对应的.m文件存在</span>
+<span class="hljs-comment">% 注意函数会被取绝对值，如果这不是你期望的行为,请把下面那行的abs删掉</span>
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">draw_wave</span><span class="hljs-params">(lrx, urx, lrt, urt, stps, titleName, funcNames)</span></span>
 
 <span class="hljs-comment">% 如果你要用高精度包,添加这个</span>
@@ -111,7 +112,7 @@ t = lrt:((urt - lrt)/stps):urt;
     <span class="hljs-built_in">disp</span>(strcat(<span class="hljs-string">&quot;drawing &quot;</span>, funcName))
     tic
     
-    <span class="hljs-comment">% 调用指定的函数</span>
+    <span class="hljs-comment">% 调用指定的函数并取绝对值</span>
     absu = <span class="hljs-built_in">abs</span>(feval(funcName, X, T));
     
     <span class="hljs-comment">% 创建图形窗口</span>
