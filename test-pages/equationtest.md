@@ -34,7 +34,7 @@ $$
     \right) , \quad n \in \mathbb{Z}^+
 $$
 
-$$ 
+$$
 \int_0^\infty x^n e^{-x} \mathrm{d} x = n!
 $$
 

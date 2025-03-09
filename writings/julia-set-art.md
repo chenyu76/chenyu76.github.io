@@ -20,20 +20,33 @@
 映射到新的复数值。 在本文中，我们将考察 映射
 $f(z) = z^m + c$，其中$m\ge 2, m \in \mathbb{N}$, $c$
 是一个复常数。对于给定的初始点 $z_0$，我们可以不断应用规则
-$$z_{k+1} = f(z_k)$$ 生成一个复数序列，即 $$\begin{aligned}
+
+$$
+z_{k+1} = f(z_k)
+$$
+
+生成一个复数序列，即 
+
+$$
+\begin{aligned}
         z_0     & ,                                                                       \\
         z_1     & = f(z_0),                                                               \\
         z_2     & = f(z_1) = f(f(z_0)) = f\circ f(z_0),                                   \\
         z_3     & = f(z_2) = f(f(f(z_0))) = f\circ f \circ f(z_0),                        \\
                 & \vdots                                                                  \\
         z_{k+1} & = f(z_k) = \underbrace{f\circ f \circ \cdots \circ f}_{k\text{个}f}(z_0)
-    \end{aligned}$$ 这里使用了记号
+    \end{aligned}
+$$
+
+这里使用了记号
 
 ::: definition
 **定义 1**.
+
 $$
 f \circ g(\;\cdot\;) \overset{\mathrm {def} }{{}={}}f(g(\; \cdot\; )).
 $$
+
 :::
 
 在给定一个$z_0$后，我们自然会想考察$\lim_{k\to\infty} z_k$的敛散性。
@@ -65,18 +78,22 @@ $z_0$ 不在其中。Filled Julia
 
 ::: definition
 **定义 2**. 关于多项式$f$的 filled Julia 集$K(f)$
+
 $$
 {\displaystyle K(f) \overset{\mathrm {def} }{{}={}}\left\{z\in \mathbb {C} \mid f^{k}(z)\not \to \infty ~{\text{as}}~k\to \infty \right\}}.
 $$
+
 :::
 
 这里的$f^n(z)$与通常所指不同：
 
 ::: definition
 **定义 3**.
+
 $$
 f^n(\;\cdot\;) \overset{\mathrm {def} }{{}={}}\underbrace{f\circ f \circ \cdots \circ f}_{n\text{个}f}(\;\cdot\;).
 $$
+
 :::
 
 ### Fatou 集
@@ -87,9 +104,11 @@ $$
 
 ::: definition
 **定义 4**. 
+
 $$
 F = \hat{\mathbb{C}}\setminus J.
 $$
+
 :::
 
 ### Julia 集：Filled Julia 集的边界
@@ -108,9 +127,11 @@ $z_{k+1} = f(z_k) = z_k^2 + c$ 的迭代下不发散的参数 $c$ 的集合。
 
 ::: definition
 **定义 5**.
+
 $$
 \text{Mandelbrot 集} = \{c \mid f^k(z) \not\to \infty\  \text{as}\ k \to\infty \}
 $$
+
 :::
 
 因此，可以将 Mandelbrot 集看作 Julia 集的"地图"，它记录了每个 $c$
@@ -135,17 +156,21 @@ Julia 集的图像。 使我们得以直观感受到这一分形世界的无限�
 ::: proof
 *Proof.* 记 $z_{k+1} = f(z_k) = z^2_{k} +c$,  $|z_k|>2$.
 记 $\delta_k = |z_k| - 2 > 0$, 则
+
 $$
 |z_{k+1}| = |z_k^2 + c| \ge |z_k|^2 - |c| = 4 + 4 \delta_k + \delta^2_k - |c| = (4+\delta_k)\delta_k + 4 - |c| > 4 \delta_k + 2 = 3 \delta_k + |z_k|.
 $$
+
 由上式，当 $n>k$,
 有 $\delta_{n+1} = |z_{n+1}| - 2 > 4 \delta_n > \delta_n$, 从而
+
 $$
 \lim_{n\to\infty} |z_n| = \lim_{n\to\infty}\left( \sum_{i=k}^n |z_{i+1}| - |z_i |\right) + |z_k| >
         \lim_{n\to\infty}\left( \sum_{i=k}^n 3 \delta_i \right) + |z_k| >
         \lim_{n\to\infty}\left( n-k \right) \cdot 3 \delta_k  + |z_k|
         = \infty.
 $$
+
 ◻
 :::
 
@@ -160,21 +185,15 @@ $$
 
 ## 计算机绘制逻辑
 
-有了定理[1](#判断法){reference-type="ref"
-reference="判断法"}，我们便可以在计算机中通过以下方法画出一个近似的Julia集：
+有了定理[1](#判断法){reference-type="ref" reference="判断法"}，我们便可以在计算机中通过以下方法画出一个近似的Julia集：
 
 1.  在程序中创建一个数组来存储每个像素的迭代结果。该数组的大小与图像的分辨率相同，每个元素将存储该点在计算过程中迭代次数。
-    对于图像中的每个像素位置 $(i, j)$，我们将其线性地映射在复平面上的坐标 $z_0 = x + y\mathrm{i}$, $x \in[x_{\text{min}}, x_{\text{max}}],\ y\in[y_{\text{min}}, y_{\text{max}}]$。
-
+    对于图像中的每个像素位置 $(i, j)$，我们将其线性地映射在复平面上的坐标 $z_0 = x + y\mathrm{i}$, $x \in[x_{\text{min}}, x_{\text{max}}],\ y\in[y_{\text{min}}, y_{\text{max}}]$ 。
 2.  对于每个复数点 $z_0$，使用最大迭代次数的限制来判断该点是否发散。从
-    $z_0$ 开始迭代，按照公式 $z_{k+1} =  z_k^2 + c$ 不断更新 $z$
+    $z_0$ 开始迭代，按照公式 $z_{k+1} =  z_k^2 + c$ 不断更新 $z$ 
     的值。迭代的过程中：
-
-    -   如果 $z_k$ 的模，即 $|z_k|$，在某次迭代中超过
-        2，则根据定理[1](#判断法)便可知该点是发散的，停止迭代。
-
-    -   如果在最大迭代次数内 $|z_k|$ 从未超过
-        2，则该点被认为不发散，即属于 Filled Julia 集。
+    -   如果 $z_k$ 的模，即 $|z_k|$，在某次迭代中超过2，则根据定理[1](#判断法)便可知该点是发散的，停止迭代。
+    -   如果在最大迭代次数内 $|z_k|$ 从未超过 2，则该点被认为不发散，即属于 Filled Julia 集。
 
 根据以上方法， 我们便可以使用C++编写代码实现Julia 集的绘制了。
 
@@ -186,9 +205,7 @@ reference="判断法"}，我们便可以在计算机中通过以下方法画出�
 为此，我们引入颜色映射函数的概念。
 
 -   颜色映射函数的主要任务是将一组数值（例如温度、压力、密度等）转化为对应的颜色。这种转换使得复杂的数据能够通过颜色的变化被直观地呈现出来，便于观察和分析。
-
 -   根据数据的特点和展示需求，设计一个颜色梯度。例如，从冷到热、从低到高、从浅到深等。常见的颜色梯度包括蓝色到红色、绿色到黄色等。这些渐变色可以帮助人们快速识别数据中的趋势和异常。
-
 -   为了增强颜色的表现力，颜色映射函数常将数值范围划分为多个区间，每个区间内定义不同的颜色过渡方式。这种分段过渡使得颜色变化更加平滑和连贯，同时也能突出特定区间内的数据特征。
 
 ### 一个经典的颜色映射Jet
@@ -199,12 +216,11 @@ Jet颜色映射函数通常定义在闭区间 $[0, 1]$ 上，将输入标量 $t$
 映射到RGB颜色空间中的红色（R）、绿色（G）和蓝色（B）分量。
 
 $$
-\begin{bmatrix}
+    \begin{bmatrix}
         R(t) \\
         G(t) \\
         B(t)
-    \end{bmatrix}
-    =
+    \end{bmatrix} =
     \begin{bmatrix}
         \text{clamp}(1.5 - |4t - 3|, \ 0, \ 1) \\
         \text{clamp}(1.5 - |4t - 2|, \ 0, \ 1) \\
