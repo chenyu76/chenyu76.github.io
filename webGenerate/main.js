@@ -118,11 +118,11 @@ function folderTree(currentPath, depth = 0, startPath = null, lineD = 0) {
   return table;
 }
 
-function generateRecommend() {
+function generateRecommend(type = 0) {
   const listItems = recommend.map((item) => {
-    let dateStr;
+    let date;
     if (item.date > 10000000) {
-      dateStr = new Date(
+      date = new Date(
         String(item.date).replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
       ).toLocaleDateString("en-US", {
         day: "2-digit",
@@ -130,19 +130,34 @@ function generateRecommend() {
         year: "numeric",
       });
     } else if (item.date > 100000) {
-      dateStr = new Date(
+      date = new Date(
         String(item.date).replace(/(\d{4})(\d{2})/, "$1-$2"),
       ).toLocaleDateString("en-US", { month: "long", year: "numeric" });
     } else {
-      dateStr = "----";
+      date = "----";
     }
+    const title =
+      item.title || path.basename(item.link, path.extname(item.link));
+    const link = item.link;
+    const info = item.info || "";
+    //marked.parse(item.info)
 
-    const linkText =
-      item.info || path.basename(item.link, path.extname(item.link));
-    return `<li><a href="/${item.link}">${linkText}</a> <small>(${dateStr})</small></li>`;
+    switch (type) {
+      case 0:
+        return `<li><a href="/${link}">${title}</a> <small>(${date})</small></li>`;
+      case 1:
+        return `<hr><h2><a href="/${link}">${title}</a></h2>
+<small>${date}</small></br>
+<p style="text-indent:0">${info}</p>`;
+    }
   });
 
-  return `<ul>\n${listItems.join("\n")}\n</ul>`;
+  let wrap = [
+    ["<ul>", "</ul>"],
+    ["", ""],
+  ];
+
+  return `${wrap[type][0]}\n${listItems.join("\n")}\n${wrap[type][1]}`;
 }
 
 function randomArticleJsGen(jsPath, dirPath) {
@@ -182,9 +197,8 @@ function tocGen(dir) {
   const recommendation = generateRecommend();
 
   return `
-  <h2>文档索引</h2>
   ${tree}
-  <h2>推荐内容</h2>
+  <hr>
   ${recommendation}`;
 }
 
@@ -395,6 +409,7 @@ function traverseDirectory(dirPath) {
 
 const templateHTML = readTemplateHTML(path.join(__dirname, "template.html"));
 const rootPath = path.dirname(__dirname);
+// 生成makdown文件对应的html文件
 traverseDirectory(rootPath);
 // 文件生成完成后生成目录
 const tocContent = tocGen(rootPath);
@@ -408,15 +423,14 @@ generateHtmlFile(
   "",
   foldingFuncForTOC,
 );
-const recommendation = generateRecommend();
 generateHtmlFile(
   path.join(rootPath, "index.html"),
   templateHTML,
   "欢迎来到我的主页",
   "",
   `<h1>主页</h1>`,
-  `${convertMarkdown(path.join(rootPath, "README.md")).html}<br>
-${recommendation}`,
+  `${convertMarkdown(path.join(rootPath, "README.md")).html}<br> 
+  ${generateRecommend(1)}`,
   "",
   foldingFuncForTOC,
 );
