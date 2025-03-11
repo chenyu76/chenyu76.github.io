@@ -1,4 +1,4 @@
-# 使用Inkscape给LaTeX文档绘图时，在Inkscape中插入公式
+# 使用Inkscape给LaTeX文档绘图时在其中插入公式
 
 [Inkscape](https://inkscape.org/)是矢量图形编辑器，以自由软件许可发布与使用。该软件的开发目标是成为强大的绘图软件，且能完全遵循与支持XML、SVG及CSS等开放性的标准格式。
 
