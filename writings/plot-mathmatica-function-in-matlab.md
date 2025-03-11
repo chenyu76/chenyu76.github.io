@@ -93,10 +93,15 @@ for i = 1:length(funcNames)
 
     % 使用 jet 颜色图
     colormap(jet);
+
+    % 摄像机方位设置
+    view(az,el);   
        
     % 保存图片
     picname = [titleName, funcName, '.png'];
     print(fig, picname, '-dpng', '-r600');
+    % picname = [titleName, funcName, '.fig'];
+    % saveas(gcf, picname);
 
     toc
 end
