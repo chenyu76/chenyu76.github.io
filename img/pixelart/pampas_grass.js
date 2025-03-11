@@ -28,8 +28,8 @@ function homogeneous_cantilever_beam(start, k, L, EI, q = 1) {
 function draw_pampas_grass(start, ctx, p_color) {
   // 来自 sky_element.js 的随机生成函数randomNormal
   const length = Math.round(randomNormal(50, 10)); // 苇草长度
-  const bent = ((i) => (i > 0 ? i : 0.004))(randomNormal(0.004, 0.002)); // 苇草弯曲度
-  const branch_start = Math.round(length * randomNormal(0.4, 0.1)); // 苇草分支起始位置
+  const bent = ((i) => (i > 0 ? i : 0.0045))(randomNormal(0.0045, 0.002)); // 苇草弯曲度
+  const branch_start = Math.round(length * randomNormal(0.5, 0.1)); // 苇草分支起始位置
 
   start[1] += length * Math.random(0.1); // 苇草起始位置偏移
 

@@ -1,5 +1,11 @@
 const recommend = [
   {
+    date: 20250311,
+    link: "writings/latex-with-inkscape.html",
+    title: "使用Inkscape给LaTeX文档绘图时在其中插入公式",
+    info: "没有附带一个Inkscape教程",
+  },
+  {
     date: 20250206,
     link: "writings/new-year-new-theme.html",
     title: "新年新主题",
