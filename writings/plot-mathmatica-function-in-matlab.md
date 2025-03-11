@@ -15,7 +15,7 @@ ToMATLAB[f_, name_] :=
     StringReplace[
      ToString[InputForm[f]], {
       "Im" -> "imag", "Abs" -> "abs", "Sin" -> "sin", "Cos" -> "cos", 
-      "Conjugate" -> "conjugate", "Sqrt" -> "sqrt", "E" -> "exp(1)", 
+      "Conjugate" -> "conj", "Sqrt" -> "sqrt", "E" -> "exp(1)", 
       "I" -> "(1i)", "*" -> ".*", "^" -> ".^", "/" -> "./", 
       "[" -> "(", "]" -> ")"}] <> ");", "Text"];
 (* ToMATLAB[ <Function Symbol> , <MATLAB function name string> ] *)
@@ -28,7 +28,7 @@ ToMATLAB[ v1[x,t] , "v1" ]
 
 ## 在 Matlab 里面画图
 
-在与你导出的函数文件的同一目录下，创建任意名称的matlab脚本，包含以下内容，根据自己需求修改
+在与你导出的函数文件的同一目录下，创建任意合法名称的matlab脚本，包含以下内容，根据自己需求修改
 ```matlab
 % 调用函数
 draw_wave(-3, 3, -0.4, 0.4, 500, 'plot title', {'u1', 'u2', 'v'});
