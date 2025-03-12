@@ -101,7 +101,7 @@ for i = 1:length(funcNames)
     picname = [titleName, funcName, '.png'];
     print(fig, picname, '-dpng', '-r600');
     % picname = [titleName, funcName, '.fig'];
-    % saveas(gcf, picname);
+    % saveas(fig, picname);
 
     toc
 end
