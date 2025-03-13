@@ -136,7 +136,9 @@ function generateRecommend(type = 0, articles = {}) {
     } else {
       date = "----";
     }
-    const relativePathWithoutExt = item.link.replace(/\.html$/, "").replace(/^\//, "");
+    const relativePathWithoutExt = item.link
+      .replace(/\.html$/, "")
+      .replace(/^\//, "");
     const title =
       "title" in item
         ? item.title
@@ -422,8 +424,6 @@ const templateHTML = readTemplateHTML(path.join(__dirname, "template.html"));
 const rootPath = path.dirname(__dirname);
 // 生成makdown文件对应的html文件
 const articles = allMarkdown2Html(rootPath, templateHTML);
-console.log("Articles:");
-console.log(articles);
 // 文件生成完成后生成目录
 generateHtmlFile(
   path.join(rootPath, "toc.html"),
