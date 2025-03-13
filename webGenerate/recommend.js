@@ -2,13 +2,11 @@ const recommend = [
   {
     date: 20250311,
     link: "writings/latex-with-inkscape.html",
-    title: "使用Inkscape给LaTeX文档绘图时在其中插入公式",
     info: "没有附带一个Inkscape教程",
   },
   {
     date: 20250206,
     link: "writings/new-year-new-theme.html",
-    title: "新年新主题",
     info: "蛇年的全新网站样式！动态随机生成的js背景！",
   },
   {
@@ -30,8 +28,9 @@ const recommend = [
     info: "生成障碍阻碍对手的多人本地游戏，Godot练习",
   },
   //{date: 0, link: "摘抄/-随机一篇-.js", info: "看看随机一篇摘抄"},
-  { date: 202408, link: "writings/some-szu-LaTeX-template.html",
-    title: "深大的一些LaTeX文档模板",
+  { 
+    date: 202408, 
+    link: "writings/some-szu-LaTeX-template.html",
     },
   {
     date: 20240620,
