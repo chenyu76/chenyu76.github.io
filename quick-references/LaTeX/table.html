@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="zh_cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LaTeX 表格速查</title>
+
+    <!-- css样式 -->
+    <link rel="stylesheet" href="/styles.css" />
+    <!-- 标签页图标 -->
+    <link rel="icon" href="/favicon.png" type="image/png" />
+
+    <!-- 背景css -->
+    <link rel="stylesheet" href="/img/pixelart/styles.css" />
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+  </head>
+
+  <body>
+    <!-- 背景js -->
+    <div id="pixel-art">
+      <div id="pixel-art-background"></div>
+      <div id="pixel-art-midground"></div>
+      <div id="pixel-art-foreground"></div>
+    </div>
+    <script src="/img/pixelart/imgMatrix.js"></script>
+    <script src="/img/pixelart/sky_element.js"></script>
+    <script src="/img/pixelart/pampas_grass.js"></script>
+    <script src="/img/pixelart/script.js"></script>
+
+    <div id="title-container">
+      <div id="spacer"></div>
+      <div id="top-buttons-wrapper" class="top-buttons">
+        <a href="/toc.html" title="文档索引" class="fade-in"
+          ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
+        ><a href="/index.html" title="返回主页" class="fade-in"
+          ><img src="/img/icon/home.svg" alt="Home" class="icon" /></a
+        ><a
+          href="https://github.com/chenyu76"
+          target="_blank"
+          title="跳转到 GitHub"
+          class="fade-in"
+          ><img src="/img/icon/github.svg" alt="Github" class="icon" /></a
+        ><a href="/About.html" title="关于" class="fade-in"
+          ><img src="/img/icon/info.svg" alt="Info" class="icon"
+        /></a>
+      </div>
+      <div id="heading"><h3>quick-references/LaTeX</h3><h1>LaTeX 表格速查</h1></div>
+    </div>
+    <div id="anime-spacer" class="shrinked"></div>
+    <div id="content-wrapper-bg">
+      <div id="content-wrapper">
+        <div id="content"><h2>基本设置</h2>
+<pre><code class="hljs language-latex"><span class="hljs-keyword">\usepackage</span>{booktabs}   <span class="hljs-comment">% 三线表</span>
+<span class="hljs-keyword">\usepackage</span>{multirow}   <span class="hljs-comment">% 合并多行</span>
+<span class="hljs-keyword">\usepackage</span>{makecell}   <span class="hljs-comment">% 单元格内换行</span>
+</code></pre><h2>基础表格加边框</h2>
+<pre><code class="hljs language-latex"><span class="hljs-keyword">\begin</span>{tabular}{|l|c|r|}
+  <span class="hljs-keyword">\hline</span>
+  Header1 <span class="hljs-built_in">&amp;</span> Header2 <span class="hljs-built_in">&amp;</span> Header3 <span class="hljs-keyword">\\</span>
+  <span class="hljs-keyword">\hline</span>
+  Left    <span class="hljs-built_in">&amp;</span> Center  <span class="hljs-built_in">&amp;</span> Right   <span class="hljs-keyword">\\</span>
+  <span class="hljs-keyword">\hline</span><span class="hljs-keyword">\hline</span>
+  Text    <span class="hljs-built_in">&amp;</span> 42      <span class="hljs-built_in">&amp;</span> Text    <span class="hljs-keyword">\\</span>
+  <span class="hljs-keyword">\hline</span>
+<span class="hljs-keyword">\end</span>{tabular}
+</code></pre><p><strong>说明</strong>：<code>|</code> 定义列边框，<code>\hline</code> 添加水平线，<code>\hline\hline</code> 创建双横线</p>
+<hr>
+<h2><code>booktabs</code> 三线表</h2>
+<pre><code class="hljs language-latex"><span class="hljs-keyword">\begin</span>{tabular}{llr}
+  <span class="hljs-keyword">\toprule</span>
+  <span class="hljs-keyword">\textbf</span>{Item} <span class="hljs-built_in">&amp;</span> <span class="hljs-keyword">\textbf</span>{Category} <span class="hljs-built_in">&amp;</span> <span class="hljs-keyword">\textbf</span>{Price} <span class="hljs-keyword">\\</span>
+  <span class="hljs-keyword">\midrule</span>
+  Apple  <span class="hljs-built_in">&amp;</span> Fruit  <span class="hljs-built_in">&amp;</span> 1.50 <span class="hljs-keyword">\\</span>
+  Bread  <span class="hljs-built_in">&amp;</span> Bakery <span class="hljs-built_in">&amp;</span> 3.20 <span class="hljs-keyword">\\</span>
+  <span class="hljs-keyword">\bottomrule</span>
+<span class="hljs-keyword">\end</span>{tabular}
+</code></pre><p><strong>特点</strong>：</p>
+<ul>
+<li><code>\toprule</code>/<code>\midrule</code>/<code>\bottomrule</code> 创建专业间距</li>
+<li>无竖线，更简洁的学术风格</li>
+</ul>
+<h3><code>booktabs</code> 的 <code>\cmidrule</code> 高级用法</h3>
+<pre><code class="hljs language-latex"><span class="hljs-keyword">\begin</span>{tabular}{ccccc}
+  <span class="hljs-keyword">\toprule</span>
+  <span class="hljs-built_in">&amp;</span> <span class="hljs-keyword">\multicolumn</span>{4}{c}{<span class="hljs-keyword">\textbf</span>{带修剪的跨列横线}} <span class="hljs-keyword">\\</span>
+  <span class="hljs-keyword">\cmidrule</span>(r{4pt}){2-4}    <span class="hljs-comment">% 右侧留4pt空白</span>
+  <span class="hljs-keyword">\cmidrule</span>(l{0.5em}){5-5} <span class="hljs-comment">% 左侧留0.5em空白</span>
+  A <span class="hljs-built_in">&amp;</span> B <span class="hljs-built_in">&amp;</span> C <span class="hljs-built_in">&amp;</span> D <span class="hljs-built_in">&amp;</span> E <span class="hljs-keyword">\\</span>
+  <span class="hljs-keyword">\midrule</span>
+  ...
+<span class="hljs-keyword">\end</span>{tabular}
+</code></pre><p><strong>参数解析</strong>：</p>
+<ul>
+<li><code>(r{长度})</code> / <code>(l{长度})</code>：在横线右/左侧添加指定长度的空白</li>
+<li><code>(lr{长度})</code>：两侧同时修剪</li>
+<li>常用于避免合并标题的横线与其他列线接触</li>
+</ul>
+<h2>单元格多行内容</h2>
+<pre><code class="hljs language-latex"><span class="hljs-comment">% 方法1：makecell宏包</span>
+<span class="hljs-keyword">\begin</span>{tabular}{|l|l|}
+  <span class="hljs-keyword">\hline</span>
+  <span class="hljs-keyword">\makecell</span>{Multi-line <span class="hljs-keyword">\\</span> content} <span class="hljs-built_in">&amp;</span> 自动换行 <span class="hljs-keyword">\\</span>
+  <span class="hljs-keyword">\hline</span>
+<span class="hljs-keyword">\end</span>{tabular}
+
+<span class="hljs-comment">% 方法2：shortstack</span>
+<span class="hljs-keyword">\begin</span>{tabular}{|l|l|}
+  <span class="hljs-keyword">\hline</span>
+  <span class="hljs-keyword">\shortstack</span>{Alternative <span class="hljs-keyword">\\</span> method} <span class="hljs-built_in">&amp;</span> 内容 <span class="hljs-keyword">\\</span>
+  <span class="hljs-keyword">\hline</span>
+<span class="hljs-keyword">\end</span>{tabular}
+</code></pre><hr>
+<h2>合并单元格</h2>
+<h3>横向合并 (multicolumn)</h3>
+<pre><code class="hljs language-latex"><span class="hljs-keyword">\begin</span>{tabular}{|l|l|l|}
+  <span class="hljs-keyword">\hline</span>
+  <span class="hljs-keyword">\multicolumn</span>{2}{|c|}{合并2列} <span class="hljs-built_in">&amp;</span> 单独列 <span class="hljs-keyword">\\</span>
+  <span class="hljs-keyword">\hline</span>
+  Col1 <span class="hljs-built_in">&amp;</span> Col2 <span class="hljs-built_in">&amp;</span> Col3 <span class="hljs-keyword">\\</span>
+  <span class="hljs-keyword">\hline</span>
+<span class="hljs-keyword">\end</span>{tabular}
+</code></pre><h3>纵向合并 (multirow)</h3>
+<pre><code class="hljs language-latex"><span class="hljs-keyword">\begin</span>{tabular}{|l|l|}
+  <span class="hljs-keyword">\hline</span>
+  <span class="hljs-keyword">\multirow</span>{2}{*}{合并2行} <span class="hljs-built_in">&amp;</span> 行1-列2 <span class="hljs-keyword">\\</span>
+                          <span class="hljs-built_in">&amp;</span> 行2-列2 <span class="hljs-keyword">\\</span>
+  <span class="hljs-keyword">\hline</span>
+<span class="hljs-keyword">\end</span>{tabular}
+</code></pre><h3>组合合并</h3>
+<pre><code class="hljs language-latex"><span class="hljs-keyword">\begin</span>{tabular}{|c|c|c|}
+  <span class="hljs-keyword">\hline</span>
+  <span class="hljs-keyword">\multirow</span>{2}{*}{合并2行} <span class="hljs-built_in">&amp;</span> <span class="hljs-keyword">\multicolumn</span>{2}{c|}{合并2列} <span class="hljs-keyword">\\</span>
+  <span class="hljs-keyword">\cline</span>{2-3}             <span class="hljs-built_in">&amp;</span> 子列1 <span class="hljs-built_in">&amp;</span> 子列2 <span class="hljs-keyword">\\</span>
+  <span class="hljs-keyword">\hline</span>
+  Data1 <span class="hljs-built_in">&amp;</span> Data2 <span class="hljs-built_in">&amp;</span> Data3 <span class="hljs-keyword">\\</span>
+  <span class="hljs-keyword">\hline</span>
+<span class="hljs-keyword">\end</span>{tabular}
+</code></pre><h2>最佳实践</h2>
+<ol>
+<li>使用 <code>\addlinespace</code> 代替 <code>\hline</code> 增加行间距</li>
+<li>复杂表格推荐 <code>tabularx</code> 自动调整列宽</li>
+<li>用<code>table</code>环境配合<code>\caption{}</code> 和 <code>\label{}</code> 添加标题与引用</li>
+<li>合并时注意列数匹配（<code>\multicolumn{2}</code>需占用2列位置）</li>
+</ol>
+<h2>对齐方式</h2>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>l</code></td>
+<td>左对齐</td>
+<td><code>\begin{tabular}{l}</code></td>
+</tr>
+<tr>
+<td><code>c</code></td>
+<td>居中对齐</td>
+<td><code>\begin{tabular}{c}</code></td>
+</tr>
+<tr>
+<td><code>r</code></td>
+<td>右对齐</td>
+<td><code>\begin{tabular}{r}</code></td>
+</tr>
+<tr>
+<td><code>p{}</code></td>
+<td>固定宽度自动换行</td>
+<td><code>p{3cm}</code></td>
+</tr>
+</tbody></table>
+<h2><code>table</code> 环境</h2>
+<pre><code class="hljs language-latex"><span class="hljs-keyword">\begin</span>{table}[htbp]
+  <span class="hljs-keyword">\centering</span>                <span class="hljs-comment">% 表格居中</span>
+  <span class="hljs-keyword">\caption</span>{表格标题}          <span class="hljs-comment">% 添加标题</span>
+  <span class="hljs-keyword">\label</span>{tab:example}       <span class="hljs-comment">% 添加引用标签</span>
+  <span class="hljs-keyword">\begin</span>{tabular}{ccc}      <span class="hljs-comment">% 表格内容</span>
+    ...
+  <span class="hljs-keyword">\end</span>{tabular}
+<span class="hljs-keyword">\end</span>{table}
+</code></pre><p><strong>核心功能</strong>：</p>
+<ul>
+<li>浮动体环境，LaTeX 自动优化表格位置（<code>[htbp]</code>参数控制优先级）<ul>
+<li>使用<code>float</code>宏包的<code>[H]</code>选项强制控制表格位置在原地</li>
+</ul>
+</li>
+<li>必须配合 <code>\caption</code> 生成带编号的表格标题</li>
+<li>通过 <code>\label</code> 实现交叉引用</li>
+</ul>
+<h2><code>tabularx</code> 智能表格</h2>
+<pre><code class="hljs language-latex"><span class="hljs-keyword">\usepackage</span>{tabularx}
+
+<span class="hljs-keyword">\begin</span>{tabularx}{<span class="hljs-keyword">\textwidth</span>}{&gt;{<span class="hljs-keyword">\raggedright</span>}X X &gt;{<span class="hljs-keyword">\centering</span>}X}
+  自动换行长文本 <span class="hljs-built_in">&amp;</span> 常规内容 <span class="hljs-built_in">&amp;</span> 居中对齐列 <span class="hljs-keyword">\\</span>
+  This column will wrap text automatically <span class="hljs-built_in">&amp;</span> Short text <span class="hljs-built_in">&amp;</span> Centered data <span class="hljs-keyword">\\</span>
+<span class="hljs-keyword">\end</span>{tabularx}
+</code></pre><p><strong>核心特性</strong>：</p>
+<ul>
+<li>必须指定表格总宽度（如 <code>\textwidth</code>）</li>
+<li>使用 <code>X</code> 列格式自动计算列宽</li>
+<li>支持列格式修饰符：<br><code>&gt;{\raggedright}</code> 左对齐 | <code>&gt;{\centering}</code> 居中 | <code>&gt;{\raggedleft}</code> 右对齐</li>
+</ul>
+<hr>
+<h2>全局增大表格行距</h2>
+<h3>方法1：调整行高系数</h3>
+<pre><code class="hljs language-latex"><span class="hljs-keyword">\renewcommand</span>{<span class="hljs-keyword">\arraystretch</span>}{1.5} <span class="hljs-comment">% 默认1.0，1.5为1.5倍行距</span>
+<span class="hljs-keyword">\begin</span>{tabular}{ccc}
+  ...
+<span class="hljs-keyword">\end</span>{tabular}
+</code></pre><h3>方法2：<code>makecell</code> 宏包</h3>
+<pre><code class="hljs language-latex"><span class="hljs-keyword">\usepackage</span>{makecell}
+<span class="hljs-keyword">\setcellgapes</span>{4pt}   <span class="hljs-comment">% 设置单元格间距</span>
+<span class="hljs-keyword">\makegapedcells</span>      <span class="hljs-comment">% 应用间距设置</span>
+<span class="hljs-keyword">\begin</span>{tabular}{ccc}
+  ...
+<span class="hljs-keyword">\end</span>{tabular}
+</code></pre><h3>方法3：<code>setspace</code> 宏包（影响整个文档）</h3>
+<pre><code class="hljs language-latex"><span class="hljs-keyword">\usepackage</span>{setspace}
+<span class="hljs-keyword">\onehalfspacing</span>      <span class="hljs-comment">% 1.5倍行距</span>
+<span class="hljs-keyword">\doublespacing</span>       <span class="hljs-comment">% 2倍行距</span>
+</code></pre></div>
+        <div id="footnote"></div>
+      </div>
+      <div class="bottom-button">
+        <button onclick="scrollToTop()" title="滚动到顶部">
+          <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+        </button>
+      </div>
+    </div>
+    <script src="/script.js"></script>
+    
+<script>
+document.querySelectorAll('pre').forEach(pre => {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'COPY';
+  
+  // 添加到DOM
+  pre.prepend(btn);
+
+  // 绑定点击事件
+  btn.addEventListener('click', async () => {
+    try {
+      const code = pre.querySelector('code').innerText;
+      await navigator.clipboard.writeText(code);
+      
+      btn.textContent = ' ✓ ';
+      setTimeout(() => btn.textContent = 'COPY', 1500);
+    } catch (err) {
+      btn.textContent = 'FAIL！';
+      btn.style.color = '#dc3545';
+    }
+  });
+});
+</script>
+
+  </body>
+</html>

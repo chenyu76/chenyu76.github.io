@@ -85,7 +85,7 @@
 <hr><h2><a href="/writings/latex-with-inkscape.html">使用Inkscape给LaTeX文档绘图时在其中插入公式</a></h2>
 <small>March 11, 2025</small></br>
 <p style="text-indent:0">没有附带一个Inkscape教程</p>
-<hr><h2><a href="/writings/new-year-new-theme.html">新年新主题</a></h2>
+<hr><h2><a href="/writings/new-year-new-theme.html">新年新主题！</a></h2>
 <small>February 06, 2025</small></br>
 <p style="text-indent:0">蛇年的全新网站样式！动态随机生成的js背景！</p>
 <hr><h2><a href="/writings/julia-set.pdf">Julia集的计算机艺术</a></h2>
@@ -97,7 +97,7 @@
 <hr><h2><a href="/program/TractorBattle3D/readme.html">一个对抗游戏</a></h2>
 <small>August 2024</small></br>
 <p style="text-indent:0">生成障碍阻碍对手的多人本地游戏，Godot练习</p>
-<hr><h2><a href="/writings/some-szu-LaTeX-template.html">深大的一些LaTeX文档模板</a></h2>
+<hr><h2><a href="/writings/some-szu-LaTeX-template.html">some SZU LaTeX templates</a></h2>
 <small>August 2024</small></br>
 <p style="text-indent:0"></p>
 <hr><h2><a href="/writings/about-the-website.html">关于本站</a></h2>
@@ -114,27 +114,5 @@
     </div>
     <script src="/script.js"></script>
     
-<script>
-function toggleNextNextVis(self) {
-  var content = self.nextElementSibling.nextElementSibling;
-
-  if (!content.classList.contains("show")) {
-    // 开始显示内容，添加类名 'show' 以触发动画
-    content.style.display = "inline-block";
-    setTimeout(function () {
-      content.classList.add("show");
-    }, 10);
-    self.textContent = "显示更少";
-  } else {
-    // 删除类名 'show' 并设置过渡动画
-    content.classList.remove("show");
-    setTimeout(function () {
-      content.style.display = "none"; // 在动画结束后设置 display: none
-    }, 310);
-    self.textContent = "显示全部";
-  }
-}
-</script>
-
   </body>
 </html>

@@ -28,7 +28,7 @@ Inkscape会在你选择的路径下生成一个与pdf名称相同的`.pdf_tex`�
 
 ### 导出效果一例
 
-<img src="./assets/inkscape_output.svg" style="zoom: 100%;" />
+<img src="./assets/inkscape_output.svg" style="zoom: 50%;" />
 
 ## 注意事项
 
@@ -43,7 +43,7 @@ Inkscape会在你选择的路径下生成一个与pdf名称相同的`.pdf_tex`�
 
 ### 路径要求
 
-如果`.pdf`文件和`.pdf_tex`不与编译使用的`.tex`在同一目录下，需要包含以下宏包：
+如果`.pdf`和`.pdf_tex`文件不与编译使用的`.tex`在同一目录下，需要包含以下宏包：
 ```latex
 \usepackage{import}
 ```
@@ -70,7 +70,7 @@ Inkscape会在你选择的路径下生成一个与pdf名称相同的`.pdf_tex`�
 ```
 注意，图片中的文本大小不会随绘图元素的缩放而缩放。如果你不希望如此，使用
 ```latex
-\resizebox{<desired width>}{!}{\input{<filename>.pdf_75mmtex}}
+\resizebox{<desired width>}{!}{\input{<filename>.pdf_tex}}
 ```
 代替。
 

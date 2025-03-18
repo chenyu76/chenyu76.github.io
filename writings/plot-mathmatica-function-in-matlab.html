@@ -136,10 +136,15 @@ t = lrt:((urt - lrt)/stps):urt;
 
     <span class="hljs-comment">% 使用 jet 颜色图</span>
     colormap(jet);
+
+    <span class="hljs-comment">% 摄像机方位设置</span>
+    view(az,el);   
        
     <span class="hljs-comment">% 保存图片</span>
     picname = [titleName, funcName, <span class="hljs-string">&#x27;.png&#x27;</span>];
     print(fig, picname, <span class="hljs-string">&#x27;-dpng&#x27;</span>, <span class="hljs-string">&#x27;-r600&#x27;</span>);
+    <span class="hljs-comment">% picname = [titleName, funcName, &#x27;.fig&#x27;];</span>
+    <span class="hljs-comment">% saveas(fig, picname);</span>
 
     toc
 <span class="hljs-keyword">end</span>

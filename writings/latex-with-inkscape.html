@@ -66,7 +66,7 @@
 <pre><code class="hljs language-latex"><span class="hljs-keyword">\input</span>{&lt;filename&gt;.pdf<span class="hljs-built_in">_</span>tex}
 </code></pre><p>插入绘制好的图片。（如有需要，你也可以在外围套上figure环境并附上<code>\caption</code>）</p>
 <h3>导出效果一例</h3>
-<img src="./assets/inkscape_output.svg" style="zoom: 100%;" />
+<img src="./assets/inkscape_output.svg" style="zoom: 50%;" />
 
 <h2>注意事项</h2>
 <h3>宏包要求</h3>
@@ -74,7 +74,7 @@
 <pre><code class="hljs language-latex"><span class="hljs-keyword">\usepackage</span>{xcolor}
 <span class="hljs-keyword">\usepackage</span>{graphicx}
 </code></pre><h3>路径要求</h3>
-<p>如果<code>.pdf</code>文件和<code>.pdf_tex</code>不与编译使用的<code>.tex</code>在同一目录下，需要包含以下宏包：</p>
+<p>如果<code>.pdf</code>和<code>.pdf_tex</code>文件不与编译使用的<code>.tex</code>在同一目录下，需要包含以下宏包：</p>
 <pre><code class="hljs language-latex"><span class="hljs-keyword">\usepackage</span>{import}
 </code></pre><p>并使用</p>
 <pre><code class="hljs language-latex"><span class="hljs-keyword">\import</span>{&lt;path to file&gt;}{&lt;filename&gt;.pdf<span class="hljs-built_in">_</span>tex}
@@ -89,7 +89,7 @@
 <pre><code class="hljs language-latex"><span class="hljs-keyword">\def</span><span class="hljs-keyword">\svgwidth</span>{&lt;desired width&gt;}
 <span class="hljs-keyword">\input</span>{&lt;filename&gt;.pdf<span class="hljs-built_in">_</span>tex}
 </code></pre><p>注意，图片中的文本大小不会随绘图元素的缩放而缩放。如果你不希望如此，使用</p>
-<pre><code class="hljs language-latex"><span class="hljs-keyword">\resizebox</span>{&lt;desired width&gt;}{!}{<span class="hljs-keyword">\input</span>{&lt;filename&gt;.pdf<span class="hljs-built_in">_</span>75mmtex}}
+<pre><code class="hljs language-latex"><span class="hljs-keyword">\resizebox</span>{&lt;desired width&gt;}{!}{<span class="hljs-keyword">\input</span>{&lt;filename&gt;.pdf<span class="hljs-built_in">_</span>tex}}
 </code></pre><p>代替。</p>
 <p>For more information, please see info/svg-inkscape on <a href="https://ctan.org/tex-archive/info/svg-inkscape?lang=en">CTAN</a>:</p>
 </div>
