@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="zh_cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rust 中进行函数式编程</title>
+
+    <!-- css样式 -->
+    <link rel="stylesheet" href="/styles.css" />
+    <!-- 标签页图标 -->
+    <link rel="icon" href="/favicon.png" type="image/png" />
+
+    <!-- 背景css -->
+    <link rel="stylesheet" href="/img/pixelart/styles.css" />
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+  </head>
+
+  <body>
+    <!-- 背景js -->
+    <div id="pixel-art">
+      <div id="pixel-art-background"></div>
+      <div id="pixel-art-midground"></div>
+      <div id="pixel-art-foreground"></div>
+    </div>
+    <script src="/img/pixelart/imgMatrix.js"></script>
+    <script src="/img/pixelart/sky_element.js"></script>
+    <script src="/img/pixelart/pampas_grass.js"></script>
+    <script src="/img/pixelart/script.js"></script>
+
+    <div id="title-container">
+      <div id="spacer"></div>
+      <div id="top-buttons-wrapper" class="top-buttons">
+        <a href="/toc.html" title="文档索引" class="fade-in"
+          ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
+        ><a href="/index.html" title="返回主页" class="fade-in"
+          ><img src="/img/icon/home.svg" alt="Home" class="icon" /></a
+        ><a
+          href="https://github.com/chenyu76"
+          target="_blank"
+          title="跳转到 GitHub"
+          class="fade-in"
+          ><img src="/img/icon/github.svg" alt="Github" class="icon" /></a
+        ><a href="/About.html" title="关于" class="fade-in"
+          ><img src="/img/icon/info.svg" alt="Info" class="icon"
+        /></a>
+      </div>
+      <div id="heading"><h3>quick-references/rust</h3><h1>Rust 中进行函数式编程</h1></div>
+    </div>
+    <div id="anime-spacer" class="shrinked"></div>
+    <div id="content-wrapper-bg">
+      <div id="content-wrapper">
+        <div id="content"><p>在 Rust 中进行函数式编程（Functional Programming, FP）是可行的，尽管 Rust 不是纯函数式语言（如 Haskell），但它提供了许多函数式编程的特性。</p>
+<h2>1. <strong>使用不可变数据（Immutability）</strong></h2>
+<p>函数式编程强调不可变性，Rust 默认变量是不可变的（除非用 <code>mut</code> 声明）。</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">x</span> = <span class="hljs-number">5</span>;      <span class="hljs-comment">// 不可变</span>
+<span class="hljs-comment">// x = 6;       // 错误，不能修改不可变变量</span>
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">y</span> = <span class="hljs-number">10</span>; <span class="hljs-comment">// 可变</span>
+y = <span class="hljs-number">20</span>;         <span class="hljs-comment">// 可以修改</span>
+</code></pre><ul>
+<li>尽量使用不可变变量（<code>let</code> 不加 <code>mut</code>）。</li>
+<li>需要修改数据时，考虑返回新数据而不是原地修改。</li>
+</ul>
+<h2>2. <strong>高阶函数（Higher-Order Functions）</strong></h2>
+<p>Rust 支持将函数作为参数或返回值（高阶函数）。</p>
+<pre><code class="hljs language-rust"><span class="hljs-comment">// 函数作为参数</span>
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">apply_twice</span>(f: <span class="hljs-keyword">impl</span> <span class="hljs-title class_">Fn</span>(<span class="hljs-type">i32</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">i32</span>, x: <span class="hljs-type">i32</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">i32</span> {
+    <span class="hljs-title function_ invoke__">f</span>(<span class="hljs-title function_ invoke__">f</span>(x))
+}
+
+<span class="hljs-keyword">let</span> <span class="hljs-variable">square</span> = |x| x * x;
+<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, <span class="hljs-title function_ invoke__">apply_twice</span>(square, <span class="hljs-number">3</span>)); <span class="hljs-comment">// 输出 81 (3^2^2)</span>
+</code></pre><h2>3. <strong>闭包（Closures）</strong></h2>
+<p>闭包（匿名函数）可以捕获环境变量，是函数式编程的重要工具。</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">factor</span> = <span class="hljs-number">2</span>;
+<span class="hljs-keyword">let</span> <span class="hljs-variable">multiply</span> = |x| x * factor; <span class="hljs-comment">// 捕获外部的 factor</span>
+<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, <span class="hljs-title function_ invoke__">multiply</span>(<span class="hljs-number">5</span>));   <span class="hljs-comment">// 输出 10</span>
+</code></pre><p><strong>闭包类型</strong>：</p>
+<ul>
+<li><code>Fn</code>：不可变借用（<code>&amp;T</code>）。</li>
+<li><code>FnMut</code>：可变借用（<code>&amp;mut T</code>）。</li>
+<li><code>FnOnce</code>：获取所有权（<code>T</code>）。</li>
+</ul>
+<h2>4. <strong>迭代器（Iterators）</strong></h2>
+<p>Rust 的迭代器是惰性的（lazy），支持链式调用，类似函数式语言的 <code>map</code>/<code>filter</code>/<code>reduce</code>。</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">numbers</span> = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>];
+
+<span class="hljs-comment">// 链式调用：过滤 -&gt; 映射 -&gt; 求和</span>
+<span class="hljs-keyword">let</span> <span class="hljs-variable">sum</span>: <span class="hljs-type">i32</span> = numbers.<span class="hljs-title function_ invoke__">iter</span>()
+    .<span class="hljs-title function_ invoke__">filter</span>(|&amp;x| x % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>)  <span class="hljs-comment">// 过滤偶数</span>
+    .<span class="hljs-title function_ invoke__">map</span>(|x| x * x)           <span class="hljs-comment">// 平方</span>
+    .<span class="hljs-title function_ invoke__">sum</span>();                   <span class="hljs-comment">// 求和</span>
+
+<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, sum); <span class="hljs-comment">// 输出 2*2 + 4*4 = 20</span>
+</code></pre><p><strong>常用迭代器方法</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>map</code></td>
+<td>转换元素</td>
+<td>`.map(</td>
+</tr>
+<tr>
+<td><code>filter</code></td>
+<td>过滤元素</td>
+<td>`.filter(</td>
+</tr>
+<tr>
+<td><code>fold</code></td>
+<td>累积计算（reduce）</td>
+<td>`.fold(0,</td>
+</tr>
+<tr>
+<td><code>collect</code></td>
+<td>收集为集合</td>
+<td><code>.collect::&lt;Vec&lt;_&gt;&gt;()</code></td>
+</tr>
+<tr>
+<td><code>take</code></td>
+<td>取前 n 个元素</td>
+<td><code>.take(5)</code></td>
+</tr>
+</tbody></table>
+<h2>5. <strong>模式匹配（Pattern Matching）</strong></h2>
+<p>Rust 的 <code>match</code> 和 <code>if let</code> 是强大的模式匹配工具。</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">factorial</span>(n: <span class="hljs-type">u32</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">u32</span> {
+    <span class="hljs-keyword">match</span> n {
+        <span class="hljs-number">0</span> | <span class="hljs-number">1</span> =&gt; <span class="hljs-number">1</span>,          <span class="hljs-comment">// 匹配 0 或 1</span>
+        _ =&gt; n * <span class="hljs-title function_ invoke__">factorial</span>(n - <span class="hljs-number">1</span>), <span class="hljs-comment">// 递归</span>
+    }
+}
+
+<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, <span class="hljs-title function_ invoke__">factorial</span>(<span class="hljs-number">5</span>)); <span class="hljs-comment">// 输出 120</span>
+</code></pre><p><code>if let</code> 表达式是 <code>match</code> 的一个语法糖，用于只关心一个特定模式的匹配。</p>
+<p>它允许你简洁地检查一个值是否匹配某个模式，如果匹配则执行相应的代码。</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">process_option</span>(option: <span class="hljs-type">Option</span>&lt;<span class="hljs-type">i32</span>&gt;) {
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-variable">Some</span>(value) = option {
+        <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;Value: {}&quot;</span>, value);
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;No value&quot;</span>);
+    }
+}
+</code></pre><h2>6. <strong>Option 和 Result 的链式处理</strong></h2>
+<p>Rust 的 <code>Option</code> 和 <code>Result</code> 支持函数式风格的组合操作：</p>
+<pre><code class="hljs language-rust"><span class="hljs-comment">// Option 的链式处理</span>
+<span class="hljs-keyword">let</span> <span class="hljs-variable">result</span> = <span class="hljs-title function_ invoke__">Some</span>(<span class="hljs-number">5</span>)
+    .<span class="hljs-title function_ invoke__">map</span>(|x| x * <span class="hljs-number">2</span>)      <span class="hljs-comment">// Some(10)</span>
+    .<span class="hljs-title function_ invoke__">filter</span>(|x| x &gt; <span class="hljs-number">8</span>)   <span class="hljs-comment">// Some(10)</span>
+    .<span class="hljs-title function_ invoke__">and_then</span>(|x| <span class="hljs-title function_ invoke__">Some</span>(x + <span class="hljs-number">1</span>)); <span class="hljs-comment">// Some(11)</span>
+
+<span class="hljs-comment">// Result 的错误处理</span>
+<span class="hljs-keyword">let</span> <span class="hljs-variable">parse_result</span> = <span class="hljs-string">&quot;123&quot;</span>
+    .parse::&lt;<span class="hljs-type">i32</span>&gt;()
+    .<span class="hljs-title function_ invoke__">map</span>(|x| x * <span class="hljs-number">2</span>)
+    .<span class="hljs-title function_ invoke__">map_err</span>(|e| <span class="hljs-built_in">format!</span>(<span class="hljs-string">&quot;Parse failed: {}&quot;</span>, e));
+</code></pre><h2>7. <strong>递归（Recursion）</strong></h2>
+<p>函数式编程常用递归替代循环，但 Rust 默认不优化递归（注意可能会栈溢出）</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">sum_list</span>(list: &amp;[<span class="hljs-type">i32</span>]) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">i32</span> {
+    <span class="hljs-keyword">match</span> list {
+        [] =&gt; <span class="hljs-number">0</span>,
+        [head, tail @ ..] =&gt; head + <span class="hljs-title function_ invoke__">sum_list</span>(tail), <span class="hljs-comment">// 递归</span>
+    }
+}
+
+<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, <span class="hljs-title function_ invoke__">sum_list</span>(&amp;[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])); <span class="hljs-comment">// 输出 6</span>
+</code></pre><h2>8. <strong>纯函数（Pure Functions）</strong></h2>
+<p>纯函数（无副作用、输出仅依赖输入）在 Rust 中可通过以下方式实现：</p>
+<ul>
+<li>避免修改外部状态。</li>
+<li>不适用 <code>static mut</code> 或全局可变变量。</li>
+<li>返回新数据而非修改输入。</li>
+</ul>
+<h2>9. <strong>函数组合（Function Composition）</strong></h2>
+<p>Rust 没有原生 <code>&gt;&gt;</code> 或 <code>&lt;&lt;</code> 组合操作符，但可以手动实现：</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">compose</span>&lt;A, B, C&gt;(f: <span class="hljs-keyword">impl</span> <span class="hljs-title class_">Fn</span>(B) <span class="hljs-punctuation">-&gt;</span> C, g: <span class="hljs-keyword">impl</span> <span class="hljs-title class_">Fn</span>(A) <span class="hljs-punctuation">-&gt;</span> B) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-keyword">impl</span> <span class="hljs-title class_">Fn</span>(A) <span class="hljs-punctuation">-&gt;</span> C {
+    <span class="hljs-keyword">move</span> |x| <span class="hljs-title function_ invoke__">f</span>(<span class="hljs-title function_ invoke__">g</span>(x))
+}
+
+<span class="hljs-keyword">let</span> <span class="hljs-variable">add_one</span> = |x| x + <span class="hljs-number">1</span>;
+<span class="hljs-keyword">let</span> <span class="hljs-variable">square</span> = |x| x * x;
+<span class="hljs-keyword">let</span> <span class="hljs-variable">add_then_square</span> = <span class="hljs-title function_ invoke__">compose</span>(square, add_one);
+<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, <span class="hljs-title function_ invoke__">add_then_square</span>(<span class="hljs-number">2</span>)); <span class="hljs-comment">// (2+1)^2 = 9</span>
+</code></pre><h2>10. <strong>不可变数据结构</strong></h2>
+<p>使用 <code>Arc</code>、<code>Rc</code> 或第三方库（如 <code>im</code>）实现持久化数据结构（Persistent Data Structures），避免拷贝开销。</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">use</span> std::sync::Arc;
+<span class="hljs-keyword">let</span> <span class="hljs-variable">vec1</span> = Arc::<span class="hljs-title function_ invoke__">new</span>(<span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]);
+<span class="hljs-keyword">let</span> <span class="hljs-variable">vec2</span> = Arc::<span class="hljs-title function_ invoke__">clone</span>(&amp;vec1); <span class="hljs-comment">// 共享数据</span>
+</code></pre></div>
+        <div id="footnote"></div>
+      </div>
+      <div class="bottom-button">
+        <button onclick="scrollToTop()" title="滚动到顶部">
+          <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+        </button>
+      </div>
+    </div>
+    <script src="/script.js"></script>
+    
+<script>
+document.querySelectorAll('pre').forEach(pre => {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'COPY';
+  
+  // 添加到DOM
+  pre.prepend(btn);
+
+  // 绑定点击事件
+  btn.addEventListener('click', async () => {
+    try {
+      const code = pre.querySelector('code').innerText;
+      await navigator.clipboard.writeText(code);
+      
+      btn.textContent = ' ✓ ';
+      setTimeout(() => btn.textContent = 'COPY', 1500);
+    } catch (err) {
+      btn.textContent = 'FAIL！';
+      btn.style.color = '#dc3545';
+    }
+  });
+});
+</script>
+
+  </body>
+</html>
