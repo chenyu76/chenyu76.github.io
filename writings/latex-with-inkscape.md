@@ -74,11 +74,75 @@ Inkscape会在你选择的路径下生成一个与pdf名称相同的`.pdf_tex`�
 ```
 代替。
 
+### 使用figure环境
+
+也可以嵌套figure环境，给图片添加caption、居中
+
+```latex
+\begin{figure}[htbp]
+	\begin{center}
+		\input{<filename>.pdf_tex}
+	\end{center}
+	\caption{带有caption的图片}
+\end{figure}
+```
 
 
+## 完整示例
 
+本示例项目有如下文件树结构：
 
+``````
+./
+├── example.tex
+├── fig2.pdf
+├── fig2.pdf_tex
+├── fig2.svg
+└── figures
+    ├── fig1.pdf
+    ├── fig1.pdf_tex
+    └── fig1.svg
+``````
 
+`example.tex`示例：
+
+```latex
+\documentclass{ctexart}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{import}
+
+\begin{document}
+示例文档
+
+\input{fig2.pdf_tex}
+
+在子目录下的图片
+
+\import{figures}{fig1.pdf_tex}
+
+放大的图片：
+
+\def\svgwidth{0.5\textwidth}
+\input{fig2.pdf_tex}
+
+\resizebox{0.5\textwidth}{!}{\input{fig2.pdf_tex}}
+
+figure环境:
+
+\begin{figure}[htbp]
+	\begin{center}
+		\input{fig2.pdf_tex}
+	\end{center}
+	\caption{带有caption的图片}
+\end{figure}
+
+\end{document}
+```
+
+你可以在[这里](./latex-with-inkscape.zip)下载一份副本
+
+---
 
 For more information, please see info/svg-inkscape on [CTAN](https://ctan.org/tex-archive/info/svg-inkscape?lang=en):
 
