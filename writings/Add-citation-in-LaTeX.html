@@ -71,18 +71,23 @@
   title   = {Add citation in LaTeX},
   year    = {2025}
 }
+
+…… 
+可以添加更多条目，
+只有在正文中使用\cite命令的条目
+才会出现在最后编译好的文档中
 </code></pre><p>每个@开头是一个条目，条目内部填入作者、标题等信息；这个示例中第一个条目中book是文档类型， 此外还有article, inproceedings, misc等；<code>latexguide</code>是引用时使用的名称，可以在之后使用类似的格式添加更多内容。推荐直接在<a href="https://scholar.google.com/">Google Scholar</a>或其他文献网站上复制，不要手写；也可以让ai生成，但注意核对信息。</p>
 <p><img src="./assets/google_scholar.png" alt="Google Scholar 示例"></p>
 <h2>引用参考文献</h2>
 <p>在 LaTeX 文件中，使用 <code>\cite{}</code> 命令引用参考文献。例如：</p>
 <pre><code class="hljs language-latex">This is a reference to the LaTeX guide <span class="hljs-keyword">\cite</span>{latexguide}.
-</code></pre><p>这里的<code>latexguide</code>是上面的例子中定义的名称.</p>
+</code></pre><p>这里的<code>latexguide</code>是上面的例子中定义的名称。</p>
 <h2>插入参考文献列表</h2>
 <p>在文档任意位置插入使用的参考文献列表。只有使用了<code>\cite{}</code>命令插入的文献才会出现。</p>
-<p>使用 <code>\bibliographystyle{}</code> 命令指定参考文献的格式，并使用 <code>\bibliography{}</code> 命令指定 <code>.bib</code> 文件的位置。</p>
+<p>使用 <code>\bibliographystyle{}</code> 命令指定参考文献的格式，并使用 <code>\bibliography{}</code> 命令指定 <code>.bib</code> 文件的路径。在编译好的文档中，参考文献列表会出现在<code>\bibliography{}</code>命令调用处。</p>
 <pre><code class="hljs language-latex"><span class="hljs-keyword">\bibliographystyle</span>{plain}  <span class="hljs-comment">% 参考文献的样式</span>
 <span class="hljs-keyword">\bibliography</span>{references.bib}  <span class="hljs-comment">% 引用.bib文件</span>
-</code></pre><h3>Tip</h3>
+</code></pre><h3>Tips</h3>
 <ol>
 <li>如果在beamer中使用，可以添加 allowframebreaks 参数使文献列表自动换页</li>
 </ol>
@@ -107,7 +112,7 @@ This is a reference to the LaTeX guide <span class="hljs-keyword">\cite</span>{l
 <span class="hljs-keyword">\bibliography</span>{references.bib}  <span class="hljs-comment">% 引用.bib文件</span>
 
 <span class="hljs-keyword">\end</span>{document}
-</code></pre><p>你可以在<a href="./Add-citation-in-LaTeX.zip">这里</a>下载这个示例</p>
+</code></pre><p>你可以在<a href="./Add-citation-in-LaTeX.zip">这里</a>下载这个示例。</p>
 <h2>编译流程</h2>
 <p>在 LaTeX 中正确处理参考文献需要多次编译。如果你使用overleaf等在线平台，他们应该会自动帮你处理好编译流程，不用操心，否则：</p>
 <h3>如果没有编译过：</h3>

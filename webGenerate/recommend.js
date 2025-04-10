@@ -5,6 +5,11 @@ const recommend = [
     info: "没有附带一个Inkscape教程",
   },
   {
+    date: 20250220,
+    link: "writings/Add-citation-in-LaTeX.html",
+    info: "基础的LaTeX引用方法",
+  },
+  {
     date: 20250206,
     link: "writings/new-year-new-theme.html",
     info: "蛇年的全新网站样式！动态随机生成的js背景！",
