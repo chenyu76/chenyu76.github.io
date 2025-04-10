@@ -24,6 +24,11 @@
   title   = {Add citation in LaTeX},
   year    = {2025}
 }
+
+…… 
+可以添加更多条目，
+只有在正文中使用\cite命令的条目
+才会出现在最后编译好的文档中
 ```
 
 每个@开头是一个条目，条目内部填入作者、标题等信息；这个示例中第一个条目中book是文档类型， 此外还有article, inproceedings, misc等；`latexguide`是引用时使用的名称，可以在之后使用类似的格式添加更多内容。推荐直接在[Google Scholar](https://scholar.google.com/)或其他文献网站上复制，不要手写；也可以让ai生成，但注意核对信息。
@@ -37,20 +42,20 @@
 This is a reference to the LaTeX guide \cite{latexguide}.
 ```
 
-这里的`latexguide`是上面的例子中定义的名称.
+这里的`latexguide`是上面的例子中定义的名称。
 
 ## 插入参考文献列表
 
 在文档任意位置插入使用的参考文献列表。只有使用了`\cite{}`命令插入的文献才会出现。
 
-使用 `\bibliographystyle{}` 命令指定参考文献的格式，并使用 `\bibliography{}` 命令指定 `.bib` 文件的位置。
+使用 `\bibliographystyle{}` 命令指定参考文献的格式，并使用 `\bibliography{}` 命令指定 `.bib` 文件的路径。在编译好的文档中，参考文献列表会出现在`\bibliography{}`命令调用处。
 
 ```latex
 \bibliographystyle{plain}  % 参考文献的样式
 \bibliography{references.bib}  % 引用.bib文件
 ```
 
-### Tip
+### Tips
 
 1. 如果在beamer中使用，可以添加 allowframebreaks 参数使文献列表自动换页
 
@@ -86,7 +91,7 @@ This is a reference to the LaTeX guide \cite{latexguide}.
 \end{document}
 ```
 
-你可以在[这里](./Add-citation-in-LaTeX.zip)下载这个示例
+你可以在[这里](./Add-citation-in-LaTeX.zip)下载这个示例。
 
 ##  编译流程
 
