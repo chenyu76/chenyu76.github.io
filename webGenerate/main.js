@@ -145,13 +145,16 @@ function generateRecommend(type = 0, articles = {}) {
         : relativePathWithoutExt in articles
           ? articles[relativePathWithoutExt].title
           : path.basename(item.link, path.extname(item.link));
-    const link = item.link;
+    const link =
+      item.link.startsWith("/") || item.link.startsWith("https")
+        ? item.link
+        : "/" + item.link;
     const info = item.info || "";
     //marked.parse(item.info)
 
     switch (type) {
       case 0:
-        return `<li><a href="/${link}">${title}</a> <small>(${date})</small></li>`;
+        return `<li><a href="${link}">${title}</a> <small>(${date})</small></li>`;
       case 1:
         return `<hr><h2><a href="/${link}">${title}</a></h2>
 <small>${date}</small></br>
