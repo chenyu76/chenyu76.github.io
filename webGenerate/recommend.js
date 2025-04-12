@@ -1,5 +1,10 @@
 const recommend = [
   {
+    date: 20250412,
+    link: "writings/remarkable_cover.html",
+    info: "便宜实用手感好，避免屏幕被划伤（就是不耐脏？）",
+  },
+  {
     date: 20250311,
     link: "writings/latex-with-inkscape.html",
     info: "没有附带一个Inkscape教程",
@@ -38,10 +43,30 @@ const recommend = [
     link: "writings/some-szu-LaTeX-template.html",
     },
   {
+    date: 20240826,
+    link: "https://github.com/chenyu76/MatrixGraphViewer",
+    title: "以网格形式批量查看有命名规范的图片的Qt程序",
+    info: `（Github链接）像这样
+<p style="text-indent:0;line-height:100%">
+         x=1               x=2               x=3        <br>
+   ┌───────────────┐ ┌───────────────┐ ┌───────────────┐<br>
+   │               │ │               │ │               │<br>
+y=1│  pic1,1.jpg   │ │  pic1,2.jpg   │ │  pic1,3.jpg   │<br>
+   │               │ │               │ │               │<br>
+   └───────────────┘ └───────────────┘ └───────────────┘<br>
+   ┌───────────────┐ ┌───────────────┐ ┌───────────────┐<br>
+   │               │ │               │ │               │<br>
+y=2│  pic2,1.jpg   │ │  pic2,2.jpg   │ │  pic2,3.jpg   │<br>
+   │               │ │               │ │               │<br>
+   └───────────────┘ └───────────────┘ └───────────────┘<br>
+</p>
+`,
+  },
+  {
     date: 20240620,
     link: "writings/about-the-website.html",
     title: "关于本站",
-    info: "第一篇文章",
+info: "第一篇文章",
   },
 ];
 
