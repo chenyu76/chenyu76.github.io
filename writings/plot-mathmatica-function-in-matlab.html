@@ -164,7 +164,7 @@ t = lrt:((urt - lrt)/stps):urt;
 document.querySelectorAll('pre').forEach(pre => {
   const btn = document.createElement('button');
   btn.className = 'copy-btn';
-  btn.textContent = 'COPY';
+  btn.textContent = '复制';
   
   // 添加到DOM
   pre.prepend(btn);
@@ -176,7 +176,7 @@ document.querySelectorAll('pre').forEach(pre => {
       await navigator.clipboard.writeText(code);
       
       btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = 'COPY', 1500);
+      setTimeout(() => btn.textContent = '复制', 1500);
     } catch (err) {
       btn.textContent = 'FAIL！';
       btn.style.color = '#dc3545';
