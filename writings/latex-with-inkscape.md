@@ -6,7 +6,7 @@
 
 像这样：
 
-<img src="./assets/inkscape_draw.png" style="zoom:50%;" />
+<img src="./assets/inkscape_draw.png" style="width:90%;" />
 
 文字的大小与字体在导出时会被忽略，文字内容将会直接交给LaTeX处理，最后呈现的内容将与LaTeX中输入同样内容所编译出来的文字效果相同。因此你可以直接输入任何LaTeX代码。
 
@@ -28,7 +28,7 @@ Inkscape会在你选择的路径下生成一个与pdf名称相同的`.pdf_tex`�
 
 ### 导出效果一例
 
-<img src="./assets/inkscape_output.svg" style="zoom: 50%;" />
+<img src="./assets/inkscape_output.svg" style="width: 50%;" />
 
 ## 注意事项
 

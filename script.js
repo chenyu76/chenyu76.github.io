@@ -2,7 +2,6 @@ function the_script() {
   return 'This is the JavaScript file of this website. </br>See raw file at <a href="script.js"> script.js </a>';
 }
 
-
 // 获取当前的哈希值
 function getHashParam() {
   return window.location.hash
@@ -55,7 +54,6 @@ function scrollToTop() {
   });
 }
 
-
 // 是否是竖屏模式
 let pixelImgInit = () => {
   if (window.innerHeight > window.innerWidth) {
@@ -82,3 +80,24 @@ let pixelImgInit = () => {
 pixelImgInit();
 // 每隔十分钟更新背景
 setInterval(pixelImgInit, 600000);
+
+// 处理窗口大小变化
+// 防抖函数封装
+function debounce(func, delay = 250) {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId); // 清除之前的定时器
+    timeoutId = setTimeout(() => {
+      func.apply(this, args); // 延迟执行目标函数
+    }, delay);
+  };
+}
+// 处理窗口大小变化
+function handleResize() {
+  is_first_img_init = true;
+  pixelImgInit();
+}
+// 使用防抖包装处理函数
+const debouncedResize = debounce(handleResize, 300);
+// 监听窗口resize事件
+window.addEventListener("resize", debouncedResize);
