@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh_cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>连接学校公共 Wi-Fi 时，avahi-daemon 占用 CPU 高</title>
+
+    <!-- css样式 -->
+    <link rel="stylesheet" href="/styles.css" />
+    <!-- 标签页图标 -->
+    <link rel="icon" href="/favicon.png" type="image/png" />
+
+    <!-- 背景css -->
+    <link rel="stylesheet" href="/img/pixelart/styles.css" />
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+  </head>
+
+  <body>
+    <!-- 背景js -->
+    <div id="pixel-art">
+      <div id="pixel-art-background"></div>
+      <div id="pixel-art-midground"></div>
+      <div id="pixel-art-foreground"></div>
+    </div>
+    <script src="/img/pixelart/imgMatrix.js"></script>
+    <script src="/img/pixelart/sky_element.js"></script>
+    <script src="/img/pixelart/pampas_grass.js"></script>
+    <script src="/img/pixelart/script.js"></script>
+
+    <div id="title-container">
+      <div id="spacer"></div>
+      <div id="top-buttons-wrapper" class="top-buttons">
+        <a href="/toc.html" title="文档索引" class="fade-in"
+          ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
+        ><a href="/index.html" title="返回主页" class="fade-in"
+          ><img src="/img/icon/home.svg" alt="Home" class="icon" /></a
+        ><a
+          href="https://github.com/chenyu76"
+          target="_blank"
+          title="跳转到 GitHub"
+          class="fade-in"
+          ><img src="/img/icon/github.svg" alt="Github" class="icon" /></a
+        ><a href="/About.html" title="关于" class="fade-in"
+          ><img src="/img/icon/info.svg" alt="Info" class="icon"
+        /></a>
+      </div>
+      <div id="heading"><h3>quick-references/archlinux</h3><h1>连接学校公共 Wi-Fi 时，avahi-daemon 占用 CPU 高</h1></div>
+    </div>
+    <div id="anime-spacer" class="shrinked"></div>
+    <div id="content-wrapper-bg">
+      <div id="content-wrapper">
+        <div id="content"><p>学校的公共 Wi-Fi 环境通常非常拥挤，设备数量众多。<code>avahi-daemon</code> 用于实现 mDNS/DNS-SD（多播 DNS/DNS 服务发现）协议，它会不断广播和接收网络上的服务信息。在设备众多的公共 Wi-Fi 环境中，大量的广播包可能会导致 <code>avahi-daemon</code> 消耗大量 CPU 资源来处理这些信息。</p>
+<h3>使用 NetworkManager 的 Dispatcher 脚本</h3>
+<ul>
+<li>NetworkManager 在网络连接状态发生变化时，会运行 dispatcher 脚本。</li>
+<li>您可以编写一个 dispatcher 脚本，在连接到特定 SSID 时，禁用 Avahi 服务，断开连接时，启用 Avahi 服务。</li>
+</ul>
+<p><strong>具体步骤：</strong></p>
+<ol>
+<li>创建 dispatcher 脚本：<ul>
+<li>在 <code>/etc/NetworkManager/dispatcher.d/</code> 目录下创建一个脚本，例如 <code>avahi-ssid-control.sh</code>。</li>
+<li>脚本内容示例：</li>
+</ul>
+</li>
+</ol>
+<pre><code class="hljs language-bash"><span class="hljs-meta">#!/bin/bash</span>
+
+SSID=<span class="hljs-string">&quot;your_target_SSID&quot;</span> <span class="hljs-comment"># 将 &quot;your_target_SSID&quot; 替换为实际的 Wi-Fi 的 SSID</span>
+
+<span class="hljs-keyword">if</span> [ <span class="hljs-string">&quot;<span class="hljs-variable">$2</span>&quot;</span> = <span class="hljs-string">&quot;up&quot;</span> ]; <span class="hljs-keyword">then</span>
+    connected_ssid=$(iwgetid -r)
+    <span class="hljs-keyword">if</span> [ <span class="hljs-string">&quot;<span class="hljs-variable">$connected_ssid</span>&quot;</span> = <span class="hljs-string">&quot;<span class="hljs-variable">$SSID</span>&quot;</span> ]; <span class="hljs-keyword">then</span>
+        systemctl stop avahi-daemon.service
+    <span class="hljs-keyword">fi</span>
+<span class="hljs-keyword">elif</span> [ <span class="hljs-string">&quot;<span class="hljs-variable">$2</span>&quot;</span> = <span class="hljs-string">&quot;down&quot;</span> ]; <span class="hljs-keyword">then</span>
+    systemctl start avahi-daemon.service
+<span class="hljs-keyword">fi</span>
+
+<span class="hljs-built_in">exit</span> 0
+</code></pre><ol>
+<li>使用以下命令为脚本添加执行权限：<ul>
+<li><code>sudo chmod +x /etc/NetworkManager/dispatcher.d/avahi-ssid-control.sh</code></li>
+</ul>
+</li>
+<li>重启 NetworkManager 服务：<ul>
+<li><code>sudo systemctl restart NetworkManager.service</code></li>
+</ul>
+</li>
+</ol>
+<p><strong>提示：</strong></p>
+<ul>
+<li><p>dispatcher 脚本的执行时机取决于 NetworkManager 的事件触发，因此可能存在一定的延迟。</p>
+</li>
+<li><p><code>iwgetid</code> 命令需要wireless_tools包。</p>
+</li>
+<li><p>由于 Avahi 的设计初衷是用于局域网服务发现，因此在公共 Wi-Fi 环境中可能会遇到一些问题。</p>
+</li>
+<li><p>通过上述方法，您可以有效地控制 Avahi 在特定 SSID 下的行为，从而避免 CPU 占用过高的问题。</p>
+</li>
+</ul>
+</div>
+        <div id="footnote">2025/04/16 based on answer by Google Gemini</div>
+      </div>
+      <div class="bottom-button">
+        <button onclick="scrollToTop()" title="滚动到顶部">
+          <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+        </button>
+      </div>
+    </div>
+    <script src="/script.js"></script>
+    
+<script>
+document.querySelectorAll('pre').forEach(pre => {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = '复制';
+  
+  // 添加到DOM
+  pre.prepend(btn);
+
+  // 绑定点击事件
+  btn.addEventListener('click', async () => {
+    try {
+      const code = pre.querySelector('code').innerText;
+      await navigator.clipboard.writeText(code);
+      
+      btn.textContent = ' ✓ ';
+      setTimeout(() => btn.textContent = '复制', 1500);
+    } catch (err) {
+      btn.textContent = 'FAIL！';
+      btn.style.color = '#dc3545';
+    }
+  });
+});
+</script>
+
+  </body>
+</html>
