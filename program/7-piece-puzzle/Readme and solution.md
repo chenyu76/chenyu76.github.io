@@ -1,7 +1,6 @@
+# README
 
-
-
-### 鼠标左键拖拽，右键旋转，尝试把这些块拼入方格内吧
+## 鼠标左键拖拽，右键旋转，尝试把这些块拼入方格内吧
 
 [START](program/7-piece-puzzle/puzzle.html)
 

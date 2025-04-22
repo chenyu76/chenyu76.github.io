@@ -53,7 +53,7 @@ function folderTreeHtml(dir, articles) {
       const baseName = path.basename(item, path.extname(item));
       // 如果是 md 文件，尝试读取第一行作为标题
       // 文件的完整路径，没有后缀
-      const articlePath = path.join(currentPath, baseName);
+      // const articlePath = path.join(currentPath, baseName);
 
       const relativePathName = relativePath.replace(/\.html$/, "");
       let articleTitle =
@@ -67,6 +67,10 @@ function folderTreeHtml(dir, articles) {
         `${relativePath}">${articleTitle === undefined ? baseName : articleTitle}</a><br>`
       );
     }
+    // 改变文本颜色
+    function col(str, color = "gray") {
+      return `<span style="color:${color}">${str}</span>`;
+    }
 
     items.forEach((item, index) => {
       const isLast = index === items.length - 1;
@@ -74,11 +78,12 @@ function folderTreeHtml(dir, articles) {
       let line = lineD;
 
       for (let i = 0; i < depth; i++) {
-        prefix += line & 1 ? "│　　" : "　　　";
+        prefix += line & 1 ? col("│　　") : col("　　　");
         line >>= 1;
       }
 
-      const style = prefix + "│<br>\n" + prefix + (isLast ? "└──" : "├──");
+      const style =
+        prefix + col("│<br>\n") + prefix + col(isLast ? "└──" : "├──");
       const fullPath = path.join(currentPath, item);
       const isDirectory = fs.statSync(fullPath).isDirectory();
 
@@ -95,7 +100,7 @@ function folderTreeHtml(dir, articles) {
             children.splice(
               7,
               0,
-              `${prefix}│　　<a href="javascript:void(0);" style="font-size:80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a><br>
+              `${prefix}${col("│　　")}<a href="javascript:void(0);" style="font-size:80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a><br>
             <span class="hiddenContent">`,
             );
             children.push("</span>");
@@ -113,9 +118,12 @@ function folderTreeHtml(dir, articles) {
 
     return table;
   }
-  return `<p style="text-indent:0;line-height:100%">/root<br>\n${folderTree(
-    dir,
-  ).join("\n")}</p>`;
+  return `<p style="text-indent:0;line-height:100%">/root<br>\n${
+    folderTree(dir)
+      .join("\n")
+      .replace(/<\/span><span style="color:gray">/g, "") /* 删掉重复的颜色设置 */
+  }</p>`;
+    
 }
 
 function generateRecommend(type = 0, articles = {}) {
