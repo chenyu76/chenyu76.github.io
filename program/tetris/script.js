@@ -56,15 +56,12 @@ const SHAPES = [
 ];
 
 // 难度级别，-1 ~ 1
-var difficulty = 1;
+var difficulty = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
   // 获取Canvas元素和上下文
   const canvas = document.getElementById("game-canvas");
   const ctx = canvas.getContext("2d");
-
-  // const canvasPlayer = document.getElementById("player-canvas");
-  // const ctxp = canvasPlayer.getContext("2d");
 
   const nextCanvas = document.getElementById("next-piece-canvas");
   const nextCtx = nextCanvas.getContext("2d");
@@ -122,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
       var pieceType = Math.floor(Math.random() * 7) + 1;
       // 使用算法,根据难度来决定下一个方块的类型
       if (nextPiece.matrix) {
-        if (difficulty > 0) {
+        if (difficulty > 0.01) {
           if (Math.random() < difficulty) {
             pieceType = (() => {
               let ai = new TetrisAlgorithm({
@@ -133,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
               return ai.getWorstType();
             })();
           }
-        } else {
+        } else if (difficulty < -0.01) {
           if (Math.random() < -difficulty) {
             pieceType = (() => {
               let ai = new TetrisAlgorithm({
@@ -232,64 +229,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // function playerMoveAnimation() {
-  //   // console.log("playerMoveAnimation called");
-  //   // dropInterval
-  //   canvasPlayer.style.transition = `all ${100}ms ease`;
-  //   canvasPlayer.style.transform = `translate(${player.pos.x * BLOCK_SIZE}px, ${player.pos.y * BLOCK_SIZE}px)`;
-  // }
-
-  // function drawPlayer() {
-  //   if (player.matrix) {
-  //     player.matrix.forEach((row, y) => {
-  //       row.forEach((value, x) => {
-  //         if (value !== 0) {
-  //           ctxp.fillStyle = COLORS[player.type];
-  //           ctxp.fillRect(
-  //             player.pos.x * BLOCK_SIZE,
-  //             player.pos.y * BLOCK_SIZE,
-  //             BLOCK_SIZE - 1,
-  //             BLOCK_SIZE - 1,
-  //           );
-
-  //           // 添加方块内高光
-  //           ctxp.fillStyle = "rgba(255, 255, 255, 0.4)";
-  //           ctxp.fillRect(
-  //             player.pos.x * BLOCK_SIZE,
-  //             player.pos.y * BLOCK_SIZE,
-  //             BLOCK_SIZE - 1,
-  //             3,
-  //           );
-  //           ctxp.fillRect(
-  //             player.pos.x * BLOCK_SIZE,
-  //             player.pos.y * BLOCK_SIZE,
-  //             3,
-  //             BLOCK_SIZE - 1,
-  //           );
-
-  //           ctxp.fillStyle = COLORS[player.type];
-
-  //           // 添加方块外阴影
-  //           ctxp.fillStyle = "rgba(0, 0, 0, 0.5)";
-  //           ctxp.fillRect(
-  //             player.pos.x * BLOCK_SIZE + BLOCK_SIZE - 3,
-  //             player.pos.y * BLOCK_SIZE,
-  //             3,
-  //             BLOCK_SIZE - 1,
-  //           );
-  //           ctxp.fillRect(
-  //             player.pos.x * BLOCK_SIZE,
-  //             player.pos.y * BLOCK_SIZE + BLOCK_SIZE - 3,
-  //             BLOCK_SIZE - 1,
-  //             3,
-  //           );
-
-  //           ctxp.fillStyle = COLORS[player.type];
-  //         }
-  //       });
-  //     });
-  //   }
-  // }
 
   // 绘制游戏板
   function drawBoard() {
@@ -678,6 +617,5 @@ document.addEventListener("DOMContentLoaded", () => {
   // 初始化UI
   init(true);
   drawBoard();
-  // drawPlayer();
   drawNextPiece();
 });

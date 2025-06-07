@@ -12,7 +12,7 @@ class TetrisAlgorithm {
   constructor(game) {
     this.game = game;
     this.weights = {
-      contacts: 1, // 接触面权重
+      contacts: 10, // 接触面权重
       clearedLines: 85, // 消除行权重
       holes: 8, // 空隙权重
       height: 7, // 高度权重
