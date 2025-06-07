@@ -1,5 +1,11 @@
 const recommend = [
   {
+    date: 20250607,
+    link: "program/tetris/index.html",
+    title: "稍有不同的俄罗斯方块",
+    info: "将难度调到1享受要啥没啥的狗屎版俄罗斯方块；还附带一个简单的AI",
+  },
+  {
     date: 20250412,
     link: "writings/remarkable_cover.html",
     info: "便宜实用手感好，避免屏幕被划伤（就是不耐脏？）",
