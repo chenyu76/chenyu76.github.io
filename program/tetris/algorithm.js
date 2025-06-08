@@ -379,7 +379,6 @@ class TetrisAlgorithm {
   }
 }
 
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 // 执行算法移动
 function executeAlgorithmMove(
   board,
@@ -431,7 +430,7 @@ function executeAlgorithmMove(
       }
 
       // 立即下落
-      playerHardDrop();
+      await playerHardDrop();
 
       // 更新AI状态
       // aiStatusText.textContent = `已执行 (损失: ${bestMove.loss.toFixed(2)})`;
