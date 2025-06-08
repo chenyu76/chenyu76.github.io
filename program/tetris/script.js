@@ -11,6 +11,13 @@ const COLORS = [
   "#FF4081", // S
   "#7C4DFF", // T
   "#18FFFF", // Z
+  // "#FF9AA2", 
+  // "#FFB7B2", 
+  // "#FFDAC1", 
+  // "#E2F0CB", 
+  // "#B5EAD7", 
+  // "#C7CEEA", 
+  // "#F8C8DC"  
 ];
 
 // 方块形状定义
@@ -537,7 +544,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 清除ca
       ctx.clearRect(0, 0, ca.width, ca.height);
 
-      ctx.fillStyle = "rgba(2,125 , 225, 0.3)"; // 使用纯色填充
+      ctx.fillStyle = "#5e35b144"; // 使用纯色填充
       ctx.fillRect(0, (y+ progress) * BLOCK_SIZE, ca.width, stripeWidth * (1 - progress));
 
       // 如果动画未完成，继续
