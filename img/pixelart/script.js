@@ -365,12 +365,12 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
 
   // 背景蒲苇
   foreground.appendChild(
-    draw_pampas_grasses(x, bottom + 5, Math.ceil(x / 18), pixelSize, "#EEEEEE"),
+    draw_pampas_grasses(x, bottom + 5, Math.ceil(x / 8), pixelSize, "#EEEEEE"),
   );
   // 把天子放出来 (原图高96)
   foreground.appendChild(createPixelMatrix(0, bottom - 96, imgMatrix));
   foreground.appendChild(
-    draw_pampas_grasses(x, bottom, Math.ceil(x / 36), pixelSize),
+    draw_pampas_grasses(x, bottom, Math.ceil(x / 18), pixelSize),
   );
 
   is_first_img_init = false;
