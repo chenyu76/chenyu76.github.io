@@ -182,52 +182,6 @@ function clearContainer(container) {
   }
 }
 
-// 创建矩形
-function createRectangle(width, height, color, offset = 0) {
-  const rect = document.createElement("div");
-  rect.style.position = "absolute";
-
-  rect.style.width = `${width * pixelSize}px`;
-  rect.style.height = `${height * pixelSize}px`;
-  rect.style.backgroundColor = color;
-  rect.style.top = `${offset * pixelSize}px`;
-  rect.style.right = "0"; // 右对齐
-  return rect;
-}
-
-// 创建棋盘格（直接绘制像素方格）
-function createCheckerboard(width, height, color, offset, type = 1) {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-
-  canvas.width = width;
-  canvas.height = height;
-  canvas.style.position = "absolute";
-  canvas.style.right = "0px";
-  canvas.style.top = `${offset}px`;
-  canvas.style.zoom = pixelSize;
-
-  // type:
-  // 0: 1/4棋盘格
-  // 1: 标准棋盘格
-  // 2: 3/4棋盘格
-  const decisionfunction = [
-    (x, y) => (x + y) % 4 === 0 || ((x + y) % 4 === 2 && x % 2 === 1),
-    (x, y) => (x + y) % 2 === 0,
-    (x, y) => !((x + y) % 4 === 0 || ((x + y) % 4 === 2 && x % 2 === 1)),
-  ];
-
-  ctx.fillStyle = color;
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      if (decisionfunction[type](x, y)) {
-        ctx.fillRect(x, y, 1, 1);
-      }
-    }
-  }
-
-  return canvas;
-}
 
 // 使用canvas 放置像素图,像素矩阵由img2js.py生成
 function createPixelMatrix(startX, startY, matrix) {
