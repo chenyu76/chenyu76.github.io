@@ -23,7 +23,7 @@ function homogeneous_cantilever_beam(start, k, L, EI, q = 1) {
   ];
 }
 
-// 在给定的画布ctx上，画一条芦苇，返回这个画布
+// 在给定的画布ctx上，画一条芦苇，返回这个ctx
 // start: 起始点坐标[x, y]
 function draw_pampas_grass(start, ctx, p_color) {
   // 来自 sky_element.js 的随机生成函数randomNormal
