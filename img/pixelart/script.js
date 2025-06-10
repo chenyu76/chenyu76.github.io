@@ -232,7 +232,7 @@ function draw_background(w, h, pixelSize) {
 
   const y0 = (11 / 24) * h - (6 * w * w) / (5 * h);
   const r1 = h / 2 - y0;
-  const r2 = (3 * h) / 4 - y0;
+  const r2 = (4 * h) / 5 - y0;
   const sw = 10; // 渐变宽度
   const pow = (x) => x * x;
   const bgcolors = skyColorDict.map((colors) =>
