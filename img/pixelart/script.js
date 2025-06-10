@@ -264,6 +264,78 @@ function createPixelMatrix(startX, startY, matrix) {
   return canvas;
 }
 
+function draw_background(w, h, pixelSize) {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  const imageData = ctx.createImageData(w, h);
+
+  canvas.width = w;
+  canvas.height = h;
+  canvas.style.position = "absolute";
+  canvas.style.left = "0px";
+  canvas.style.top = `0px`;
+  canvas.style.zoom = pixelSize;
+
+  const y0 = (11 / 24) * h - (6 * w * w) / (5 * h);
+  const r1 = h / 2 - y0;
+  const r2 = (3 * h) / 4 - y0;
+  const sw = 10; // 渐变宽度
+  const pow = (x) => x * x;
+  const bgcolors = skyColorDict.map((colors) =>
+    interpolate_time_color(currentHour, colors),
+  );
+  const fill = (x, y, color_index) => {
+    const index = (y * w + x) * 4;
+    imageData.data[index] = bgcolors[color_index][0]; // R
+    imageData.data[index + 1] = bgcolors[color_index][1]; // G
+    imageData.data[index + 2] = bgcolors[color_index][2]; // B
+    imageData.data[index + 3] = 255; // A
+  };
+  const d2 = [
+    0,
+    r1 - 2 * sw,
+    r1 - sw,
+    r1,
+    r1 + sw,
+    r2 - 2 * sw,
+    r2 - sw,
+    r2,
+    r2 + sw,
+  ].map((d) => d * d);
+  const edges = Array.from({ length: d2.length + 1 }, (_, i) =>
+    i !== d2.length
+      ? Array.from({ length: h }, (_, y) =>
+          Math.max(
+            0,
+            Math.min(
+              w - 1,
+              Math.floor(
+                ((x) => (x > 0 ? Math.sqrt(x) : 0))(
+                  d2[i] - pow(y - y0),
+                ),
+              ),
+            ),
+          ),
+        )
+      : Array(h).fill(w - 1),
+  );
+
+  const typeF = [
+    (_, __) => false,
+    (x, y) => (x + y) % 4 === 0 || ((x + y) % 4 === 2 && x % 2 === 1),
+    (x, y) => (x + y) % 2 === 0,
+    (x, y) => !typeF[1](x, y),
+  ];
+  for (let y = 0; y < h; y++)
+    for (let i = 0; i < edges.length - 1; i++)
+      for (let x = edges[i][y]; x < edges[i + 1][y]; x++)
+        fill(x, y, Math.floor(i / 4) + (typeF[i % 4](x, y) ? 1 : 0));
+
+  ctx.putImageData(imageData, 0, 0);
+
+  return canvas;
+}
+
 // 初始化
 async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   // 获取背景和前景容器
@@ -272,6 +344,7 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   const foreground = document.getElementById("pixel-art-foreground");
 
   currentHour = time;
+  // currentHour = 12;
   // 像素大小
   pixelSize = Math.ceil(calculatePixelSize(h));
 
@@ -293,29 +366,8 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   // 设置背景宽度
   background.style.width = `${x * pixelSize}px`;
 
-  // 填充三个大背景矩形
-  const rect = [
-    [x, 100, bgcolors[0], 0],
-    [x, 100, bgcolors[1], 90],
-    [x, 100, bgcolors[2], 150],
-  ];
-  rect.map((elements) => {
-    background.appendChild(createRectangle(...elements));
-  });
-  background.style.backgroundColor = bgcolors[2];
-
-  // 填充过渡棋盘格纹路
-  const checkerboard = [
-    [x, 10, bgcolors[1], 60, 0],
-    [x, 10, bgcolors[1], 70, 1],
-    [x, 10, bgcolors[1], 80, 2],
-    [x, 10, bgcolors[2], 120, 0],
-    [x, 10, bgcolors[2], 130, 1],
-    [x, 10, bgcolors[2], 140, 2],
-  ];
-  checkerboard.map((elements) => {
-    background.appendChild(createCheckerboard(...elements));
-  });
+  // 创建背景
+  background.appendChild(draw_background(x, bottom, pixelSize));
 
   if (currentHour > 19 || currentHour < 5) {
     isNight = true;
@@ -367,10 +419,19 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   foreground.appendChild(
     draw_pampas_grasses(x, bottom + 5, Math.ceil(x / 18), pixelSize, "#EEEEEE"),
   );
+  foreground.appendChild(
+    draw_pampas_grasses(
+      x,
+      bottom + 16,
+      Math.ceil(x / 12),
+      pixelSize,
+      "#DDDDDD",
+    ),
+  );
   // 把天子放出来 (原图高96)
   foreground.appendChild(createPixelMatrix(0, bottom - 96, imgMatrix));
   foreground.appendChild(
-    draw_pampas_grasses(x, bottom, Math.ceil(x / 36), pixelSize),
+    draw_pampas_grasses(x, bottom, Math.ceil(x / 18), pixelSize),
   );
 
   is_first_img_init = false;
