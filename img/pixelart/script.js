@@ -182,7 +182,6 @@ function clearContainer(container) {
   }
 }
 
-
 // 使用canvas 放置像素图,像素矩阵由img2js.py生成
 function createPixelMatrix(startX, startY, matrix) {
   const canvas = document.createElement("canvas");
@@ -255,7 +254,7 @@ function draw_background(w, h, pixelSize) {
     r2 - sw,
     r2,
     r2 + sw,
-  ].map((d) => d * d);
+  ].map(pow);
   const edges = Array.from({ length: d2.length + 1 }, (_, i) =>
     i !== d2.length
       ? Array.from({ length: h }, (_, y) =>
@@ -264,9 +263,7 @@ function draw_background(w, h, pixelSize) {
             Math.min(
               w - 1,
               Math.floor(
-                ((x) => (x > 0 ? Math.sqrt(x) : 0))(
-                  d2[i] - pow(y - y0),
-                ),
+                ((x) => (x > 0 ? Math.sqrt(x) : 0))(d2[i] - pow(y - y0)),
               ),
             ),
           ),

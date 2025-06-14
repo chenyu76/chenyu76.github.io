@@ -1,9 +1,15 @@
 const recommend = [
   {
+    date: 20250614,
+    link: "program/color_wars/index.html",
+    title: "颜色战争 · 改",
+    info: "来自JindoBlu的1 2 3 4 Player Games 里有一个叫Color wars的游戏，原版是只有一个方形地图的2～4人对抗游戏。我寻思着可以加点东西，于是就写了这个。增加了更多地图类型和更多玩家（最多6人）。",
+  },
+  {
     date: 20250607,
     link: "program/tetris/index.html",
     title: "稍有不同的俄罗斯方块",
-    info: "将难度调到1享受要啥没啥的狗屎版俄罗斯方块；还附带一个简单的AI",
+    info: "将难度调到1享受要啥没啥的狗屎版俄罗斯方块；还附带一个可以自己玩俄罗斯方块的AI，也许你可以看着它玩用于解闷。",
   },
   {
     date: 20250412,
@@ -18,7 +24,7 @@ const recommend = [
   {
     date: 20250220,
     link: "writings/Add-citation-in-LaTeX.html",
-    info: "基础的LaTeX引用方法",
+    info: "总是有同学问我怎么引用文章，就有了这一篇基础的LaTeX引用方法",
   },
   {
     date: 20250206,
@@ -38,16 +44,21 @@ const recommend = [
     info: "关卡随机生成的拼图游戏",
   },
   {
+    date: 20290905,
+    link: "program/counter.html",
+    title: "计数器",
+    info: "只是一个计数器，按一下加一（也可以设置为别的）",
+  },
+  {
     date: 202408,
     link: "program/TractorBattle3D/readme.html",
     title: "一个对抗游戏",
     info: "生成障碍阻碍对手的多人本地游戏，Godot练习",
   },
-  //{date: 0, link: "摘抄/-随机一篇-.js", info: "看看随机一篇摘抄"},
-  { 
-    date: 202408, 
+  {
+    date: 202408,
     link: "writings/some-szu-LaTeX-template.html",
-    },
+  },
   {
     date: 20240826,
     link: "https://github.com/chenyu76/MatrixGraphViewer",
@@ -58,7 +69,7 @@ const recommend = [
     date: 20240620,
     link: "writings/about-the-website.html",
     title: "关于本站",
-info: "第一篇文章",
+    info: "第一篇文章",
   },
 ];
 

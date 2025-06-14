@@ -21,6 +21,8 @@ let pixelImgInit = () => {
     //s.style.height = "63vh";
   } else {
     imgInit(0.618 * window.innerHeight);
+    let t = document.getElementById("title-container");
+    t.style.height = "61.8vh";
   }
   // 来自背景的是否是夜晚,颜色切换
   if (isNight) {
