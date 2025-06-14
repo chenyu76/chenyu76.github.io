@@ -6,14 +6,14 @@
 - 一个设置
 */
 const CAMPS_COLORS = [
-  "#EEEEEE",
+  "#FFFFFF",
   "#FF5252",
   "#448AFF",
-  "#69F0AE",
   "#FFD740",
   "#FF4081",
   "#7C4DFF",
   "#18FFFF",
+  "#69F0AE",
 ];
 
 const MAX_ITERATION = 20; // 最大迭代次数
@@ -24,7 +24,7 @@ const EDGE_MARGIN = 5; // 方块之间的间距
 var now_player = 1; // 当前玩家编号
 var player_num = 2; // 玩家数量，0号阵营是空的
 var player_allow_click_blank = Array(player_num + 1).fill(true); // 是否允许点击空白处
-change_background_color(CAMPS_COLORS[now_player] + "88");
+var map_type = "square"; // 地图类型，默认是方形地图
 
 class Block {
   constructor({
@@ -92,8 +92,7 @@ class Block {
 
     this.nodes = []; // 用于存储边的节点的位置，是全局坐标
 
-    const len =
-      this.edge_len / Math.sin(Math.PI / this.edges_num) / 2;
+    const len = this.edge_len / Math.sin(Math.PI / this.edges_num) / 2;
     for (let i = 0; i < edges_num; i++) {
       const angle = this.init_angle + (i * 2 * Math.PI) / edges_num;
       const x = this.x + len * Math.cos(angle);
@@ -214,6 +213,7 @@ function square_game_board(game_board) {
   let blocks = [];
   const rows = 10;
   const cols = 10;
+  const edges_num = 4;
   game_board.style.width = `${cols * EDGE_LEN + 2 * EDGE_MARGIN}px`;
   game_board.style.height = `${rows * EDGE_LEN + 2 * EDGE_MARGIN}px`;
   // 创建方块
@@ -222,7 +222,6 @@ function square_game_board(game_board) {
     for (let j = 0; j < cols; j++) {
       const x = j * EDGE_LEN + EDGE_LEN / 2 + EDGE_MARGIN;
       const y = i * EDGE_LEN + EDGE_LEN / 2 + EDGE_MARGIN;
-      const edges_num = 4;
       const block = new Block({
         x,
         y,
@@ -249,21 +248,50 @@ function hex_game_board(game_board) {
   const cols = 8;
   const width = (EDGE_LEN * 3) / 2;
   const height = EDGE_LEN * Math.sqrt(3);
+  const edges_num = 6;
 
-  game_board.style.width = `${(cols * EDGE_LEN * 3) / 2 + EDGE_LEN * 1 + 2 * EDGE_MARGIN}px`;
-  game_board.style.height = `${rows * EDGE_LEN * Math.sqrt(3) + EDGE_LEN + 2 * EDGE_MARGIN}px`;
+  game_board.style.width = `${cols * width + EDGE_LEN * 1 + 2 * EDGE_MARGIN}px`;
+  game_board.style.height = `${rows * height + EDGE_LEN + 2 * EDGE_MARGIN}px`;
   for (let i = 0; i < cols; i++) {
     blocks.push([]);
     const offset = (i % 2) * (height / 2);
     for (let j = 0; j < rows; j++) {
       const y = j * height + height / 2 + offset + EDGE_MARGIN;
       const x = i * width + width / 2 + EDGE_LEN / 2;
-      const edges_num = 6;
       const block = new Block({
         x,
         y,
         edges_num,
         parent: game_board,
+      });
+      block.add_potential_neighbors(blocks.flat());
+      blocks[i].push(block);
+    }
+  }
+}
+
+function triangle_game_board(game_board) {
+  let blocks = [];
+  const rows = 12;
+  const cols = 12;
+  const width = EDGE_LEN / 2; // 三角形的边长
+  const height = (EDGE_LEN * Math.sqrt(3)) / 2; // 三角形的高度
+  const edges_num = 3;
+
+  game_board.style.width = `${cols * width + EDGE_LEN * 1 + 2 * EDGE_MARGIN}px`;
+  game_board.style.height = `${rows * height + EDGE_LEN + 2 * EDGE_MARGIN}px`;
+  for (let i = 0; i < cols; i++) {
+    blocks.push([]);
+    const offset_angle = (i % 2) * Math.Pi;
+    for (let j = 0; j < rows; j++) {
+      const y = j * height + height / 2  + EDGE_MARGIN;
+      const x = i * width + width / 2 + EDGE_LEN / 2;
+      const block = new Block({
+        x,
+        y,
+        edges_num,
+        parent: game_board,
+        init_angle: offset_angle, // 旋转角度
       });
       block.add_potential_neighbors(blocks.flat());
       blocks[i].push(block);
@@ -278,16 +306,98 @@ function approx2d(p1, p2, tolerance = 0.01) {
   return approx(p1.x, p2.x, tolerance) && approx(p1.y, p2.y, tolerance);
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  const game_board = document.getElementById("game-board");
-  //square_game_board(game_board);
-  hex_game_board(game_board);
 
-  // for (let i = 3; i < CAMPS_COLORS.length; i++)
-  //   new Block({
-  //     x: -50 + i * 120,
-  //     y: 50,
-  //     edges_num: i,
-  //     parent: game_board,
-  //   });
+// 游戏重置函数
+function resetGame() {
+  now_player = 1; // 当前玩家编号
+  player_allow_click_blank = Array(player_num + 1).fill(true); // 是否允许点击空白处
+  change_background_color(CAMPS_COLORS[now_player] + "88");
+
+  const game_board = document.getElementById("game-board");
+  clearContainer(game_board);
+  switch (map_type) {
+    case "square":
+      square_game_board(game_board);
+      break;
+    case "hexgon":
+      hex_game_board(game_board);
+      break;
+    case "triangle":
+      triangle_game_board(game_board);
+      break;
+    case "random":
+      console.log("暂不支持随机地图。");
+      break;
+    default:
+      console.warn("未知地图类型，使用默认方形地图。");
+      square_game_board(game_board);
+      break;
+  }
+  console.log("游戏已重置。");
+}
+
+// 清空容器
+function clearContainer(container) {
+  while (container.firstChild) {
+    container.removeChild(container.firstChild);
+  }
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const restartButton = document.getElementById("restartButton");
+  const settingsButton = document.getElementById("settingsButton");
+  const settingsModal = document.getElementById("settingsModal");
+  const closeButton = settingsModal.querySelector(".close-button");
+  const saveSettingsButton = document.getElementById("saveSettings");
+
+  // 设置界面的元素
+  const playerCountSelect = document.getElementById("playerCount");
+  const gameMapSelect = document.getElementById("gameMap");
+  const edgeLenSlider = document.getElementById("edgeLen");
+  const edgeLenValueSpan = document.getElementById("edgeLenValue");
+
+  // 初始化EDGE_LEN显示值
+  edgeLenValueSpan.textContent = edgeLenSlider.value;
+
+  // 重玩按钮点击事件
+  restartButton.addEventListener("click", () => {
+    // alert("游戏即将重玩！");
+    resetGame();
+  });
+
+  // 设置按钮点击事件
+  settingsButton.addEventListener("click", () => {
+    settingsModal.style.display = "flex"; // 显示模态框
+  });
+
+  // 关闭按钮点击事件
+  closeButton.addEventListener("click", () => {
+    settingsModal.style.display = "none"; // 隐藏模态框
+  });
+
+  // 点击模态框外部关闭
+  window.addEventListener("click", (event) => {
+    if (event.target == settingsModal) {
+      settingsModal.style.display = "none";
+    }
+  });
+
+  // EDGE_LEN 滑块值改变时更新显示
+  edgeLenSlider.addEventListener("input", () => {
+    edgeLenValueSpan.textContent = edgeLenSlider.value;
+  });
+
+  // 保存设置按钮点击事件
+  saveSettingsButton.addEventListener("click", () => {
+    player_num = Number(playerCountSelect.value);
+    EDGE_LEN = Number(edgeLenSlider.value);
+    map_type = gameMapSelect.value;
+
+    settingsModal.style.display = "none"; // 保存后关闭模态框
+    resetGame();
+  });
+
+  resetGame();
 });
+

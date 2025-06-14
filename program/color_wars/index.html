@@ -1,43 +1,67 @@
 <!doctype html>
+<!doctype html>
 <html lang="">
   <head>
     <meta charset="utf-8" />
     <title>Color War</title>
-    <!-- <link rel="stylesheet" href="./styles.css" /> -->
-    <style>
-      body {
-        /* 使用Flexbox将main元素居中 */
-        display: flex;
-        justify-content: center; /* 水平居中 */
-        align-items: center; /* 垂直居中 */
-        min-height: 100vh; /* 确保body至少占满视口高度 */
-        margin: 0; /* 移除body默认的外边距 */
-      }
-
-      main {
-        /* 确保main元素能够填充可用空间以支持game-board居中 */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%; /* 可以根据需要调整 */
-        height: 100%; /* 可以根据需要调整 */
-      }
-
-      #game-board {
-        position: relative;
-        width: 800px; /* 示例宽度，请根据实际游戏板大小调整 */
-        height: 600px; /* 示例高度，请根据实际游戏板大小调整 */
-        background-color: #f0f0f0; /* 示例背景色，便于观察 */
-        border: 1px solid #ccc; /* 示例边框 */
-      }
-    </style>
+    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <header></header>
+    <header>
+      <div class="top-left-controls">
+        <button id="restartButton" class="control-button" title="重玩">
+          🔄
+        </button>
+        <button id="settingsButton" class="control-button" title="设置">
+          ⚙️
+        </button>
+      </div>
+    </header>
     <main>
       <div id="game-board"></div>
     </main>
     <footer></footer>
+
+    <div id="settingsModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>游戏设置</h2>
+
+        <p>任何更改都会重新开始一局新游戏</p>
+
+        <div class="modal-section">
+          <label for="playerCount">玩家人数:</label>
+          <select id="playerCount">
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </select>
+        </div>
+
+        <div class="modal-section">
+          <label for="gameMap">游戏地图:</label>
+          <select id="gameMap">
+            <option value="square">正方形</option>
+            <option value="hexgon">六边形</option>
+            <option value="triangle">三角形</option>
+            <option value="random">随机</option>
+          </select>
+        </div>
+
+        <div class="modal-section">
+          <label for="edgeLen">地图尺寸</label>
+          <input type="range" id="edgeLen" min="20" max="100" value="50" />
+          <div class="range-value">
+            当前值: <span id="edgeLenValue">50</span>
+          </div>
+        </div>
+
+        <button id="saveSettings" class="save-settings-button">保存设置</button>
+      </div>
+    </div>
+
     <script src="./script.js" defer></script>
   </body>
 </html>
