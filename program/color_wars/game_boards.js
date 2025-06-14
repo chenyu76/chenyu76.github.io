@@ -6,18 +6,16 @@ const game_boards = {
     const key = game_board_types[random_index];
     return game_boards[key](game_board);
   },
-  square: (game_board) => {
+  square: (game_board, rows = map_size, cols = map_size, startx = 0) => {
     let blocks = [];
-    const rows = map_size;
-    const cols = map_size;
     const edges_num = 4;
     game_board.style.width = `${cols * EDGE_LEN + 2 * EDGE_MARGIN}px`;
     game_board.style.height = `${rows * EDGE_LEN + 2 * EDGE_MARGIN}px`;
     // 创建方块
-    for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
       blocks.push([]);
-      for (let j = 0; j < cols; j++) {
-        const x = j * EDGE_LEN + EDGE_LEN / 2 + EDGE_MARGIN;
+      for (let i = 0; i < rows; i++) {
+        const x = j * EDGE_LEN + EDGE_LEN / 2 + EDGE_MARGIN + startx;
         const y = i * EDGE_LEN + EDGE_LEN / 2 + EDGE_MARGIN;
         const block = new Block({
           x,
@@ -26,15 +24,15 @@ const game_boards = {
           init_angle: Math.PI / 4, // 旋转45度
           parent: game_board,
         });
-        blocks[i].push(block);
+        blocks[j].push(block);
       }
     }
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        const block = blocks[i][j];
+        const block = blocks[j][i];
         // 添加邻居
-        if (i < rows - 1) block.add_neighbor(blocks[i + 1][j]); // 下
-        if (j < cols - 1) block.add_neighbor(blocks[i][j + 1]); // 右
+        if (i < rows - 1) block.add_neighbor(blocks[j][i + 1]); // 下
+        if (j < cols - 1) block.add_neighbor(blocks[j + 1][i]); // 右
       }
     }
     return blocks;
@@ -105,10 +103,14 @@ const game_boards = {
     for (let block of blocks) block.add_potential_neighbors(blocks);
     return blocks;
   },
-  triangle: (game_board) => {
+  triangle: (
+    game_board,
+    rows = map_size,
+    cols = map_size,
+    startx = 0,
+    add_neighbors = true,
+  ) => {
     let blocks = [];
-    const rows = map_size;
-    const cols = map_size;
     const sqrt3 = Math.sqrt(3);
     const height = EDGE_LEN / 2;
     const width = (EDGE_LEN * sqrt3) / 2;
@@ -123,7 +125,7 @@ const game_boards = {
         const offsetx =
           EDGE_LEN * ((j % 2) * 2 - 1) * (sqrt3 / 4 - 1 / (2 * sqrt3));
         const y = j * height + height / 2 + EDGE_LEN / 4 + EDGE_MARGIN;
-        const x = i * width + width / 2 + EDGE_MARGIN;
+        const x = i * width + width / 2 + EDGE_MARGIN + startx;
         const block = new Block({
           x: x + offsetx,
           y: y + offsety,
@@ -131,10 +133,80 @@ const game_boards = {
           parent: game_board,
           init_angle, // 旋转角度
         });
-        block.add_potential_neighbors(blocks.flat());
+        if (add_neighbors) block.add_potential_neighbors(blocks.flat());
         blocks.push(block);
       }
     }
     return blocks;
+  },
+  octagon: (game_board) => {
+    let blocks = [];
+    const rows = map_size;
+    const cols = map_size;
+    const size = EDGE_LEN / Math.tan(Math.PI / 8);
+    const init_angle = Math.PI / 8;
+
+    game_board.style.width = `${cols * size + 2 * EDGE_MARGIN}px`;
+    game_board.style.height = `${rows * size + 2 * EDGE_MARGIN}px`;
+    // 创建八边形
+    for (let i = 0; i < cols; i++) {
+      for (let j = 0; j < rows; j++) {
+        const y = j * size + size / 2 + EDGE_MARGIN;
+        const x = i * size + size / 2 + EDGE_MARGIN;
+        const block = new Block({
+          x,
+          y,
+          edges_num: 8,
+          parent: game_board,
+          init_angle, // 旋转角度
+        });
+        blocks.push(block);
+      }
+    }
+    // 创建四边形
+    for (let i = 0; i < rows - 1; i++) {
+      for (let j = 0; j < cols - 1; j++) {
+        const x = i * size + size + EDGE_MARGIN;
+        const y = j * size + size + EDGE_MARGIN;
+        const block = new Block({
+          x,
+          y,
+          edges_num: 4,
+          parent: game_board,
+          init_angle: 0, // 旋转角度
+        });
+        blocks.push(block);
+      }
+    }
+    for (let b of blocks) b.add_potential_neighbors(blocks);
+
+    return blocks;
+  },
+  square_triangle: (game_board) => {
+    const width =
+      Math.floor(map_size / 2) * EDGE_LEN +
+      (Math.ceil(map_size / 2) * (EDGE_LEN * Math.sqrt(3))) / 2 +
+      2 * EDGE_MARGIN;
+
+    let blocks = game_boards
+      .square(game_board, map_size, Math.floor(map_size / 2), 0)
+      .flat();
+    let tris = game_boards.triangle(
+      game_board,
+      map_size*2,
+      Math.ceil(map_size / 2),
+      EDGE_LEN * Math.floor(map_size / 2),
+    );
+
+    game_board.style.width = `${width}px`;
+    game_board.style.height = `${(map_size+1) * EDGE_LEN + 2 * EDGE_MARGIN}px`;
+    // 添加三角形和方形的邻居关系
+    for (
+      let i = map_size * (Math.floor(map_size / 2) - 1) - 1;
+      i < blocks.length;
+      i++
+    ) {
+      blocks[i].add_potential_neighbors(tris);
+    }
   },
 };
