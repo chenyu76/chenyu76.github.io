@@ -1,0 +1,26 @@
+body {
+  /* 使用Flexbox将main元素居中 */
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  min-height: 100vh; /* 确保body至少占满视口高度 */
+  margin: 0; /* 移除body默认的外边距 */
+}
+
+main {
+  /* 确保main元素能够填充可用空间以支持game-board居中 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* 可以根据需要调整 */
+  height: 100%; /* 可以根据需要调整 */
+}
+
+#game-board {
+  position: relative;
+  width: 800px; /* 示例宽度，请根据实际游戏板大小调整 */
+  height: 600px; /* 示例高度，请根据实际游戏板大小调整 */
+  background-color: #f0f0f0; /* 示例背景色，便于观察 */
+  border: 1px solid #ccc; /* 示例边框 */
+
+}
