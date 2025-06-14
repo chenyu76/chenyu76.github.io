@@ -38,6 +38,15 @@ main {
   /* 添加一点阴影 */
 }
 
+#game-board-interactive,
+#game-board-visual {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 /* 顶部按钮容器样式 */
 .top-left-controls {
   position: absolute;
@@ -53,7 +62,7 @@ main {
 .control-button {
   background-color: #eeeeee;
   /* 示例绿色 */
-  color: white;
+  color: black;
   border: none;
   padding: 10px 15px;
   font-size: 24px;
@@ -65,7 +74,7 @@ main {
 }
 
 .control-button:hover {
-  background-color: #4549a0;
+  background-color: #3fa1f0;
 }
 
 /* 设置模态框样式 */
@@ -97,7 +106,7 @@ main {
   border: 1px solid #888;
   width: 80%;
   /* 模态框宽度 */
-  max-width: 500px;
+  max-width: 300px;
   /* 最大宽度 */
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -159,7 +168,7 @@ main {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #008cba;
+  background: #3fa1f0;
   cursor: pointer;
 }
 
@@ -167,7 +176,7 @@ main {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #008cba;
+  background: #3fa1f0;
   cursor: pointer;
 }
 
@@ -179,7 +188,7 @@ main {
 }
 
 .save-settings-button {
-  background-color: #008cba;
+  background-color: #3fa1f0;
   /* 蓝色 */
   color: white;
   border: none;
@@ -192,5 +201,5 @@ main {
 }
 
 .save-settings-button:hover {
-  background-color: #007bb5;
+  background-color: #3fa1f0;
 }

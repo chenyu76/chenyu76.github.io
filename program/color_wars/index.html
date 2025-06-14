@@ -18,19 +18,20 @@
       </div>
     </header>
     <main>
-      <div id="game-board"></div>
+      <div id="game-board">
+        <div id="game-board-visual"></div>
+        <div id="game-board-interactive"></div>
+      </div>
     </main>
     <footer></footer>
 
     <div id="settingsModal" class="modal">
       <div class="modal-content">
         <span class="close-button">&times;</span>
-        <h2>游戏设置</h2>
-
-        <p>任何更改都会重新开始一局新游戏</p>
+        <h2>⚙</h2>
 
         <div class="modal-section">
-          <label for="playerCount">玩家人数:</label>
+          <label for="playerCount">🅯</label>
           <select id="playerCount">
             <option value="2">2</option>
             <option value="3">3</option>
@@ -41,27 +42,36 @@
         </div>
 
         <div class="modal-section">
-          <label for="gameMap">游戏地图:</label>
+          <label for="gameMap">🗺</label>
           <select id="gameMap">
-            <option value="square">正方形</option>
-            <option value="hexgon">六边形</option>
-            <option value="triangle">三角形</option>
-            <option value="random">随机</option>
+            <option value="random">?</option>
+            <option value="square">□</option>
+            <option value="hexgon">⬡</option>
+            <option value="triangle">△</option>
+            <option value="hextri">⬡, ∃⬡ ↦ 6△</option>
+            <!-- <option value="octagonSquare">⯄ ∪ ▪</option> -->
+            <!-- <option value="halfSquareHalfTriangle">□ △</option> -->
           </select>
         </div>
 
         <div class="modal-section">
-          <label for="edgeLen">地图尺寸</label>
+          <label for="edgeLen">🗚</label>
           <input type="range" id="edgeLen" min="20" max="100" value="50" />
-          <div class="range-value">
-            当前值: <span id="edgeLenValue">50</span>
-          </div>
+          <div class="range-value">= <span id="edgeLenValue">50</span></div>
         </div>
 
-        <button id="saveSettings" class="save-settings-button">保存设置</button>
+        <div class="modal-section">
+          <label for="mapSize">⟷</label>
+          <input type="range" id="mapSize" min="2" max="20" value="6" />
+          <div class="range-value">= <span id="mapSizeValue">6</span></div>
+        </div>
+
+        <button id="saveSettings" class="save-settings-button">✓</button>
       </div>
     </div>
 
+    <script src="./game_boards.js" defer></script>
+    <script src="./block.js" defer></script>
     <script src="./script.js" defer></script>
   </body>
 </html>
