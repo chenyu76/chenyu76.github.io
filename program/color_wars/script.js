@@ -25,7 +25,7 @@ var now_player = 1; // 当前玩家编号
 var player_num = 2; // 玩家数量，0号阵营是空的
 var player_allow_click_blank = Array(player_num + 1).fill(true); // 是否允许点击空白处
 var map_type = "random"; // 地图类型，默认是方形地图
-
+var player_owned = Array(player_num + 1).fill(0); // 玩家拥有的方块数量
 
 
 function change_background_color(color) {
@@ -45,10 +45,13 @@ function approx2d(p1, p2, tolerance = 0.01) {
   return approx(p1.x, p2.x, tolerance) && approx(p1.y, p2.y, tolerance);
 }
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 // 游戏重置函数
 function resetGame() {
   now_player = 1; // 当前玩家编号
   player_allow_click_blank = Array(player_num + 1).fill(true); // 是否允许点击空白处
+player_owned = Array(player_num + 1).fill(0); // 玩家拥有的方块数量
   change_background_color(CAMPS_COLORS[now_player] + "88");
 
   const game_board = document.getElementById("game-board");
