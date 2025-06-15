@@ -6,8 +6,9 @@ class Block {
     edge_margin = EDGE_MARGIN, // 块间距
     edges_num, // 块边数
     init_angle = 0, // 块的旋转角度
-    parent, // 视觉区域的父元素
+    parent, // 父元素
   }) {
+    this.parent = parent;
     this.container = document.createElement("div");
     this.shapeCanvas = document.createElement("canvas");
     this.valueCanvas = document.createElement("canvas");
@@ -43,20 +44,29 @@ class Block {
 
     this.neighbors = [];
 
+    this.waiting_animation = false; // 是否正在等待动画完成
+
     this.interactive_area = this.createInteractiveArea(
       x,
       y,
       edge_len / 2 / Math.tan(Math.PI / edges_num),
-      () => {
+      async () => {
         if (
           this.camp === now_player ||
           (this.camp === 0 && player_allow_click_blank[now_player])
         ) {
           // 如果当前方块是空的或者是当前玩家的
-          player_allow_click_blank[now_player] = false;
-          this.update(now_player);
-          now_player++;
-          if (now_player > player_num) now_player = 1;
+          if (player_allow_click_blank[now_player])
+            player_allow_click_blank[now_player] = false;
+          await this.update(now_player);
+          do {
+            // 切换到下一个活着的玩家
+            now_player++;
+            if (now_player > player_num) now_player = 1;
+          } while (
+            player_owned[now_player] <= 0 &&
+            player_allow_click_blank[now_player] === false
+          );
 
           change_background_color(CAMPS_COLORS[now_player] + "88");
         }
@@ -116,25 +126,134 @@ class Block {
   }
 
   // 更新当前玩家的状态
-  update(player, iter = 0) {
+  async update(player, iter = 0) {
     if (iter >= MAX_ITERATION) return;
+    while (this.waiting_animation) {
+      // 如果正在等待动画完成，则暂停更新
+      await delay(50);
+    }
     // 更新当前玩家的状态
+    player_owned[this.camp]--; // 减少当前阵营的拥有方块数量
+    player_owned[player]++;
     this.camp = player;
 
     this.value += 1;
 
     if (this.value >= this.neighbors.length) {
-      this.value = 0; // 如果当前方块的值超过了邻居数量，则重置为0
-      this.camp = 0;
-      let n;
-      for (n of this.neighbors) {
-        n.update(player, iter + 1); // 更新所有邻居方块
-      }
-    }
+      this.draw_polygon();
+      this.draw_value();
+      this.waiting_animation = true; // 设置为正在等待动画完成
 
-    // 更新方块外貌
-    this.draw_polygon();
-    this.draw_value();
+      this.create_animation(this.x, this.y, CAMPS_COLORS[player], "#FFFFFF");
+
+      await delay(250); // 等待一段时间以便视觉效果更明显
+
+      this.value = 0; // 如果当前方块的值超过了邻居数量，则重置为0
+
+      player_owned[this.camp]--;
+      player_owned[0]++;
+      this.camp = 0;
+      // 更新方块外貌
+      this.draw_polygon();
+      this.draw_value();
+
+      this.waiting_animation = false;
+
+      // 并行执行所有 update() 调用
+      const updatePromises = this.neighbors.map((n) =>
+        n.update(player, iter + 1),
+      );
+
+      // 等待所有 update() 完成
+      await Promise.all(updatePromises);
+    } else {
+      // 更新方块外貌
+      this.draw_polygon();
+      this.draw_value();
+    }
+  }
+
+  /**
+   * 创建并播放两层圆环扩张动画
+   * @param {number} x - 中心点X坐标
+   * @param {number} y - 中心点Y坐标
+   * @param {string} color1 - 第一层圆环颜色
+   * @param {string} color2 - 第二层圆环颜色
+   * @param {number} [duration=1000] - 动画持续时间(毫秒)
+   * @param {number} [maxSize=200] - 最大扩张尺寸(像素)
+   */
+  create_animation(
+    x,
+    y,
+    color1,
+    color2,
+    duration = 400,
+    maxSize = (this.canvas_size * 3) / 2,
+  ) {
+    // 辅助函数：创建圆环元素
+    const createCircle = (color) => {
+      const circle = document.createElement("div");
+      circle.style.position = "absolute";
+      circle.style.borderRadius = "50%";
+      circle.style.border = `${this.edge_margin}px solid ${color}`;
+      circle.style.backgroundColor = "transparent";
+      circle.style.transform = "translate(-50%, -50%)";
+      circle.style.left = "50%";
+      circle.style.top = "50%";
+      return circle;
+    };
+
+    // 辅助函数：更新圆环样式
+    const updateCircleStyle = (circle, size, opacity) => {
+      circle.style.width = `${size}px`;
+      circle.style.height = `${size}px`;
+      circle.style.opacity = opacity;
+    };
+    // 创建容器元素
+    const container = document.createElement("div");
+    container.style.position = "absolute";
+    container.style.left = `${x}px`;
+    container.style.top = `${y}px`;
+    container.style.transform = "translate(-50%, -50%)";
+    container.style.pointerEvents = "none"; // 防止干扰鼠标事件
+
+    // 创建两个圆环
+    const circle1 = createCircle(color1);
+    const circle2 = createCircle(color2);
+
+    // 添加到容器
+    container.appendChild(circle1);
+    container.appendChild(circle2);
+
+    // 添加到文档
+    this.parent.appendChild(container);
+
+    // 动画时间线
+    const startTime = performance.now();
+
+    const animate = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const sqrtprogress = Math.sqrt(progress); // 使用平方根函数使动画更平滑
+
+      // 计算当前尺寸
+      const size1 = sqrtprogress * maxSize;
+      const size2 = Math.max(0, sqrtprogress - 0.2) * (maxSize / 0.8);
+
+      // 更新圆环样式
+      updateCircleStyle(circle1, size1, 1 - progress);
+      updateCircleStyle(circle2, size2, 1 - progress);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        // 动画结束，移除元素
+        this.parent.removeChild(container);
+      }
+    };
+
+    // 开始动画
+    requestAnimationFrame(animate);
   }
 
   draw_polygon() {

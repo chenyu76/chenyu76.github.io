@@ -27,14 +27,10 @@ main {
 #game-board {
   position: relative;
   width: 800px;
-  /* 示例宽度，请根据实际游戏板大小调整 */
   height: 600px;
-  /* 示例高度，请根据实际游戏板大小调整 */
   background-color: #f0f0f0;
-  /* 示例背景色，便于观察 */
   border: 1px solid #ccc;
-  /* 示例边框 */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   /* 添加一点阴影 */
 }
 
