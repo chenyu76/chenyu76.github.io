@@ -105,8 +105,8 @@ const game_boards = {
   },
   triangle: (
     game_board,
-    rows = map_size,
-    cols = map_size,
+    rows = map_size * 2,
+    cols = Math.floor((map_size * 3) / 2),
     startx = 0,
     add_neighbors = true,
   ) => {
@@ -141,8 +141,8 @@ const game_boards = {
   },
   octagon: (game_board) => {
     let blocks = [];
-    const rows = map_size;
-    const cols = map_size;
+    const rows = Math.floor((map_size / 3) * 2);
+    const cols = Math.ceil((map_size / 3) * 2);
     const size = EDGE_LEN / Math.tan(Math.PI / 8);
     const init_angle = Math.PI / 8;
 
@@ -164,8 +164,8 @@ const game_boards = {
       }
     }
     // 创建四边形
-    for (let i = 0; i < rows - 1; i++) {
-      for (let j = 0; j < cols - 1; j++) {
+    for (let i = 0; i < cols - 1; i++) {
+      for (let j = 0; j < rows - 1; j++) {
         const x = i * size + size + EDGE_MARGIN;
         const y = j * size + size + EDGE_MARGIN;
         const block = new Block({
@@ -251,6 +251,66 @@ const game_boards = {
         if (j < cols - 1 && blocks[j + 1][i])
           block.add_neighbor(blocks[j + 1][i]); // 右
       }
+    }
+    return blocks;
+  },
+  rhombihexadeltille: (game_board) => {
+    let blocks = [];
+    const sqrt3 = Math.sqrt(3);
+    const r = Math.floor(map_size / 2);
+    const c = Math.ceil(map_size / 2);
+    const l = EDGE_LEN;
+    const w = (sqrt3 + 1) * l;
+    const h = ((sqrt3 + 3) / 2) * l;
+    const o = ((sqrt3 + 1) / 2) * l;
+    const h0 = l + EDGE_MARGIN;
+    const w0 = (l * 3) / 2 + EDGE_MARGIN;
+
+    game_board.style.width = `${c * w + l * 2 + 2 * EDGE_MARGIN}px`;
+    game_board.style.height = `${r * h + l + 2 * EDGE_MARGIN}px`;
+
+    for (let i = 0; i < c; i++) {
+      for (let j = 0; j < r; j++) {
+        const offsetx = (j % 2) * o;
+        const b6 = new Block({
+          x: i * w + offsetx + w0,
+          y: j * h + h0,
+          edges_num: 6,
+          parent: game_board,
+          init_angle: Math.PI / 6,
+        });
+        blocks.push(b6);
+        const b4s = Array.from({ length: 3 }, (_, k) => {
+          const d = ((sqrt3 + 1) / 2) * l;
+          const dx = d * Math.cos((k * Math.PI) / 3);
+          const dy = d * Math.sin((k * Math.PI) / 3);
+          return new Block({
+            x: b6.x + dx,
+            y: b6.y + dy,
+            edges_num: 4,
+            parent: game_board,
+            init_angle: (k * Math.PI) / 3 + Math.PI / 4,
+          });
+        });
+        blocks.push(...b4s);
+        const b3s = Array.from({ length: 2 }, (_, k) => {
+          const d = (1 / sqrt3 + 1) * l;
+          const dx = d * Math.cos((k * Math.PI) / 3 + Math.PI / 6);
+          const dy = d * Math.sin((k * Math.PI) / 3 + Math.PI / 6);
+          return new Block({
+            x: b6.x + dx,
+            y: b6.y + dy,
+            edges_num: 3,
+            parent: game_board,
+            init_angle: (k * Math.PI) / 3 - Math.PI / 6,
+          });
+        });
+        blocks.push(...b3s);
+      }
+    }
+
+    for (let b of blocks) {
+      b.add_potential_neighbors(blocks);
     }
     return blocks;
   },
