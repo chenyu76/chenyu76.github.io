@@ -22,7 +22,7 @@ const CAMPS_COLORS = [
   "#F8C8DC"  
 ];
 
-const MAX_ITERATION = 20; // 最大迭代次数
+const MAX_ITERATION = 100; // 最大迭代次数
 const VALUE_DOT_RADIUS = 5; // 点的半径
 let EDGE_LEN = 50; // 方块的边长
 let EDGE_MARGIN = EDGE_LEN / 10; // 方块之间的间距
