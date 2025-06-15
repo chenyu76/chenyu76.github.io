@@ -13,6 +13,13 @@ const CAMPS_COLORS = [
   "#7C4DFF",
   "#18FFFF",
   "#69F0AE",
+  "#FF9AA2", 
+  "#FFB7B2", 
+  "#FFDAC1", 
+  "#E2F0CB", 
+  "#B5EAD7", 
+  "#C7CEEA", 
+  "#F8C8DC"  
 ];
 
 const MAX_ITERATION = 20; // 最大迭代次数

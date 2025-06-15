@@ -3,7 +3,7 @@ const recommend = [
     date: 20250614,
     link: "program/color_wars/index.html",
     title: "颜色战争 · 改",
-    info: "来自JindoBlu的1 2 3 4 Player Games 里有一个叫Color wars的游戏，原版是只有一个方形地图的2～4人对抗游戏。我寻思着可以加点东西，于是就写了这个。增加了更多地图类型和更多玩家（最多6人）。",
+    info: "来自JindoBlu的1 2 3 4 Player Games 里有一个叫Color wars的游戏，原版是只有一个方形地图的2～4人对抗游戏。我寻思着可以加点东西，于是就写了这个。增加了更多地图类型和更多玩家。",
   },
   {
     date: 20250607,
