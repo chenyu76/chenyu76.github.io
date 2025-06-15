@@ -193,13 +193,13 @@ const game_boards = {
       .flat();
     let tris = game_boards.triangle(
       game_board,
-      map_size*2,
+      map_size * 2,
       Math.ceil(map_size / 2),
       EDGE_LEN * Math.floor(map_size / 2),
     );
 
     game_board.style.width = `${width}px`;
-    game_board.style.height = `${(map_size+1) * EDGE_LEN + 2 * EDGE_MARGIN}px`;
+    game_board.style.height = `${(map_size + 1) * EDGE_LEN + 2 * EDGE_MARGIN}px`;
     // 添加三角形和方形的邻居关系
     for (
       let i = map_size * (Math.floor(map_size / 2) - 1) - 1;
@@ -208,5 +208,50 @@ const game_boards = {
     ) {
       blocks[i].add_potential_neighbors(tris);
     }
+  },
+  partial_square: (
+    game_board,
+    rows = map_size,
+    cols = map_size,
+    startx = 0,
+  ) => {
+    // 只有边框的方形
+    // 我也太懒了直接用square改的
+    let blocks = [];
+    const edges_num = 4;
+    game_board.style.width = `${cols * EDGE_LEN + 2 * EDGE_MARGIN}px`;
+    game_board.style.height = `${rows * EDGE_LEN + 2 * EDGE_MARGIN}px`;
+    // 创建方块
+    for (let j = 0; j < cols; j++) {
+      blocks.push([]);
+      for (let i = 0; i < rows; i++) {
+        if (i == 0 || j == 0 || j == cols - 1 || i == rows - 1) {
+          const x = j * EDGE_LEN + EDGE_LEN / 2 + EDGE_MARGIN + startx;
+          const y = i * EDGE_LEN + EDGE_LEN / 2 + EDGE_MARGIN;
+          const block = new Block({
+            x,
+            y,
+            edges_num,
+            init_angle: Math.PI / 4, // 旋转45度
+            parent: game_board,
+          });
+          blocks[j].push(block);
+        } else {
+          blocks[j].push(null);
+        }
+      }
+    }
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        if (!(i == 0 || j == 0 || j == cols - 1 || i == rows - 1)) continue;
+        const block = blocks[j][i];
+        // 添加邻居
+        if (i < rows - 1 && blocks[j][i + 1])
+          block.add_neighbor(blocks[j][i + 1]); // 下
+        if (j < cols - 1 && blocks[j + 1][i])
+          block.add_neighbor(blocks[j + 1][i]); // 右
+      }
+    }
+    return blocks;
   },
 };
