@@ -1,8 +1,8 @@
 {
   "dependencies": {
     "highlight.js": "^11.11.1",
-    "marked": "^15.0.12",
-    "marked-highlight": "^2.2.1",
-    "marked-katex-extension": "^5.1.4"
+    "marked": "^16.0.0",
+    "marked-highlight": "^2.2.2",
+    "marked-katex-extension": "^5.1.5"
   }
 }
