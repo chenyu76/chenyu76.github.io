@@ -44,7 +44,7 @@ const recommend = [
     info: "关卡随机生成的拼图游戏",
   },
   {
-    date: 20290905,
+    date: 20240905,
     link: "program/counter.html",
     title: "计数器",
     info: "只是一个计数器，按一下加一（也可以设置为别的）",

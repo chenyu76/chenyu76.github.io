@@ -1,6 +1,11 @@
 import path from "path";
-import {generateRecommend, tocGen, __dirname, __filename} from "./toc.js";
-import {readTemplateHTML, allMarkdown2Html, generateHtmlFile, convertMarkdown} from "./convert2HTML.js";
+import { generateRecommend, tocGen, __dirname, __filename } from "./toc.js";
+import {
+  readTemplateHTML,
+  allMarkdown2Html,
+  generateHtmlFile,
+  convertMarkdown,
+} from "./convert2HTML.js";
 
 const foldingFuncForTOC = `
 <script>
@@ -26,7 +31,6 @@ function toggleNextNextVis(self) {
 </script>
 `;
 
-
 // 遍历文件夹，处理其中的 .md 文件,生成html文件
 const templateHTML = readTemplateHTML(path.join(__dirname, "template.html"));
 const rootPath = path.dirname(__dirname);
@@ -43,6 +47,7 @@ generateHtmlFile(
   "",
   foldingFuncForTOC,
 );
+// 生成主页
 generateHtmlFile(
   path.join(rootPath, "index.html"),
   templateHTML,
