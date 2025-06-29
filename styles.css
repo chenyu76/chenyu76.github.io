@@ -324,3 +324,17 @@ h6:hover::before {
   font-size: 0.6em;
   pointer-events: none;
 }
+
+hr {
+  color: #AAA; 
+  background-color: #AAA;   
+  height: 1px;
+  
+  border: none; /* 先移除默认边框 */
+  
+  /* 修改外边距 */
+  margin: 40px 0px;
+
+  /* 修改宽度 */
+  width: 100%; 
+}
