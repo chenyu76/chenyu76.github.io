@@ -242,7 +242,7 @@ function fractalNoise(x, y, scale, octaves = 3, persistence = 0.5) {
 
 // 简单噪声函数（基于三角函数）
 function simpleNoise(x, y) {
-  const n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
+  const n = Math.sin(x * 12.3737 + y * 78.114514) * 424242.4242;
   return n - Math.floor(n);
 }
 

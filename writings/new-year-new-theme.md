@@ -78,6 +78,76 @@ $$
 
 场景中的其他颜色有自己光照颜色字典（也可以在代码中看到），插值，与原有颜色相乘，就能获得当前环境下的颜色啦。
 
+### 更新：天空
+
+之前是这样的
+
+![sky change](./assets/sky_change_1.svg)
+
+现在是这样的
+
+![sky change](./assets/sky_change_2.svg)
+
+### 更新：山与地面
+
+使用分形算法生成山脉轮廓
+
+1. 从一条简单折线开始
+2. 细分过程：
+   - 计算当前线段的中点
+   - 将中点高度随机偏移（偏移量随迭代减少）
+3. 对左右两段重复上述过程
+4. 重复迭代直到达到所需细节水平
+
+> 越远的山脉越小，颜色越淡
 
 
-2025年2月6日
+
+地面用的颜色和草是一样的，不过通过噪声扰动颜色混合权重，在条带交界处创建尽量自然的不规则过渡
+
+基础颜色混合（线性插值）
+$$
+\vec{C}_{\text{mix}} = (1 - w) \cdot \vec{C}_A + w \cdot \vec{C}_B
+$$
+其中：
+- $\vec{C}_A$ 和 $\vec{C}_B$ 是相邻条带的颜色向量
+- $w$ 是混合权重系数 ($0 \leq w \leq 1$)
+
+权重扰动
+$$
+w_{\text{noisy}} = \text{clamp}\left(w_{\text{base}} + \underbrace{\mathcal{N}(x,y)}_{\text{噪声函数}} \cdot A_{\text{noise}}, 0, 1\right)
+$$
+其中：
+- $w_{\text{base}}$ 是基础权重（线性过渡）
+- $\mathcal{N}(x,y)$ 是坐标相关的噪声函数
+- $A_{\text{noise}}$ 是噪声强度系数
+
+分形噪声函数
+$$
+\mathcal{N}(x,y) = \frac{1}{\sum_{k=0}^{n-1} p^k} \sum_{k=0}^{n-1} \underbrace{\mathcal{N}_{\text{simple}}(2^k s x, 2^k s y)}_{\text{基础噪声}} \cdot p^k
+$$
+其中：
+- $s$ 是噪声缩放因子
+- $p$ 是持久性系数 ($0 < p < 1$)
+- $n$ 是倍频程数量
+- $\mathcal{N}_{\text{simple}}$ 是基础噪声函数
+
+三角函数噪声（随便取的值
+$$
+\mathcal{N}_{\text{simple}}(x,y) = \text{fract}\left(\sin(x \cdot 12.3737 + y \cdot 78.114514) \times 424242.4242\right)
+$$
+
+最终颜色计算
+$$
+\vec{C}_{\text{final}} = 
+\begin{cases}
+\vec{C}_A & \text{若 } y < y_{\text{start}} \\
+(1 - w_{\text{noisy}}) \cdot \vec{C}_A + w_{\text{noisy}} \cdot \vec{C}_B & \text{若 } y_{\text{start}} \leq y \leq y_{\text{end}} \\
+\vec{C}_B & \text{若 } y > y_{\text{end}}
+\end{cases}
+$$
+
+
+
+
+2025年2月6日。 7月4日更新
