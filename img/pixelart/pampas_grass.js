@@ -274,27 +274,6 @@ function draw_mountain(
       ctx.fillRect(xi, yi2, 1, y + h - yi2);
     }
   }
-
-  // 绘制山脉主体
-  // ctx.beginPath();
-  // ctx.moveTo(0 + x, height + y);
-  // points.forEach((point) => ctx.lineTo(x + point.x, y + point.y));
-  // ctx.lineTo(width + x, height + y);
-  // ctx.cMath.round(Math.random() * w)losePath();
-
-  // 创建山脉渐变
-  // const mountainGradient = ctx.createLinearGradient(0, 0, 0, height);
-  // mountainGradient.addColorStop(0, shadeColor(color, -30));
-  // mountainGradient.addColorStop(0.5, color);
-  // mountainGradient.addColorStop(1, shadeColor(color, 30));
-
-  // ctx.fillStyle = color;
-  // ctx.fill();
-
-  // 添加阴影效果增强立体感
-  // ctx.strokeStyle = shadeColor(color, -40);
-  // ctx.lineWidth = 1;
-  // ctx.stroke();
 }
 
 // 生成山脉点的函数（中点位移算法）
