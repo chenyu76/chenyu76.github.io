@@ -122,7 +122,9 @@ function draw_background_land(w, h, pixelSize) {
   canvas.height = h;
   canvas.style.right = "0px";
   canvas.style.zoom = pixelSize;
-  const ctx = canvas.getContext("2d");
+  // Canvas2D: Multiple readback operations using getImageData
+  // are faster with the willReadFrequently attribute set to true.
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
   ctx.imageSmoothingEnabled = false;
 
   const mountain_colors = ["#5F7E8C", "#6C91C2", "#D0E2EE"];
