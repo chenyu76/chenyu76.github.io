@@ -173,7 +173,7 @@ export function generateRecommend(type = 0, articles = {}) {
         return `<li><a href="${link}">${title}</a> <small>(${date})</small></li>`;
       case 1:
         return `${yearChange}<hr><h2><a href="${link}">${title}</a></h2>
-<small>${date}</small></br>
+<small>${date}</small><br>
 <p style="text-indent:0">${info}</p>`;
     }
   });

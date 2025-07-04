@@ -156,7 +156,7 @@ function interpolateHSV(hsv1, hsv2, t) {
 
 // 两个颜色相乘，
 // 输入输出：rgb [r,g,b] (0-255) 形式颜色
-function colorMultiply(c1, c2) {
+function colorMultiply(c1 = [255, 255, 255], c2 = [255, 255, 255]) {
   return [
     Math.ceil((c1[0] * c2[0]) / 255),
     Math.ceil((c1[1] * c2[1]) / 255),
@@ -217,7 +217,8 @@ function createPixelMatrix(startX, startY, matrix) {
   return canvas;
 }
 
-function draw_background(w, h, pixelSize) {
+
+function draw_background_sky(w, h, pixelSize) {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
   const imageData = ctx.createImageData(w, h);
@@ -225,7 +226,7 @@ function draw_background(w, h, pixelSize) {
   canvas.width = w;
   canvas.height = h;
   canvas.style.position = "absolute";
-  canvas.style.left = "0px";
+  canvas.style.right = "0px";
   canvas.style.top = `0px`;
   canvas.style.zoom = pixelSize;
 
@@ -318,7 +319,7 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   background.style.width = `${x * pixelSize}px`;
 
   // 创建背景
-  background.appendChild(draw_background(x, bottom, pixelSize));
+  background.appendChild(draw_background_sky(x, bottom, pixelSize));
 
   if (currentHour > 19 || currentHour < 5) {
     isNight = true;
@@ -366,19 +367,21 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
     }
   }
 
+  // From ./pampas_grass.js
+  foreground.appendChild(draw_background_land(x, bottom, pixelSize));
   // 背景蒲苇
-  foreground.appendChild(
-    draw_pampas_grasses(x, bottom + 5, Math.ceil(x / 18), pixelSize, "#EEEEEE"),
-  );
-  foreground.appendChild(
-    draw_pampas_grasses(
-      x,
-      bottom + 16,
-      Math.ceil(x / 12),
-      pixelSize,
-      "#DDDDDD",
-    ),
-  );
+  for (let i = 30; i > 0; i-=1) {
+    foreground.appendChild(
+      draw_pampas_grasses(
+        x,
+        bottom - i,
+        Math.ceil(x / (60 - i)),
+        pixelSize,
+        rgb2hex(...Array(3).fill(255 - i * 2)),
+        1 - i / 35
+      ),
+    );
+  }
   // 把天子放出来 (原图高96)
   foreground.appendChild(createPixelMatrix(0, bottom - 96, imgMatrix));
   foreground.appendChild(
