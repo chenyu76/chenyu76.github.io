@@ -142,7 +142,7 @@ function draw_background_land(w, h, pixelSize) {
 
   for (let i = 2; i >= 0; i--) {
     for (let j = 0; j < 2; j++) {
-      let mh = Math.round(h * (Math.random() * 0.005 + 0.02)) * (1 / (i + 1));
+      let mh = Math.round(h * (Math.random() * 0.01 + 0.02)) * (1 / (i + 1));
       let mw = Math.round(w * (Math.random() * 0.5 + 0.2));
       let x = Math.round(Math.random() * (w - mw));
       draw_mountain(ctx, land_color[3 + i], x, h - 35 - mh, mw, mh, 0.5, 3, "#EEEEEE");
@@ -290,7 +290,7 @@ function generate_mountain_points(w, h, roughness, iterations) {
   // 迭代生成山脉点
   for (let i = 0; i < iterations; i++) {
     const newPoints = [points[0]];
-    const displacement = (w / 10) * Math.pow(roughness, i);
+    const displacement = (w / 20) * Math.pow(roughness, i);
 
     for (let j = 0; j < points.length - 1; j++) {
       const left = points[j];
