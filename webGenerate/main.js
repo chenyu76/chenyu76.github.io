@@ -61,7 +61,7 @@ generateHtmlFile(
 );
 // 生成404页面
 generateHtmlFile(
-  path.join(rootPath, "index.html"),
+  path.join(rootPath, "404.html"),
   templateHTML,
   "404 not found",
   "",
