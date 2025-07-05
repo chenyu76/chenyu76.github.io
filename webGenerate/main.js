@@ -59,3 +59,14 @@ generateHtmlFile(
   "",
   "",
 );
+// 生成404页面
+generateHtmlFile(
+  path.join(rootPath, "index.html"),
+  templateHTML,
+  "404 not found",
+  "",
+  "<h1>404 Not Found</h1>",
+  "<p>你访问的页面不存在，可能是因为链接错误或者页面已被移动或删除。</p><br><img src=\"/img/404.svg\" />",
+  "",
+  "",
+);
