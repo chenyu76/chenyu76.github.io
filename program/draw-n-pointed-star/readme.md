@@ -36,6 +36,7 @@
   <code>60:[12,12.],5:2</code> → 由五边形和五角形组成的60角星
 </li>
 </ul>
+
 [前往单独标签页绘制](./index.html)
 
 <iframe src="./index.html" height="600" frameborder="0"></iframe>
