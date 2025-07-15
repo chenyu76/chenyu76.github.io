@@ -1,5 +1,10 @@
 const recommend = [
   {
+    date: 20250715,
+    link: "program/draw-n-pointed-star/readme.html",
+    info: " 我们都知道，正五角形只有一种画法（除去平凡的正五边形情形），但当点数增大时，画法就有很多了。我感觉当点数增加时，绘制的形状应该会很好看。",
+  },
+  {
     date: 20250614,
     link: "program/color_wars/index.html",
     title: "颜色战争 · 改",
