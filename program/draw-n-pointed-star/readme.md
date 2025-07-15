@@ -29,7 +29,7 @@
 
 [前往单独标签页绘制](./index.html)
 
-<iframe src="./index.html" height="600" frameborder="0"></iframe>
+<iframe src="./index.html" width="100%" height="600" frameborder="0"></iframe>
 
 
 
