@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>N角形</title>
+    <title>N角星</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -17,9 +17,9 @@
         <button id="helpBtn">帮助</button>
         <div id="tooltip" class="tooltip">
           <p>
-            我们都知道，正五角形只有一种画法（除去平凡的正五边形情形），
+            我们都知道，正五角星只有一种画法（除去平凡的正五边形情形），
             但当点数增大时，画法就有很多了。<br />
-            这是一个N角形绘制工具， 在框中输入<code>n₁:m₁, n₂:m₂, ...</code
+            这是一个N角星绘制工具， 在框中输入<code>n₁:m₁, n₂:m₂, ...</code
             >格式的数据来绘制图形， 其中nₛ是边数，mₛ是连接间隔<br />
           </p>
           <p><strong>示例：</strong></p>
@@ -37,20 +37,16 @@
           <p><strong>示例：</strong></p>
           <ul>
             <li>
-              <code>16:[4,2]</code> → 16角星,但是轮流使用八边形和四边形填充
+              <code>16:[4,2]</code> → 16角星，但是轮流使用八边形和四边形填充
             </li>
           </ul>
-          <p>
-            在连接间隔后面加上小数点可以使形状不调用接下来的间隔
-          </p>
+          <p>在连接间隔后面加上小数点可以使形状不调用接下来的间隔</p>
           <p><strong>示例：</strong></p>
           <ul>
             <li>
               <code>10:[2,2.],5:2</code> → 由一个五边形和一个五角形组成的10角星
             </li>
-            <li>
-              <code>60:[12,12.],5:2</code> → 由五边形和五角形组成的60角星
-            </li>
+            <li><code>60:[12,12.],5:2</code> → 由五边形和五角形组成的60角星</li>
           </ul>
         </div>
       </div>
