@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="107.33546mm"
+   height="110.05152mm"
+   viewBox="0 0 107.33546 110.05152"
    version="1.1"
    id="svg1"
    sodipodi:docname="pentagram.svg"
@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="0.93361392"
-     inkscape:cx="275.80994"
-     inkscape:cy="381.31394"
+     inkscape:zoom="0.66016473"
+     inkscape:cx="287.04957"
+     inkscape:cy="275.68876"
      inkscape:window-width="1280"
      inkscape:window-height="774"
      inkscape:window-x="0"
@@ -37,7 +37,8 @@
   <g
      inkscape:label="图层 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-22.469965,-41.55127)">
     <circle
        style="fill:none;fill-opacity:1;stroke:#a0a0a0;stroke-width:0.398593;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
        id="path6"
