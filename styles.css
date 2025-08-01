@@ -334,3 +334,34 @@ hr {
 	margin: 20px -31px;
 	/* 负边距让它超出内容padding区域,需要比内容的padding大 */
 }
+
+
+/* 目录样式 */
+.toc {
+	padding: 1em;
+	margin-bottom: 1em;
+}
+
+.toc h2 {
+	margin-top: 0;
+	font-size: 1.2em;
+}
+
+.toc ul {
+	list-style: none;
+	padding-left: 1em;
+	margin: 0.5em 0;
+}
+
+.toc li {
+	margin: 0.3em 0;
+}
+
+.toc a {
+	text-decoration: none;
+	color: #007bff;
+}
+
+.toc a:hover {
+	text-decoration: underline;
+}

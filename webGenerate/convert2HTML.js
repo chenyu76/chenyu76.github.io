@@ -75,11 +75,42 @@ export function convertMarkdown(inputPath) {
 	})(data.trim());
 
 
+	// 生成目录
+	const toc = [];
+	const renderer = new marked.Renderer();
+	function createSlug(str) {
+		return str
+			// 将汉字转换为 Unicode 编码（保留原汉字作为后备）
+			.replace(/[\u4e00-\u9fa5]/g,
+				(char) => `u${char.charCodeAt(0).toString(16).padStart(4, '0')}`
+			)
+			// 处理其他字符
+			.toLowerCase()
+			.replace(/[^\w\u4e00-\u9fa5-]+/g, '-') // 替换非字母数字汉字为-
+			.replace(/-+/g, '-') // 合并连续的-
+			.replace(/^-+/, '') // 去除开头的-
+			.replace(/-+$/, ''); // 去除结尾的-
+	}
+
+	renderer.heading = function(c) {
+		const id = `h${c.depth}-${createSlug(c.raw)}`;
+		toc.push({
+			depth: c.depth,
+			text: c.text,
+			id: id
+		});
+		return `<h${c.depth} id="${id}">${c.text}</h${c.depth}>`;
+	};
+
+	marked.setOptions({ renderer: renderer });
+	const html = marked.parse(content[1]);
+
 	console.log(`${inputPath} -> markdown`);
 	return {
 		title: content[0],
-		html: marked.parse(content[1]), // 将 Markdown 转换为 HTML
+		html: html,
 		footnote: content[2],
+		toc: toc
 	};
 }
 
@@ -174,13 +205,17 @@ export function allMarkdown2Html(dir, templateHTML, rootPath = dir) {
 				});
 				// 创建html文件
 				const content = convertMarkdown(filePath);
+				const tocHtml = generateTOC(content.toc);
+				const htmlContent =
+					tocHtml.trim() == '' ?
+						content.html : `${generateTOC(content.toc)}\n<hr>\n${content.html}`;
 				generateHtmlFile(
 					htmlFilePath,
 					templateHTML,
 					content.title,
 					"",
 					`<h3>${relativePath}</h3><h1>${content.title}</h1>`,
-					content.html,
+					htmlContent,
 					content.footnote,
 					"",
 				);
@@ -200,3 +235,41 @@ export function allMarkdown2Html(dir, templateHTML, rootPath = dir) {
 	traverseDirectory(dir);
 	return articles;
 }
+
+/* 生成TOC的HTML
+传入的tocItems是一个数组，每个元素包含id, text和depth属性
+{
+	depth: 标题级别（1-6，对应h1-h6）,
+	text: 标题文本,
+	id: 标题的锚点ID
+}
+*/
+function generateTOC(tocItems) {
+	if (tocItems.length < 3) return '';
+
+	let html = '<div class="toc">\n<h2>目录</h2>\n<ul>\n';
+	let lastLevel = 1;
+
+	tocItems.forEach(item => {
+		// 处理层级关系
+		while (lastLevel < item.depth) {
+			html += '<ul>\n';
+			lastLevel++;
+		}
+		while (lastLevel > item.depth) {
+			html += '</ul>\n';
+			lastLevel--;
+		}
+
+		html += `<li><a href="#${item.id}">${item.text}</a></li>\n`;
+	});
+
+	// 关闭所有未闭合的ul标签
+	while (lastLevel > 1) {
+		html += '</ul>\n';
+		lastLevel--;
+	}
+
+	html += '</ul>\n</div>';
+	return html;
+};
