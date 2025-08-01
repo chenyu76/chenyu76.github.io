@@ -51,9 +51,19 @@
     <div id="anime-spacer" class="shrinked"></div>
     <div id="content-wrapper-bg">
       <div id="content-wrapper">
-        <div id="content"><p>可能是<code>figure</code>和<code>hold on</code>的原因。</p>
-<h2>错误范例：</h2>
-<pre><code class="hljs language-matlab">x = [<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>];
+        <div id="content"><div class="toc">
+<h2>目录</h2>
+<ul>
+<ul>
+<li><a href="#h2-u9519u8befu8303u4f8b">错误范例：</a></li>
+<li><a href="#h2-u6b63u786eu8303u4f8b">正确范例：</a></li>
+<li><a href="#h2-u4e3au4ec0u4e48">为什么？</a></li>
+</ul>
+</ul>
+</div>
+<hr>
+<p>可能是<code>figure</code>和<code>hold on</code>的原因。</p>
+<h2 id="h2-u9519u8befu8303u4f8b">错误范例：</h2><pre><code class="language-matlab">x = [<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>];
 y = [<span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">8</span> <span class="hljs-number">16</span>];
 z = [<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">7</span>];
 
@@ -61,12 +71,12 @@ z = [<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span
 <span class="hljs-built_in">hold</span> on
 loglog(x, y);
 loglog(x, z);
-</code></pre><p>输出</p>
+</code></pre>
+<p>输出</p>
 <img src="./assets/matlab_loglog_fail.svg" />
 
-<h2>正确范例：</h2>
-<p>注意<code>hold on</code>的位置：</p>
-<pre><code class="hljs language-matlab">x = [<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>];
+<h2 id="h2-u6b63u786eu8303u4f8b">正确范例：</h2><p>注意<code>hold on</code>的位置：</p>
+<pre><code class="language-matlab">x = [<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>];
 y = [<span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">8</span> <span class="hljs-number">16</span>];
 z = [<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">7</span>];
 
@@ -74,11 +84,11 @@ z = [<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span
 loglog(x, y);
 <span class="hljs-built_in">hold</span> on
 loglog(x, z);
-</code></pre><p>输出</p>
+</code></pre>
+<p>输出</p>
 <img src="./assets/matlab_loglog_success.svg" />
 
-<h2>为什么？</h2>
-<p>我也不知道……</p>
+<h2 id="h2-u4e3au4ec0u4e48">为什么？</h2><p>我也不知道……</p>
 <p>似乎在创建了<code>figure</code>后直接调用<code>hold on</code>就会这样。</p>
 </div>
         <div id="footnote"></div>

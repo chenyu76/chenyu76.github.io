@@ -51,9 +51,22 @@
     <div id="anime-spacer" class="shrinked"></div>
     <div id="content-wrapper-bg">
       <div id="content-wrapper">
-        <div id="content"><h2>复杂的箭头</h2>
-<pre><code class="hljs language-latex"><span class="hljs-keyword">\draw</span>[-Implies, double, double distance = 0.5ex, red, out=30] (2em,1em) to [pos=0.5] node {<span class="hljs-keyword">\color</span>{red} <span class="hljs-keyword">\huge</span> <span class="hljs-built_in">$</span><span class="hljs-keyword">\times</span><span class="hljs-built_in">$</span>} (12em, 0em); 
-</code></pre><p><svg
+        <div id="content"><div class="toc">
+<h2>目录</h2>
+<ul>
+<ul>
+<li><a href="#h2-u590du6742u7684u7badu5934">复杂的箭头</a></li>
+<li><a href="#h2-u53efu4ee5u76f4u63a5u5728tikzu4e2du4f7fu7528u4e09u89d2u51fdu6570">可以直接在TikZ中使用三角函数</a></li>
+<li><a href="#h2-u975eu5e38u4e11u964bu7684u903bu8f91u94fe">非常丑陋的逻辑链</a></li>
+<li><a href="#h2-u4e24u4e2au5706u76f8u4ea4">两个圆相交</a></li>
+<li><a href="#h2-u6620u5c04">映射</a></li>
+</ul>
+</ul>
+</div>
+<hr>
+<h2 id="h2-u590du6742u7684u7badu5934">复杂的箭头</h2><pre><code class="language-latex"><span class="hljs-keyword">\draw</span>[-Implies, double, double distance = 0.5ex, red, out=30] (2em,1em) to [pos=0.5] node {<span class="hljs-keyword">\color</span>{red} <span class="hljs-keyword">\huge</span> <span class="hljs-built_in">$</span><span class="hljs-keyword">\times</span><span class="hljs-built_in">$</span>} (12em, 0em); 
+</code></pre>
+<p><svg
    version="1.1"
    id="svg1"
    width="136.75999"
@@ -88,8 +101,7 @@
        transform="matrix(1.3333333,0,0,1.3333333,60.778667,20.502667)" />
   </g>
 </svg></p>
-<h2>可以直接在TikZ中使用三角函数</h2>
-<pre><code class="hljs language-LaTeX"><span class="hljs-keyword">\documentclass</span>[tikz,border=3.14mm]{standalone}
+<h2 id="h2-u53efu4ee5u76f4u63a5u5728tikzu4e2du4f7fu7528u4e09u89d2u51fdu6570">可以直接在TikZ中使用三角函数</h2><pre><code class="language-LaTeX"><span class="hljs-keyword">\documentclass</span>[tikz,border=3.14mm]{standalone}
 <span class="hljs-keyword">\begin</span>{document}
 <span class="hljs-keyword">\begin</span>{tikzpicture}
 	<span class="hljs-keyword">\draw</span> (-2, 0) -- (2, 0)node[right] {<span class="hljs-built_in">$</span><span class="hljs-keyword">\infty</span><span class="hljs-built_in">$</span>};
@@ -110,7 +122,8 @@
 <span class="hljs-keyword">\end</span>{tikzpicture}
 
 <span class="hljs-keyword">\end</span>{document}
-</code></pre><p><svg
+</code></pre>
+<p><svg
    version="1.1"
    id="svg1"
    width="189.21333"
@@ -212,8 +225,7 @@
        transform="matrix(1.3333333,0,0,1.3333333,4.4253333,71.7)" />
   </g>
 </svg></p>
-<h2>非常丑陋的逻辑链</h2>
-<pre><code class="hljs language-latex"><span class="hljs-keyword">\documentclass</span>[tikz]{standalone}
+<h2 id="h2-u975eu5e38u4e11u964bu7684u903bu8f91u94fe">非常丑陋的逻辑链</h2><pre><code class="language-latex"><span class="hljs-keyword">\documentclass</span>[tikz]{standalone}
 <span class="hljs-keyword">\usetikzlibrary</span>{arrows.meta}
 
 <span class="hljs-keyword">\begin</span>{document}
@@ -240,7 +252,8 @@
 <span class="hljs-keyword">\node</span> at (2cm,-9.4) {General Lebesgue<span class="hljs-keyword">\\</span>Dominated<span class="hljs-keyword">\\</span>Convergence<span class="hljs-keyword">\\</span>Theorem}; 
 <span class="hljs-keyword">\end</span>{tikzpicture}
 <span class="hljs-keyword">\end</span>{document}
-</code></pre><p><svg
+</code></pre>
+<p><svg
    version="1.1"
    id="svg1"
    width="247.69333"
@@ -407,8 +420,7 @@
        transform="matrix(1.3333333,0,0,1.3333333,140.67067,346.45067)" />
   </g>
 </svg></p>
-<h2>两个圆相交</h2>
-<pre><code class="hljs language-latex"><span class="hljs-keyword">\documentclass</span>[tikz,border=10pt]{standalone}
+<h2 id="h2-u4e24u4e2au5706u76f8u4ea4">两个圆相交</h2><pre><code class="language-latex"><span class="hljs-keyword">\documentclass</span>[tikz,border=10pt]{standalone}
 <span class="hljs-keyword">\usetikzlibrary</span>{patterns, intersections}
 
 <span class="hljs-keyword">\begin</span>{document}
@@ -445,7 +457,8 @@
     <span class="hljs-keyword">\node</span>[fill=white, inner sep=1pt] at (0.5,0.5) {<span class="hljs-built_in">$</span>d<span class="hljs-built_in">_</span>{12}<span class="hljs-built_in">$</span>};
 <span class="hljs-keyword">\end</span>{tikzpicture}
 <span class="hljs-keyword">\end</span>{document}
-</code></pre><p><svg
+</code></pre>
+<p><svg
    version="1.1"
    id="svg1"
    width="176.09332"
@@ -602,8 +615,7 @@
     </g>
   </g>
 </svg></p>
-<h2>映射</h2>
-<pre><code class="hljs language-LaTeX"><span class="hljs-keyword">\begin</span>{tikzpicture}[line width=1pt]
+<h2 id="h2-u6620u5c04">映射</h2><pre><code class="language-LaTeX"><span class="hljs-keyword">\begin</span>{tikzpicture}[line width=1pt]
 	<span class="hljs-keyword">\begin</span>{scope}[xshift=-4cm]
 		<span class="hljs-keyword">\draw</span>[-&gt;] (-2, 0) -- (2,0) node[right] {<span class="hljs-built_in">$</span>x<span class="hljs-built_in">$</span>};
 		<span class="hljs-keyword">\draw</span>[-&gt;] (0, -2) -- (0,2) node[above] {<span class="hljs-built_in">$</span>y<span class="hljs-built_in">$</span>};
@@ -628,7 +640,8 @@
 		<span class="hljs-keyword">\draw</span>[blue] (1/2, -2) -- (1/2, 2) node[right] {<span class="hljs-built_in">$</span>m<span class="hljs-built_in">_</span>4<span class="hljs-built_in">$</span>};
 	<span class="hljs-keyword">\end</span>{scope}
 <span class="hljs-keyword">\end</span>{tikzpicture}
-</code></pre><p><svg
+</code></pre>
+<p><svg
    version="1.1"
    id="svg1"
    width="465.64136"
@@ -909,7 +922,7 @@
     </g>
   </g>
 </svg></p>
-<pre><code class="hljs language-LaTeX"><span class="hljs-comment">% 需要 \usepackage{pgfplots}</span>
+<pre><code class="language-LaTeX"><span class="hljs-comment">% 需要 \usepackage{pgfplots}</span>
 <span class="hljs-keyword">\begin</span>{tikzpicture}[scale=0.6]
 	<span class="hljs-keyword">\begin</span>{scope}[xshift=-5cm]
 		<span class="hljs-keyword">\begin</span>{axis}[
@@ -958,7 +971,8 @@
 		<span class="hljs-keyword">\end</span>{axis}
 	<span class="hljs-keyword">\end</span>{scope}
 <span class="hljs-keyword">\end</span>{tikzpicture}
-</code></pre><p><svg
+</code></pre>
+<p><svg
    version="1.1"
    id="svg1"
    width="382.19812"
@@ -1274,7 +1288,7 @@
        clip-path="url(#clipPath173)" />
   </g>
 </svg></p>
-<pre><code class="hljs language-LaTeX"><span class="hljs-keyword">\begin</span>{tikzpicture}
+<pre><code class="language-LaTeX"><span class="hljs-keyword">\begin</span>{tikzpicture}
 	<span class="hljs-keyword">\pgfmathsetmacro</span>{<span class="hljs-keyword">\radius</span>}{0.07}
 	<span class="hljs-keyword">\begin</span>{scope}[xshift=-4cm]
 		<span class="hljs-keyword">\draw</span>[-&gt;] (-2, 0) -- (2,0) node[right] {<span class="hljs-built_in">$</span>x<span class="hljs-built_in">$</span>};
@@ -1293,7 +1307,8 @@
 		<span class="hljs-keyword">\fill</span>[red]  (0,-1) circle (<span class="hljs-keyword">\radius</span>) node[right, red] {<span class="hljs-built_in">$</span>f<span class="hljs-built_in">_</span>{-1}(1)<span class="hljs-built_in">$</span>};
 	<span class="hljs-keyword">\end</span>{scope}
 <span class="hljs-keyword">\end</span>{tikzpicture}
-</code></pre><p><svg
+</code></pre>
+<p><svg
    version="1.1"
    id="svg1"
    width="465.2431"
@@ -1478,7 +1493,7 @@
     </g>
   </g>
 </svg></p>
-<pre><code class="hljs language-latex"><span class="hljs-keyword">\documentclass</span>[a4paper,zihao=5,UTF8]{ctexart}
+<pre><code class="language-latex"><span class="hljs-keyword">\documentclass</span>[a4paper,zihao=5,UTF8]{ctexart}
 <span class="hljs-keyword">\usepackage</span>{tikz}
 <span class="hljs-keyword">\usetikzlibrary</span>{positioning, shapes.geometric}
 
@@ -1497,7 +1512,8 @@
     <span class="hljs-keyword">\end</span>{tikzpicture}
 <span class="hljs-keyword">\end</span>{center}
 <span class="hljs-keyword">\end</span>{document}
-</code></pre><p><svg
+</code></pre>
+<p><svg
    width="199.85901pt"
    height="237.98511pt"
    viewBox="0 0 199.859 237.98511"

@@ -51,25 +51,36 @@
     <div id="anime-spacer" class="shrinked"></div>
     <div id="content-wrapper-bg">
       <div id="content-wrapper">
-        <div id="content"><p>储存空间不够可以清理pacman软件包缓存，很久不清就会有几十个G.</p>
-<h2><a href="https://man.archlinux.org/man/paccache.8">paccache</a></h2>
-<p>paccache removes old packages from the pacman cache directory. By default the last three versions of a package are kept.</p>
-<pre><code class="hljs language-bash"><span class="hljs-comment"># 仅包含最近的三个版本</span>
+        <div id="content"><div class="toc">
+<h2>目录</h2>
+<ul>
+<ul>
+<li><a href="#h2-paccache-https-man-archlinux-org-man-paccache-8">[paccache](https://man.archlinux.org/man/paccache.8)</a></li>
+<li><a href="#h2-u4f7fu7528-pacman">使用 pacman</a></li>
+<li><a href="#h2-u4f7fu7528yay">使用yay</a></li>
+</ul>
+</ul>
+</div>
+<hr>
+<p>储存空间不够可以清理pacman软件包缓存，很久不清就会有几十个G.</p>
+<h2 id="h2-paccache-https-man-archlinux-org-man-paccache-8">[paccache](https://man.archlinux.org/man/paccache.8)</h2><p>paccache removes old packages from the pacman cache directory. By default the last three versions of a package are kept.</p>
+<pre><code class="language-bash"><span class="hljs-comment"># 仅包含最近的三个版本</span>
 paccache -r
 <span class="hljs-comment"># 仅包含最近的1个版本</span>
 paccache -rk1
-</code></pre><h2>使用 pacman</h2>
-<pre><code class="hljs language-bash"><span class="hljs-comment"># 清理未安装软件包</span>
+</code></pre>
+<h2 id="h2-u4f7fu7528-pacman">使用 pacman</h2><pre><code class="language-bash"><span class="hljs-comment"># 清理未安装软件包</span>
 pacman -Sc
 <span class="hljs-comment"># 清理缓存中所有内容</span>
 pacman -Scc
-</code></pre><h2>使用yay</h2>
-<p>yay的缓存在<code>~/.cache/yay</code>，清理方法类似pacman：</p>
-<pre><code class="hljs language-bash"><span class="hljs-comment"># 清理未安装软件包</span>
+</code></pre>
+<h2 id="h2-u4f7fu7528yay">使用yay</h2><p>yay的缓存在<code>~/.cache/yay</code>，清理方法类似pacman：</p>
+<pre><code class="language-bash"><span class="hljs-comment"># 清理未安装软件包</span>
 yay -Sc
 <span class="hljs-comment"># 清理缓存中所有内容</span>
 yay -Scc
-</code></pre><p>See also:</p>
+</code></pre>
+<p>See also:</p>
 <p><a href="https://wiki.archlinux.org/title/Pacman">pacman - ArchWiki</a></p>
 </div>
         <div id="footnote"></div>

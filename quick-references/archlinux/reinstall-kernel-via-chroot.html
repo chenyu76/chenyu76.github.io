@@ -51,10 +51,28 @@
     <div id="anime-spacer" class="shrinked"></div>
     <div id="content-wrapper-bg">
       <div id="content-wrapper">
-        <div id="content"><h4>You:</h4>
-<p>我的arch Linux 系统在更新内核时电脑突然掉电，导致无法启动，报错内核文件未找到，如何使用启动盘修复</p>
-<h4>ChatGPT:</h4>
-<p>要使用启动盘修复因更新内核失败而无法启动的Arch Linux系统，您可以按照以下步骤操作：</p>
+        <div id="content"><div class="toc">
+<h2>目录</h2>
+<ul>
+<ul>
+<ul>
+<ul>
+<li><a href="#h4-you">You:</a></li>
+<li><a href="#h4-chatgpt">ChatGPT:</a></li>
+<li><a href="#h4-you">You:</a></li>
+<li><a href="#h4-chatgpt">ChatGPT:</a></li>
+<li><a href="#h4-you">You:</a></li>
+<li><a href="#h4-chatgpt">ChatGPT:</a></li>
+<li><a href="#h4-you">You:</a></li>
+<li><a href="#h4-chatgpt">ChatGPT:</a></li>
+</ul>
+</ul>
+</ul>
+</ul>
+</div>
+<hr>
+<h4 id="h4-you">You:</h4><p>我的arch Linux 系统在更新内核时电脑突然掉电，导致无法启动，报错内核文件未找到，如何使用启动盘修复</p>
+<h4 id="h4-chatgpt">ChatGPT:</h4><p>要使用启动盘修复因更新内核失败而无法启动的Arch Linux系统，您可以按照以下步骤操作：</p>
 <ol>
 <li><p><strong>创建启动盘</strong>：</p>
 <ul>
@@ -70,57 +88,65 @@
 <li><p><strong>挂载根分区</strong>：</p>
 <ul>
 <li>确定根分区所在的设备。您可以使用<code>lsblk</code>或<code>fdisk -l</code>命令来查看磁盘分区。</li>
-<li>挂载根分区到/mnt：<pre><code class="hljs language-bash">mount /dev/sdXn /mnt
-</code></pre>其中，<code>/dev/sdXn</code>是您的根分区，例如<code>/dev/sda1</code>。</li>
+<li>挂载根分区到/mnt：<pre><code class="language-bash">mount /dev/sdXn /mnt
+</code></pre>
+其中，<code>/dev/sdXn</code>是您的根分区，例如<code>/dev/sda1</code>。</li>
 </ul>
 </li>
 <li><p><strong>挂载其他必要的分区</strong>：</p>
 <ul>
-<li>如果有单独的<code>/boot</code>分区，挂载它：<pre><code class="hljs language-bash">mount /dev/sdY1 /mnt/boot
-</code></pre></li>
-<li>如果使用UEFI引导，挂载EFI系统分区：<pre><code class="hljs language-bash">mount /dev/sdZ1 /mnt/boot/efi
-</code></pre></li>
+<li>如果有单独的<code>/boot</code>分区，挂载它：<pre><code class="language-bash">mount /dev/sdY1 /mnt/boot
+</code></pre>
+</li>
+<li>如果使用UEFI引导，挂载EFI系统分区：<pre><code class="language-bash">mount /dev/sdZ1 /mnt/boot/efi
+</code></pre>
+</li>
 </ul>
 </li>
 <li><p><strong>进入chroot环境</strong>：</p>
 <ul>
-<li>挂载必要的伪文件系统：<pre><code class="hljs language-bash">mount -t proc /proc /mnt/proc
+<li>挂载必要的伪文件系统：<pre><code class="language-bash">mount -t proc /proc /mnt/proc
 mount --rbind /sys /mnt/sys
 mount --rbind /dev /mnt/dev
-</code></pre></li>
-<li>切换到chroot环境：<pre><code class="hljs language-bash">arch-chroot /mnt
-</code></pre></li>
+</code></pre>
+</li>
+<li>切换到chroot环境：<pre><code class="language-bash">arch-chroot /mnt
+</code></pre>
+</li>
 </ul>
 </li>
 <li><p><strong>重新安装内核</strong>：</p>
 <ul>
-<li>更新系统并重新安装内核：<pre><code class="hljs language-bash">pacman -Syu linux
-</code></pre>其中，<code>linux</code>是内核包名。根据需要也可以安装其他内核，例如<code>linux-lts</code>。</li>
+<li>更新系统并重新安装内核：<pre><code class="language-bash">pacman -Syu linux
+</code></pre>
+其中，<code>linux</code>是内核包名。根据需要也可以安装其他内核，例如<code>linux-lts</code>。</li>
 </ul>
 </li>
 <li><p><strong>更新引导程序</strong>：</p>
 <ul>
-<li>对于GRUB引导程序，更新GRUB配置：<pre><code class="hljs language-bash">grub-mkconfig -o /boot/grub/grub.cfg
-</code></pre></li>
+<li>对于GRUB引导程序，更新GRUB配置：<pre><code class="language-bash">grub-mkconfig -o /boot/grub/grub.cfg
+</code></pre>
+</li>
 <li>如果是其他引导程序，请参考相应的文档进行配置。</li>
 </ul>
 </li>
 <li><p><strong>退出chroot并重启</strong>：</p>
 <ul>
-<li>退出chroot环境：<pre><code class="hljs language-bash"><span class="hljs-built_in">exit</span>
-</code></pre></li>
-<li>卸载分区：<pre><code class="hljs language-bash">umount -R /mnt
-</code></pre></li>
-<li>重启系统：<pre><code class="hljs language-bash">reboot
-</code></pre></li>
+<li>退出chroot环境：<pre><code class="language-bash"><span class="hljs-built_in">exit</span>
+</code></pre>
+</li>
+<li>卸载分区：<pre><code class="language-bash">umount -R /mnt
+</code></pre>
+</li>
+<li>重启系统：<pre><code class="language-bash">reboot
+</code></pre>
+</li>
 </ul>
 </li>
 </ol>
 <p>通过上述步骤，您应该能够修复因更新内核失败而无法启动的Arch Linux系统。如果在执行过程中遇到任何问题，您可以进一步提供详细信息，以便进行更具体的指导。</p>
-<h4>You:</h4>
-<p>我的根分区是有子卷的btrfs格式，如何挂载其中的@根目录</p>
-<h4>ChatGPT:</h4>
-<p>要挂载使用<code>btrfs</code>文件系统且包含子卷的根分区，并挂载其中的<code>@</code>根目录，可以按照以下步骤操作：</p>
+<h4 id="h4-you">You:</h4><p>我的根分区是有子卷的btrfs格式，如何挂载其中的@根目录</p>
+<h4 id="h4-chatgpt">ChatGPT:</h4><p>要挂载使用<code>btrfs</code>文件系统且包含子卷的根分区，并挂载其中的<code>@</code>根目录，可以按照以下步骤操作：</p>
 <ol>
 <li><p><strong>启动到Live环境</strong>：</p>
 <ul>
@@ -135,87 +161,98 @@ mount --rbind /dev /mnt/dev
 </li>
 <li><p><strong>挂载根分区的子卷<code>@</code></strong>：</p>
 <ul>
-<li>挂载根分区到临时目录并指定子卷<code>@</code>：<pre><code class="hljs language-bash">mount -o subvol=@ /dev/sdXn /mnt
-</code></pre>其中，<code>/dev/sdXn</code>是您的根分区，例如<code>/dev/sda1</code>。</li>
+<li>挂载根分区到临时目录并指定子卷<code>@</code>：<pre><code class="language-bash">mount -o subvol=@ /dev/sdXn /mnt
+</code></pre>
+其中，<code>/dev/sdXn</code>是您的根分区，例如<code>/dev/sda1</code>。</li>
 </ul>
 </li>
 <li><p><strong>挂载其他必要的分区</strong>：</p>
 <ul>
-<li>如果有单独的<code>/boot</code>分区，挂载它：<pre><code class="hljs language-bash">mount /dev/sdY1 /mnt/boot
-</code></pre></li>
-<li>如果使用UEFI引导，挂载EFI系统分区：<pre><code class="hljs language-bash">mount /dev/sdZ1 /mnt/boot/efi
-</code></pre></li>
+<li>如果有单独的<code>/boot</code>分区，挂载它：<pre><code class="language-bash">mount /dev/sdY1 /mnt/boot
+</code></pre>
+</li>
+<li>如果使用UEFI引导，挂载EFI系统分区：<pre><code class="language-bash">mount /dev/sdZ1 /mnt/boot/efi
+</code></pre>
+</li>
 </ul>
 </li>
 <li><p><strong>挂载伪文件系统</strong>：</p>
 <ul>
-<li>挂载必要的伪文件系统：<pre><code class="hljs language-bash">mount -t proc /proc /mnt/proc
+<li>挂载必要的伪文件系统：<pre><code class="language-bash">mount -t proc /proc /mnt/proc
 mount --rbind /sys /mnt/sys
 mount --rbind /dev /mnt/dev
-</code></pre></li>
+</code></pre>
+</li>
 </ul>
 </li>
 <li><p><strong>进入chroot环境</strong>：</p>
 <ul>
-<li>切换到chroot环境：<pre><code class="hljs language-bash">arch-chroot /mnt
-</code></pre></li>
+<li>切换到chroot环境：<pre><code class="language-bash">arch-chroot /mnt
+</code></pre>
+</li>
 </ul>
 </li>
 <li><p><strong>重新安装内核</strong>：</p>
 <ul>
-<li>更新系统并重新安装内核：<pre><code class="hljs language-bash">pacman -Syu linux
-</code></pre>其中，<code>linux</code>是内核包名。根据需要也可以安装其他内核，例如<code>linux-lts</code>。</li>
+<li>更新系统并重新安装内核：<pre><code class="language-bash">pacman -Syu linux
+</code></pre>
+其中，<code>linux</code>是内核包名。根据需要也可以安装其他内核，例如<code>linux-lts</code>。</li>
 </ul>
 </li>
 <li><p><strong>更新引导程序</strong>：</p>
 <ul>
-<li>对于GRUB引导程序，更新GRUB配置：<pre><code class="hljs language-bash">grub-mkconfig -o /boot/grub/grub.cfg
-</code></pre></li>
+<li>对于GRUB引导程序，更新GRUB配置：<pre><code class="language-bash">grub-mkconfig -o /boot/grub/grub.cfg
+</code></pre>
+</li>
 <li>如果是其他引导程序，请参考相应的文档进行配置。</li>
 </ul>
 </li>
 <li><p><strong>退出chroot并重启</strong>：</p>
 <ul>
-<li>退出chroot环境：<pre><code class="hljs language-bash"><span class="hljs-built_in">exit</span>
-</code></pre></li>
-<li>卸载分区：<pre><code class="hljs language-bash">umount -R /mnt
-</code></pre></li>
-<li>重启系统：<pre><code class="hljs language-bash">reboot
-</code></pre></li>
+<li>退出chroot环境：<pre><code class="language-bash"><span class="hljs-built_in">exit</span>
+</code></pre>
+</li>
+<li>卸载分区：<pre><code class="language-bash">umount -R /mnt
+</code></pre>
+</li>
+<li>重启系统：<pre><code class="language-bash">reboot
+</code></pre>
+</li>
 </ul>
 </li>
 </ol>
 <p>通过这些步骤，您应该能够正确地挂载btrfs文件系统的根子卷<code>@</code>并修复内核问题。</p>
-<h4>You:</h4>
-<p>我的系统现在已经正确修复，我怀疑今天随之更新的软件也没有被正确的更新，如何在系统中重新安装pacman今天安装过的所有软件包</p>
-<h4>ChatGPT:</h4>
-<p>要重新安装今天更新的软件包，您可以使用<code>pacman</code>和<code>awk</code>命令从Pacman日志中获取今天更新的包列表，并重新安装这些包。以下是详细步骤：</p>
+<h4 id="h4-you">You:</h4><p>我的系统现在已经正确修复，我怀疑今天随之更新的软件也没有被正确的更新，如何在系统中重新安装pacman今天安装过的所有软件包</p>
+<h4 id="h4-chatgpt">ChatGPT:</h4><p>要重新安装今天更新的软件包，您可以使用<code>pacman</code>和<code>awk</code>命令从Pacman日志中获取今天更新的包列表，并重新安装这些包。以下是详细步骤：</p>
 <ol>
 <li><p><strong>查找今天更新的包</strong>：</p>
 <ul>
-<li>查看Pacman日志，找到今天更新的包。可以使用以下命令：<pre><code class="hljs language-bash">grep <span class="hljs-string">&quot;<span class="hljs-subst">$(date &#x27;+%Y-%m-%d&#x27;)</span>&quot;</span> /var/log/pacman.log | grep <span class="hljs-string">&#x27;installed\|upgraded&#x27;</span> | awk <span class="hljs-string">&#x27;{print $4}&#x27;</span>
-</code></pre></li>
+<li>查看Pacman日志，找到今天更新的包。可以使用以下命令：<pre><code class="language-bash">grep <span class="hljs-string">&quot;<span class="hljs-subst">$(date &#x27;+%Y-%m-%d&#x27;)</span>&quot;</span> /var/log/pacman.log | grep <span class="hljs-string">&#x27;installed\|upgraded&#x27;</span> | awk <span class="hljs-string">&#x27;{print $4}&#x27;</span>
+</code></pre>
+</li>
 </ul>
 </li>
 <li><p><strong>重新安装这些包</strong>：</p>
 <ul>
-<li>获取上一步的输出，并使用<code>pacman -S</code>命令重新安装这些包。例如：<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> pacman -S $(grep <span class="hljs-string">&quot;<span class="hljs-subst">$(date &#x27;+%Y-%m-%d&#x27;)</span>&quot;</span> /var/log/pacman.log | grep <span class="hljs-string">&#x27;installed\|upgraded&#x27;</span> | awk <span class="hljs-string">&#x27;{print $4}&#x27;</span>)
-</code></pre></li>
+<li>获取上一步的输出，并使用<code>pacman -S</code>命令重新安装这些包。例如：<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> pacman -S $(grep <span class="hljs-string">&quot;<span class="hljs-subst">$(date &#x27;+%Y-%m-%d&#x27;)</span>&quot;</span> /var/log/pacman.log | grep <span class="hljs-string">&#x27;installed\|upgraded&#x27;</span> | awk <span class="hljs-string">&#x27;{print $4}&#x27;</span>)
+</code></pre>
+</li>
 </ul>
 </li>
 </ol>
 <p>完整的命令组合在一起可能会是这样的：</p>
-<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> pacman -S $(grep <span class="hljs-string">&quot;<span class="hljs-subst">$(date &#x27;+%Y-%m-%d&#x27;)</span>&quot;</span> /var/log/pacman.log | grep <span class="hljs-string">&#x27;installed\|upgraded&#x27;</span> | awk <span class="hljs-string">&#x27;{print $4}&#x27;</span>)
-</code></pre><p>这样，<code>pacman</code>将重新安装今天更新的所有包。如果在执行过程中出现任何问题或需要进一步帮助，请告知我。</p>
-<h4>You:</h4>
-<p>你给出的命令中会筛选出类似 /etc/pacman.d/mirrorlist 的行，导致pacman 报错</p>
-<h4>ChatGPT:</h4>
-<p>为了避免类似<code>/etc/pacman.d/mirrorlist</code>这样的非包名行被包含在重新安装的包列表中，可以进一步精确筛选出日志中真正的包名。我们可以使用更多的过滤条件来确保只提取正确的包名。</p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> pacman -S $(grep <span class="hljs-string">&quot;<span class="hljs-subst">$(date &#x27;+%Y-%m-%d&#x27;)</span>&quot;</span> /var/log/pacman.log | grep <span class="hljs-string">&#x27;installed\|upgraded&#x27;</span> | awk <span class="hljs-string">&#x27;{print $4}&#x27;</span>)
+</code></pre>
+<p>这样，<code>pacman</code>将重新安装今天更新的所有包。如果在执行过程中出现任何问题或需要进一步帮助，请告知我。</p>
+<h4 id="h4-you">You:</h4><p>你给出的命令中会筛选出类似 /etc/pacman.d/mirrorlist 的行，导致pacman 报错</p>
+<h4 id="h4-chatgpt">ChatGPT:</h4><p>为了避免类似<code>/etc/pacman.d/mirrorlist</code>这样的非包名行被包含在重新安装的包列表中，可以进一步精确筛选出日志中真正的包名。我们可以使用更多的过滤条件来确保只提取正确的包名。</p>
 <p>下面是修改后的命令，确保只提取包名，并排除文件路径等非包名条目：</p>
-<pre><code class="hljs language-bash">grep <span class="hljs-string">&quot;<span class="hljs-subst">$(date &#x27;+%Y-%m-%d&#x27;)</span>&quot;</span> /var/log/pacman.log | grep <span class="hljs-string">&#x27;installed\|upgraded&#x27;</span> | awk <span class="hljs-string">&#x27;/installed|upgraded/ {print $4}&#x27;</span> | grep -v <span class="hljs-string">&quot;/&quot;</span>
-</code></pre><p>然后将这些包重新安装：</p>
-<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> pacman -S $(grep <span class="hljs-string">&quot;<span class="hljs-subst">$(date &#x27;+%Y-%m-%d&#x27;)</span>&quot;</span> /var/log/pacman.log | grep <span class="hljs-string">&#x27;installed\|upgraded&#x27;</span> | awk <span class="hljs-string">&#x27;/installed|upgraded/ {print $4}&#x27;</span> | grep -v <span class="hljs-string">&quot;/&quot;</span>)
-</code></pre><p>这样可以确保只重新安装今天更新的实际软件包，而不会包含文件路径等无关条目。如果有任何进一步的问题，请告诉我。</p>
+<pre><code class="language-bash">grep <span class="hljs-string">&quot;<span class="hljs-subst">$(date &#x27;+%Y-%m-%d&#x27;)</span>&quot;</span> /var/log/pacman.log | grep <span class="hljs-string">&#x27;installed\|upgraded&#x27;</span> | awk <span class="hljs-string">&#x27;/installed|upgraded/ {print $4}&#x27;</span> | grep -v <span class="hljs-string">&quot;/&quot;</span>
+</code></pre>
+<p>然后将这些包重新安装：</p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> pacman -S $(grep <span class="hljs-string">&quot;<span class="hljs-subst">$(date &#x27;+%Y-%m-%d&#x27;)</span>&quot;</span> /var/log/pacman.log | grep <span class="hljs-string">&#x27;installed\|upgraded&#x27;</span> | awk <span class="hljs-string">&#x27;/installed|upgraded/ {print $4}&#x27;</span> | grep -v <span class="hljs-string">&quot;/&quot;</span>)
+</code></pre>
+<p>这样可以确保只重新安装今天更新的实际软件包，而不会包含文件路径等无关条目。如果有任何进一步的问题，请告诉我。</p>
 </div>
         <div id="footnote"></div>
       </div>

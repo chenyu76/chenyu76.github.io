@@ -51,7 +51,7 @@
     <div id="anime-spacer" class="shrinked"></div>
     <div id="content-wrapper-bg">
       <div id="content-wrapper">
-        <div id="content"><pre><code class="hljs language-Mathematica"><span class="hljs-comment">(* 使共轭的导数等于导数的共轭 *)</span>
+        <div id="content"><pre><code class="language-Mathematica"><span class="hljs-comment">(* 使共轭的导数等于导数的共轭 *)</span>
 <span class="hljs-variable">excluded</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;ExcludedFunctions&quot;</span> <span class="hljs-operator">/.</span>
    <span class="hljs-punctuation">(</span><span class="hljs-string">&quot;DifferentiationOptions&quot;</span> <span class="hljs-operator">/.</span> 
      <span class="hljs-built_in">SystemOptions</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;DifferentiationOptions&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">)</span><span class="hljs-operator">;</span>
@@ -61,7 +61,8 @@
 <span class="hljs-built_in">Unprotect</span><span class="hljs-punctuation">[</span><span class="hljs-built_in">Conjugate</span><span class="hljs-punctuation">]</span><span class="hljs-operator">;</span>
 <span class="hljs-built_in">Conjugate</span> <span class="hljs-operator">/:</span> <span class="hljs-built_in">D</span><span class="hljs-punctuation">[</span><span class="hljs-built_in">Conjugate</span><span class="hljs-punctuation">[</span><span class="hljs-type">f_</span><span class="hljs-punctuation">]</span><span class="hljs-operator">,</span> <span class="hljs-type">x__</span><span class="hljs-punctuation">]</span> <span class="hljs-operator">:=</span> <span class="hljs-built_in">Conjugate</span><span class="hljs-punctuation">[</span><span class="hljs-built_in">D</span><span class="hljs-punctuation">[</span><span class="hljs-variable">f</span><span class="hljs-operator">,</span> <span class="hljs-variable">x</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">]</span>
 <span class="hljs-built_in">Protect</span><span class="hljs-punctuation">[</span><span class="hljs-built_in">Conjugate</span><span class="hljs-punctuation">]</span><span class="hljs-operator">;</span>
-</code></pre><p>Reference:</p>
+</code></pre>
+<p>Reference:</p>
 <p><a href="https://mathematica.stackexchange.com/questions/91356/derivative-of-conjugate-multivariate-function">Carl Woll at mathematica.stackexchange.com</a></p>
 </div>
         <div id="footnote"></div>

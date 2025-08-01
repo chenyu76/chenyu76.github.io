@@ -1,281 +1,281 @@
 /* styles.css */
 body,
 html {
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
 
-  /* 淡灰色背景 */
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  overflow: auto;
-  /* 确保纵向滚动 */
+	/* 淡灰色背景 */
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+	overflow: auto;
+	/* 确保纵向滚动 */
 }
 
 html {
-  background-color: #f0f0f0;
+	background-color: #f0f0f0;
 }
 
 #spacer {
-  flex-grow: 1;
-  /* 占据剩余空间 */
+	flex-grow: 1;
+	/* 占据剩余空间 */
 }
 
 #title-container {
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  max-width: 800px;
-  margin: 0px auto;
-  /* 居中对齐 */
+	display: flex;
+	flex-direction: column;
+	width: 80%;
+	max-width: 800px;
+	margin: 0px auto;
+	/* 居中对齐 */
 
-  height: 61.8vh;
+	height: 61.8vh;
 }
 
 /* 定义动画 */
 @keyframes shrink {
-  0% {
-    height: 50vh;
-  }
+	0% {
+		height: 50vh;
+	}
 
-  100% {
-    height: 0.1vh;
-  }
+	100% {
+		height: 0.1vh;
+	}
 }
 
 /* 应用动画 */
 #anime-spacer {
-  animation: shrink 0.5s ease forwards;
-  /* forwards 保持动画结束状态 */
+	animation: shrink 0.5s ease forwards;
+	/* forwards 保持动画结束状态 */
 }
 
 #content-wrapper-bg {
-  background-color: #f0f0f0;
-  margin: 0px 0px;
-  width: 100%;
+	background-color: #f0f0f0;
+	margin: 0px 0px;
+	width: 100%;
 }
 
 #content-wrapper {
-  background-color: white;
-  /* 白色背景 */
-  width: 80%;
-  /* 默认宽度 */
-  max-width: 800px;
-  padding: 30px;
-  margin: 0px auto;
-  /* 居中对齐 */
+	background-color: white;
+	/* 白色背景 */
+	width: 80%;
+	/* 默认宽度 */
+	max-width: 800px;
+	padding: 30px;
+	margin: 0px auto;
+	/* 居中对齐 */
 }
 
 #heading {
-  width: 80%;
-  /* 默认宽度 */
-  max-width: 800px;
-  margin: 5px 0px;
+	width: 80%;
+	/* 默认宽度 */
+	max-width: 800px;
+	margin: 5px 0px;
 }
 
 #top-buttons-wrapper {
-  width: 80%;
-  /* 默认宽度 */
-  max-width: 800px;
-  padding: 0px;
-  margin: 5px 0px;
-  /* margin: 5px auto; */
+	width: 80%;
+	/* 默认宽度 */
+	max-width: 800px;
+	padding: 0px;
+	margin: 5px 0px;
+	/* margin: 5px auto; */
 }
 
 #content {
-  margin: 0;
-  line-height: 1.75;
+	margin: 0;
+	line-height: 1.75;
 }
 
 #content img {
-  width: 80%;
-  height: auto;
-  /* 保持图片的宽高比 */
-  display: block;
-  /* 防止图片右侧多余的空白 */
-  margin: 2rem auto;
-  /* 图片居中 */
+	width: 80%;
+	height: auto;
+	/* 保持图片的宽高比 */
+	display: block;
+	/* 防止图片右侧多余的空白 */
+	margin: 2rem auto;
+	/* 图片居中 */
 }
 
 #content a {
-  text-decoration: none;
-  /* 去掉下划线 */
-  color: #0056b3;
-  /* color: #1E90FF; */
-  /* color: #007BFF; */
-  /* 默认颜色 */
+	text-decoration: none;
+	/* 去掉下划线 */
+	color: #0056b3;
+	/* color: #1E90FF; */
+	/* color: #007BFF; */
+	/* 默认颜色 */
 }
 
 #content a:visited {
-  text-decoration: none;
-  color: #004bb3;
-  /* 点击后颜色 */
+	text-decoration: none;
+	color: #004bb3;
+	/* 点击后颜色 */
 }
 
 #content a:hover {
-  text-decoration: underline;
-  color: #2b92ff;
-  /* 悬停时颜色 */
+	text-decoration: underline;
+	color: #2b92ff;
+	/* 悬停时颜色 */
 }
 
 /* 修改 p 标签的段首空两格 */
 #content p {
-  text-indent: 2em;
-  /* 段首空两格 */
+	text-indent: 2em;
+	/* 段首空两格 */
 }
 
 #footnote {
-  color: gray;
-  /* 设置字体颜色为灰色 */
-  font-size: 0.8em;
-  /* 设置字体大小为普通字体的0.8倍 */
+	color: gray;
+	/* 设置字体颜色为灰色 */
+	font-size: 0.8em;
+	/* 设置字体大小为普通字体的0.8倍 */
 }
 
 .top-buttons {
-  text-align: left;
-  margin: 10px 0;
+	text-align: left;
+	margin: 10px 0;
 }
 
 .icon {
-  height: 1.5em;
-  /* 高度和宽度保持一致 */
-  font-size: 16px;
-  /* 设置字体大小与默认 i 标签大小一致 */
+	height: 1.5em;
+	/* 高度和宽度保持一致 */
+	font-size: 16px;
+	/* 设置字体大小与默认 i 标签大小一致 */
 }
 
 /* 按钮动画显现效果 */
 .fade-in {
-  opacity: 0;
-  animation: fadeIn 0.5s forwards;
+	opacity: 0;
+	animation: fadeIn 0.5s forwards;
 }
 
 .fade-in:nth-child(1) {
-  animation-delay: 0.2s;
+	animation-delay: 0.2s;
 }
 
 .fade-in:nth-child(2) {
-  animation-delay: 0.3s;
+	animation-delay: 0.3s;
 }
 
 .fade-in:nth-child(3) {
-  animation-delay: 0.4s;
+	animation-delay: 0.4s;
 }
 
 .fade-in:nth-child(4) {
-  animation-delay: 0.5s;
+	animation-delay: 0.5s;
 }
 
 @keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
+	to {
+		opacity: 1;
+	}
 }
 
 .bottom-button {
-  text-align: center;
-  margin: 10px 0 50px;
+	text-align: center;
+	margin: 10px 0 50px;
 }
 
 .top-buttons a,
 .bottom-button button {
-  margin: 0 5px;
-  padding: 10px;
-  color: #101010;
-  text-decoration: none;
-  background-color: transparent;
-  border: none#0056b3;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 20px;
+	margin: 0 5px;
+	padding: 10px;
+	color: #101010;
+	text-decoration: none;
+	background-color: transparent;
+	border: none#0056b3;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 20px;
 }
 
 .top-buttons a:hover,
 .bottom-button button:hover {
-  color: #0056b3;
+	color: #0056b3;
 }
 
 .top-buttons a i,
 .bottom-button button i {
-  pointer-events: none;
+	pointer-events: none;
 }
 
 .hiddenContent {
-  /* 初始隐藏内容 */
-  opacity: 0;
-  line-height: 0%;
-  display: none;
-  transition:
-    line-height 0.3s ease,
-    opacity 0.2s ease;
-  /* 过渡动画 */
+	/* 初始隐藏内容 */
+	opacity: 0;
+	line-height: 0%;
+	display: none;
+	transition:
+		line-height 0.3s ease,
+		opacity 0.2s ease;
+	/* 过渡动画 */
 }
 
 .hiddenContent.show {
-  opacity: 1;
-  line-height: 100%;
+	opacity: 1;
+	line-height: 100%;
 }
 
 /* 在标题的路径中使用 */
 h4 {
-  margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 /* 代码块的复制按钮*/
 .copy-btn {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  padding: 5px 10px;
-  background-color: transparent;
-  color: transparent;
-  font-size: 0.7em;
-  border: none;
-  cursor: pointer;
-  overflow: hidden;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	padding: 5px 10px;
+	background-color: transparent;
+	color: transparent;
+	font-size: 0.7em;
+	border: none;
+	cursor: pointer;
+	overflow: hidden;
 }
 
 .copy-btn:hover {
-  color: black;
+	color: black;
 }
 
 .copy-btn::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  border-width: 0 10px 10px 0;
-  border-style: solid;
-  border-color: #fff #fff transparent transparent;
-  background-color: #777;
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 0;
+	border-width: 0 10px 10px 0;
+	border-style: solid;
+	border-color: #fff #fff transparent transparent;
+	background-color: #777;
 }
 
 pre {
-  position: relative;
-  padding: 0em;
-  border-radius: 0px;
-  margin: 0em 0;
+	position: relative;
+	padding: 0em;
+	border-radius: 0px;
+	margin: 0em 0;
 }
 
 /* 引用文本的样式 */
 blockquote {
-  margin: 1em 10px;
-  padding: 0.5em 10px;
-  border-left: 3px solid #ccc;
-  /* 添加左侧边框 */
-  font-style: italic;
-  /* 斜体文本 */
-  color: #666;
-  /* 更改文本颜色 */
+	margin: 1em 10px;
+	padding: 0.5em 10px;
+	border-left: 3px solid #ccc;
+	/* 添加左侧边框 */
+	font-style: italic;
+	/* 斜体文本 */
+	color: #666;
+	/* 更改文本颜色 */
 }
 
 ol li::marker {
-  font-weight: bold;
-  /* 加粗编号 */
-  color: #333333;
-  /* 更改编号颜色 */
+	font-weight: bold;
+	/* 加粗编号 */
+	color: #333333;
+	/* 更改编号颜色 */
 }
 
 h1,
@@ -284,31 +284,31 @@ h3,
 h4,
 h5,
 h6 {
-  position: relative;
+	position: relative;
 }
 
 h1:hover::before {
-  content: "h1";
+	content: "h1";
 }
 
 h2:hover::before {
-  content: "h2";
+	content: "h2";
 }
 
 h3:hover::before {
-  content: "h3";
+	content: "h3";
 }
 
 h4:hover::before {
-  content: "h4";
+	content: "h4";
 }
 
 h5:hover::before {
-  content: "h5";
+	content: "h5";
 }
 
 h6:hover::before {
-  content: "h6";
+	content: "h6";
 }
 
 h1:hover::before,
@@ -317,24 +317,51 @@ h3:hover::before,
 h4:hover::before,
 h5:hover::before,
 h6:hover::before {
-  position: absolute;
-  left: -1.5em;
-  bottom: 0.2em;
-  color: #888;
-  font-size: 0.6em;
-  pointer-events: none;
+	position: absolute;
+	left: -1.5em;
+	bottom: 0.2em;
+	color: #888;
+	font-size: 0.6em;
+	pointer-events: none;
 }
 
 hr {
-  color: #AAA; 
-  background-color: #AAA;   
-  height: 1px;
-  
-  border: none; /* 先移除默认边框 */
-  
-  /* 修改外边距 */
-  margin: 40px 0px;
+	border: none;
+	/* 移除默认边框 */
+	height: 1rem;
+	background-color: #f0f0f0;
+	color: #f0f0f0;
+	margin: 20px -31px;
+	/* 负边距让它超出内容padding区域,需要比内容的padding大 */
+}
 
-  /* 修改宽度 */
-  width: 100%; 
+
+/* 目录样式 */
+.toc {
+	padding: 1em;
+	margin-bottom: 1em;
+}
+
+.toc h2 {
+	margin-top: 0;
+	font-size: 1.2em;
+}
+
+.toc ul {
+	list-style: none;
+	padding-left: 1em;
+	margin: 0.5em 0;
+}
+
+.toc li {
+	margin: 0.3em 0;
+}
+
+.toc a {
+	text-decoration: none;
+	color: #007bff;
+}
+
+.toc a:hover {
+	text-decoration: underline;
 }

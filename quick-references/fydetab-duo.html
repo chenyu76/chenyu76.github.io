@@ -51,41 +51,57 @@
     <div id="anime-spacer" class="shrinked"></div>
     <div id="content-wrapper-bg">
       <div id="content-wrapper">
-        <div id="content"><p>买了一台 Fydetab Duo 折腾，配到哪写到哪，完全没有逻辑</p>
-<h2>Android</h2>
-<p>如果能从sd卡启动android就好了</p>
+        <div id="content"><div class="toc">
+<h2>目录</h2>
+<ul>
+<ul>
+<li><a href="#h2-android">Android</a></li>
+<li><a href="#h2-archlinux">ArchLinux</a></li>
+<li><a href="#h2-fyde-os">Fyde OS</a></li>
+<ul>
+<li><a href="#h3-android-u5b50u7cfbu7edf">Android 子系统</a></li>
+<li><a href="#h3-crostini">Crostini</a></li>
+<ul>
+<li><a href="#h4-debian">Debian</a></li>
+<li><a href="#h4-archlinux">Archlinux</a></li>
+<ul>
+<li><a href="#h5-u5b89u88c5">安装</a></li>
+<li><a href="#h5-u4e2du6587u8f93u5165u6cd5-fcitx5">中文输入法 Fcitx5</a></li>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+</div>
+<hr>
+<p>买了一台 Fydetab Duo 折腾，配到哪写到哪，完全没有逻辑</p>
+<h2 id="h2-android">Android</h2><p>如果能从sd卡启动android就好了</p>
 <p>旋转屏幕可以使用<a href="https://play.google.com/store/apps/details?id=com.pranavpandey.rotation">Rotation</a></p>
-<h2>ArchLinux</h2>
-<p>关闭屏幕再打开后触控会失效，不知道如何解决</p>
-<h2>Fyde OS</h2>
-<h3>Android 子系统</h3>
-<p>似乎在<a href="chrome://flags"><code>chrome://flags</code></a>里打开<code>Enable custom ARCVM memory size</code>可以优化某些占内存软件的体验</p>
+<h2 id="h2-archlinux">ArchLinux</h2><p>关闭屏幕再打开后触控会失效，不知道如何解决</p>
+<h2 id="h2-fyde-os">Fyde OS</h2><h3 id="h3-android-u5b50u7cfbu7edf">Android 子系统</h3><p>似乎在<a href="chrome://flags"><code>chrome://flags</code></a>里打开<code>Enable custom ARCVM memory size</code>可以优化某些占内存软件的体验</p>
 <ul>
 <li>其下面的小猫猫代理可以系统范围的使用，包括Crostini</li>
 <li>通过KDE connect 可以和电脑互联</li>
 </ul>
-<h3>Crostini</h3>
-<ul>
+<h3 id="h3-crostini">Crostini</h3><ul>
 <li>Syncthing 连不上局域网设备？我还是用Android上的Syncthing-fork吧</li>
 <li>共享的文件夹在<code>/mnt/chromeos</code>下，通过<code>ln -s</code>可以方便的访问</li>
 </ul>
-<h4>Debian</h4>
-<p>包都太老了不好用</p>
-<h4>Archlinux</h4>
-<h5>安装</h5>
-<p><a href="https://gist.github.com/baldrailers/09ba52a17219ca1e8fbf233dc8a4b375/">安装A</a></p>
+<h4 id="h4-debian">Debian</h4><p>包都太老了不好用</p>
+<h4 id="h4-archlinux">Archlinux</h4><h5 id="h5-u5b89u88c5">安装</h5><p><a href="https://gist.github.com/baldrailers/09ba52a17219ca1e8fbf233dc8a4b375/">安装A</a></p>
 <p><a href="https://wiki.archlinux.org/title/Chrome_OS_devices/Crostini">安装B</a></p>
 <p>注意需要好的互联网连接！</p>
-<h5>中文输入法 Fcitx5</h5>
-<p><a href="https://wiki.archlinux.org/title/Fcitx">Arch Wiki</a></p>
+<h5 id="h5-u4e2du6587u8f93u5165u6cd5-fcitx5">中文输入法 Fcitx5</h5><p><a href="https://wiki.archlinux.org/title/Fcitx">Arch Wiki</a></p>
 <p>似乎需要在<code>~/.sommelierrc</code>内设置</p>
-<pre><code class="hljs">/usr/bin/fcitx-autostart
-</code></pre><p>但我的<code>/usr/bin</code>下没看到<code>fcitx-autostart</code></p>
+<pre><code>/usr/bin/fcitx-autostart
+</code></pre>
+<p>但我的<code>/usr/bin</code>下没看到<code>fcitx-autostart</code></p>
 <p>自动启动，并配置环境变量</p>
-<pre><code class="hljs">GTK_IM_MODULE=fcitx
+<pre><code>GTK_IM_MODULE=fcitx
 QT_IM_MODULE=fcitx
 XMODIFIERS=@im=fcitx
-</code></pre><p>安装好后可能没法通过快捷键开启，但可以通过<code>fcitx-remote</code>临时测试，再编辑配置文件设置好键位</p>
+</code></pre>
+<p>安装好后可能没法通过快捷键开启，但可以通过<code>fcitx-remote</code>临时测试，再编辑配置文件设置好键位</p>
 <p>GTK应用用不了输入法？为什么呢</p>
 </div>
         <div id="footnote">2025/06/24</div>

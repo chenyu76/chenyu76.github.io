@@ -52,8 +52,7 @@
     <div id="content-wrapper-bg">
       <div id="content-wrapper">
         <div id="content"><p>学校的公共 Wi-Fi 环境通常非常拥挤，设备数量众多。<code>avahi-daemon</code> 用于实现 mDNS/DNS-SD（多播 DNS/DNS 服务发现）协议，它会不断广播和接收网络上的服务信息。在设备众多的公共 Wi-Fi 环境中，大量的广播包可能会导致 <code>avahi-daemon</code> 消耗大量 CPU 资源来处理这些信息。</p>
-<h3>使用 NetworkManager 的 Dispatcher 脚本</h3>
-<ul>
+<h3 id="h3-u4f7fu7528-networkmanager-u7684-dispatcher-u811au672c">使用 NetworkManager 的 Dispatcher 脚本</h3><ul>
 <li>NetworkManager 在网络连接状态发生变化时，会运行 dispatcher 脚本。</li>
 <li>您可以编写一个 dispatcher 脚本，在连接到特定 SSID 时，禁用 Avahi 服务，断开连接时，启用 Avahi 服务。</li>
 </ul>
@@ -65,7 +64,7 @@
 </ul>
 </li>
 </ol>
-<pre><code class="hljs language-bash"><span class="hljs-meta">#!/bin/bash</span>
+<pre><code class="language-bash"><span class="hljs-meta">#!/bin/bash</span>
 
 SSID=<span class="hljs-string">&quot;your_target_SSID&quot;</span> <span class="hljs-comment"># 将 &quot;your_target_SSID&quot; 替换为实际的 Wi-Fi 的 SSID</span>
 
@@ -79,7 +78,8 @@ SSID=<span class="hljs-string">&quot;your_target_SSID&quot;</span> <span class="
 <span class="hljs-keyword">fi</span>
 
 <span class="hljs-built_in">exit</span> 0
-</code></pre><ol>
+</code></pre>
+<ol>
 <li>使用以下命令为脚本添加执行权限：<ul>
 <li><code>sudo chmod +x /etc/NetworkManager/dispatcher.d/avahi-ssid-control.sh</code></li>
 </ul>

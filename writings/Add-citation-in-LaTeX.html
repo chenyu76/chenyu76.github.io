@@ -51,14 +51,34 @@
     <div id="anime-spacer" class="shrinked"></div>
     <div id="content-wrapper-bg">
       <div id="content-wrapper">
-        <div id="content"><blockquote>
+        <div id="content"><div class="toc">
+<h2>目录</h2>
+<ul>
+<ul>
+<li><a href="#h2-u521bu5efau5305u542bu53c2u8003u6587u732eu6761u76ee-bib-u6587u4ef6">创建包含参考文献条目 `.bib` 文件</a></li>
+<li><a href="#h2-u5f15u7528u53c2u8003u6587u732e">引用参考文献</a></li>
+<li><a href="#h2-u63d2u5165u53c2u8003u6587u732eu5217u8868">插入参考文献列表</a></li>
+<ul>
+<li><a href="#h3-tips">Tips</a></li>
+</ul>
+<li><a href="#h2-u5b8cu6574u793au4f8b">完整示例</a></li>
+<li><a href="#h2-u7f16u8bd1u6d41u7a0b">编译流程</a></li>
+<ul>
+<li><a href="#h3-u5982u679cu6ca1u6709u7f16u8bd1u8fc7">如果没有编译过：</a></li>
+<li><a href="#h3-u5982u679cu7f16u8bd1u8fc7u4e86">如果编译过了</a></li>
+</ul>
+<li><a href="#h2-u53c2u8003u6587u732eu6837u5f0f">参考文献样式</a></li>
+</ul>
+</ul>
+</div>
+<hr>
+<blockquote>
 <p>BibTeX是一套用于管理文献、产生文献目录的格式。 使用上通常与LaTeX一起使用。(摘自<a href="https://zh.wikipedia.org/zh-cn/BibTeX">WikiPedia</a>)</p>
 </blockquote>
 <p>有了BibTeX，我们可以方便的在一个文件中收集需要的文献，并在LaTeX文件中引用它。</p>
-<h2>创建包含参考文献条目 <code>.bib</code> 文件</h2>
-<p>首先，创建一个文件后缀为 <code>.bib</code> 的文件，包含参考文献条目。每个参考文献条目都需要遵循BibTeX格式，通常包括如作者、标题、出版年份等信息。</p>
+<h2 id="h2-u521bu5efau5305u542bu53c2u8003u6587u732eu6761u76ee-bib-u6587u4ef6">创建包含参考文献条目 `.bib` 文件</h2><p>首先，创建一个文件后缀为 <code>.bib</code> 的文件，包含参考文献条目。每个参考文献条目都需要遵循BibTeX格式，通常包括如作者、标题、出版年份等信息。</p>
 <p>例如，在与<code>.tex</code>相同目录下创建一个 <code>references.bib</code> 文件，示例内容如下：</p>
-<pre><code class="hljs language-bibtex">@book{latexguide,
+<pre><code class="language-bibtex">@book{latexguide,
   author    = {Leslie Lamport},
   title     = {LaTeX: A Document Preparation System},
   publisher = {Publisher},
@@ -76,33 +96,35 @@
 可以添加更多条目，
 只有在正文中使用\cite命令的条目
 才会出现在最后编译好的文档中
-</code></pre><p>每个@开头是一个条目，条目内部填入作者、标题等信息；这个示例中第一个条目中book是文档类型， 此外还有article, inproceedings, misc等；<code>latexguide</code>是引用时使用的名称，可以在之后使用类似的格式添加更多内容。推荐直接在<a href="https://scholar.google.com/">Google Scholar</a>或其他文献网站上复制，不要手写；也可以让ai生成，但注意核对信息。</p>
+</code></pre>
+<p>每个@开头是一个条目，条目内部填入作者、标题等信息；这个示例中第一个条目中book是文档类型， 此外还有article, inproceedings, misc等；<code>latexguide</code>是引用时使用的名称，可以在之后使用类似的格式添加更多内容。推荐直接在<a href="https://scholar.google.com/">Google Scholar</a>或其他文献网站上复制，不要手写；也可以让ai生成，但注意核对信息。</p>
 <p><img src="./assets/google_scholar.png" alt="Google Scholar 示例"></p>
-<h2>引用参考文献</h2>
-<p>在 LaTeX 文件中，使用 <code>\cite{}</code> 命令引用参考文献。例如：</p>
-<pre><code class="hljs language-latex">This is a reference to the LaTeX guide <span class="hljs-keyword">\cite</span>{latexguide}.
-</code></pre><p>这里的<code>latexguide</code>是上面的例子中定义的名称。</p>
-<h2>插入参考文献列表</h2>
-<p>在文档任意位置插入使用的参考文献列表。只有使用了<code>\cite{}</code>命令插入的文献才会出现。</p>
+<h2 id="h2-u5f15u7528u53c2u8003u6587u732e">引用参考文献</h2><p>在 LaTeX 文件中，使用 <code>\cite{}</code> 命令引用参考文献。例如：</p>
+<pre><code class="language-latex">This is a reference to the LaTeX guide <span class="hljs-keyword">\cite</span>{latexguide}.
+</code></pre>
+<p>这里的<code>latexguide</code>是上面的例子中定义的名称。</p>
+<h2 id="h2-u63d2u5165u53c2u8003u6587u732eu5217u8868">插入参考文献列表</h2><p>在文档任意位置插入使用的参考文献列表。只有使用了<code>\cite{}</code>命令插入的文献才会出现。</p>
 <p>使用 <code>\bibliographystyle{}</code> 命令指定参考文献的格式，并使用 <code>\bibliography{}</code> 命令指定 <code>.bib</code> 文件的路径。在编译好的文档中，参考文献列表会出现在<code>\bibliography{}</code>命令调用处。</p>
-<pre><code class="hljs language-latex"><span class="hljs-keyword">\bibliographystyle</span>{plain}  <span class="hljs-comment">% 参考文献的样式</span>
+<pre><code class="language-latex"><span class="hljs-keyword">\bibliographystyle</span>{plain}  <span class="hljs-comment">% 参考文献的样式</span>
 <span class="hljs-keyword">\bibliography</span>{references.bib}  <span class="hljs-comment">% 引用.bib文件</span>
-</code></pre><h3>Tips</h3>
-<ol>
+</code></pre>
+<h3 id="h3-tips">Tips</h3><ol>
 <li>如果在beamer中使用，可以添加 allowframebreaks 参数使文献列表自动换页</li>
 </ol>
-<pre><code class="hljs language-latex"><span class="hljs-keyword">\begin</span>{frame}[allowframebreaks]{References}
+<pre><code class="language-latex"><span class="hljs-keyword">\begin</span>{frame}[allowframebreaks]{References}
 	<span class="hljs-keyword">\bibliographystyle</span>{plain}
 	<span class="hljs-keyword">\bibliography</span>{references}
 <span class="hljs-keyword">\end</span>{frame}
-</code></pre><p>文献列表编号（而不是图标）</p>
-<pre><code class="hljs">\setbeamertemplate{bibliography item}{\insertbiblabel}
-</code></pre><ol start="2">
+</code></pre>
+<p>文献列表编号（而不是图标）</p>
+<pre><code>\setbeamertemplate{bibliography item}{\insertbiblabel}
+</code></pre>
+<ol start="2">
 <li>可以通过使用<code>hyperref</code>宏包使引用标签可点击</li>
 </ol>
-<pre><code class="hljs language-latex"><span class="hljs-keyword">\usepackage</span>{hyperref}
-</code></pre><h2>完整示例</h2>
-<pre><code class="hljs language-latex"><span class="hljs-keyword">\documentclass</span>{article}
+<pre><code class="language-latex"><span class="hljs-keyword">\usepackage</span>{hyperref}
+</code></pre>
+<h2 id="h2-u5b8cu6574u793au4f8b">完整示例</h2><pre><code class="language-latex"><span class="hljs-keyword">\documentclass</span>{article}
 
 <span class="hljs-keyword">\begin</span>{document}
 
@@ -112,30 +134,30 @@ This is a reference to the LaTeX guide <span class="hljs-keyword">\cite</span>{l
 <span class="hljs-keyword">\bibliography</span>{references.bib}  <span class="hljs-comment">% 引用.bib文件</span>
 
 <span class="hljs-keyword">\end</span>{document}
-</code></pre><p>你可以在<a href="./Add-citation-in-LaTeX.zip">这里</a>下载这个示例。</p>
-<h2>编译流程</h2>
-<p>在 LaTeX 中正确处理参考文献需要多次编译。如果你使用overleaf等在线平台，他们应该会自动帮你处理好编译流程，不用操心，否则：</p>
-<h3>如果没有编译过：</h3>
-<p>(如果使用XeLaTeX)</p>
+</code></pre>
+<p>你可以在<a href="./Add-citation-in-LaTeX.zip">这里</a>下载这个示例。</p>
+<h2 id="h2-u7f16u8bd1u6d41u7a0b">编译流程</h2><p>在 LaTeX 中正确处理参考文献需要多次编译。如果你使用overleaf等在线平台，他们应该会自动帮你处理好编译流程，不用操心，否则：</p>
+<h3 id="h3-u5982u679cu6ca1u6709u7f16u8bd1u8fc7">如果没有编译过：</h3><p>(如果使用XeLaTeX)</p>
 <ol>
 <li>使用 <code>xelatex</code> 编译 LaTeX 文件，生成需要的文献列表（.aux 文件）</li>
 <li>使用 <code>bibtex</code> 编译参考文献。</li>
 <li>再次使用 <code>xelatex</code> 编译两次，第一次会生成参考文献，第二次确保参考文献引用和引用列表正确生成。</li>
 </ol>
 <p>如果使用命令行:</p>
-<pre><code class="hljs language-bash">xelatex yourfile.tex
+<pre><code class="language-bash">xelatex yourfile.tex
 bibtex yourfile.aux
 xelatex yourfile.tex
 xelatex yourfile.tex
-</code></pre><h3>如果编译过了</h3>
-<p>只需要在参考文献有更新时运行</p>
-<pre><code class="hljs language-bash">bibtex yourfile.aux
-</code></pre><p>即可</p>
-<h2>参考文献样式</h2>
-<p> LaTeX 支持多种参考文献样式（如 <code>plain</code>, <code>unsrt</code>, <code>alpha</code>, <code>ieeetr</code> 等）：</p>
+</code></pre>
+<h3 id="h3-u5982u679cu7f16u8bd1u8fc7u4e86">如果编译过了</h3><p>只需要在参考文献有更新时运行</p>
+<pre><code class="language-bash">bibtex yourfile.aux
+</code></pre>
+<p>即可</p>
+<h2 id="h2-u53c2u8003u6587u732eu6837u5f0f">参考文献样式</h2><p> LaTeX 支持多种参考文献样式（如 <code>plain</code>, <code>unsrt</code>, <code>alpha</code>, <code>ieeetr</code> 等）：</p>
 <p>在完整示例中修改</p>
-<pre><code class="hljs">\bibliographystyle{plain}  % 修改这里的plain
-</code></pre><p>可以根据需要选择不同的样式。</p>
+<pre><code>\bibliographystyle{plain}  % 修改这里的plain
+</code></pre>
+<p>可以根据需要选择不同的样式。</p>
 </div>
         <div id="footnote">2025/02/20</div>
       </div>
