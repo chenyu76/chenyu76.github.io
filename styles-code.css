@@ -1,0 +1,139 @@
+pre code {
+	background-color: #f0f0f0;
+	display: block;
+	overflow-x: auto;
+	padding: 1em
+}
+
+/*  Highlight.js Theme */
+.hljs {
+	display: block;
+	overflow-x: auto;
+	padding: 1.5rem;
+	background: #eff1f5;
+	color: #4c4f69;
+	border-radius: 12px;
+	font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+	font-size: 1rem;
+	line-height: 1.5;
+	box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.03);
+}
+
+.hljs-comment {
+	color: #6c6f85;
+	font-style: italic;
+}
+
+.hljs-punctuation,
+.hljs-tag {
+	color: #7c7f93;
+}
+
+.hljs-tag .hljs-attr,
+.hljs-tag .hljs-name {
+	color: #4c4f69;
+}
+
+.hljs-attribute,
+.hljs-doctag,
+.hljs-keyword,
+.hljs-meta .hljs-keyword,
+.hljs-name,
+.hljs-selector-tag {
+	color: #8839ef;
+	font-weight: 700;
+}
+
+.hljs-deletion,
+.hljs-quote,
+.hljs-selector-class,
+.hljs-selector-id,
+.hljs-template-tag {
+	color: #d20f39;
+}
+
+.hljs-number {
+	color: #fe640b;
+}
+
+.hljs-string {
+	color: #40a02b;
+}
+
+.hljs-type {
+	color: #1e66f5;
+}
+
+.hljs-section,
+.hljs-title {
+	color: #1e66f5;
+	font-weight: 700;
+}
+
+.hljs-link,
+.hljs-operator,
+.hljs-regexp,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-symbol,
+.hljs-template-variable,
+.hljs-variable {
+	color: #ab5656;
+}
+
+.hljs-literal {
+	color: #179299;
+}
+
+.hljs-addition,
+.hljs-built_in,
+.hljs-bullet,
+.hljs-code {
+	color: #40a02b;
+}
+
+.hljs-meta {
+	color: #209fb5;
+}
+
+.hljs-meta .hljs-string {
+	color: #04a5e5;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: 700;
+}
+
+
+/* 代码块的复制按钮*/
+.copy-btn {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	padding: 5px 10px;
+	background-color: transparent;
+	color: transparent;
+	font-size: 0.7em;
+	border: none;
+	cursor: pointer;
+	overflow: hidden;
+}
+
+.copy-btn:hover {
+	color: black;
+}
+
+.copy-btn::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 0;
+	border-width: 0 10px 10px 0;
+	border-style: solid;
+	border-color: #fff #fff transparent transparent;
+	background-color: #777;
+}

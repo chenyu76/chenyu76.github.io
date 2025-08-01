@@ -127,8 +127,7 @@ export function generateHtmlFile(
 	// 检查生成的 HTML 中是否存在代码块（标记通常为 <pre><code ...>）
 	// 仅当存在代码块时引入 Highlight.js 样式
 	if (/<pre><code\b/.test(htmlContent)) {
-		headContent += `
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">`;
+		headContent += `<link rel="stylesheet" href="/styles-code.css">`;
 		// 给代码块添加复制按钮
 		extraBodyContent += `
 <script>
