@@ -223,34 +223,6 @@ h4 {
 	margin-bottom: 0;
 }
 
-/* 代码块的复制按钮*/
-.copy-btn {
-	position: absolute;
-	top: 0px;
-	right: 0px;
-	padding: 5px 10px;
-	background-color: transparent;
-	color: transparent;
-	font-size: 0.7em;
-	border: none;
-	cursor: pointer;
-	overflow: hidden;
-}
-
-.copy-btn:hover {
-	color: black;
-}
-
-.copy-btn::after {
-	content: "";
-	position: absolute;
-	top: 0;
-	right: 0;
-	border-width: 0 10px 10px 0;
-	border-style: solid;
-	border-color: #fff #fff transparent transparent;
-	background-color: #777;
-}
 
 pre {
 	position: relative;
@@ -333,13 +305,6 @@ hr {
 	color: #f0f0f0;
 	margin: 20px -31px;
 	/* 负边距让它超出内容padding区域,需要比内容的padding大 */
-}
-
-pre code {
-	background-color: #f0f0f0;
-	display: block;
-	overflow-x: auto;
-	padding: 1em
 }
 
 /* 目录样式 */
