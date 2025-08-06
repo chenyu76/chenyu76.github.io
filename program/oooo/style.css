@@ -1,0 +1,55 @@
+body,
+html {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	/* 防止出现滚动条 */
+	height: 100%;
+	background-color: #333;
+	/* 默认背景 */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#game-container {
+	position: relative;
+	width: 100vw;
+	height: 100vh;
+	/* max-width: 800px; */
+	/* max-height: 600px; */
+	/* border: 2px solid #ccc; */
+
+	/* 新增此行：让背景颜色变化产生1.5秒的缓动过渡效果 */
+	transition: background-color 1.0s ease;
+}
+
+#game-canvas {
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+
+#hp-bar-container {
+	position: absolute;
+	top: 10px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 80%;
+	height: 20px;
+	background-color: rgba(0, 0, 0, 0.3);
+	border: 1px solid #fff;
+	border-radius: 10px;
+	z-index: 10;
+}
+
+#hp-bar {
+	width: 100%;
+	height: 100%;
+	background-color: #A9D681;
+	/* 绿色血条 */
+	border-radius: 10px;
+	transition: width 0.5s ease-in-out;
+}
