@@ -39,6 +39,8 @@
 
 因为没有评论区，你可以在[Github Discussions](https://github.com/chenyu76/chenyu76.github.io/discussions)留下意见。
 
+-----
+
 ## 使用的库
 
 - Markdown文档渲染：[Marked](https://marked.js.org/), [KaTeX](https://katex.org/)
@@ -50,7 +52,7 @@
 
 - [这是 Justin King 的 Github 主页](https://jinqking.github.io/)：比我更会写东西的朋友，满满干货
 
-
+-----
 
 <p style="text-indent:0;line-height:120%">
 ⠀⠀⠀⣠⠤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⠀⠀<br>
