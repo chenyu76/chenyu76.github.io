@@ -336,3 +336,12 @@ hr {
 .toc a:hover {
 	text-decoration: underline;
 }
+
+/* 脚注样式 */
+.footnotes p {
+	text-indent: 0;
+}
+
+.footnotes {
+	font-size: 0.8em;
+}
