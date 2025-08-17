@@ -11,59 +11,59 @@ const COLORS = [
   "#FF4081", // S
   "#7C4DFF", // T
   "#18FFFF", // Z
-  // "#FF9AA2", 
-  // "#FFB7B2", 
-  // "#FFDAC1", 
-  // "#E2F0CB", 
-  // "#B5EAD7", 
-  // "#C7CEEA", 
-  // "#F8C8DC"  
+  // "#FF9AA2",
+  // "#FFB7B2",
+  // "#FFDAC1",
+  // "#E2F0CB",
+  // "#B5EAD7",
+  // "#C7CEEA",
+  // "#F8C8DC"
 ];
 
 // 方块形状定义
 const SHAPES = [
   [],
   [
-    [0, 0, 0, 0],
-    [1, 1, 1, 1],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
+    [ 0, 0, 0, 0 ],
+    [ 1, 1, 1, 1 ],
+    [ 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0 ],
   ], // I
   [
-    [0, 0, 0],
-    [1, 1, 1],
-    [0, 0, 1],
+    [ 0, 0, 0 ],
+    [ 1, 1, 1 ],
+    [ 0, 0, 1 ],
   ], // J
   [
-    [0, 0, 0],
-    [1, 1, 1],
-    [1, 0, 0],
+    [ 0, 0, 0 ],
+    [ 1, 1, 1 ],
+    [ 1, 0, 0 ],
   ], // L
   [
-    [0, 0, 0, 0],
-    [0, 1, 1, 0],
-    [0, 1, 1, 0],
-    [0, 0, 0, 0],
+    [ 0, 0, 0, 0 ],
+    [ 0, 1, 1, 0 ],
+    [ 0, 1, 1, 0 ],
+    [ 0, 0, 0, 0 ],
   ], // O
   [
-    [0, 0, 0],
-    [0, 1, 1],
-    [1, 1, 0],
+    [ 0, 0, 0 ],
+    [ 0, 1, 1 ],
+    [ 1, 1, 0 ],
   ], // S
   [
-    [0, 0, 0],
-    [1, 1, 1],
-    [0, 1, 0],
+    [ 0, 0, 0 ],
+    [ 1, 1, 1 ],
+    [ 0, 1, 0 ],
   ], // T
   [
-    [0, 0, 0],
-    [1, 1, 0],
-    [0, 1, 1],
+    [ 0, 0, 0 ],
+    [ 1, 1, 0 ],
+    [ 0, 1, 1 ],
   ], // Z
 ];
 
 const INITAL_POS = () =>
-  JSON.parse(JSON.stringify({ x: Math.floor(COLS / 2) - 2, y: 0 }));
+    JSON.parse(JSON.stringify({x : Math.floor(COLS / 2) - 2, y : 0}));
 
 // 难度级别，-1 ~ 1
 var difficulty = 0;
@@ -110,15 +110,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 当前方块
   let player = {
-    pos: INITAL_POS(),
-    matrix: null,
-    type: 0,
+    pos : INITAL_POS(),
+    matrix : null,
+    type : 0,
   };
 
   // 下一个方块
   let nextPiece = {
-    matrix: null,
-    type: 0,
+    matrix : null,
+    type : 0,
   };
 
   // 创建游戏板
@@ -161,8 +161,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
       return {
-        matrix: SHAPES[pieceType],
-        type: pieceType,
+        matrix : SHAPES[pieceType],
+        type : pieceType,
       };
     } else {
       if (!nextPiece.matrix) {
@@ -170,9 +170,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const piece = {
-        pos: INITAL_POS(),
-        matrix: nextPiece.matrix,
-        type: nextPiece.type,
+        pos : INITAL_POS(),
+        matrix : nextPiece.matrix,
+        type : nextPiece.type,
       };
 
       nextPiece = createPiece("next");
@@ -185,19 +185,23 @@ document.addEventListener("DOMContentLoaded", () => {
   function drawNextPiece() {
     nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
 
-    if (!nextPiece.matrix) return;
+    if (!nextPiece.matrix)
+      return;
 
     nextPiece.matrix.forEach((row, y) => {
-      row.forEach((value, x) =>
-        drawABlock(x, y, value ? nextPiece.type : 0, nextCtx),
+      row.forEach(
+          (value, x) => drawABlock(x, y, value ? nextPiece.type : 0, nextCtx),
       );
     });
   }
 
   function movePlayerAnimation(duration = 100, pos = player.pos) {
-    if (duration <= 0) playerCanvas.style.transition = "none";
-    else playerCanvas.style.transition = `all ${duration}ms ease`;
-    playerCanvas.style.transform = `translate(${pos.x * BLOCK_SIZE}px, ${pos.y * BLOCK_SIZE}px)`;
+    if (duration <= 0)
+      playerCanvas.style.transition = "none";
+    else
+      playerCanvas.style.transition = `all ${duration}ms ease`;
+    playerCanvas.style.transform =
+        `translate(${pos.x * BLOCK_SIZE}px, ${pos.y * BLOCK_SIZE}px)`;
   }
 
   // 绘制单个方块的函数
@@ -205,10 +209,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (type !== 0) {
       ctx.fillStyle = COLORS[type];
       ctx.fillRect(
-        x * BLOCK_SIZE,
-        y * BLOCK_SIZE,
-        BLOCK_SIZE - 1,
-        BLOCK_SIZE - 1,
+          x * BLOCK_SIZE,
+          y * BLOCK_SIZE,
+          BLOCK_SIZE - 1,
+          BLOCK_SIZE - 1,
       );
 
       // 添加方块内高光效果
@@ -221,16 +225,16 @@ document.addEventListener("DOMContentLoaded", () => {
       // 添加方块阴影效果
       ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
       ctx.fillRect(
-        x * BLOCK_SIZE + BLOCK_SIZE - 5,
-        y * BLOCK_SIZE,
-        5,
-        BLOCK_SIZE - 1,
+          x * BLOCK_SIZE + BLOCK_SIZE - 5,
+          y * BLOCK_SIZE,
+          5,
+          BLOCK_SIZE - 1,
       );
       ctx.fillRect(
-        x * BLOCK_SIZE,
-        y * BLOCK_SIZE + BLOCK_SIZE - 5,
-        BLOCK_SIZE - 1,
-        5,
+          x * BLOCK_SIZE,
+          y * BLOCK_SIZE + BLOCK_SIZE - 5,
+          BLOCK_SIZE - 1,
+          5,
       );
 
       ctx.fillStyle = COLORS[type];
@@ -242,8 +246,8 @@ document.addEventListener("DOMContentLoaded", () => {
     playerCtx.clearRect(0, 0, playerCanvas.width, playerCanvas.height);
     if (player.matrix) {
       player.matrix.forEach((row, y) => {
-        row.forEach((value, x) =>
-          drawABlock(x, y, value ? player.type : 0, playerCtx),
+        row.forEach(
+            (value, x) => drawABlock(x, y, value ? player.type : 0, playerCtx),
         );
       });
     }
@@ -258,21 +262,18 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // 绘制已落下的方块
-    board.forEach((row, y) => {
-      row.forEach((value, x) => drawABlock(x, y, value, ctx));
-    });
-
+    board.forEach(
+        (row,
+         y) => { row.forEach((value, x) => drawABlock(x, y, value, ctx)); });
   }
 
   // 碰撞检测
   function collide(board, player) {
-    const [m, o] = [player.matrix, player.pos];
+    const [m, o] = [ player.matrix, player.pos ];
     for (let y = 0; y < m.length; ++y) {
       for (let x = 0; x < m[y].length; ++x) {
-        if (
-          m[y][x] !== 0 &&
-          (board[y + o.y] && board[y + o.y][x + o.x]) !== 0
-        ) {
+        if (m[y][x] !== 0 &&
+            (board[y + o.y] && board[y + o.y][x + o.x]) !== 0) {
           return true;
         }
       }
@@ -284,7 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function rotate(matrix, dir) {
     for (let y = 0; y < matrix.length; ++y) {
       for (let x = 0; x < y; ++x) {
-        [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]];
+        [matrix[x][y], matrix[y][x]] = [ matrix[y][x], matrix[x][y] ];
       }
     }
 
@@ -298,7 +299,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 玩家旋转
   function playerRotate(dir) {
-    if (gameOver || paused) return;
+    if (gameOver || paused)
+      return;
 
     const pos = player.pos.x;
     let offset = 1;
@@ -317,7 +319,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 玩家移动
   function playerMove(dir) {
-    if (gameOver || paused) return;
+    if (gameOver || paused)
+      return;
 
     player.pos.x += dir;
     if (collide(board, player)) {
@@ -331,7 +334,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // 玩家下落
   // 返回true表示方块已碰撞
   async function playerDrop(waitAnimation = false) {
-    if (gameOver || paused) return;
+    if (gameOver || paused)
+      return;
 
     player.pos.y++;
     dropCounter = 0;
@@ -355,7 +359,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 玩家硬下落（直接落到底部）
   async function playerHardDrop() {
-    if (gameOver || paused) return;
+    if (gameOver || paused)
+      return;
 
     while (!(await playerDrop(true))) {
       // 直接下落到底部
@@ -369,8 +374,10 @@ document.addEventListener("DOMContentLoaded", () => {
       row.forEach((value, x) => {
         if (value !== 0) {
           // 检查边界，如果超出边界那游戏已经输了
-          if (y + player.pos.y < 0) gameOverHandler();
-          else board[y + player.pos.y][x + player.pos.x] = player.type;
+          if (y + player.pos.y < 0)
+            gameOverHandler();
+          else
+            board[y + player.pos.y][x + player.pos.x] = player.type;
         }
       });
     });
@@ -383,7 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.classList.remove("hidden");
     overlay.querySelector(".overlay-title").textContent = "游戏结束";
     overlay.querySelector(".overlay-text").innerHTML =
-      `最终得分: <strong>${score}</strong>`;
+        `最终得分: <strong>${score}</strong>`;
     startButton.textContent = "重新开始";
   }
 
@@ -392,7 +399,8 @@ document.addEventListener("DOMContentLoaded", () => {
     player = createPiece();
 
     // 检查游戏是否结束
-    if (collide(board, player)) gameOverHandler();
+    if (collide(board, player))
+      gameOverHandler();
   }
 
   // 消除完整的行
@@ -413,13 +421,12 @@ document.addEventListener("DOMContentLoaded", () => {
       clearAnimation(y); // 清除行动画效果
 
       y++; // 重新检查当前行
-
     }
 
     if (linesCleared > 0) {
       // 更新分数
       lines += linesCleared;
-      score += [40, 100, 300, 1200][linesCleared - 1] * level;
+      score += [ 40, 100, 300, 1200 ][linesCleared - 1] * level;
 
       // 每清除10行升一级
       level = Math.floor(lines / 10) + 1;
@@ -429,7 +436,6 @@ document.addEventListener("DOMContentLoaded", () => {
       scoreElement.textContent = score;
       levelElement.textContent = level;
     }
-
   }
 
   // 更新分数显示
@@ -463,12 +469,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (algorithmActive && !paused) {
         executeAlgorithmMove(
-          board,
-          player,
-          nextPiece,
-          playerRotate,
-          playerHardDrop,
-          playerMove,
+            board,
+            player,
+            nextPiece,
+            playerRotate,
+            playerHardDrop,
+            playerMove,
         );
       }
     }
@@ -497,12 +503,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 暂停/继续游戏
   function togglePause() {
-    if (gameOver) return;
+    if (gameOver)
+      return;
 
     paused = !paused;
-    pauseBtn.innerHTML = paused
-      ? '<span class="control-emoji">▶️</span>'
-      : '<span class="control-emoji">⏸️</span>';
+    pauseBtn.innerHTML = paused ? '<span class="control-emoji">▶️</span>'
+                                : '<span class="control-emoji">⏸️</span>';
 
     if (!paused && !gameOver) {
       lastTime = performance.now();
@@ -528,12 +534,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 绘制初始状态（覆盖整个容器）
     ctx.fillStyle = "white";
-    //ctx.fillRect(0, 0, ca.width, ca.height);
+    // ctx.fillRect(0, 0, ca.width, ca.height);
 
     // 动画参数
     const stripeWidth = BLOCK_SIZE; // 条状宽度
-    let progress = 0; // 动画进度
-    const animationDuration = 500; // 动画持续时间（毫秒）
+    let progress = 0;               // 动画进度
+    const animationDuration = 500;  // 动画持续时间（毫秒）
     const startTime = performance.now();
 
     // 动画函数
@@ -545,16 +551,15 @@ document.addEventListener("DOMContentLoaded", () => {
       ctx.clearRect(0, 0, ca.width, ca.height);
 
       ctx.fillStyle = "#5e35b144"; // 使用纯色填充
-      ctx.fillRect(0, (y+ progress) * BLOCK_SIZE, ca.width, stripeWidth * (1 - progress));
+      ctx.fillRect(0, (y + progress) * BLOCK_SIZE, ca.width,
+                   stripeWidth * (1 - progress));
 
       // 如果动画未完成，继续
       if (progress < 1) {
         requestAnimationFrame(animate);
       } else {
         // 动画完成后移除ca
-        setTimeout(() => {
-          container.removeChild(ca);
-        }, animationDuration);
+        setTimeout(() => { container.removeChild(ca); }, animationDuration);
       }
     }
 
@@ -564,11 +569,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 事件监听 - 阻止方向键滚动页面
   document.addEventListener("keydown", (event) => {
-    if (
-      ["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp", " "].includes(
-        event.key,
-      )
-    ) {
+    if ([ "ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp", " " ].includes(
+            event.key,
+            )) {
       event.preventDefault();
     }
 
@@ -578,33 +581,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     switch (event.key) {
-      case "ArrowLeft":
-      case "a":
-      case "A":
-        playerMove(-1);
-        break;
-      case "ArrowRight":
-      case "d":
-      case "D":
-        playerMove(1);
-        break;
-      case "ArrowDown":
-      case "s":
-      case "S":
-        playerDrop();
-        break;
-      case "ArrowUp":
-      case "w":
-      case "W":
-        playerRotate(1);
-        break;
-      case " ":
-        playerHardDrop();
-        break;
-      case "p":
-      case "P":
-        togglePause();
-        break;
+    case "ArrowLeft":
+    case "a":
+    case "A":
+    case "h":
+      playerMove(-1);
+      break;
+    case "ArrowRight":
+    case "d":
+    case "D":
+    case "l":
+      playerMove(1);
+      break;
+    case "ArrowDown":
+    case "s":
+    case "S":
+    case "j":
+      playerDrop();
+      break;
+    case "ArrowUp":
+    case "w":
+    case "W":
+    case "k":
+      playerRotate(1);
+      break;
+    case " ":
+      playerHardDrop();
+      break;
+    case "p":
+    case "P":
+      togglePause();
+      break;
     }
   });
 
@@ -627,3 +634,14 @@ document.addEventListener("DOMContentLoaded", () => {
   drawBoard();
   drawNextPiece();
 });
+
+// 监听可见性变化
+// 如果页面不可见，暂停
+// 没有用，为什么？
+// document.addEventListener("visibilitychange", () => {
+//   if (document.visibilityState === "hidden") {
+//     if (!paused) {
+//       togglePause();
+//     }
+//   }
+// });
