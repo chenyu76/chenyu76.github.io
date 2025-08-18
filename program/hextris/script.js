@@ -29,6 +29,8 @@ class Vector {
   }
   // 标量除法
   static divide(a, b) { return a.map(val => val / b); }
+  // 绝对值后求和
+  static absSum(a) { return a.reduce((sum, val) => sum + Math.abs(val), 0); }
 }
 // 矩阵操作类
 class Matrix {

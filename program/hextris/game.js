@@ -112,6 +112,7 @@ class Game {
   // dir: [x, y, z] 方向向量
   // validEdges: 可选参数，默认为当前网格的有效边界
   // 返回该方向上的有效边界 { min, max }
+  // 注意this.nowValidEdges 需要在this.data变化时更新
   getValidEdge(dir, e = this.nowValidEdges) {
     return e[dir[0] + 1][dir[1] + 1][dir[2] + 1];
   }
@@ -217,8 +218,7 @@ class Game {
         d.pos = Vector.add(d.pos, direction);
     return true;
   }
-  // 类似 playerDrop() 函数
-  // 掉落到指定位置
+  // 以baseHex为基准移动到指定位置
   playerMoveTo(target, baseHex = this.data.find(d => d.player == 2)) {
     for (let d of this.data)
       if (d.player) // 检查新位置是否合法
@@ -295,7 +295,7 @@ class Game {
                ((id) => this.data.find((d => d.id == id)))(this.getValidEdge(
                    dir, this.validEdges(this.data.filter(
                             v => v.player)))[sign ? "minId" : "maxId"])) ||
-           this.playerRotate(-lr, true);
+           this.playerRotate(-lr, true); // 移动失败就转回去
   }
   /* 把一个 [0, -1, 1] 类型的方向旋转到
    * 1: 左边
@@ -361,8 +361,8 @@ class Game {
         this.data = this.data.filter(item => !ring.includes(item));
         // 降落更高的六边形
         let outerHex = this.data.filter(d => dist(d.pos) >= 2 * layer);
-        let cornerHex = outerHex.filter(d => d.pos.some(x => x == 0));
-        this.data = this.data.filter(item => !cornerHex.includes(item));
+        // let cornerHex = outerHex.filter(d => d.pos.some(x => x == 0));
+        // this.data = this.data.filter(item => !cornerHex.includes(item));
         for (let d of outerHex) {
           const pos = this.directions.map(dir => Vector.add(d.pos, dir));
           const distDPos = dist(d.pos);
@@ -371,6 +371,16 @@ class Game {
               d.pos = p;
         }
 
+        // 消除重叠的六边形
+        let possible = outerHex.filter(d => d.pos.some(x => Math.abs(x) <= 1));
+        let duplicates = [];
+        for (let d of possible) {
+          if (possible.some(v => v != d && arrayValEqual(v.pos)(d.pos))) {
+            duplicates.push(d);
+          }
+        }
+        this.data = this.data.filter(item => !duplicates.includes(item));
+
         this.score += layer * 6; // 增加分数
         document.getElementById("score").textContent = this.score;
         // 减小掉落间隔
@@ -378,6 +388,30 @@ class Game {
         //     (this.baseDropInterval - 500) / Math.max(1, score / 30) + 500);
         this.updateDropInterval(
             Math.max(this.baseDropInterval - this.score, 300));
+      }
+    }
+  }
+  // 消除一大坨方块
+  // 感觉没有消除环好，不用了
+  eliminateBlocks() {
+    let maps = this.data.filter(d => d.player == 0);
+    let dataByH = {};
+    let hMax = 0;
+    for (let d of maps) {
+      const h = d.pos.reduce((a, b) => a + Math.abs(b), 0);
+      if (h > hMax)
+        hMax = h;
+      if (!dataByH[h])
+        dataByH[h] = [];
+      dataByH[h].push(d);
+    }
+    for (let hexSize = hMax / 2; hexSize > 2; hexSize--) {
+      for (let h in dataByH) {
+        if (h < hMax / 2 && h > 2) {
+          for (let d of dataByH[h]) {
+            // 不想写了
+          }
+        }
       }
     }
   }

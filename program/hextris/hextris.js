@@ -247,25 +247,25 @@ class HexTris {
       case "a":
       case "A":
       case "h":
-        this.game.playerMove(-1) && this.updateGrid();
+        this.game.playerMove(-1) ? this.updateGrid() : this.shakeHexagons();
         break;
       case "ArrowRight":
       case "d":
       case "D":
       case "l":
-        this.game.playerMove(1) && this.updateGrid();
+        this.game.playerMove(1) ? this.updateGrid() : this.shakeHexagons();
         break;
       case "ArrowDown":
       case "s":
       case "S":
       case "j":
-        this.game.playerDrop() && this.updateGrid();
+        this.game.playerDrop() ? this.updateGrid() : this.shakeHexagons();
         break;
       case "ArrowUp":
       case "w":
       case "W":
       case "k":
-        this.game.playerRotate() && this.updateGrid();
+        this.game.playerRotate() ? this.updateGrid() : this.shakeHexagons();
         break;
       }
     });
@@ -347,5 +347,31 @@ class HexTris {
     line.setAttribute("marker-end", "url(#arrow)");
     line.classList.add("axis");
     this.axisGroup.appendChild(line);
+  }
+
+  /**
+   * 使指定六边形产生抖动动画效果
+   * @param {Array} hexesToShake - 需要抖动的六边形数组（this.data的子集）
+   */
+  shakeHexagons(hexesToShake = this.game.data.filter(d => d.player)) {
+    // 确保抖动动画样式已定义
+    // this.ensureShakeAnimationStyle();
+
+    hexesToShake.forEach(hexData => {
+      const element = this.hexagons.get(hexData.id);
+      if (element) {
+        // 移除之前的抖动效果
+        element.classList.remove('hex-shake');
+
+        // 强制重绘
+        void element.offsetWidth;
+
+        // 添加抖动类并设置动画结束后的清理
+        element.classList.add('hex-shake');
+        element.addEventListener(
+            'animationend', () => { element.classList.remove('hex-shake'); },
+            {once : true});
+      }
+    });
   }
 }
