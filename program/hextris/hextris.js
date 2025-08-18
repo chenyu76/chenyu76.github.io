@@ -81,16 +81,22 @@ class HexTris {
 
   // 创建单个六边形SVG元素
   createHexagonElement(hexData) {
-    const [q, r, _] = hexData.pos;
+    const [q, r, s] = hexData.pos;
     const [x, y] = this.cubeToPixel(q, r);
 
-    const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    group.classList.add("hexagon");
-    group.setAttribute("data-id", hexData.id);
-    group.style.opacity = "0"; // 初始透明
-    group.style.transition =
-        `opacity ${this.animationDuration}s ease, transform ${
-            this.animationDuration}s cubic-bezier(0.34, 1.56, 0.64, 1)`;
+    // 创建外层容器（用于位置）
+    const container =
+        document.createElementNS("http://www.w3.org/2000/svg", "g");
+    container.classList.add("hexagon-container");
+    container.setAttribute("data-id", hexData.id);
+    container.style.transform = `translate(${x}px, ${y}px)`;
+    container.style.transition = `transform ${
+        this.animationDuration}s cubic-bezier(0.34, 1.56, 0.64, 1)`;
+
+    // 创建内部组（用于抖动动画）
+    const innerGroup =
+        document.createElementNS("http://www.w3.org/2000/svg", "g");
+    innerGroup.classList.add("hexagon-inner");
 
     // 创建六边形路径
     const hex =
@@ -106,26 +112,24 @@ class HexTris {
     hex.setAttribute("fill", hexData.color);
     hex.setAttribute("stroke", "rgba(0, 0, 0, 0.7)");
     hex.setAttribute("stroke-width", "1.5");
-    group.appendChild(hex);
+    innerGroup.appendChild(hex);
 
     // 添加ID文本
-    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    // text.textContent = `(${q},${r},${s})`;
-    text.setAttribute("fill", "white");
-    text.setAttribute("text-anchor", "middle");
-    text.setAttribute("dominant-baseline", "middle");
-    text.setAttribute("font-size", "10px");
-    text.setAttribute("font-weight", "bold");
-    text.setAttribute("pointer-events", "none");
-    group.appendChild(text);
-
-    // 设置位置
-    group.setAttribute("transform", `translate(${x}, ${y})`);
+    // const text = document.createElementNS("http://www.w3.org/2000/svg",
+    // "text"); text.textContent = `(${q},${r},${s})`; text.setAttribute("fill",
+    // "white"); text.setAttribute("text-anchor", "middle");
+    // text.setAttribute("dominant-baseline", "middle");
+    // text.setAttribute("font-size", "10px");
+    // text.setAttribute("font-weight", "bold");
+    // text.setAttribute("pointer-events", "none");
+    // innerGroup.appendChild(text);
 
     // 添加淡入效果
-    setTimeout(() => { group.style.opacity = "1"; }, 10);
+    container.style.opacity = "0";
+    setTimeout(() => { container.style.opacity = "1"; }, 10);
 
-    return group;
+    container.appendChild(innerGroup);
+    return container;
   }
 
   // 更新整个网格
@@ -353,24 +357,20 @@ class HexTris {
    * 使指定六边形产生抖动动画效果
    * @param {Array} hexesToShake - 需要抖动的六边形数组（this.data的子集）
    */
-  shakeHexagons(hexesToShake = this.game.data.filter(d => d.player)) {
-    // 确保抖动动画样式已定义
-    // this.ensureShakeAnimationStyle();
+  shakeHexagons(hexes = this.game.data.filter(d => d.player)) {
+    // 清除所有现有的抖动类
+    this.hexGroup.querySelectorAll(".shake").forEach(
+        el => { el.classList.remove("shake"); });
 
-    hexesToShake.forEach(hexData => {
-      const element = this.hexagons.get(hexData.id);
+    // 应用抖动动画到选定的六边形
+    hexes.forEach(hex => {
+      const element = this.hexagons.get(hex.id);
       if (element) {
-        // 移除之前的抖动效果
-        element.classList.remove('hex-shake');
+        const innerGroup = element.querySelector(".hexagon-inner");
+        innerGroup.classList.add("shake");
 
-        // 强制重绘
-        void element.offsetWidth;
-
-        // 添加抖动类并设置动画结束后的清理
-        element.classList.add('hex-shake');
-        element.addEventListener(
-            'animationend', () => { element.classList.remove('hex-shake'); },
-            {once : true});
+        // 动画结束后移除类
+        setTimeout(() => { innerGroup.classList.remove("shake"); }, 300);
       }
     });
   }

@@ -144,3 +144,28 @@ button:active {
 .hexagon {
 	transition: all 0.7s ease;
 }
+
+@keyframes shake {
+
+	0%,
+	100% {
+		transform: translate(0, 0);
+	}
+
+	25% {
+		transform: translate(-2px, -2px) rotate(-2deg);
+	}
+
+	50% {
+		transform: translate(2px, 2px) rotate(2deg);
+	}
+
+	75% {
+		transform: translate(-2px, 2px) rotate(-2deg);
+	}
+}
+
+.hexagon-inner.shake {
+	animation: shake 0.3s ease-in-out;
+	/* transform-origin: center; */
+}

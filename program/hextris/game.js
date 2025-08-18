@@ -18,7 +18,7 @@ class Game {
       "#7C4DFF",
       "#18FFFF",
     ];
-    this.dropHeight = 40;                      // 掉落高度
+    this.dropHeight = 30;                      // 掉落高度
     this.baseDropInterval = 750;               // 基础掉落间隔时间(ms)
     this.dropInterval = this.baseDropInterval; // 实际掉落间隔时间(ms)
     this.score = 0;                            // 玩家得分
@@ -327,12 +327,13 @@ class Game {
         (arr => this.data.filter(d => !d.player)
                     .some(val => arr.some(arrayValEqual(val.pos))))(
             this.data.filter(d => d.player)
-                .map(d => Vector
-                              .add(Matrix.multiply(
-                                       [ Vector.subtract(d.pos, mainHex.pos) ],
-                                       this.rotateMatrix[(lr + 1) / 2])[0],
-                                   mainHex.pos)
-                              .map(Math.round))))
+                .map(d => Vector.add(
+                         Vector.divide(
+                             Matrix.multiply(
+                                 [ Vector.subtract(d.pos, mainHex.pos) ],
+                                 this.rotateMatrix[(lr + 1) / 2])[0],
+                             mainHex.pos),
+                         3))))
       return false;
     for (let d of this.data) {
       if (d.player != 1)
@@ -387,7 +388,7 @@ class Game {
         // this.updateDropInterval(
         //     (this.baseDropInterval - 500) / Math.max(1, score / 30) + 500);
         this.updateDropInterval(
-            Math.max(this.baseDropInterval - this.score, 300));
+            Math.max(this.baseDropInterval - 2 * this.score, 300));
       }
     }
   }
