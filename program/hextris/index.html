@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>六边形网格动态可视化</title>
+	<title>Hextris</title>
 	<link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -13,6 +13,11 @@
 		<div id="grid-container"></div>
 
 		<div class="controls">
+			<div class="control-group" style="text-align: center;">
+				<label>分数</label>
+				<span id="score" style="font-size:2em">0</span>
+			</div>
+
 			<div class="control-group">
 				<div class="slider-container">
 					<label for="zoom">缩放级别: <span id="zoom-value">1.00</span></label>
@@ -21,20 +26,18 @@
 
 				<div class="slider-container">
 					<label for="animation">动画速度: <span id="speed-value">0.7s</span></label>
-					<input type="range" id="animation" min="0.1" max="2" step="0.1" value="0.7">
+					<input type="range" id="animation" min="0" max="2" step="0.1" value="0.7">
 				</div>
 
 				<div class="buttons">
 					<button id="reset">重置视图</button>
 				</div>
 			</div>
-			<div class="control-group">
-				<p>测试</p>
-			</div>
-
 		</div>
 	</div>
 
+	<script src="game.js"></script>
+	<script src="hextris.js"></script>
 	<script src="script.js"></script>
 </body>
 

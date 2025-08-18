@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "highlight.js": "^11.11.1",
-    "marked": "^16.1.2",
+    "marked": "^16.2.0",
     "marked-alert": "^2.1.2",
     "marked-footnote": "^1.4.0",
     "marked-highlight": "^2.2.2",
