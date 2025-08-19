@@ -21,7 +21,9 @@ class HexTris {
       this.dropTimer = setInterval(() => this.update(), this.dropInterval);
     };
 
-    this.game = new Game(this.updateDropInterval); // 初始化游戏
+    this.soundEffect = new SoundEffect(); // 初始化音效
+    this.game =
+        new Game(this.updateDropInterval, this.soundEffect); // 初始化游戏
 
     this.updateDropInterval(this.game.dropInterval);
     this.updateGrid();
@@ -82,7 +84,7 @@ class HexTris {
 
   // 创建单个六边形SVG元素
   createHexagonElement(hexData) {
-    const [q, r, s] = hexData.pos;
+    const [q, r, _] = hexData.pos;
     const [x, y] = this.cubeToPixel(q, r);
 
     // 创建外层容器（用于位置）
@@ -239,42 +241,51 @@ class HexTris {
         "click", () => { this.resetView(); });
 
     // 玩家操作
-    document.addEventListener("keydown", (event) => {
+    document.addEventListener("keydown", async (event) => {
       if ([ "ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp", " " ].includes(
               event.key,
               )) {
         event.preventDefault();
       }
+      const updateOrNot = (bool) => {
+        if (bool) {
+          this.soundEffect.playMoveSound();
+          this.updateGrid();
+        } else {
+          this.soundEffect.playExplosionSound();
+          this.shakeHexagons();
+        }
+      };
 
       switch (event.key) {
       case "ArrowLeft":
       case "a":
       case "A":
       case "h":
-        this.game.playerMove(-1) ? this.updateGrid() : this.shakeHexagons();
+        updateOrNot(this.game.playerMove(-1));
         break;
       case "ArrowRight":
       case "d":
       case "D":
       case "l":
-        this.game.playerMove(1) ? this.updateGrid() : this.shakeHexagons();
+        updateOrNot(this.game.playerMove(1));
         break;
       case "ArrowDown":
       case "s":
       case "S":
       case "j":
       case " ":
-        this.game.playerDrop() ? this.updateGrid() : this.shakeHexagons();
+        updateOrNot(this.game.playerDrop());
         break;
       case "ArrowUp":
       case "w":
       case "W":
       case "k":
       case "e":
-        this.game.playerRotate() ? this.updateGrid() : this.shakeHexagons();
+        updateOrNot(this.game.playerRotate(1));
         break;
       case "q":
-        this.game.playerRotate(-1) ? this.updateGrid() : this.shakeHexagons();
+        updateOrNot(this.game.playerRotate(-1));
         break;
       }
     });

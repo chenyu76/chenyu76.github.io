@@ -1,6 +1,7 @@
 class Game {
-  constructor(updateDropInterval) {
+  constructor(updateDropInterval, soundEffect) {
     this.updateDropInterval = updateDropInterval;
+    this.soundEffect = soundEffect;
 
     this.data = [];
     this.colorBedrock = "#BDBDBD"; // 基岩颜色
@@ -179,6 +180,22 @@ class Game {
     }
     return true;
   }
+  // 每个回合结束时需要执行的操作
+  endTurnUpdate() {
+    for (let d of this.data)
+      if (d.player)
+        d.player = 0;
+    // 消除环
+    this.eliminateRing();
+    // 更新有效边界
+    this.nowValidEdges = this.validEdges();
+    // 生成新的六边形
+    // 如果添加新六边形失败，则游戏结束
+    if (!this.addNewHexs())
+      this.gameOver = true;
+
+    return true;
+  }
   /*
    * 往指定方向掉落玩家的六边形
    * direction: [x, y, z] 方向向量
@@ -195,19 +212,8 @@ class Game {
                           .some(arrayValEqual(Vector.add(d.pos, direction)))) {
         // 掉落失败，不能移动到已有六边形上
         // 已经落地了，不能再操作
-        if (endTurn) {
-          for (let d of this.data)
-            if (d.player)
-              d.player = 0;
-          // 消除环
-          this.eliminateRing();
-          // 更新有效边界
-          this.nowValidEdges = this.validEdges();
-          // 生成新的六边形
-          if (!this.addNewHexs())
-            this.gameOver = true;
-          return true; // 添加了新方块
-        }
+        if (endTurn)
+          return this.endTurnUpdate(); // 添加了新方块
         return false;
       }
     }
@@ -389,6 +395,8 @@ class Game {
         //     (this.baseDropInterval - 500) / Math.max(1, score / 30) + 500);
         this.updateDropInterval(
             Math.max(this.baseDropInterval - 2 * this.score, 300));
+        // 播放消除音效
+        this.soundEffect.playVanishSound();
       }
     }
   }
@@ -410,6 +418,8 @@ class Game {
       for (let h in dataByH) {
         if (h < hMax / 2 && h > 2) {
           for (let d of dataByH[h]) {
+            d = d;
+            pass
             // 不想写了
           }
         }
