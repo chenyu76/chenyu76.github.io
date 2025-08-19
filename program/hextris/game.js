@@ -196,7 +196,7 @@ class Game {
       // this.updateDropInterval(
       //     (this.baseDropInterval - 500) / Math.max(1, score / 30) + 500);
       this.updateDropInterval(
-          Math.max(this.baseDropInterval - 2 * this.score, 300));
+          Math.max(this.baseDropInterval - 3 * this.score, 300));
       // 播放消除音效
       this.soundEffect.playVanishSound();
     }
@@ -205,8 +205,13 @@ class Game {
     this.nowValidEdges = this.validEdges();
     // 生成新的六边形
     // 如果添加新六边形失败，则游戏结束
-    if (!this.addNewHexs())
+    if (!this.addNewHexs()) {
       this.gameOver = true;
+    }
+    if (this.gameOver) {
+      this.soundEffect.stopBGM();
+      document.getElementById("is-game-over").style.visibility = "visible";
+    }
 
     return true;
   }
@@ -220,6 +225,8 @@ class Game {
    */
   playerDrop(direction = this.directions[this.nowDropDirectionIndex],
              endTurn = true) {
+    if (this.gameOver)
+      return false; // 游戏结束了，不能再操作
     for (let d of this.data) {
       if (d.player && this.data.filter(v => v.player == 0)
                           .map(v => v.pos)
@@ -263,6 +270,8 @@ class Game {
    * 1:  右边
    */
   playerMove(lr) {
+    if (this.gameOver)
+      return false; // 游戏结束了，不能再操作
     let dir = this.directions[this.nowDropDirectionIndex];
     if (lr == 0)
       return this.playerDrop(dir);
