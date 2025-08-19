@@ -1,12 +1,3 @@
-
-// document.querySelectorAll('button').forEach(button => {
-//   button.addEventListener('click', initializeAudioContext, {once : true});
-// });
-//
-/**
- * 音效1: 拾取金币
- * 特点: 音调快速升高，短促有力。
- */
 class SoundEffect {
   constructor() {
     // 初始化音频上下文
@@ -42,12 +33,12 @@ class SoundEffect {
     // 69) / 12));
 
     this.A = [
-      [ 10, 10, 5, 5, 5, 5, 10 ],
-      [ 1, 10, 10, 5, 5, 5, 5 ],
-      [ 5, 2, 10, 10, 5, 5, 5 ],
-      [ 5, 2, 5, 10, 10, 5, 5 ],
-      [ 5, 5, 3, 10, 7, 10, 5 ],
-      [ 5, 5, 5, 5, 5, 1, 10 ],
+      [ 10, 20, 5, 5, 5, 5, 10 ],
+      [ 1, 10, 20, 5, 5, 5, 5 ],
+      [ 5, 2, 10, 20, 5, 5, 5 ],
+      [ 5, 2, 5, 10, 15, 5, 5 ],
+      [ 5, 5, 3, 15, 7, 16, 5 ],
+      [ 5, 5, 5, 15, 5, 1, 10 ],
       [ 1, 10, 5, 5, 8, 5, 5 ],
     ];
     // this.A =
@@ -65,6 +56,9 @@ class SoundEffect {
       let sum = row.reduce((sum, value) => sum + value, 0);
       for (let i = 0; i < row.length; i++) {
         row[i] /= sum;
+      }
+      for (let i = 1; i < row.length; i++) {
+        row[i] += row[i - 1]; // 累加概率
       }
     }
   }
@@ -230,8 +224,6 @@ class SoundEffect {
         if (rn < p[i]) {
           this.currentNote = i;
           break;
-        } else {
-          rn -= p[i];
         }
       }
       this.historyNote.push(this.currentNote);
