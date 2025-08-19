@@ -3,8 +3,9 @@ class HexTris {
     this.container = document.getElementById(containerId);
     this.hexSize = hexSize;
     this.scale = 1;
-    this.hexagons = new Map();    // 存储当前显示的六边形
-    this.animationDuration = 0.7; // 默认动画时间
+    this.hexagons = new Map(); // 存储当前显示的六边形
+    this.animationDuration = parseFloat(
+        document.getElementById("animation").value); // 默认动画时间(s)
 
     this.initSVG();
     this.setupEventListeners();
@@ -20,7 +21,9 @@ class HexTris {
       this.dropTimer = setInterval(() => this.update(), this.dropInterval);
     };
 
-    this.game = new Game(this.updateDropInterval); // 初始化游戏
+    this.soundEffect = new SoundEffect(); // 初始化音效
+    this.game =
+        new Game(this.updateDropInterval, this.soundEffect); // 初始化游戏
 
     this.updateDropInterval(this.game.dropInterval);
     this.updateGrid();
@@ -81,7 +84,7 @@ class HexTris {
 
   // 创建单个六边形SVG元素
   createHexagonElement(hexData) {
-    const [q, r, s] = hexData.pos;
+    const [q, r, _] = hexData.pos;
     const [x, y] = this.cubeToPixel(q, r);
 
     // 创建外层容器（用于位置）
@@ -90,8 +93,7 @@ class HexTris {
     container.classList.add("hexagon-container");
     container.setAttribute("data-id", hexData.id);
     container.style.transform = `translate(${x}px, ${y}px)`;
-    container.style.transition = `transform ${
-        this.animationDuration}s cubic-bezier(0.34, 1.56, 0.64, 1)`;
+    container.style.transition = `transform ${this.animationDuration}s ease`;
 
     // 创建内部组（用于抖动动画）
     const innerGroup =
@@ -235,41 +237,60 @@ class HexTris {
     //     .addEventListener("click", () => { this.randomizeData(); });
 
     // 重置视图按钮
-    document.getElementById("reset").addEventListener(
-        "click", () => { this.resetView(); });
+    document.getElementById("reset").addEventListener("click",
+                                                      () => this.resetView());
+
+    // 音乐按钮
+
+    document.getElementById('toggleBGM')
+        .addEventListener('click', () => this.soundEffect.toggleBGM());
 
     // 玩家操作
-    document.addEventListener("keydown", (event) => {
+    document.addEventListener("keydown", async (event) => {
       if ([ "ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp", " " ].includes(
               event.key,
               )) {
         event.preventDefault();
       }
+      const updateOrNot = (bool) => {
+        if (bool) {
+          this.soundEffect.playMoveSound();
+          this.updateGrid();
+        } else {
+          this.soundEffect.playExplosionSound();
+          this.shakeHexagons();
+        }
+      };
 
       switch (event.key) {
       case "ArrowLeft":
       case "a":
       case "A":
       case "h":
-        this.game.playerMove(-1) ? this.updateGrid() : this.shakeHexagons();
+        updateOrNot(this.game.playerMove(-1));
         break;
       case "ArrowRight":
       case "d":
       case "D":
       case "l":
-        this.game.playerMove(1) ? this.updateGrid() : this.shakeHexagons();
+        updateOrNot(this.game.playerMove(1));
         break;
       case "ArrowDown":
       case "s":
       case "S":
       case "j":
-        this.game.playerDrop() ? this.updateGrid() : this.shakeHexagons();
+      case " ":
+        updateOrNot(this.game.playerDrop());
         break;
       case "ArrowUp":
       case "w":
       case "W":
       case "k":
-        this.game.playerRotate() ? this.updateGrid() : this.shakeHexagons();
+      case "e":
+        updateOrNot(this.game.playerRotate(1));
+        break;
+      case "q":
+        updateOrNot(this.game.playerRotate(-1));
         break;
       }
     });
