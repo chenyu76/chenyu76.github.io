@@ -332,8 +332,8 @@ class Game {
                              Matrix.multiply(
                                  [ Vector.subtract(d.pos, mainHex.pos) ],
                                  this.rotateMatrix[(lr + 1) / 2])[0],
-                             mainHex.pos),
-                         3))))
+                             3),
+                         mainHex.pos))))
       return false;
     for (let d of this.data) {
       if (d.player != 1)

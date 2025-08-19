@@ -3,8 +3,9 @@ class HexTris {
     this.container = document.getElementById(containerId);
     this.hexSize = hexSize;
     this.scale = 1;
-    this.hexagons = new Map();    // 存储当前显示的六边形
-    this.animationDuration = 0.7; // 默认动画时间
+    this.hexagons = new Map(); // 存储当前显示的六边形
+    this.animationDuration = parseFloat(
+        document.getElementById("animation").value); // 默认动画时间(s)
 
     this.initSVG();
     this.setupEventListeners();
@@ -90,8 +91,7 @@ class HexTris {
     container.classList.add("hexagon-container");
     container.setAttribute("data-id", hexData.id);
     container.style.transform = `translate(${x}px, ${y}px)`;
-    container.style.transition = `transform ${
-        this.animationDuration}s cubic-bezier(0.34, 1.56, 0.64, 1)`;
+    container.style.transition = `transform ${this.animationDuration}s ease`;
 
     // 创建内部组（用于抖动动画）
     const innerGroup =
@@ -263,13 +263,18 @@ class HexTris {
       case "s":
       case "S":
       case "j":
+      case " ":
         this.game.playerDrop() ? this.updateGrid() : this.shakeHexagons();
         break;
       case "ArrowUp":
       case "w":
       case "W":
       case "k":
+      case "e":
         this.game.playerRotate() ? this.updateGrid() : this.shakeHexagons();
+        break;
+      case "q":
+        this.game.playerRotate(-1) ? this.updateGrid() : this.shakeHexagons();
         break;
       }
     });
