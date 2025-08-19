@@ -237,8 +237,13 @@ class HexTris {
     //     .addEventListener("click", () => { this.randomizeData(); });
 
     // 重置视图按钮
-    document.getElementById("reset").addEventListener(
-        "click", () => { this.resetView(); });
+    document.getElementById("reset").addEventListener("click",
+                                                      () => this.resetView());
+
+    // 音乐按钮
+
+    document.getElementById('toggleBGM')
+        .addEventListener('click', () => this.soundEffect.toggleBGM());
 
     // 玩家操作
     document.addEventListener("keydown", async (event) => {
