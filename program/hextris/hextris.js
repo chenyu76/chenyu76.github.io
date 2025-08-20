@@ -164,6 +164,12 @@ class HexTris {
         // 更新文本内容
         // element.querySelector("text").textContent = `(${q},${r},${- q - r})`;
 
+        // 检查颜色是否需要更新
+        const polygon = element.querySelector("polygon");
+        if (polygon.getAttribute("fill") !== hexData.color) {
+          polygon.setAttribute("fill", hexData.color);
+        }
+
         // 使用transform实现平滑移动
         element.style.transform = `translate(${x}px, ${y}px)`;
       } else {
@@ -350,7 +356,7 @@ class HexTris {
       this.axisGroup.removeChild(this.axisGroup.firstChild);
     }
 
-    const xys = this.game.data.filter(d => d.player)
+    const xys = this.game.data.filter(d => d.player > 0)
                     .map(d => this.cubeToPixel(...d.pos));
     const d = this.cubeToPixel(
         ...this.game.directions[this.game.nowDropDirectionIndex]);
@@ -378,7 +384,7 @@ class HexTris {
    * 使指定六边形产生抖动动画效果
    * @param {Array} hexesToShake - 需要抖动的六边形数组（this.data的子集）
    */
-  shakeHexagons(hexes = this.game.data.filter(d => d.player)) {
+  shakeHexagons(hexes = this.game.data.filter(d => d.player > 0)) {
     // 清除所有现有的抖动类
     this.hexGroup.querySelectorAll(".shake").forEach(
         el => { el.classList.remove("shake"); });
