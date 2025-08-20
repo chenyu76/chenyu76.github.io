@@ -61,6 +61,8 @@ class SoundEffect {
         row[i] += row[i - 1]; // 累加概率
       }
     }
+
+    // this.collatz = Math.floor(Math.random() * 1000);
   }
   initializeAudioContext() {
     if (!this.audioContext) {
@@ -217,6 +219,15 @@ class SoundEffect {
       this.playHiHat(time);
     }
     // 3. 播放主旋律
+    // if (step % 2 === 0) {
+    //   this.currentNote = this.collatz % 7;
+    //   this.collatz =
+    //       this.collatz % 2 === 0 ? this.collatz / 2 : this.collatz * 3 + 1;
+    //   if (this.collatz == 1)
+    //     this.collatz = Math.floor(Math.random() * 1000);
+    //   this.historyNote.push(this.currentNote);
+    //   this.playLeadNote(time, this.scale[this.currentNote]);
+    // }
     if (step % 2 === 0) {
       let rn = Math.random();
       const p = this.A[this.currentNote];
@@ -231,7 +242,7 @@ class SoundEffect {
     }
     this.playHistory++;
     if (this.historyNote.length > 2 && this.playHistory > 32) {
-      this.playLeadNote(time, this.scale[this.historyNote.shift()]);
+      this.playLeadNote(time, this.scale[this.historyNote.shift()], 'sine');
       if (Math.random() < 0.05) {
         this.playHistory = Math.floor(Math.random() * 24);
       }
@@ -304,10 +315,10 @@ class SoundEffect {
     noise.stop(time + 0.05);
   }
 
-  playLeadNote(time, frequency) {
+  playLeadNote(time, frequency, type = 'triangle') {
     const osc = this.audioContext.createOscillator();
     const gain = this.audioContext.createGain();
-    osc.type = 'triangle'; // 三角波声音比正弦波更丰富
+    osc.type = type; // 三角波声音比正弦波更丰富
     osc.frequency.setValueAtTime(frequency, time);
 
     gain.gain.setValueAtTime(0, time);

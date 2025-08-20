@@ -3,7 +3,6 @@ class Game {
     this.updateDropInterval = updateDropInterval;
     this.soundEffect = soundEffect;
 
-    this.data = [];
     this.colorBedrock = "#BDBDBD"; // 基岩颜色
     this.colors = [
       "#FF9800",
@@ -46,6 +45,16 @@ class Game {
       return {index : i, value : v[i] / 2};
     });
 
+    /*
+     * id: 全局唯一id
+     * color: 方块颜色
+     * pos: 方块位置 [x, y, z]
+     * player:
+     *   0: 已经放置的方块，
+     *   1, 2: 玩家六边形，2是主六边形
+     *   -1, -2：下一个六边形，-2是主六边形
+     */
+    this.data = [];
     // 初始中心块
     this.data.push({
       id : getGlobalId(),
@@ -63,11 +72,14 @@ class Game {
     this.parity = false;
     // 当前掉落方向
     this.nowDropDirectionIndex = 0;
+    // 下一个掉落方向
+    this.nextDropDirectionIndex = 0;
 
     // 当前有效边界，需要在添加新六边形时更新
     this.nowValidEdges = this.validEdges();
 
-    this.addNewHexs();
+    this.addNewHexs(); // 添加初始六边形
+    this.addNewHexs(); // 添加未来的六边形
   }
 
   /*
@@ -119,11 +131,15 @@ class Game {
   }
 
   // 返回一个新的六边形组合
-  getNewHexs() {
+  // 如果next为true，则返回下一个六边形组合
+  // 否则返回当前六边形组合
+  getNewHexs(next = false) {
     const directions = this.directions;
-    const color = randomValFromArray(this.colors);
-    let newData =
-        [ {id : getGlobalId(), color : color, pos : [ 0, 0, 0 ], player : 1} ];
+    let player = next ? -1 : 1; // 下一个六边形的玩家标识
+    let color = randomValFromArray(this.colors) + (next ? "08" : "");
+    let newData = [
+      {id : getGlobalId(), color : color, pos : [ 0, 0, 0 ], player : player}
+    ];
     for (let i = 1; i < 6; i++) {
       let baseHex, dir, newPos;
       do {
@@ -133,7 +149,7 @@ class Game {
         newPos = Vector.add(baseHex.pos, dir);
       } while (newData.map(d => d.pos).some(arrayValEqual(newPos)));
       newData.push(
-          {id : getGlobalId(), color : color, pos : newPos, player : 1});
+          {id : getGlobalId(), color : color, pos : newPos, player : player});
     }
 
     let c = Vector.divide(
@@ -143,7 +159,7 @@ class Game {
                                     .map(x => x * x)
                                     .reduce((a, b) => a + b, 0));
     let minDist = Math.min(...dist);
-    newData[dist.findIndex(x => x == minDist)].player = 2; // 设置主六边形
+    newData[dist.findIndex(x => x == minDist)].player *= 2; // 设置主六边形
     return newData;
   }
 
@@ -153,24 +169,37 @@ class Game {
   addNewHexs(
       dropHeight = this.dropHeight,
   ) {
-    this.nowDropDirectionIndex =
-        Math.floor(Math.random() * this.directions.length);
-    const dir = this.directions[this.nowDropDirectionIndex];
+    if (this.data.some(d => d.player < 0)) {
+      for (let d of this.data) {
+        if (d.player < 0) {
+          d.player *= -1;
+          d.color = d.color.slice(0, -2);
+        }
+      }
+      this.nowDropDirectionIndex = this.nextDropDirectionIndex;
+    }
+    let rn = 0;
+    do
+      rn = Math.floor(Math.random() * this.directions.length);
+    while (rn == this.nowDropDirectionIndex);
+    this.nextDropDirectionIndex = rn;
+    const dir = this.directions[this.nextDropDirectionIndex];
     const e = this.getValidEdge(dir);
     let w = Math.floor(Math.random() * (e.max - e.min) + e.min);
     w = w > 0 ? w - 1 : w + 1; // 收缩范围
     const p =
-        this.directionsSign[this.nowDropDirectionIndex].value == 1 ? 1 : 4;
+        this.directionsSign[this.nextDropDirectionIndex].value == 1 ? 1 : 4;
     const pos = Vector.add(
         Vector.times(dir, -dropHeight / 2),
         Vector.add(
-            Vector.times(Math.floor(w / 2),
-                         this.directions[(this.nowDropDirectionIndex + p) % 6]),
+            Vector.times(
+                Math.floor(w / 2),
+                this.directions[(this.nextDropDirectionIndex + p) % 6]),
             Vector.times(
                 Math.ceil(w / 2),
-                this.directions[(this.nowDropDirectionIndex + p + 1) % 6])));
+                this.directions[(this.nextDropDirectionIndex + p + 1) % 6])));
 
-    const newHexs = this.getNewHexs();
+    const newHexs = this.getNewHexs(true);
     for (let h of newHexs) {
       h.pos = Vector.add(pos, h.pos);
       // 如果新位置已经有六边形，则不添加，游戏失败
@@ -183,7 +212,7 @@ class Game {
   // 每个回合结束时需要执行的操作
   endTurnUpdate() {
     for (let d of this.data)
-      if (d.player)
+      if (d.player > 0)
         d.player = 0;
     // 消除环
     let score = 0;
@@ -227,10 +256,10 @@ class Game {
              endTurn = true) {
     if (this.gameOver)
       return false; // 游戏结束了，不能再操作
+    const poses = this.data.filter(v => v.player == 0).map(v => v.pos);
     for (let d of this.data) {
-      if (d.player && this.data.filter(v => v.player == 0)
-                          .map(v => v.pos)
-                          .some(arrayValEqual(Vector.add(d.pos, direction)))) {
+      if (d.player > 0 &&
+          poses.some(arrayValEqual(Vector.add(d.pos, direction)))) {
         // 掉落失败，不能移动到已有六边形上
         // 已经落地了，不能再操作
         if (endTurn)
@@ -241,25 +270,24 @@ class Game {
 
     // 如果所有六边形都可以掉落到新位置，则更新位置
     for (let d of this.data)
-      if (d.player)
+      if (d.player > 0)
         d.pos = Vector.add(d.pos, direction);
     return true;
   }
   // 以baseHex为基准移动到指定位置
   playerMoveTo(target, baseHex = this.data.find(d => d.player == 2)) {
+    const poses = this.data.filter(v => v.player == 0).map(v => v.pos);
     for (let d of this.data)
-      if (d.player) // 检查新位置是否合法
-        if (this.data.filter(v => !v.player)
-                .map(v => v.pos)
-                .some(arrayValEqual(
-                    Vector.add(Vector.subtract(d.pos, baseHex.pos), target))))
+      if (d.player > 0) // 检查新位置是否合法
+        if (poses.some(arrayValEqual(
+                Vector.add(Vector.subtract(d.pos, baseHex.pos), target))))
           return false; // 掉落失败，不能移动到已有六边形上
 
     // 如果所有六边形都可以掉落到新位置，则更新位置
     // 需要先提取出偏移量 p，否则引用类型会导致baseHex.pos偏移
     const p = Array(3).fill().map((_, i) => baseHex.pos[i] - target[i]);
     for (let d of this.data)
-      if (d.player)
+      if (d.player > 0)
         d.pos = Vector.subtract(d.pos, p);
     return true;
   }
@@ -281,8 +309,9 @@ class Game {
 
     // 如果未来位置在有效边界内，则移动
     if (lr * (this.nowDropDirectionIndex % 2 == 1 ? 1 : -1) *
-            (this.getValidEdge(dir, this.validEdges(this.data.filter(
-                                        v => v.player)))[sign ? "max" : "min"] -
+            (this.getValidEdge(dir,
+                               this.validEdges(this.data.filter(
+                                   v => v.player > 0)))[sign ? "max" : "min"] -
              this.getValidEdge(dir)[sign ? "min" : "max"]) <
         0)
       return this.playerDrop(
@@ -323,7 +352,7 @@ class Game {
                // 边缘的六边形
                ((id) => this.data.find((d => d.id == id)))(this.getValidEdge(
                    dir, this.validEdges(this.data.filter(
-                            v => v.player)))[sign ? "minId" : "maxId"])) ||
+                            v => v.player > 0)))[sign ? "minId" : "maxId"])) ||
            this.playerRotate(-lr, true); // 移动失败就转回去
   }
   /* 把一个 [0, -1, 1] 类型的方向旋转到
@@ -353,9 +382,9 @@ class Game {
 
     // 旋转后有重叠的话就不能旋转
     if ((!force) &&
-        (arr => this.data.filter(d => !d.player)
+        (arr => this.data.filter(d => d.player == 0)
                     .some(val => arr.some(arrayValEqual(val.pos))))(
-            this.data.filter(d => d.player)
+            this.data.filter(d => d.player > 0)
                 .map(d => Vector.add(
                          Vector.divide(
                              Matrix.multiply(
@@ -433,7 +462,7 @@ class Game {
     }
     const sizeCount = (size) => 1 + 3 * size * (size + 1);
     const dist = pos => pos.reduce((a, b) => a + Math.abs(b), 0);
-    for (let hexSize = Math.ceil(hMax / 4) * 2; hexSize > 2; hexSize -= 2) {
+    for (let hexSize = Math.ceil(hMax / 4) * 2 + 2; hexSize > 2; hexSize -= 2) {
       for (let h in dataByH) {
         if (parseInt(h) <= hMax / 2 && parseInt(h) > 4) {
           for (let d of dataByH[h]) {
