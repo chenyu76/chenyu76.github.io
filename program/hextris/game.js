@@ -186,13 +186,32 @@ class Game {
       if (d.player)
         d.player = 0;
     // 消除环
-    this.eliminateRing();
+    let score = 0;
+    score += this.eliminateRing();
+    score += this.eliminateBlocks();
+    if (score > 0) {
+      this.score += score;
+      document.getElementById("score").textContent = this.score;
+      // 减小掉落间隔
+      // this.updateDropInterval(
+      //     (this.baseDropInterval - 500) / Math.max(1, score / 30) + 500);
+      this.updateDropInterval(
+          Math.max(this.baseDropInterval - 3 * this.score, 300));
+      // 播放消除音效
+      this.soundEffect.playVanishSound();
+    }
+
     // 更新有效边界
     this.nowValidEdges = this.validEdges();
     // 生成新的六边形
     // 如果添加新六边形失败，则游戏结束
-    if (!this.addNewHexs())
+    if (!this.addNewHexs()) {
       this.gameOver = true;
+    }
+    if (this.gameOver) {
+      this.soundEffect.stopBGM();
+      document.getElementById("is-game-over").style.visibility = "visible";
+    }
 
     return true;
   }
@@ -206,6 +225,8 @@ class Game {
    */
   playerDrop(direction = this.directions[this.nowDropDirectionIndex],
              endTurn = true) {
+    if (this.gameOver)
+      return false; // 游戏结束了，不能再操作
     for (let d of this.data) {
       if (d.player && this.data.filter(v => v.player == 0)
                           .map(v => v.pos)
@@ -249,6 +270,8 @@ class Game {
    * 1:  右边
    */
   playerMove(lr) {
+    if (this.gameOver)
+      return false; // 游戏结束了，不能再操作
     let dir = this.directions[this.nowDropDirectionIndex];
     if (lr == 0)
       return this.playerDrop(dir);
@@ -355,6 +378,7 @@ class Game {
 
   // 若成环，消除，降落更高的
   eliminateRing() {
+    let score = 0;
     let layer = 1;
     const dist = pos => pos.reduce((a, b) => a + Math.abs(b), 0);
     while (true) {
@@ -377,7 +401,6 @@ class Game {
             if (dist(p) < distDPos)
               d.pos = p;
         }
-
         // 消除重叠的六边形
         let possible = outerHex.filter(d => d.pos.some(x => Math.abs(x) <= 1));
         let duplicates = [];
@@ -388,21 +411,15 @@ class Game {
         }
         this.data = this.data.filter(item => !duplicates.includes(item));
 
-        this.score += layer * 6; // 增加分数
-        document.getElementById("score").textContent = this.score;
-        // 减小掉落间隔
-        // this.updateDropInterval(
-        //     (this.baseDropInterval - 500) / Math.max(1, score / 30) + 500);
-        this.updateDropInterval(
-            Math.max(this.baseDropInterval - 2 * this.score, 300));
-        // 播放消除音效
-        this.soundEffect.playVanishSound();
+        score += layer * 6; // 增加分数
       }
     }
+    return score;
   }
   // 消除一大坨方块
   // 感觉没有消除环好，不用了
   eliminateBlocks() {
+    let score = 0;
     let maps = this.data.filter(d => d.player == 0);
     let dataByH = {};
     let hMax = 0;
@@ -414,16 +431,26 @@ class Game {
         dataByH[h] = [];
       dataByH[h].push(d);
     }
-    for (let hexSize = hMax / 2; hexSize > 2; hexSize--) {
+    const sizeCount = (size) => 1 + 3 * size * (size + 1);
+    const dist = pos => pos.reduce((a, b) => a + Math.abs(b), 0);
+    for (let hexSize = Math.ceil(hMax / 4) * 2; hexSize > 2; hexSize -= 2) {
       for (let h in dataByH) {
-        if (h < hMax / 2 && h > 2) {
+        if (parseInt(h) <= hMax / 2 && parseInt(h) > 4) {
           for (let d of dataByH[h]) {
-            d = d;
-            pass
-            // 不想写了
+            if (d) {
+              let blocks = maps.filter(
+                  d2 => dist(Vector.subtract(d2.pos, d.pos)) <= hexSize &&
+                        dist(d2.pos) > 1);
+              if (blocks.length >= sizeCount(hexSize / 2)) {
+                // 消除
+                this.data = this.data.filter(item => !blocks.includes(item));
+                score += blocks.length;
+              }
+            }
           }
         }
       }
     }
+    return score;
   }
 }

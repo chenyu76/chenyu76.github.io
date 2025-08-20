@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh_cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>reMarkable 各种折腾的备忘录</title>
+
+    <!-- css样式 -->
+    <link rel="stylesheet" href="/styles.css" />
+    <!-- 标签页图标 -->
+    <link rel="icon" href="/favicon.png" type="image/png" />
+
+    <!-- 背景css -->
+    <link rel="stylesheet" href="/img/pixelart/styles.css" />
+
+    <link rel="stylesheet" href="/styles-code.css">
+  </head>
+
+  <body>
+    <!-- 背景js -->
+    <div id="pixel-art">
+      <div id="pixel-art-background"></div>
+      <div id="pixel-art-midground"></div>
+      <div id="pixel-art-foreground"></div>
+    </div>
+    <script src="/img/pixelart/imgMatrix.js"></script>
+    <script src="/img/pixelart/sky_element.js"></script>
+    <script src="/img/pixelart/pampas_grass.js"></script>
+    <script src="/img/pixelart/script.js"></script>
+
+    <div id="title-container">
+      <div id="spacer"></div>
+      <div id="top-buttons-wrapper" class="top-buttons">
+        <a href="/toc.html" title="文档索引" class="fade-in"
+          ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
+        ><a href="/index.html" title="返回主页" class="fade-in"
+          ><img src="/img/icon/home.svg" alt="Home" class="icon" /></a
+        ><a
+          href="https://github.com/chenyu76"
+          target="_blank"
+          title="跳转到 GitHub"
+          class="fade-in"
+          ><img src="/img/icon/github.svg" alt="Github" class="icon" /></a
+        ><a href="/About.html" title="关于" class="fade-in"
+          ><img src="/img/icon/info.svg" alt="Info" class="icon"
+        /></a>
+      </div>
+      <div id="heading"><h3>quick-references</h3><h1>reMarkable 各种折腾的备忘录</h1></div>
+    </div>
+    <div id="anime-spacer" class="shrinked"></div>
+    <div id="content-wrapper-bg">
+      <div id="content-wrapper">
+        <div id="content"><div class="toc">
+<h2>目录</h2>
+<ul>
+<ul>
+<li><a href="#h2-u4e2du6587u5b57u4f53">中文字体</a></li>
+<li><a href="#h2-u4f11u7720u58c1u7eb8">休眠壁纸</a></li>
+<li><a href="#h2-u53efu80fdu6709u7528u7684u94feu63a5">可能有用的链接</a></li>
+<ul>
+<li><a href="#h3-toltec">Toltec</a></li>
+</ul>
+<li><a href="#h2-u5c4fu5e55u5c3au5bf8">屏幕尺寸</a></li>
+<li><a href="#h2-u4f20u8f93u5927u4e8e100mu7684u6587u4ef6">传输大于100M的文件</a></li>
+</ul>
+</ul>
+</div>
+<hr>
+<h2 id="h2-u4e2du6587u5b57u4f53">中文字体</h2><p>似乎下面的内容多余了，<a href="https://remarkable.jms1.info/info/fonts.html">参考</a>，只需要把字体放在<code>/home/root/.local/share/fonts/</code></p>
+<p>Any time you add, remove, or update font files, you need to rebuild the font cache files.</p>
+<pre><code class="language-bash">fc-cache -fv
+</code></pre>
+<hr>
+<p>字体已经放在了<code>/usr/share/font/ttf</code>中，所以只需要使用SSH连接上再软连接上字体即可</p>
+<pre><code class="language-bash">ssh root@10.11.99.1
+<span class="hljs-comment"># In Remarkable</span>
+<span class="hljs-built_in">ln</span> -s /home/root/fonts /usr/share/fonts/ttf
+</code></pre>
+<p>更新后可能会报</p>
+<pre><code>@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+</code></pre>
+<p>需要把</p>
+<p><code>~/.ssh/known_hosts</code> 下的10.11.99.1 的信任删除</p>
+<p>root 密码在 Settings &gt; Help  &gt; Copyrights and licenses 中</p>
+<h2 id="h2-u4f11u7720u58c1u7eb8">休眠壁纸</h2><p>壁纸位置</p>
+<pre><code class="language-bash"><span class="hljs-comment"># sleep</span>
+/usr/share/remarkable/suspended.png
+<span class="hljs-comment"># light sleep</span>
+/usr/share/remarkable/sleep.png
+<span class="hljs-comment"># power off</span>
+/usr/share/remarkable/poweroff.png
+</code></pre>
+<p>使用scp复制过去</p>
+<pre><code>scp &#x27;./suspended.png&#x27; root@10.11.99.1:/usr/share/remarkable/suspended.png
+</code></pre>
+<h2 id="h2-u53efu80fdu6709u7528u7684u94feu63a5">可能有用的链接</h2><p><a href="https://remarkable.guide">reMarkable Guide</a></p>
+<p><a href="https://remarkable.guide/guide/software/toltec.html#toltec-reenable">Reenable Toltec After A System Upgrade</a></p>
+<p><a href="https://toltec-dev.org/">Toltec</a></p>
+<h3 id="h3-toltec">Toltec</h3><pre><code>WARN:  Please restart your SSH session or run &#x27;exec bash --login&#x27; to use Toltec
+Your Opkg configuration has been upgraded
+INFO:  After each system upgrade, run &#x27;toltecctl reenable&#x27; to re-enable Toltec
+
+
+Run the following command(s) to use koreader as your launcher
+launcherctl switch-launcher --start koreader
+
+Run the following command(s) to use oxide as your launcher
+launcherctl switch-launcher --start oxide
+
+Configuring oxide-utils.
+
+
+Run the following command(s) to use remux as your launcher
+launcherctl switch-launcher --start remux
+</code></pre>
+<h2 id="h2-u5c4fu5e55u5c3au5bf8">屏幕尺寸</h2><pre><code>1404x1872     pixels
+157.2x209.6   mm
+</code></pre>
+<h2 id="h2-u4f20u8f93u5927u4e8e100mu7684u6587u4ef6">传输大于100M的文件</h2><p>使用脚本<code>pdf2remarkable.sh</code>，来自<a href="https://github.com/adaerr/reMarkableScripts/blob/master/pdf2remarkable.sh">adaerr</a></p>
+<p>说明见<a href="https://www.informaticar.net/how-to-transfer-files-to-remarkable-paper-pro-without-cloud/">这里</a></p>
+</div>
+        <div id="footnote"></div>
+      </div>
+      <div class="bottom-button">
+        <button onclick="scrollToTop()" title="滚动到顶部">
+          <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+        </button>
+      </div>
+    </div>
+    <script src="/script.js"></script>
+    
+<script>
+document.querySelectorAll('pre').forEach(pre => {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = '📋';
+  
+  // 添加到DOM
+  pre.prepend(btn);
+
+  // 绑定点击事件
+  btn.addEventListener('click', async () => {
+    try {
+      const code = pre.querySelector('code').innerText;
+      await navigator.clipboard.writeText(code);
+      
+      btn.textContent = ' ✓ ';
+      setTimeout(() => btn.textContent = '📋', 1500);
+    } catch (err) {
+      btn.textContent = 'FAIL！';
+      btn.style.color = '#dc3545';
+    }
+  });
+});
+</script>
+
+  </body>
+</html>
