@@ -91,3 +91,7 @@ launcherctl switch-launcher --start remux
 使用脚本`pdf2remarkable.sh`，来自[adaerr](https://github.com/adaerr/reMarkableScripts/blob/master/pdf2remarkable.sh)
 
 说明见[这里](https://www.informaticar.net/how-to-transfer-files-to-remarkable-paper-pro-without-cloud/)
+
+## 关于USB connection
+
+主流浏览器似乎会默认阻止不安全的http连接，所以我只能用[Eolie](https://wiki.gnome.org/Apps/Eolie)连上
