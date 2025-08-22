@@ -19,7 +19,7 @@ class Game {
       "#18FFFF",
     ];
     this.dropHeight = 30;                      // 掉落高度
-    this.baseDropInterval = 750;               // 基础掉落间隔时间(ms)
+    this.baseDropInterval = 1250;              // 基础掉落间隔时间(ms)
     this.dropInterval = this.baseDropInterval; // 实际掉落间隔时间(ms)
     this.score = 0;                            // 玩家得分
     this.gameOver = false;                     // 游戏是否结束
@@ -169,15 +169,15 @@ class Game {
   addNewHexs(
       dropHeight = this.dropHeight,
   ) {
-    if (this.data.some(d => d.player < 0)) {
-      for (let d of this.data) {
-        if (d.player < 0) {
-          d.player *= -1;
-          d.color = d.color.slice(0, -2);
-        }
+    // 将下一个六边形变为现在的六边形
+    for (let d of this.data) {
+      if (d.player < 0) {
+        d.player *= -1;
+        d.color = d.color.slice(0, -2);
       }
-      this.nowDropDirectionIndex = this.nextDropDirectionIndex;
     }
+    this.nowDropDirectionIndex = this.nextDropDirectionIndex;
+    // 生成新的六边形组合
     let rn = 0;
     do
       rn = Math.floor(Math.random() * this.directions.length);
@@ -203,7 +203,9 @@ class Game {
     for (let h of newHexs) {
       h.pos = Vector.add(pos, h.pos);
       // 如果新位置已经有六边形，则不添加，游戏失败
-      if (this.data.map(d => d.pos).some(arrayValEqual(h.pos)))
+      if (this.data.filter(d => d.player == 0)
+              .map(d => d.pos)
+              .some(arrayValEqual(h.pos)))
         return false;
       this.data.push(h);
     }
@@ -464,7 +466,7 @@ class Game {
     const dist = pos => pos.reduce((a, b) => a + Math.abs(b), 0);
     for (let hexSize = Math.ceil(hMax / 4) * 2 + 2; hexSize > 2; hexSize -= 2) {
       for (let h in dataByH) {
-        if (parseInt(h) <= hMax / 2 && parseInt(h) > 4) {
+        if (parseInt(h) <= hMax / 2 + 2 && parseInt(h) > 4) {
           for (let d of dataByH[h]) {
             if (d) {
               let blocks = maps.filter(
