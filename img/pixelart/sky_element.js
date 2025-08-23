@@ -54,18 +54,33 @@ function generateMeteor(w) {
     mp.style.backgroundColor = meteor_colors_a(life);
 
     if (k >= 1) {
-      let pass_time = 0;
-      let interval = setInterval(() => {
-        let y = pixelSize * (pos[1] - life + pass_time);
-        let x = pixelSize * Math.floor(pos[0] + (-life + pass_time) / k);
-        if (y > window.innerHeight) {
-          clearInterval(interval);
-          mp.remove(); // 超出屏幕后删除
+      // 初始化动画所需变量
+      let animationFrameId;
+      let pass_time = 0;      // 动画“时间”或“帧数”计数器
+      let lastUpdateTime = 0; // 上一次更新位置的时间戳
+
+      function moveElementAnimation(timestamp) {
+        // 首次调用时，初始化 lastUpdateTime
+        // if (!lastUpdateTime) {
+        //   lastUpdateTime = timestamp;
+        // }
+        const elapsed = timestamp - lastUpdateTime;
+        if (elapsed >= delay_time) {
+          let y = pixelSize * (pos[1] - life + pass_time);
+          if (y > window.innerHeight) {
+            mp.remove(); // 超出屏幕后删除
+            return;
+          }
+          let x = pixelSize * Math.floor(pos[0] + (-life + pass_time) / k);
+          mp.style.right = x + "px";
+          mp.style.top = y + "px";
+          pass_time++;
+          lastUpdateTime = timestamp;
         }
-        mp.style.right = x + "px";
-        mp.style.top = y + "px";
-        pass_time++;
-      }, delay_time); // 每 ? 秒移动一次
+        animationFrameId = requestAnimationFrame(moveElementAnimation);
+      }
+      // 启动动画
+      animationFrameId = requestAnimationFrame(moveElementAnimation);
     } else {
       console.log("这个情况懒得做了");
     }
@@ -82,6 +97,7 @@ function generateMeteor(w) {
   for (let i = 0; i < METEOR_LIFE_LEN; i++) {
     m.appendChild(meteor_part(pos, time, k, i));
   }
+  // 超出屏幕后移除包裹流星的 div
   let interval = setInterval(() => {
     if (m.children.length === 0) {
       clearInterval(interval);
@@ -238,17 +254,43 @@ function generateClouds(init_x, init_y) {
   cloud.style.right = init_x + "px";
 
   let speed = 1; // 每次移动的距离
-  let interval = setInterval(
-      () => {
-        let currentX = parseFloat(cloud.style.right);
-        cloud.style.right = currentX - speed + "px";
-        if (currentX < -CLOUD_CANVAS_SIZE[0]) {
-          clearInterval(interval);
-          cloud.remove(); // 超出屏幕后删除
-        }
-      },
-      randomNormal(3000, 600),
-  ); // 每 ? 秒移动一次
+
+  // 初始化动画所需变量
+  let animationFrameId;
+  let lastMoveTime = 0;                        // 上一次移动的时间戳
+  let nextMoveDelay = randomNormal(3000, 600); // 第一次移动的延迟时间
+
+  // rAF 动画循环函数
+  function cloudAnimation(timestamp) {
+    // timestamp 是由 requestAnimationFrame 自动传入的高精度时间戳
+
+    // 1. 时间判断逻辑
+    // 检查自上次移动以来经过的时间是否超过了随机生成的延迟时间
+    if (timestamp - lastMoveTime > nextMoveDelay) {
+
+      // 2. 更新位置（与原逻辑相同）
+      let currentX = parseFloat(cloud.style.right) || 0; // 初始值为0，防止NaN
+      cloud.style.right = currentX - speed + "px";
+
+      // 更新“上次移动时间”
+      lastMoveTime = timestamp;
+      // 生成下一次移动需要等待的随机延迟时间
+      nextMoveDelay = randomNormal(3000, 600);
+
+      // 3. 边界判断和停止动画（与原逻辑相同）
+      if (currentX < -CLOUD_CANVAS_SIZE[0]) {
+        cloud.remove(); // 超出屏幕后删除
+        return;         // 关键：一旦元素被移除，就停止后续的rAF请求
+      }
+    }
+    // 4. 请求下一帧动画
+    animationFrameId = requestAnimationFrame(cloudAnimation);
+  }
+
+  // 启动动画
+  animationFrameId = requestAnimationFrame(cloudAnimation);
+
+  // 如果需要手动停止动画，可以调用 cancelAnimationFrame(animationFrameId);
   return cloud;
 }
 
