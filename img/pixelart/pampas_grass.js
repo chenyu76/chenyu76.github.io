@@ -405,8 +405,8 @@ class Grass {
 
     // 2. 创建一个足够大的画布来绘制蒲苇，避免图像被裁剪
     //    尺寸可以基于主要长度参数进行估算，并增加一些余量
-    const canvasWidth = Math.ceil(pgd[0] * scale * 2.5 + pgd[10] * scale * 2);
-    const canvasHeight = Math.ceil(pgd[0] * scale * 1.5);
+    const canvasWidth = Math.ceil(pgd[0] * scale * 2 + pgd[10] * scale * 2);
+    const canvasHeight = Math.ceil(pgd[0] * scale * 2);
     const canvas = document.createElement("canvas");
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
