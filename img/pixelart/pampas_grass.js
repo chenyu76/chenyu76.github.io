@@ -219,7 +219,7 @@ class Grass {
    */
   moveElementAnimation(timestamp) {
     // 每4帧之间跳过一帧，降低计算量
-    if (this.skipFrame < 3) {
+    if (this.skipFrame < 5) {
       this.skipFrame++;
       this.animationFrameId = requestAnimationFrame(
           (timestamp) => this.moveElementAnimation(timestamp));
@@ -260,8 +260,16 @@ class Grass {
 
       // 更新蒲苇显示的canvas
       let newCanvasIndex = Math.min(
-          Math.max(Math.round(this.initialCanvasIndex + d.bent * 5), 0),
-          this.totalCanvasCount - 1);
+          Math.max(Math.round(this.initialCanvasIndex + d.bent * 5), 0));
+      // 限制最大值，在边缘时抖动
+      if (newCanvasIndex > this.totalCanvasCount - 1)
+        newCanvasIndex =
+            this.totalCanvasCount - 1 -
+            (Math.round(Math.abs(
+                 timestamp / (Math.round(Math.abs(d.rngSeed)) % 100 + 120) +
+                 d.rngSeed)) %
+             3);
+
       if (newCanvasIndex !== d.nowCanvasIndex) {
         d.nowCanvasIndex = newCanvasIndex;
         d.canvasImgOnScreen.src = d.canvasesOffScreenURL[d.nowCanvasIndex];
@@ -361,7 +369,7 @@ class Grass {
   /**
    * 注册一个包含单株蒲苇的canvas到全局变量this.data中，
    * 供后续计算其他帧使用。
-   * 返回一个包含蒲苇的canvas元素。
+   * 返回一个包含蒲苇的img元素。
    */
   register_single_pampas_grass_canvas(x, y, scale = 1,
                                       color_multiplyer = "#FFFFFF") {
