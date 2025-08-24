@@ -29,7 +29,111 @@ function createStar(h) {
 // 生成流星
 // w: 可用的总宽度
 // 返回一个流星 div
-function generateMeteor(w) {
+function generateMeteor(w, pixelSize) {
+  /**
+   * 返回流星颜色的函数 (保持不变)
+   */
+  function meteor_colors_a(index) {
+    return ((c) => `rgba(${c[0]},${c[1]},${c[2]},${c[3]})`)(
+        index === 0
+            ? [ 255, 255, 11, 1 ]
+            : [ 255, 255, 255, (METEOR_LIFE_LEN - index) / METEOR_LIFE_LEN ],
+    );
+  }
+
+  /**
+   * [已优化] 创建流星的一节 (仅创建DOM，不再处理动画)
+   * life: 这是流星的第几节, 0是头
+   * return: 一个流星方块 <div>
+   */
+  function create_meteor_part(life) {
+    const mp = document.createElement("div");
+    mp.style.width = `${pixelSize}px`;
+    mp.style.height = `${pixelSize}px`;
+    mp.style.position = "absolute";
+    mp.style.backgroundColor = meteor_colors_a(life);
+    // 使用 dataset 存储 life 值，方便主循环读取
+    mp.dataset.life = life;
+    return mp;
+  }
+
+  // --- 主逻辑 ---
+
+  // 创建流星的父容器
+  const m = document.createElement("div");
+  m.style.position = "absolute"; // 容器本身不需要定位，它的子元素是绝对定位
+  m.style.right = "0px";
+  m.style.top = "0px";
+
+  // 初始化流星的属性
+  const pos =
+      [ Math.round(w * Math.random()), -Math.ceil(Math.random() * 200) ];
+  const k = Math.ceil(Math.random() * 4) || 1; // 确保 k 不为 0
+  const delay_time = randomNormal(25, 10);
+
+  // 循环创建流星的所有“节”，并添加到父容器中
+  for (let i = 0; i < METEOR_LIFE_LEN; i++) {
+    m.appendChild(create_meteor_part(i));
+  }
+
+  // --- 单一动画循环 ---
+  let animationFrameId;
+  let pass_time = 0;      // 动画“时间”或“帧数”计数器
+  let lastUpdateTime = 0; // 上一次更新位置的时间戳
+
+  function moveMeteorAnimation(timestamp) {
+    // 确保第一次渲染或达到延迟时间后才更新
+    const elapsed = timestamp - lastUpdateTime;
+    if (lastUpdateTime === 0 || elapsed >= delay_time) {
+
+      let visiblePartsCount = 0;
+      // 遍历所有“节”来更新它们的位置
+      for (const mp of m.children) {
+        const life = parseInt(mp.dataset.life, 10);
+
+        const y = pixelSize * (pos[1] - life + pass_time);
+
+        // 如果“节”已经超出屏幕下方，则直接移除
+        if (y > window.innerHeight) {
+          mp.remove();
+        } else {
+          // 否则，计算并更新它的位置
+          const x = pixelSize * Math.floor(pos[0] + (-life + pass_time) / k);
+          mp.style.right = x + "px";
+          mp.style.top = y + "px";
+          visiblePartsCount++;
+        }
+      }
+
+      // 如果所有“节”都已被移除，则停止动画并清理父容器
+      if (visiblePartsCount === 0) {
+        cancelAnimationFrame(animationFrameId);
+        m.remove();
+        return; // 提前退出，不再请求下一帧
+      }
+
+      pass_time++;
+      lastUpdateTime = timestamp;
+    }
+
+    // 请求下一帧动画
+    animationFrameId = requestAnimationFrame(moveMeteorAnimation);
+  }
+
+  // 忽略 k < 1 的情况，与原逻辑保持一致
+  if (k >= 1) {
+    // 启动这个流星的唯一动画循环
+    animationFrameId = requestAnimationFrame(moveMeteorAnimation);
+  } else {
+    console.log("这个情况懒得做了，而且你不应该看到这条信息");
+    // 如果不处理，这个空的div容器可能会留在DOM中，最好也移除
+    m.remove();
+    return null; // 或者返回一个空对象，避免调用者出错
+  }
+
+  return m;
+}
+function generateMeteor_old(w) {
   function meteor_colors_a(index) {
     return ((c) => `rgba(${c[0]},${c[1]},${c[2]},${c[3]})`)(
         index === 0
