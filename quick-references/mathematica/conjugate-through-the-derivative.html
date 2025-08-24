@@ -1,56 +1,51 @@
 <!doctype html>
 <html lang="zh_cn">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>使 Mathematica 中共轭的导数等于导数的共轭</title>
 
-    <!-- css样式 -->
-    <link rel="stylesheet" href="/styles.css" />
-    <!-- 标签页图标 -->
-    <link rel="icon" href="/favicon.png" type="image/png" />
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>使 Mathematica 中共轭的导数等于导数的共轭</title>
 
-    <!-- 背景css -->
-    <link rel="stylesheet" href="/img/pixelart/styles.css" />
+	<!-- css样式 -->
+	<link rel="stylesheet" href="/styles.css" />
+	<!-- 标签页图标 -->
+	<link rel="icon" href="/favicon.png" type="image/png" />
 
-    <link rel="stylesheet" href="/styles-code.css">
-  </head>
+	<!-- 背景css -->
+	<link rel="stylesheet" href="/img/pixelart/styles.css" />
 
-  <body>
-    <!-- 背景js -->
-    <div id="pixel-art">
-      <div id="pixel-art-background"></div>
-      <div id="pixel-art-midground"></div>
-      <div id="pixel-art-foreground"></div>
-    </div>
-    <script src="/img/pixelart/imgMatrix.js"></script>
-    <script src="/img/pixelart/sky_element.js"></script>
-    <script src="/img/pixelart/pampas_grass.js"></script>
-    <script src="/img/pixelart/script.js"></script>
+	<link rel="stylesheet" href="/styles-code.css">
+</head>
 
-    <div id="title-container">
-      <div id="spacer"></div>
-      <div id="top-buttons-wrapper" class="top-buttons">
-        <a href="/toc.html" title="文档索引" class="fade-in"
-          ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
-        ><a href="/index.html" title="返回主页" class="fade-in"
-          ><img src="/img/icon/home.svg" alt="Home" class="icon" /></a
-        ><a
-          href="https://github.com/chenyu76"
-          target="_blank"
-          title="跳转到 GitHub"
-          class="fade-in"
-          ><img src="/img/icon/github.svg" alt="Github" class="icon" /></a
-        ><a href="/About.html" title="关于" class="fade-in"
-          ><img src="/img/icon/info.svg" alt="Info" class="icon"
-        /></a>
-      </div>
-      <div id="heading"><h3>quick-references/mathematica</h3><h1>使 Mathematica 中共轭的导数等于导数的共轭</h1></div>
-    </div>
-    <div id="anime-spacer" class="shrinked"></div>
-    <div id="content-wrapper-bg">
-      <div id="content-wrapper">
-        <div id="content"><pre><code class="language-Mathematica"><span class="hljs-comment">(* 使共轭的导数等于导数的共轭 *)</span>
+<body>
+	<!-- 背景js -->
+	<div id="pixel-art">
+		<div id="pixel-art-background"></div>
+		<div id="pixel-art-midground"></div>
+		<div id="pixel-art-foreground"></div>
+	</div>
+	<script src="/img/pixelart/imgMatrix.js"></script>
+	<script src="/img/pixelart/sky_element.js"></script>
+	<script src="/img/pixelart/land.js"></script>
+	<script src="/img/pixelart/pampas_grass.js"></script>
+	<script src="/img/pixelart/script.js"></script>
+
+	<div id="title-container">
+		<div id="spacer"></div>
+		<div id="top-buttons-wrapper" class="top-buttons">
+			<a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc"
+					class="icon" /></a><a href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg"
+					alt="Home" class="icon" /></a><a href="https://github.com/chenyu76" target="_blank"
+				title="跳转到 GitHub" class="fade-in"><img src="/img/icon/github.svg" alt="Github" class="icon" /></a><a
+				href="/About.html" title="关于" class="fade-in"><img src="/img/icon/info.svg" alt="Info"
+					class="icon" /></a>
+		</div>
+		<div id="heading"><h3>quick-references/mathematica</h3><h1>使 Mathematica 中共轭的导数等于导数的共轭</h1></div>
+	</div>
+	<div id="anime-spacer" class="shrinked"></div>
+	<div id="content-wrapper-bg">
+		<div id="content-wrapper">
+			<div id="content"><pre><code class="language-Mathematica"><span class="hljs-comment">(* 使共轭的导数等于导数的共轭 *)</span>
 <span class="hljs-variable">excluded</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;ExcludedFunctions&quot;</span> <span class="hljs-operator">/.</span>
    <span class="hljs-punctuation">(</span><span class="hljs-string">&quot;DifferentiationOptions&quot;</span> <span class="hljs-operator">/.</span> 
      <span class="hljs-built_in">SystemOptions</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;DifferentiationOptions&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">)</span><span class="hljs-operator">;</span>
@@ -64,16 +59,16 @@
 <p>Reference:</p>
 <p><a href="https://mathematica.stackexchange.com/questions/91356/derivative-of-conjugate-multivariate-function">Carl Woll at mathematica.stackexchange.com</a></p>
 </div>
-        <div id="footnote"></div>
-      </div>
-      <div class="bottom-button">
-        <button onclick="scrollToTop()" title="滚动到顶部">
-          <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-        </button>
-      </div>
-    </div>
-    <script src="/script.js"></script>
-    
+			<div id="footnote"></div>
+		</div>
+		<div class="bottom-button">
+			<button onclick="scrollToTop()" title="滚动到顶部">
+				<img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+			</button>
+		</div>
+	</div>
+	<script src="/script.js"></script>
+	
 <script>
 document.querySelectorAll('pre').forEach(pre => {
   const btn = document.createElement('button');
@@ -99,5 +94,6 @@ document.querySelectorAll('pre').forEach(pre => {
 });
 </script>
 
-  </body>
+</body>
+
 </html>

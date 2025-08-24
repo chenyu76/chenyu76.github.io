@@ -1,316 +1,480 @@
-// 返回一个开口向右的抛物线函数,函数输入是局部输入y,返回全局坐标[x,y]
-function parabola_right(start, a) {
-  return (y) => [a * y * y + start[0], -y + start[1]];
-}
-function parabola_right_derivative(a) {
-  let two_a = 2 * a;
-  return (y) => two_a * y;
-}
-
-function homogeneous_cantilever_beam(start, k, L, EI, q = 1) {
-  let q_over_24EI = q / (24 * EI);
-  let four_L = L * 4;
-  let six_L_square = L * L * 6;
-  return (x) => [
-    start[0] + x,
-    start[1] +
-      x * x * q_over_24EI * (x * x - four_L * x + six_L_square) +
-      k * x,
-  ];
-}
-
-// 在给定的画布ctx上，画一条芦苇，返回这个ctx
-// start: 起始点坐标[x, y]
-function draw_pampas_grass(start, ctx, p_color, pgd) {
-  // 来自 sky_element.js 的随机生成函数randomNormal
-  const length = Math.round(randomNormal(pgd[0], pgd[1])); // 苇草长度
-  const bent = ((i) => (i > 0 ? i : pgd[2]))(randomNormal(pgd[2], pgd[3])); // 苇草弯曲度
-  const branch_start = Math.round(length * randomNormal(pgd[4], pgd[5])); // 苇草分支起始位置
-
-  start[1] += length * Math.random(0.1); // 苇草起始位置偏移
-
-  let f = parabola_right(start, bent); // 苇草主干
-  let df = parabola_right_derivative(bent);
-
-  let draw_branch = (base_branch_length, color, precent = 1) => {
-    ctx.fillStyle = color;
-    for (let y = branch_start; y < length; y++) {
-      if (precent != 1 && Math.random() > precent) continue;
-      let branch_length = Math.round(
-        randomNormal(base_branch_length, base_branch_length / 2),
-      );
-      let g = homogeneous_cantilever_beam(
-        f(y),
-        df(y) - randomNormal(pgd[6], pgd[7]), // 苇草分支起始斜率
-        base_branch_length, // 苇草分支长度
-        randomNormal(pgd[8], pgd[9]), // 苇草分支弯曲度
-      );
-      for (let x = 0; x < branch_length; x++)
-        ctx.fillRect(...g(x).map((i) => Math.floor(i)), 1, 1);
-    }
-  };
-  draw_branch(pgd[10], p_color[0], pgd[11]);
-  draw_branch(pgd[12], p_color[1], pgd[13]);
-  draw_branch(pgd[14], p_color[2], pgd[15]);
-
-  ctx.fillStyle = p_color[2];
-  for (let y = 0; y < length; y++)
-    ctx.fillRect(...f(y).map((i) => Math.floor(i)), 1, 1);
-
-  return ctx;
-}
-
-function draw_pampas_grasses(
-  width,
-  height,
-  num,
-  pixelSize,
-  color_multiplyer = "#FFFFFF",
-  scale = 1,
-) {
-  const pampas_canvas = document.createElement("canvas");
-  pampas_canvas.style.position = "absolute";
-  pampas_canvas.width = width;
-  pampas_canvas.height = height;
-  pampas_canvas.style.right = "0px";
-  pampas_canvas.style.zoom = pixelSize;
-  const ctx = pampas_canvas.getContext("2d");
-  ctx.imageSmoothingEnabled = false; // 禁用抗锯齿
-
-  let adjusted_color = get_adjusted_color(color_multiplyer);
-
-  const pgd_scale_factor = [
-    1, 1, -1.25, -1.25, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  ].map((v) => Math.pow(scale, v));
-  const pgd = [
-    50, 10, 0.0045, 0.002, 0.5, 0.1, 2, 0.2, 200, 50, 10, 1, 5, 0.8, 2, 0.4,
-  ].map((v, i) => v * pgd_scale_factor[i]); // 生成参数，缩放比例scale
-
-  for (let i = 0; i < num; i++)
-    draw_pampas_grass(
-      [Math.round(Math.random() * width), height],
-      ctx,
-      adjusted_color,
-      pgd,
-    );
-
-  return pampas_canvas;
-}
-
-function get_adjusted_color(color_multiplyer = "#FFFFFF") {
-  //const pampas_color = ["#D7D1BA", "#A89268", "#426C13"];
-  //const pampas_color = ["#E1D6AB", "#B5AF9F", "#6B6A54"];
-  const pampas_color = ["#F5F1E8", "#DCCBB2", "#B9A99A"];
-
-  //来自主脚本的颜色
-  const light_color = interpolate_time_color(currentHour, lightColorDict);
-  // 光线影响
-  return pampas_color.map((color) =>
-    rgb2hex(
-      ...colorMultiply(
-        colorMultiply(hex2rgb(color), light_color),
-        hex2rgb(color_multiplyer),
-      ),
-    ),
-  );
-}
-
-function draw_background_land(w, h, pixelSize) {
-  const canvas = document.createElement("canvas");
-  canvas.style.position = "absolute";
-  canvas.width = w;
-  canvas.height = h;
-  canvas.style.right = "0px";
-  canvas.style.zoom = pixelSize;
-  // Canvas2D: Multiple readback operations using getImageData
-  // are faster with the willReadFrequently attribute set to true.
-  const ctx = canvas.getContext("2d", { willReadFrequently: true });
-  ctx.imageSmoothingEnabled = false;
-
-  const mountain_colors = ["#5F7E8C", "#6C91C2", "#D0E2EE"];
-  const land_color = [
-    ...get_adjusted_color(),
-    ...mountain_colors.map((c) =>
-      rgb2hex(
-        ...colorMultiply(
-          hex2rgb(c),
-          interpolate_time_color(currentHour, lightColorDict),
-        ),
-      ),
-    ),
-  ];
-
-  for (let i = 2; i >= 0; i--) {
-    for (let j = 0; j < 2; j++) {
-      let mh = Math.round(h * (Math.random() * 0.01 + 0.02)) * (1 / (i + 1));
-      let mw = Math.round(w * (Math.random() * 0.5 + 0.2));
-      let x = Math.round(Math.random() * (w - mw));
-      draw_mountain(ctx, land_color[3 + i], x, h - 35 - mh, mw, mh, 0.5, 3, "#EEEEEE");
-    }
+/**
+ * 一个可设置种子的伪随机数生成器类。
+ * 使用 Mulberry32 算法，这是一个快速、简单且具有不错统计特性的 32 位 PRNG。
+ */
+class SeededRandom {
+  /**
+   * 创建一个随机数生成器实例。
+   * @param {number} [seed] - 初始种子。如果未提供，将使用当前时间戳。
+   */
+  constructor(seed) {
+    // 如果没有提供种子，则使用当前时间戳作为默认种子
+    this.seed = seed === undefined ? Date.now() : seed;
+    // 初始化内部状态 a
+    this.a = this.seed;
   }
 
-  // 定义条带位置（从底部向上计算）
-  const bands = [
-    { height: 5, color: land_color[0], y: h - 5 }, // 底部条带
-    { height: 10, color: land_color[1], y: h - 15 }, // 中间条带
-    { height: 15, color: land_color[2], y: h - 30 }, // 顶部条带
-    { height: 5, color: land_color[3], y: h - 35 }, // 山脉过渡
-  ];
+  /**
+   * 生成下一个伪随机数（0 到 1 之间的浮点数，不包括 1）。
+   * @returns {number} 一个在 [0, 1) 区间的浮点数。
+   */
+  uniform() {
+    // Mulberry32 算法核心
+    // 这是一系列位操作，旨在以一种确定性但看似随机的方式搅乱数字
+    let t = this.a += 0x6D2B79F5;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    // 最终结果经过 XOR 和右移操作，然后除以 2^32，将其映射到 [0, 1) 区间
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  }
 
-  // 绘制纯色条带（无过渡部分）
-  bands.forEach((band) => {
-    ctx.fillStyle = band.color;
-    ctx.fillRect(0, band.y, w, band.height);
-  });
+  // 生成一个符合正态分布的随机数，使用 Box-Muller 变换
+  normal(mean = 0, stdDev = 1) {
+    let u1 = this.uniform();
+    let u2 = this.uniform();
+    let z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+    return z0 * stdDev + mean;
+  }
 
-  // 在条带之间添加噪声过渡
-  addNoiseTransition(ctx, bands, w, h);
-
-  return canvas;
+  setSeed(newSeed) {
+    this.seed = newSeed;
+    this.a = this.seed;
+  }
 }
 
-// 添加噪声过渡函数
-function addNoiseTransition(ctx, bands, w, _h) {
-  // 过渡参数
-  const transitionWidth = 4; // 过渡区域宽度
-  const noiseAmplitude = 0.8; // 噪声强度
-  const noiseScale = 0.05; // 噪声缩放比例
-  const noiseStep = 2; // 噪声过渡数量
+class Grass {
+  constructor(pixelSize) {
+    this.pixelSize = pixelSize; // canvas的CSS zoom大小
 
-  // 在条带之间创建过渡
-  for (let i = 0; i < bands.length - 1; i++) {
-    const topBand = bands[i + 1]; // 上方的条带
-    const bottomBand = bands[i]; // 下方的条带
-    const transitionY = bottomBand.y; // 过渡开始位置
+    this.rng = new SeededRandom();
 
-    // 创建过渡区域图像数据
-    const imageData = ctx.getImageData(
-      0,
-      transitionY - transitionWidth,
-      w,
-      transitionWidth,
-    );
-    const data = imageData.data;
+    // this.xCapability = 200; // x方向容量
+    // this.yCapability = 30; // y方向容量
+    this.animationFrameId = null; // 动画帧ID
+    this.initialCanvasIndex = 2;  // 初始帧在离屏canvas数组中的索引
+    this.totalCanvasCount = 10;   // 离屏canvas总数
+    /**
+     * 蒲苇数据
+     * @type {Array[Object{
+     *   x: number,                 在父容器中的x位置，right定位
+     *   y: number,                 在父容器中的y位置
+     *   scale: number,             缩放比例
+     *   rngSeed: number,           随机数生成器种子
+     *   x3D: number,               在三维空间中的x坐标（0, 1）,
+     *                              我希望风从左到右所以0是左边
+     *   colorMultiplyer : string,  颜色乘色器
+     *   nowCanvasIndex: number,    当前显示的canvas在离屏canvas数组中的索引
+     *   bent: number,              当前蒲苇的弯曲度
+     *   bentSpeed: number,         蒲苇弯曲度变化速度
+     *   canvasImgOnScreen: HTMLCanvasElement  在屏幕上的canvas
+     *   canvasesOffScreenURL: Array[string] 离屏canvas调用toDataURL()构成的数组
+     * }]}
+     */
+    this.data = [];
 
-    // 处理每个像素
-    for (let y = 0; y < transitionWidth; y++) {
-      const globalY = transitionY - transitionWidth + y;
-      for (let x = 0; x < w; x++) {
-        // 计算基础混合权重（0到1之间）
-        const baseWeight = y / transitionWidth;
+    // 当前的风，每一个都是由 create_wind_function 生成的
+    // 二元函数和结束时间点组成的object
+    this.winds = [];
 
-        // 生成噪声值（-0.5到0.5之间）
-        const noise =
-          (fractalNoise(x, globalY, noiseScale) - 0.5) * noiseAmplitude;
+    // 蒲苇的抗风回弹能力
+    this.antiBend = 0.3;
 
-        // 应用噪声扰动
-        const noisyWeight =
-          Math.round(Math.max(0, Math.min(1, baseWeight + noise)) * noiseStep) /
-          noiseStep;
+    // 将三维空间中最远处的蒲苇的距离视为1,
+    // 最近的蒲苇的距离
+    this.grass3DDistanceMin = 0.2;
 
-        // 混合颜色
-        const idx = (y * w + x) * 4;
-        const c1 = hex2rgb(topBand.color);
-        const c2 = hex2rgb(bottomBand.color);
-        for (let c = 0; c < 3; c++)
-          data[idx + c] = Math.round(
-            c1[c] * (1 - noisyWeight) + c2[c] * noisyWeight,
-          );
+    this.lastWindCreateTime = 0; // 上一次创建风的时间戳
+    this.nextWindCreateInterval =
+        this.rng.normal(4000, 500); // 下一次创建风的时间间隔
+    this.lastAnimationTime = 0;     // 上一次动画帧的时间戳
 
-        data[idx + 3] = 255; // Alpha通道
+    this.pgd_scale_factor = [
+      1,
+      1,
+      -1.25,
+      -1.25,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+    ];
+    this.pgd = [
+      50,
+      15,
+      0.0045,
+      0.002,
+      0.5,
+      0.1,
+      2,
+      0.2,
+      200,
+      50,
+      10,
+      1,
+      5,
+      0.8,
+      2,
+      0.4,
+    ];
+  }
+
+  // 返回一个开口向右的抛物线函数,函数输入是局部输入y,返回全局坐标[x,y]
+  #parabola_right(start, a) {
+    return (y) => [a * y * y + start[0], -y + start[1]];
+  }
+  #parabola_right_derivative(a) {
+    let two_a = 2 * a;
+    return (y) => two_a * y;
+  }
+
+  #homogeneous_cantilever_beam(start, k, L, EI, q = 1) {
+    let q_over_24EI = q / (24 * EI);
+    let four_L = L * 4;
+    let six_L_square = L * L * 6;
+    return (x) => [start[0] + x,
+                   start[1] +
+                       x * x * q_over_24EI *
+                           (x * x - four_L * x + six_L_square) +
+                       k * x,
+    ];
+  }
+
+  /*
+   * 在给定的画布ctx上，画一条芦苇，返回这个ctx
+   * start: 起始点坐标[x, y]
+   * ctx: 画布上下文
+   * p_color: 颜色数组，包含三种颜色
+   * pgd: 参数数组，包含芦苇的各种参数
+   * rng_seed: 随机数生成器的种子，默认为随机
+   * wind_affect: 风的影响程度，默认为1
+   */
+  #draw_pampas_grass(start, ctx, p_color, pgd,
+                     rng_seed = Math.random() * 528491, wind_affect = 1) {
+    this.rng.setSeed(rng_seed);
+    const length = Math.round(this.rng.normal(pgd[0], pgd[1])); // 苇草长度
+    const bent =
+        ((i) => (i > 0 ? i : pgd[2]))(this.rng.normal(pgd[2], pgd[3])) *
+        wind_affect; // 苇草弯曲度
+    const branch_start = Math.round(
+        length * this.rng.normal(pgd[4], pgd[5])); // 苇草分支起始位置
+
+    // start[1] += length * rng.uniform(); // 苇草起始位置偏移
+
+    let f = this.#parabola_right(start, bent); // 苇草主干
+    let df = this.#parabola_right_derivative(bent);
+
+    let draw_branch = (color, base_branch_length, precent = 1) => {
+      ctx.fillStyle = color;
+      for (let y = branch_start; y < length * precent; y++) {
+        let branch_length = Math.round(
+            this.rng.normal(base_branch_length, base_branch_length / 2),
+        );
+        let g = this.#homogeneous_cantilever_beam(
+            f(y),
+            df(y) - this.rng.normal(pgd[6], pgd[7]), // 苇草分支起始斜率
+            base_branch_length,                      // 苇草分支长度
+            this.rng.normal(pgd[8], pgd[9]),         // 苇草分支弯曲度
+        );
+        for (let x = 0; x < branch_length; x++)
+          ctx.fillRect(...g(x).map(Math.floor), 1, 1);
+      }
+    };
+    draw_branch(p_color[0], pgd[10], pgd[11]);
+    draw_branch(p_color[1], pgd[12], pgd[13]);
+    draw_branch(p_color[2], pgd[14], pgd[15]);
+
+    ctx.fillStyle = p_color[2];
+    for (let y = 0; y < length; y++)
+      ctx.fillRect(...f(y).map(Math.floor), 1, 1);
+
+    return ctx;
+  }
+
+  /**
+   * 开始移动蒲苇元素的动画
+   */
+  start_move_element_animation() {
+    if (this.animationFrameId !== null)
+      cancelAnimationFrame(this.animationFrameId);
+    this.lastAnimationTime = performance.now();
+    this.animationFrameId = requestAnimationFrame(
+        (timestamp) => this.moveElementAnimation(timestamp));
+  }
+  /**
+   * 移动蒲苇元素的动画
+   */
+  moveElementAnimation(timestamp) {
+
+    // 过滤掉已经结束的风
+    this.winds = this.winds.filter(wind => timestamp <= wind.t);
+    // 创建新风
+    if (timestamp - this.lastWindCreateTime > this.nextWindCreateInterval) {
+      this.winds.push(this.#create_wind_function(timestamp));
+      this.nextWindCreateInterval = this.rng.normal(2000, 500);
+      this.lastWindCreateTime = timestamp;
+    }
+
+    // 间隔太久就直接更新lastAnimationTime，避免风力过大
+    let deltaT = timestamp - this.lastAnimationTime;
+    if (deltaT > 200) {
+      deltaT = 200;
+    }
+    const deltaT_s = deltaT / 1000;
+
+    for (let d of this.data) {
+      // 计算蒲苇当前受到的风力
+      let total_wind_force = 0;
+      for (let wind of this.winds) {
+        total_wind_force += wind.f(d.x3D, timestamp);
+      }
+
+      // 根据风力调整蒲苇的弯曲度
+      d.bentSpeed += total_wind_force * deltaT_s;
+      // 蒲苇越弯，受到的恢复力越大
+      d.bentSpeed -= d.bent * this.antiBend * deltaT_s;
+      // 阻尼，防止一直摆动
+      d.bentSpeed *= 0.999;
+      d.bent += d.bentSpeed * deltaT_s;
+
+      // 更新蒲苇显示的canvas
+      let newCanvasIndex = Math.min(
+          Math.max(Math.round(this.initialCanvasIndex + d.bent * 5), 0),
+          this.totalCanvasCount - 1);
+      if (newCanvasIndex !== d.nowCanvasIndex) {
+        d.nowCanvasIndex = newCanvasIndex;
+        d.canvasImgOnScreen.src = d.canvasesOffScreenURL[d.nowCanvasIndex];
       }
     }
-
-    // 将处理后的图像数据放回canvas
-    ctx.putImageData(imageData, 0, transitionY - transitionWidth);
+    this.lastAnimationTime = timestamp;
+    this.animationFrameId = requestAnimationFrame(
+        (timestamp) => this.moveElementAnimation(timestamp));
+    return;
   }
-}
+  /**
+   * 返回一个随机一阵风二元函数object
+   * 参数：t_offset - 风开始的时间偏移（基于当前时间戳）
+   * return:
+   *   {f: function(x,t)，t: number 可以删除这个风的时间点}
+   *     f(x,t): 在x位置，t时刻的风力值 x∈[0,1], t∈[0,∞)
+   *             t → ∞, f(x, t) → 0
+   *             大小尽量控制在[0, 1]之间
+   * 时间都是毫秒
+   */
+  #create_wind_function(t_offset = 0) {
+    const w = this.rng.normal(0.6, 0.2);        // 风宽度
+    const h = this.rng.normal(0.3, 0.05);       // 风高度
+    const v = this.rng.normal(0.0005, 0.00006); // 风速度
+    return {
+      f: (x, t) => {
+        const y = v * (t - t_offset) - x;
+        if (y <= 0)
+          return 0;
+        else if (y < w)
+          return h * (y / w);
+        else if (y < 2 * w)
+          return h * (2 - y / w);
+        else
+          return 0;
+      }, t: t_offset + (2 * w + 1) / v
+    }
+  }
+  /**
+   * 计算离屏canvas，动画的不同帧
+   * 这个挺耗时，需要在主线程之外运行
+   */
+  compute_offscreen_canvases() {
+    // 在初始位置时是1, 递增
+    // 线性的应该够用
+    const windAffect = (i) =>
+        (i - this.initialCanvasIndex) / this.totalCanvasCount * 1 + 1;
+    // 计算不同帧
+    for (let d of this.data) {
+      // const initalCanvas = document.createElement("canvas");
+      // initalCanvas.width = d.canvasImgOnScreen.width;
+      // initalCanvas.height = d.canvasImgOnScreen.height;
+      // const ctx = initalCanvas.getContext("2d");
+      // ctx.imageSmoothingEnabled = false;
+      // ctx.drawImage(d.canvasImgOnScreen, 0, 0);
+      const initalCanvasSrc =
+          JSON.parse(JSON.stringify(d.canvasImgOnScreen.src));
 
-// 简单分形噪声生成器
-function fractalNoise(x, y, scale, octaves = 3, persistence = 0.5) {
-  let value = 0;
-  let amplitude = 1;
-  let maxValue = 0;
+      for (let i = 0; i < this.initialCanvasIndex; i++)
+        d.canvasesOffScreenURL.push(
+            this.#create_single_pampas_grass_canvas(d.x, d.y, d.scale,
+                                                    d.colorMultiplyer,
+                                                    d.rngSeed, windAffect(i))
+                .toDataURL());
+      d.canvasesOffScreenURL.push(initalCanvasSrc);
+      for (let i = this.initialCanvasIndex + 1; i < this.totalCanvasCount; i++)
+        d.canvasesOffScreenURL.push(
+            this.#create_single_pampas_grass_canvas(d.x, d.y, d.scale,
+                                                    d.colorMultiplyer,
+                                                    d.rngSeed, windAffect(i))
+                .toDataURL());
+    }
 
-  for (let i = 0; i < octaves; i++) {
-    value += simpleNoise(x * scale, y * scale) * amplitude;
-    maxValue += amplitude;
-    amplitude *= persistence;
-    scale *= 2;
+    // 计算三维坐标x3D
+    let maxX = -Infinity;
+    let minX = Infinity;
+    let maxY = -Infinity;
+    let minY = Infinity;
+    for (let d of this.data) {
+      if (d.x < minX)
+        minX = d.x;
+      if (d.x > maxX)
+        maxX = d.x;
+      if (d.y < minY)
+        minY = d.y;
+      if (d.y > maxY)
+        maxY = d.y;
+    }
+    for (let d of this.data) {
+      const w = ((d.y - minY) + (maxY - d.y) * this.grass3DDistanceMin) /
+                (maxY - minY);
+      const x3D = (1 - w) / 3 + w * (maxX - d.x) / (maxX - minX);
+      // 上面的数字改成别的数可以让风看起来从别的方向吹来
+      d.x3D = x3D;
+    }
+  }
+  /**
+   * 注册一个包含单株蒲苇的canvas到全局变量this.data中，
+   * 供后续计算其他帧使用。
+   * 返回一个包含蒲苇的canvas元素。
+   */
+  register_single_pampas_grass_canvas(x, y, scale = 1,
+                                      color_multiplyer = "#FFFFFF") {
+    const rngSeed = Math.floor(Math.random() * 528491);
+    const canvas = this.#create_single_pampas_grass_canvas(
+        x, y, scale, color_multiplyer, rngSeed, 1);
+
+    const img = document.createElement("img");
+    img.src = canvas.toDataURL("image/png");
+    img.style.position = "absolute";
+    img.style.right = `${x - canvas.width}px`;
+    img.style.top = `${y - canvas.height}px`;
+    img.style.zoom = this.pixelSize;
+    // 禁用抗锯齿, css 属性定义在 style.css 中
+    img.classList.add('no-anti-aliasing');
+
+    this.data.push({
+      x : x,
+      y : y,
+      x3D : 0,       // 在compute_offscreen_canvases中计算
+      bent : 0,      // 每帧计算
+      bentSpeed : 0, // 每帧计算
+      scale : scale,
+      colorMultiplyer : color_multiplyer,
+      nowCanvasIndex : this.initialCanvasIndex,
+      rngSeed : rngSeed,
+      canvasImgOnScreen : img,
+      canvasesOffScreenURL : []
+    });
+    return img;
+  }
+  /**
+   * 创建一个包含单株蒲苇的、尺寸大致合适的独立canvas。
+   * @param {number} x - canvas在父容器中的right定位值。
+   * @param {number} y - canvas在父容器中的top定位值。
+   * @param {number} scale - 蒲苇的缩放比例。
+   * @param {string} [color_multiplyer="#FFFFFF"] - 用于生成蒲苇颜色的基础色。
+   * @returns {HTMLCanvasElement} -
+   * 返回一个绝对定位的、包含蒲苇的canvas元素。
+   */
+  #create_single_pampas_grass_canvas(x, y, scale = 1,
+                                     color_multiplyer = "#FFFFFF",
+                                     rng_seed = Math.random(),
+                                     wind_affect = 1) {
+    // 1. 根据缩放比例计算蒲苇的参数
+    const pgd = Array.from({length : this.pgd.length},
+                           (_, i) => this.pgd[i] *
+                                     Math.pow(scale, this.pgd_scale_factor[i]));
+    const adjusted_color = Grass.get_adjusted_color(color_multiplyer);
+
+    // 2. 创建一个足够大的画布来绘制蒲苇，避免图像被裁剪
+    //    尺寸可以基于主要长度参数进行估算，并增加一些余量
+    const canvasWidth = Math.ceil(pgd[0] * scale * 2 + pgd[10] * scale * 2);
+    const canvasHeight = Math.ceil(pgd[0] * scale * 1.5);
+    const canvas = document.createElement("canvas");
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.imageSmoothingEnabled = false;
+
+    // 3. 在画布的特定位置开始绘制，确保蒲苇完整绘制在画布内
+    //    起始点选在左下角区域
+    const startPosition = [ 2, canvasHeight + 1 ];
+    this.#draw_pampas_grass(startPosition, ctx, adjusted_color, pgd, rng_seed,
+                            wind_affect);
+
+    // 4. 设置最终canvas的样式
+    canvas.style.position = "absolute";
+    canvas.style.right = `${x - canvasWidth}px`;
+    canvas.style.top = `${y - canvasHeight}px`;
+    canvas.style.zoom = this.pixelSize;
+
+    // 5. 返回配置好的canvas
+    return canvas;
   }
 
-  return value / maxValue;
-}
+  draw_pampas_grasses(
+      width,
+      height,
+      num,
+      pixelSize,
+      color_multiplyer = "#FFFFFF",
+      scale = 1,
+  ) {
+    const pampas_canvas = document.createElement("canvas");
+    pampas_canvas.style.position = "absolute";
+    pampas_canvas.width = width;
+    pampas_canvas.height = height;
+    pampas_canvas.style.right = "0px";
+    pampas_canvas.style.zoom = pixelSize;
+    const ctx = pampas_canvas.getContext("2d");
+    ctx.imageSmoothingEnabled = false; // 禁用抗锯齿
 
-// 简单噪声函数（基于三角函数）
-function simpleNoise(x, y) {
-  const n = Math.sin(x * 12.3737 + y * 78.114514) * 424242.4242;
-  return n - Math.floor(n);
-}
+    const adjusted_color = Grass.get_adjusted_color(color_multiplyer);
 
-function draw_mountain(
-  ctx,
-  color = "#AAAAAA",
-  x = 0,
-  y = 0,
-  w = 0,
-  h = 0,
-  roughness = 0.5,
-  iterations = 2,
-  shading = "#EEEEEE",
-) {
-  // 生成山脉点
-  const p = generate_mountain_points(w, h, roughness, iterations);
+    // 生成参数，缩放比例scale
+    const pgd = Array.from({length : this.pgd.length},
+                           (_, i) => this.pgd[i] *
+                                     Math.pow(scale, this.pgd_scale_factor[i]));
 
-  for (let i = 0; i < p.length - 1; i++) {
-    for (xi = p[i].x + x; xi < p[i + 1].x + x; xi++) {
-      let yi = Math.floor(
-        ((p[i + 1].y - p[i].y) / (p[i + 1].x - p[i].x)) * (xi - p[i].x - x) +
-          p[i].y +
-          y,
+    for (let i = 0; i < num; i++)
+      this.#draw_pampas_grass(
+          [ Math.round(Math.random() * width), height ],
+          ctx,
+          adjusted_color,
+          pgd,
       );
-      ctx.fillStyle = color;
-      ctx.fillRect(xi, yi, 1, y + h - yi);
-      ctx.fillStyle = rgb2hex(...colorMultiply(hex2rgb(color), hex2rgb(shading)));
-      let yi2 = Math.round(h + y - Math.sqrt(h+ y - yi));
-      ctx.fillRect(xi, yi2, 1, y + h - yi2);
-    }
+
+    return pampas_canvas;
   }
-}
+  // 获取根据天空的光线调整后的颜色
+  // color_multiplyer: 用于调整颜色的乘色器，默认为白色（不改变颜色）
+  static get_adjusted_color(color_multiplyer = "#FFFFFF") {
+    // const pampas_color = ["#D7D1BA", "#A89268", "#426C13"];
+    // const pampas_color = ["#E1D6AB", "#B5AF9F", "#6B6A54"];
+    const pampas_color = [ "#F5F1E8", "#DCCBB2", "#B9A99A" ];
 
-// 生成山脉点的函数（中点位移算法）
-function generate_mountain_points(w, h, roughness, iterations) {
-  // 设置点数组
-  let points = [
-    { x: 0, y: h },
-    { x: w / 2, y: h * 0.2 },
-    { x: w, y: h },
-  ];
-
-  // 迭代生成山脉点
-  for (let i = 0; i < iterations; i++) {
-    const newPoints = [points[0]];
-    const displacement = (w / 20) * Math.pow(roughness, i);
-
-    for (let j = 0; j < points.length - 1; j++) {
-      const left = points[j];
-      const right = points[j + 1];
-
-      // 计算中点
-      const midX = (left.x + right.x) / 2;
-      const midY = (left.y + right.y) / 2;
-
-      // 添加随机位移
-      const newY = midY + (Math.random() * 2 - 1) * displacement;
-
-      newPoints.push({ x: midX, y: newY });
-      newPoints.push(right);
-    }
-
-    points = newPoints;
+    // 来自主脚本的颜色
+    const light_color = interpolate_time_color(currentHour, lightColorDict);
+    // 光线影响
+    return pampas_color.map(
+        (color) => rgb2hex(
+            ...colorMultiply(
+                colorMultiply(hex2rgb(color), light_color),
+                hex2rgb(color_multiplyer),
+                ),
+            ),
+    );
   }
-  return points.map((point) => ({
-    x: Math.round(point.x),
-    y: Math.round(point.y),
-  }));
 }

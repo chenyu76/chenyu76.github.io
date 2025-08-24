@@ -1,6 +1,77 @@
 // 定义常量
-const GRID_HEIGHT = 180; // 网格高度（像素单位）
+const GRID_HEIGHT = 180;         // 网格高度（像素单位）
 const RECT_WIDTH_MULTIPLIER = 2; // 矩形宽度倍数
+
+// sky预定义颜色列表,
+// hsv，每个列表对应一个时间：颜色（三个列表颜色是高空到地面）
+const skyColorDict = [
+  // 第一层（高空）
+  {
+    // 午夜到凌晨
+    0 : [ 220, 0.9, 0.05 ],  // 深夜：几乎接近黑
+    4 : [ 220, 0.8, 0.1 ],   // 黎明前：稍微亮一点
+                             // 日出过程
+    6 : [ 210, 0.6, 0.4 ],   // 日出前后：深蓝中带些亮度
+    8 : [ 200, 0.5, 0.7 ],   // 清晨：已逐渐变亮
+                             // 正午
+    12 : [ 200, 0.3, 1.0 ],  // 正午：非常明亮的蓝
+                             // 下午
+    16 : [ 210, 0.4, 0.85 ], // 下午：稍微减弱饱和度，偏柔和
+                             // 黄昏至傍晚
+    17.5 : [ 210, 0.5, 0.87 ],
+    18 : [ 25, 0.7, 0.9 ], // 黄昏：偏暖橙色调
+    19 : [ 300, 0.5, 0.5 ],
+    20 : [ 280, 0.6, 0.4 ],  // 傍晚转夜：天空逐渐带点紫调
+                             // 深夜
+    22 : [ 220, 0.8, 0.1 ],  // 夜晚：逐渐变暗
+    24 : [ 220, 0.9, 0.05 ], // 回到深夜
+  },
+  // 第二层（中空）
+  {
+    0 : [ 220, 0.8, 0.08 ],
+    4 : [ 220, 0.7, 0.15 ],
+    6 : [ 210, 0.5, 0.45 ],
+    8 : [ 200, 0.4, 0.75 ],
+    12 : [ 190, 0.25, 1.0 ],
+    16 : [ 200, 0.35, 0.9 ],
+    17.5 : [ 220, 0.35, 0.9 ],
+    18 : [ 30, 0.6, 0.95 ],
+    19 : [ 290, 0.5, 0.45 ],
+    20 : [ 280, 0.5, 0.55 ],
+    22 : [ 220, 0.7, 0.15 ],
+    24 : [ 220, 0.8, 0.08 ],
+  },
+  // 第三层（近地面）
+  {
+    0 : [ 220, 0.7, 0.1 ],
+    4 : [ 220, 0.6, 0.2 ],
+    6 : [ 210, 0.4, 0.5 ],
+    8 : [ 190, 0.3, 0.8 ],
+    12 : [ 180, 0.2, 1.0 ],
+    16 : [ 190, 0.25, 0.95 ],
+    17.5 : [ 220, 0.4, 0.9 ],
+    18 : [ 35, 0.6, 0.9 ],
+    19 : [ 290, 0.5, 0.5 ],
+    20 : [ 280, 0.4, 0.6 ],
+    22 : [ 220, 0.6, 0.2 ],
+    24 : [ 220, 0.7, 0.1 ],
+  },
+];
+const lightColorDict = {
+  0 : [ 220, 0.35, 0.91 ],  // 深夜：冷色调、低亮度
+  5 : [ 210, 0.22, 0.93 ],  // 破晓：蓝调减少，亮度上升
+  6 : [ 200, 0.2, 0.94 ],   // 日出前：冷色微暖
+  7 : [ 190, 0.17, 0.955 ], // 日出：蓝黄过渡
+  8 : [ 180, 0.15, 0.97 ],  // 早晨：中性色
+  9 : [ 160, 0.12, 0.98 ],  // 太阳升高：冷色减少
+  11 : [ 120, 0.07, 0.99 ], // 接近正午：接近白光
+  12 : [ 100, 0.05, 1.0 ],  // 正午：最亮、接近白光
+  17 : [ 180, 0.15, 0.97 ], // 太阳开始变暖
+  18 : [ 35, 0.15, 0.96 ],  // 夕阳开始
+  19 : [ 200, 0.2, 0.94 ],  // 夕阳开始
+  21 : [ 220, 0.3, 0.93 ],  // 变冷，亮度降低
+  24 : [ 220, 0.35, 0.91 ], // 回到深夜
+};
 
 var is_first_img_init = true;
 var pixelSize;
@@ -10,17 +81,18 @@ var isNight = false;
 // https://stackoverflow.com/questions/8022885/rgb-to-hsv-color-in-javascript
 // input: r,g,b in [0,1], out: h in [0,360) and s,v in [0,1]
 function rgb2hsv(r, g, b) {
-  let v = Math.max(r, g, b),
-    c = v - Math.min(r, g, b);
-  let h =
-    c && (v == r ? (g - b) / c : v == g ? 2 + (b - r) / c : 4 + (r - g) / c);
-  return [60 * (h < 0 ? h + 6 : h), v && c / v, v];
+  let v = Math.max(r, g, b), c = v - Math.min(r, g, b);
+  let h = c && (v == r   ? (g - b) / c
+                : v == g ? 2 + (b - r) / c
+                         : 4 + (r - g) / c);
+  return [ 60 * (h < 0 ? h + 6 : h), v && c / v, v ];
 }
-// input: h in [0,360] and s,v in [0,1] output rgb() color// - output: r,g,b in [0,1]
+// input: h in [0,360] and s,v in [0,1] output rgb() color// - output: r,g,b in
+// [0,1]
 function hsv2rgb(h, s, v) {
   let f = (n, k = (n + h / 60) % 6) =>
-    v - v * s * Math.max(Math.min(k, 4 - k, 1), 0);
-  return [f(5) * 255, f(3) * 255, f(1) * 255];
+      v - v * s * Math.max(Math.min(k, 4 - k, 1), 0);
+  return [ f(5) * 255, f(3) * 255, f(1) * 255 ];
 }
 
 // 将 #FFFFFF 形式的颜色转换为 [r, g, b] （0-255） 形式
@@ -33,90 +105,24 @@ function hex2rgb(hex) {
   let g = parseInt(hex.substring(2, 4), 16);
   let b = parseInt(hex.substring(4, 6), 16);
 
-  return [r, g, b];
+  return [ r, g, b ];
 }
 // 反过来
 function rgb2hex(r, g, b) {
-  return `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()}`;
+  return `#${
+      ((1 << 24) | (r << 16) | (g << 8) | b)
+          .toString(16)
+          .slice(1)
+          .toUpperCase()}`;
 }
 
 function getDecimalHour() {
   const now = new Date();
-  const hours = now.getHours(); // 获取当前小时 (0-23)
+  const hours = now.getHours();     // 获取当前小时 (0-23)
   const minutes = now.getMinutes(); // 获取当前分钟 (0-59)
 
   return hours + minutes / 60; // 转换为小时的小数
 }
-
-// sky预定义颜色列表, hsv，每个列表对应一个时间：颜色（三个列表颜色是高空到地面）
-const skyColorDict = [
-  // 第一层（高空）
-  {
-    // 午夜到凌晨
-    0: [220, 0.9, 0.05], // 深夜：几乎接近黑
-    4: [220, 0.8, 0.1], // 黎明前：稍微亮一点
-    // 日出过程
-    6: [210, 0.6, 0.4], // 日出前后：深蓝中带些亮度
-    8: [200, 0.5, 0.7], // 清晨：已逐渐变亮
-    // 正午
-    12: [200, 0.3, 1.0], // 正午：非常明亮的蓝
-    // 下午
-    16: [210, 0.4, 0.85], // 下午：稍微减弱饱和度，偏柔和
-    // 黄昏至傍晚
-    17.5: [210, 0.5, 0.87],
-    18: [25, 0.7, 0.9], // 黄昏：偏暖橙色调
-    19: [300, 0.5, 0.5],
-    20: [280, 0.6, 0.4], // 傍晚转夜：天空逐渐带点紫调
-    // 深夜
-    22: [220, 0.8, 0.1], // 夜晚：逐渐变暗
-    24: [220, 0.9, 0.05], // 回到深夜
-  },
-  // 第二层（中空）
-  {
-    0: [220, 0.8, 0.08],
-    4: [220, 0.7, 0.15],
-    6: [210, 0.5, 0.45],
-    8: [200, 0.4, 0.75],
-    12: [190, 0.25, 1.0],
-    16: [200, 0.35, 0.9],
-    17.5: [220, 0.35, 0.9],
-    18: [30, 0.6, 0.95],
-    19: [290, 0.5, 0.45],
-    20: [280, 0.5, 0.55],
-    22: [220, 0.7, 0.15],
-    24: [220, 0.8, 0.08],
-  },
-  // 第三层（近地面）
-  {
-    0: [220, 0.7, 0.1],
-    4: [220, 0.6, 0.2],
-    6: [210, 0.4, 0.5],
-    8: [190, 0.3, 0.8],
-    12: [180, 0.2, 1.0],
-    16: [190, 0.25, 0.95],
-    17.5: [220, 0.4, 0.9],
-    18: [35, 0.6, 0.9],
-    19: [290, 0.5, 0.5],
-    20: [280, 0.4, 0.6],
-    22: [220, 0.6, 0.2],
-    24: [220, 0.7, 0.1],
-  },
-];
-const lightColorDict = {
-  0: [220, 0.35, 0.91], // 深夜：冷色调、低亮度
-  5: [210, 0.22, 0.93], // 破晓：蓝调减少，亮度上升
-  6: [200, 0.2, 0.94], // 日出前：冷色微暖
-  7: [190, 0.17, 0.955], // 日出：蓝黄过渡
-  8: [180, 0.15, 0.97], // 早晨：中性色
-  9: [160, 0.12, 0.98], // 太阳升高：冷色减少
-  11: [120, 0.07, 0.99], // 接近正午：接近白光
-  12: [100, 0.05, 1.0], // 正午：最亮、接近白光
-  17: [180, 0.15, 0.97], // 太阳开始变暖
-  18: [35, 0.15, 0.96], // 夕阳开始
-  19: [200, 0.2, 0.94], // 夕阳开始
-  21: [220, 0.3, 0.93], // 变冷，亮度降低
-  24: [220, 0.35, 0.91], // 回到深夜
-};
 
 // params：时间（小时）
 // return: 颜色
@@ -129,12 +135,13 @@ function interpolate_time_color(hour, colorDict) {
   let lowerKey = Math.max(...keys.filter((k) => k <= hour));
   let upperKey = Math.min(...keys.filter((k) => k >= hour));
 
-  if (lowerKey === upperKey) return hsv2rgb(...colorDict[lowerKey]);
+  if (lowerKey === upperKey)
+    return hsv2rgb(...colorDict[lowerKey]);
 
   let interpolatedColors = interpolateHSV(
-    colorDict[lowerKey],
-    colorDict[upperKey],
-    (hour - lowerKey) / (upperKey - lowerKey),
+      colorDict[lowerKey],
+      colorDict[upperKey],
+      (hour - lowerKey) / (upperKey - lowerKey),
   );
 
   return hsv2rgb(...interpolatedColors);
@@ -145,18 +152,20 @@ function interpolateHSV(hsv1, hsv2, t) {
   let [h1, s1, v1] = hsv1;
   let [h2, s2, v2] = hsv2;
   if (Math.abs(h1 - h2) > 180) {
-    if (h1 > h2) h2 += 360;
-    else h1 += 360;
+    if (h1 > h2)
+      h2 += 360;
+    else
+      h1 += 360;
   }
   let h = (h1 + t * (h2 - h1)) % 360;
   let s = s1 + t * (s2 - s1);
   let v = v1 + t * (v2 - v1);
-  return [h, s, v];
+  return [ h, s, v ];
 }
 
 // 两个颜色相乘，
 // 输入输出：rgb [r,g,b] (0-255) 形式颜色
-function colorMultiply(c1 = [255, 255, 255], c2 = [255, 255, 255]) {
+function colorMultiply(c1 = [ 255, 255, 255 ], c2 = [ 255, 255, 255 ]) {
   return [
     Math.ceil((c1[0] * c2[0]) / 255),
     Math.ceil((c1[1] * c2[1]) / 255),
@@ -188,9 +197,7 @@ function createPixelMatrix(startX, startY, matrix) {
   const ctx = canvas.getContext("2d");
 
   var w = 0;
-  matrix[0].forEach((e) => {
-    w += Array.isArray(e) ? e[1] : 1;
-  });
+  matrix[0].forEach((e) => { w += Array.isArray(e) ? e[1] : 1; });
   canvas.width = w;
   canvas.height = matrix.length;
   canvas.style.position = "absolute";
@@ -203,12 +210,13 @@ function createPixelMatrix(startX, startY, matrix) {
     for (let i = 0; i < matrix[j].length; i++) {
       const light_color = interpolate_time_color(currentHour, lightColorDict);
       const color = Array.isArray(matrix[j][i])
-        ? [colorList[matrix[j][i][0]], matrix[j][i][1]]
-        : [colorList[matrix[j][i]], 1];
+                        ? [ colorList[matrix[j][i][0]], matrix[j][i][1] ]
+                        : [ colorList[matrix[j][i]], 1 ];
       // 光线影响
-      const adjustedColor = color[0].startsWith("#")
-        ? rgb2hex(...colorMultiply(hex2rgb(color[0]), light_color))
-        : color[0];
+      const adjustedColor =
+          color[0].startsWith("#")
+              ? rgb2hex(...colorMultiply(hex2rgb(color[0]), light_color))
+              : color[0];
       ctx.fillStyle = adjustedColor;
       ctx.fillRect(colIndex, j, color[1], 1);
       colIndex += color[1];
@@ -217,76 +225,21 @@ function createPixelMatrix(startX, startY, matrix) {
   return canvas;
 }
 
-
-function draw_background_sky(w, h, pixelSize) {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  const imageData = ctx.createImageData(w, h);
-
-  canvas.width = w;
-  canvas.height = h;
-  canvas.style.position = "absolute";
-  canvas.style.right = "0px";
-  canvas.style.top = `0px`;
-  canvas.style.zoom = pixelSize;
-
-  const y0 = (11 / 24) * h - (6 * w * w) / (5 * h);
-  const r1 = h / 2 - y0;
-  const r2 = (4 * h) / 5 - y0;
-  const sw = 10; // 渐变宽度
-  const pow = (x) => x * x;
-  const bgcolors = skyColorDict.map((colors) =>
-    interpolate_time_color(currentHour, colors),
-  );
-  const fill = (x, y, color_index) => {
-    const index = (y * w + x) * 4;
-    imageData.data[index] = bgcolors[color_index][0]; // R
-    imageData.data[index + 1] = bgcolors[color_index][1]; // G
-    imageData.data[index + 2] = bgcolors[color_index][2]; // B
-    imageData.data[index + 3] = 255; // A
-  };
-  const d2 = [
-    0,
-    r1 - 2 * sw,
-    r1 - sw,
-    r1,
-    r1 + sw,
-    r2 - 2 * sw,
-    r2 - sw,
-    r2,
-    r2 + sw,
-  ].map(pow);
-  const edges = Array.from({ length: d2.length + 1 }, (_, i) =>
-    i !== d2.length
-      ? Array.from({ length: h }, (_, y) =>
-          Math.max(
-            0,
-            Math.min(
-              w - 1,
-              Math.floor(
-                ((x) => (x > 0 ? Math.sqrt(x) : 0))(d2[i] - pow(y - y0)),
-              ),
-            ),
-          ),
-        )
-      : Array(h).fill(w - 1),
-  );
-
-  const typeF = [
-    (_, __) => false,
-    (x, y) => (x + y) % 4 === 0 || ((x + y) % 4 === 2 && x % 2 === 1),
-    (x, y) => (x + y) % 2 === 0,
-    (x, y) => !typeF[1](x, y),
-  ];
-  for (let y = 0; y < h; y++)
-    for (let i = 0; i < edges.length - 1; i++)
-      for (let x = edges[i][y]; x < edges[i + 1][y]; x++)
-        fill(x, y, Math.floor(i / 4) + (typeF[i % 4](x, y) ? 1 : 0));
-
-  ctx.putImageData(imageData, 0, 0);
-
-  return canvas;
+function randomNormal(mean = 0, stdDev = 1) {
+  let u1 = Math.random();
+  let u2 = Math.random();
+  let z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+  return z0 * stdDev + mean;
 }
+
+// 向量归一化
+function normalize(v) {
+  let len = Math.sqrt(v[0] ** 2 + v[1] ** 2 + v[2] ** 2);
+  return v.map((c) => c / len);
+}
+
+// 向量点积
+function dot(v1, v2) { return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2]; }
 
 // 初始化
 async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
@@ -306,14 +259,15 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   const bottom = Math.ceil(h / pixelSize);
   // 清空背景容器
   clearContainer(background);
-  if (is_first_img_init) clearContainer(midground);
+  if (is_first_img_init)
+    clearContainer(midground);
   clearContainer(foreground);
   background.style.height = `${h}px`;
   foreground.style.height = `${h}px`;
 
   // 计算三个背景颜色
-  bgcolors = skyColorDict.map((color) =>
-    rgb2hex(...interpolate_time_color(currentHour, color)),
+  bgcolors = skyColorDict.map(
+      (color) => rgb2hex(...interpolate_time_color(currentHour, color)),
   );
   // 设置背景宽度
   background.style.width = `${x * pixelSize}px`;
@@ -334,33 +288,36 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
       let ss = document.createElement("div");
       ss.style.right = ss.style.top = "0px";
       ss.style.position = "absolute";
-      for (let i = 0; i < 42; i++) ss.appendChild(createStar(h));
+      for (let i = 0; i < 42; i++)
+        ss.appendChild(createStar(h));
       midground.appendChild(ss);
 
       // 间隔生成流星
-      midground.appendChild(generateMeteor(h));
+      midground.appendChild(generateMeteor(x));
       if (is_first_img_init)
         setInterval(() => {
-          if (document.visibilityState !== "visible") return;
-          midground.appendChild(generateMeteor(h));
+          if (document.visibilityState !== "visible")
+            return;
+          midground.appendChild(generateMeteor(x));
         }, 7000);
     } else {
       // 白天就是云
-      for (let i = 0; i < Math.floor(Math.random() * 10) + 3; i++) {
+      for (let i = 0; i < Math.floor(Math.random() * 10) + 4; i++) {
         let cloud = generateClouds(
-          Math.round(Math.random() * x),
-          Math.round((Math.random() * GRID_HEIGHT) / 2),
+            Math.round(Math.random() * x),
+            Math.round((Math.random() * GRID_HEIGHT) / 3),
         );
         midground.appendChild(cloud);
       }
       // 每 42 秒生成一朵云
       if (is_first_img_init)
         setInterval(() => {
-          if (document.visibilityState !== "visible") return;
+          if (document.visibilityState !== "visible")
+            return;
           let cloud = generateClouds(
-            x + Math.round(Math.random() * 10),
-            -CLOUD_CANVAS_SIZE[1] +
-              Math.round((Math.random() * GRID_HEIGHT) / 2),
+              x + Math.round(Math.random() * 10),
+              -CLOUD_CANVAS_SIZE[1] +
+                  Math.round((Math.random() * GRID_HEIGHT) / 2),
           );
           midground.appendChild(cloud);
         }, 42000);
@@ -368,30 +325,32 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   }
 
   // From ./pampas_grass.js
-  foreground.appendChild(draw_background_land(x, bottom, pixelSize));
-  // 背景蒲苇
-  for (let i = 30; i > 0; i-=1) {
-    foreground.appendChild(
-      draw_pampas_grasses(
-        x,
-        bottom - i,
-        Math.ceil(x / (60 - i)),
-        pixelSize,
-        rgb2hex(...Array(3).fill(255 - i * 2)),
-        1 - i / 35
-      ),
-    );
+  var land = new Land();
+  foreground.appendChild(land.draw_background_land(x, bottom, pixelSize));
+  // 画草地 背景蒲苇
+  var grass = new Grass(pixelSize);
+  const edgeLow = 20;
+  for (let i = 30; i > -edgeLow + 2; i -= 1) {
+    for (let j = 0; j < Math.ceil(x / (160 - i)); j++) {
+      foreground.appendChild(grass.register_single_pampas_grass_canvas(
+          Math.round(Math.random() * x), bottom - i, 1 - (i + edgeLow) / 85,
+          rgb2hex(...Array(3).fill(255 - (i + edgeLow)))));
+    }
   }
   // 把天子放出来 (原图高96)
   foreground.appendChild(createPixelMatrix(0, bottom - 96, imgMatrix));
-  foreground.appendChild(
-    draw_pampas_grasses(x, bottom, Math.ceil(x / 18), pixelSize),
-  );
+  // 画草地 前景蒲苇
+  for (let i = edgeLow + 2; i > -edgeLow; i -= 1) {
+    for (let j = 0; j < Math.ceil(x / (160 - i)); j++) {
+      foreground.appendChild(grass.register_single_pampas_grass_canvas(
+          Math.round(Math.random() * x), bottom - i, 1 - (i + edgeLow) / 85,
+          rgb2hex(...Array(3).fill(255 - (i + edgeLow)))));
+    }
+  }
+  setTimeout(() => {
+    grass.compute_offscreen_canvases();
+    grass.start_move_element_animation();
+  }, 200);
 
   is_first_img_init = false;
 }
-
-// 监听窗口大小变化
-//window.addEventListener("resize", init);
-// 初始化页面
-// imgInit();
