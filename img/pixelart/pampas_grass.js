@@ -66,8 +66,9 @@ class Grass {
      *   nowCanvasIndex: number,    当前显示的canvas在离屏canvas数组中的索引
      *   bent: number,              当前蒲苇的弯曲度
      *   bentSpeed: number,         蒲苇弯曲度变化速度
-     *   canvasImgOnScreen: HTMLCanvasElement  在屏幕上的canvas
-     *   canvasesOffScreenURL: Array[string] 离屏canvas调用toDataURL()构成的数组
+     *   ctx: CanvasRenderingContext2D  canvasOnScreen的2D上下文
+     *   canvasOnScreen: HTMLCanvasElement  在屏幕上的canvas
+     *   canvasesOffScreen: Array[string]   离屏canvas数组
      * }]}
      */
     this.data = [];
@@ -262,8 +263,8 @@ class Grass {
       d.bent += d.bentSpeed * deltaT_s;
 
       // 更新蒲苇显示的canvas
-      let newCanvasIndex = Math.min(
-          Math.max(Math.round(this.initialCanvasIndex + d.bent * 4), 0));
+      let newCanvasIndex =
+          Math.max(Math.round(this.initialCanvasIndex + d.bent * 4), 0);
       // 限制最大值，在边缘时抖动
       if (newCanvasIndex > this.totalCanvasCount - 2)
         newCanvasIndex =
@@ -275,7 +276,8 @@ class Grass {
 
       if (newCanvasIndex !== d.nowCanvasIndex) {
         d.nowCanvasIndex = newCanvasIndex;
-        d.canvasImgOnScreen.src = d.canvasesOffScreenURL[d.nowCanvasIndex];
+        d.ctx.clearRect(0, 0, d.canvasOnScreen.width, d.canvasOnScreen.height);
+        d.ctx.drawImage(d.canvasesOffScreen[d.nowCanvasIndex], 0, 0);
       }
     }
     this.lastAnimationTime = timestamp;
@@ -322,28 +324,22 @@ class Grass {
         (i - this.initialCanvasIndex) / this.totalCanvasCount * 1 + 1;
     // 计算不同帧
     for (let d of this.data) {
-      // const initalCanvas = document.createElement("canvas");
-      // initalCanvas.width = d.canvasImgOnScreen.width;
-      // initalCanvas.height = d.canvasImgOnScreen.height;
-      // const ctx = initalCanvas.getContext("2d");
-      // ctx.imageSmoothingEnabled = false;
-      // ctx.drawImage(d.canvasImgOnScreen, 0, 0);
-      const initalCanvasSrc =
-          JSON.parse(JSON.stringify(d.canvasImgOnScreen.src));
+      const initalCanvas = document.createElement("canvas");
+      initalCanvas.width = d.canvasOnScreen.width;
+      initalCanvas.height = d.canvasOnScreen.height;
+      const ctx = initalCanvas.getContext("2d");
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(d.canvasOnScreen, 0, 0);
+      // const initalCanvasSrc =
+      // JSON.parse(JSON.stringify(d.canvasOnScreen.src));
 
       for (let i = 0; i < this.initialCanvasIndex; i++)
-        d.canvasesOffScreenURL.push(
-            this.#create_single_pampas_grass_canvas(d.x, d.y, d.scale,
-                                                    d.colorMultiplyer,
-                                                    d.rngSeed, windAffect(i))
-                .toDataURL());
-      d.canvasesOffScreenURL.push(initalCanvasSrc);
+        d.canvasesOffScreen.push(this.#create_single_pampas_grass_canvas(
+            d.x, d.y, d.scale, d.colorMultiplyer, d.rngSeed, windAffect(i)));
+      d.canvasesOffScreen.push(initalCanvas);
       for (let i = this.initialCanvasIndex + 1; i < this.totalCanvasCount; i++)
-        d.canvasesOffScreenURL.push(
-            this.#create_single_pampas_grass_canvas(d.x, d.y, d.scale,
-                                                    d.colorMultiplyer,
-                                                    d.rngSeed, windAffect(i))
-                .toDataURL());
+        d.canvasesOffScreen.push(this.#create_single_pampas_grass_canvas(
+            d.x, d.y, d.scale, d.colorMultiplyer, d.rngSeed, windAffect(i)));
     }
 
     // 计算三维坐标x3D
@@ -380,15 +376,6 @@ class Grass {
     const canvas = this.#create_single_pampas_grass_canvas(
         x, y, scale, color_multiplyer, rngSeed, 1);
 
-    const img = document.createElement("img");
-    img.src = canvas.toDataURL("image/png");
-    img.style.position = "absolute";
-    img.style.right = `${x - canvas.width}px`;
-    img.style.top = `${y - canvas.height}px`;
-    img.style.zoom = this.pixelSize;
-    // 禁用抗锯齿, css 属性定义在 style.css 中
-    img.classList.add('no-anti-aliasing');
-
     this.data.push({
       x : x,
       y : y,
@@ -399,10 +386,11 @@ class Grass {
       colorMultiplyer : color_multiplyer,
       nowCanvasIndex : this.initialCanvasIndex,
       rngSeed : rngSeed,
-      canvasImgOnScreen : img,
-      canvasesOffScreenURL : []
+      canvasOnScreen : canvas,
+      ctx : canvas.getContext("2d"),
+      canvasesOffScreen : []
     });
-    return img;
+    return canvas;
   }
   /**
    * 创建一个包含单株蒲苇的、尺寸大致合适的独立canvas。

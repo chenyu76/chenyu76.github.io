@@ -293,16 +293,17 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
       midground.appendChild(ss);
 
       // 间隔生成流星
-      midground.appendChild(generateMeteor(x));
+      midground.appendChild(generateMeteor(x, pixelSize));
       if (is_first_img_init)
         setInterval(() => {
           if (document.visibilityState !== "visible")
             return;
-          midground.appendChild(generateMeteor(x));
+          midground.appendChild(generateMeteor(x, pixelSize));
         }, 7000);
     } else {
       // 白天就是云
-      for (let i = 0; i < Math.floor(Math.random() * 10) + 4; i++) {
+      let num_clouds = Math.floor(Math.random() * 8) + 4;
+      for (let i = 0; i < num_clouds; i++) {
         let cloud = generateClouds(
             Math.round(Math.random() * x),
             Math.round((Math.random() * GRID_HEIGHT) / 3),
@@ -331,7 +332,7 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   var grass = new Grass(pixelSize);
   const edgeLow = 20;
   for (let i = 30; i > -edgeLow + 2; i -= 1) {
-    for (let j = 0; j < Math.ceil(x / (130 - 2 * i)); j++) {
+    for (let j = 0; j < Math.ceil(x / (120 - 2 * i)); j++) {
       foreground.appendChild(grass.register_single_pampas_grass_canvas(
           Math.round(Math.random() * x), bottom - i, 1 - (i + edgeLow) / 85,
           rgb2hex(...Array(3).fill(255 - (i + edgeLow)))));
@@ -341,7 +342,7 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   foreground.appendChild(createPixelMatrix(0, bottom - 96, imgMatrix));
   // 画草地 前景蒲苇
   for (let i = -edgeLow + 2; i > -edgeLow; i -= 1) {
-    for (let j = 0; j < Math.ceil(x / (130 - 2 * i)); j++) {
+    for (let j = 0; j < Math.ceil(x / (120 - 2 * i)); j++) {
       foreground.appendChild(grass.register_single_pampas_grass_canvas(
           Math.round(Math.random() * x), bottom - i, 1 - (i + edgeLow) / 85,
           rgb2hex(...Array(3).fill(255 - (i + edgeLow)))));
