@@ -266,7 +266,7 @@ class Grass {
         newCanvasIndex =
             this.totalCanvasCount - 1 -
             (Math.round(Math.abs(
-                 timestamp / (Math.round(Math.abs(d.rngSeed)) % 100 + 120) +
+                 timestamp / (Math.round(Math.abs(d.rngSeed)) % 140 + 180) +
                  d.rngSeed)) %
              3);
 
