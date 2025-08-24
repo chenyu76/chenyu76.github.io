@@ -87,7 +87,7 @@ class Grass {
     this.nextWindCreateInterval =
         this.rng.normal(4000, 500); // 下一次创建风的时间间隔
     this.lastAnimationTime = 0;     // 上一次动画帧的时间戳
-    this.skipFrame = false;         // 是否跳过当前帧
+    this.skipFrame = 0;             // 是否跳过当前帧
 
     this.pgd_scale_factor = [
       1,
@@ -218,14 +218,14 @@ class Grass {
    * 移动蒲苇元素的动画
    */
   moveElementAnimation(timestamp) {
-    // 每两帧之间跳过一帧，降低计算量
-    if (this.skipFrame) {
-      this.skipFrame = false;
+    // 每4帧之间跳过一帧，降低计算量
+    if (this.skipFrame < 3) {
+      this.skipFrame++;
       this.animationFrameId = requestAnimationFrame(
           (timestamp) => this.moveElementAnimation(timestamp));
       return;
     }
-    this.skipFrame = true;
+    this.skipFrame = 0;
 
     // 过滤掉已经结束的风
     this.winds = this.winds.filter(wind => timestamp <= wind.t);
@@ -238,8 +238,8 @@ class Grass {
 
     // 间隔太久就直接更新lastAnimationTime，避免风力过大
     let deltaT = timestamp - this.lastAnimationTime;
-    if (deltaT > 200) {
-      deltaT = 200;
+    if (deltaT > 500) {
+      deltaT = 500;
     }
     const deltaT_s = deltaT / 1000;
 
