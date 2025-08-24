@@ -352,5 +352,29 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
     grass.start_move_element_animation();
   }, 200);
 
+  if (is_first_img_init) {
+    // 滚动事件监听器，往下滚动后暂停动画
+    // 1. 设置阈值（例如：300像素）
+    const scrollThreshold = 0.382 * window.innerHeight;
+    // 4. 用于跟踪是否已超过阈值的状态变量
+    let hasPassedThreshold = false;
+    // 2. 监听页面的滚动事件
+    window.addEventListener('scroll', function() {
+      // 3. 获取当前的滚动距离
+      const currentScrollY = window.scrollY;
+
+      // 检查是否向下滚动超过了阈值
+      if (currentScrollY > scrollThreshold && !hasPassedThreshold) {
+        grass.stop_move_element_animation();
+        hasPassedThreshold = true; // 更新状态，防止重复执行
+      }
+      // 检查是否向上滚动回到了阈值以内
+      else if (currentScrollY <= scrollThreshold && hasPassedThreshold) {
+        grass.start_move_element_animation();
+        hasPassedThreshold = false; // 更新状态，以便下次超过时能再次触发
+      }
+    });
+  }
+
   is_first_img_init = false;
 }

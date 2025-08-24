@@ -208,6 +208,11 @@ class Grass {
     this.animationFrameId = requestAnimationFrame(
         (timestamp) => this.moveElementAnimation(timestamp));
   }
+  stop_move_element_animation() {
+    if (this.animationFrameId !== null)
+      cancelAnimationFrame(this.animationFrameId);
+    this.animationFrameId = null;
+  }
   /**
    * 移动蒲苇元素的动画
    */
@@ -400,7 +405,7 @@ class Grass {
 
     // 2. 创建一个足够大的画布来绘制蒲苇，避免图像被裁剪
     //    尺寸可以基于主要长度参数进行估算，并增加一些余量
-    const canvasWidth = Math.ceil(pgd[0] * scale * 2 + pgd[10] * scale * 2);
+    const canvasWidth = Math.ceil(pgd[0] * scale * 2.5 + pgd[10] * scale * 2);
     const canvasHeight = Math.ceil(pgd[0] * scale * 1.5);
     const canvas = document.createElement("canvas");
     canvas.width = canvasWidth;
@@ -424,40 +429,6 @@ class Grass {
     return canvas;
   }
 
-  draw_pampas_grasses(
-      width,
-      height,
-      num,
-      pixelSize,
-      color_multiplyer = "#FFFFFF",
-      scale = 1,
-  ) {
-    const pampas_canvas = document.createElement("canvas");
-    pampas_canvas.style.position = "absolute";
-    pampas_canvas.width = width;
-    pampas_canvas.height = height;
-    pampas_canvas.style.right = "0px";
-    pampas_canvas.style.zoom = pixelSize;
-    const ctx = pampas_canvas.getContext("2d");
-    ctx.imageSmoothingEnabled = false; // 禁用抗锯齿
-
-    const adjusted_color = Grass.get_adjusted_color(color_multiplyer);
-
-    // 生成参数，缩放比例scale
-    const pgd = Array.from({length : this.pgd.length},
-                           (_, i) => this.pgd[i] *
-                                     Math.pow(scale, this.pgd_scale_factor[i]));
-
-    for (let i = 0; i < num; i++)
-      this.#draw_pampas_grass(
-          [ Math.round(Math.random() * width), height ],
-          ctx,
-          adjusted_color,
-          pgd,
-      );
-
-    return pampas_canvas;
-  }
   // 获取根据天空的光线调整后的颜色
   // color_multiplyer: 用于调整颜色的乘色器，默认为白色（不改变颜色）
   static get_adjusted_color(color_multiplyer = "#FFFFFF") {
