@@ -1,13 +1,9 @@
-function the_script() {
-  return 'This is the JavaScript file of this website. </br>See raw file at <a href="script.js"> script.js </a>';
-}
-
 // 平滑滚动到顶部
 function scrollToTop() {
   document.body.scrollTo({
-    left: 0,
-    top: 0,
-    behavior: "smooth",
+    left : 0,
+    top : 0,
+    behavior : "smooth",
   });
 }
 
@@ -17,8 +13,8 @@ let pixelImgInit = () => {
     imgInit(0.382 * window.innerHeight);
     let t = document.getElementById("title-container");
     t.style.height = "38.2vh";
-    //let s = document.getElementById("anime-spacer");
-    //s.style.height = "63vh";
+    // let s = document.getElementById("anime-spacer");
+    // s.style.height = "63vh";
   } else {
     imgInit(0.618 * window.innerHeight);
     let t = document.getElementById("title-container");
@@ -30,13 +26,15 @@ let pixelImgInit = () => {
     let children = div.querySelectorAll("*"); // 获取 div 内所有子元素
     children.forEach((element) => {
       let img = element.querySelector("img"); // 获取 <a> 标签中的 <img> 元素
-      if (img) img.style.filter = "invert(1)"; // 仅对 <img> 标签应用 invert(1)
+      if (img)
+        img.style.filter = "invert(1)"; // 仅对 <img> 标签应用 invert(1)
     });
     let hdiv = document.getElementById("heading");
     hdiv.style.color = "white";
   }
 };
-pixelImgInit();
+
+window.addEventListener('load', () => { setTimeout(pixelImgInit, 0); });
 // 每隔十分钟更新背景
 setInterval(pixelImgInit, 600000);
 
