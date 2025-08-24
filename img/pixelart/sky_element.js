@@ -40,7 +40,7 @@ function generateMeteor(w) {
   /*
    * 流星：在指定位置(pos)创建一个div,然后开始移动,需要多创建几个才有效果
    * k: 直线的斜率
-   * delay_time : 隔多久移动一次
+   * delay_time : 隔多久移动一次(ms)
    * life 这是流星的第几节,0是头
    * return: 一个流星方块<div>
    */
@@ -50,7 +50,6 @@ function generateMeteor(w) {
     mp.style.width = `${pixelSize}px`;
     mp.style.height = `${pixelSize}px`;
     mp.style.position = "absolute";
-    // mp.textContent = `${life}`;
     mp.style.backgroundColor = meteor_colors_a(life);
 
     if (k >= 1) {
@@ -60,10 +59,6 @@ function generateMeteor(w) {
       let lastUpdateTime = 0; // 上一次更新位置的时间戳
 
       function moveElementAnimation(timestamp) {
-        // 首次调用时，初始化 lastUpdateTime
-        // if (!lastUpdateTime) {
-        //   lastUpdateTime = timestamp;
-        // }
         const elapsed = timestamp - lastUpdateTime;
         if (elapsed >= delay_time) {
           let y = pixelSize * (pos[1] - life + pass_time);

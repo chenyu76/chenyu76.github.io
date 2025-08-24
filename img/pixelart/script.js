@@ -225,7 +225,7 @@ function createPixelMatrix(startX, startY, matrix) {
   return canvas;
 }
 
-function randomNormal(mean, stdDev) {
+function randomNormal(mean = 0, stdDev = 1) {
   let u1 = Math.random();
   let u2 = Math.random();
   let z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
@@ -302,10 +302,10 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
         }, 7000);
     } else {
       // 白天就是云
-      for (let i = 0; i < Math.floor(Math.random() * 10) + 3; i++) {
+      for (let i = 0; i < Math.floor(Math.random() * 10) + 4; i++) {
         let cloud = generateClouds(
             Math.round(Math.random() * x),
-            Math.round((Math.random() * GRID_HEIGHT) / 2),
+            Math.round((Math.random() * GRID_HEIGHT) / 3),
         );
         midground.appendChild(cloud);
       }
@@ -326,26 +326,31 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
 
   // From ./pampas_grass.js
   var land = new Land();
-  var grass = new Grass();
   foreground.appendChild(land.draw_background_land(x, bottom, pixelSize));
-  // 背景蒲苇
-  for (let i = 30; i > 0; i -= 1) {
-    foreground.appendChild(
-        grass.draw_pampas_grasses(
-            x, bottom - i, Math.ceil(x / (60 - i)), pixelSize,
-            rgb2hex(...Array(3).fill(255 - i * 2)), 1 - i / 35),
-    );
+  // 画草地 背景蒲苇
+  var grass = new Grass(pixelSize);
+  const edgeLow = 20;
+  for (let i = 30; i > -edgeLow + 2; i -= 1) {
+    for (let j = 0; j < Math.ceil(x / (160 - i)); j++) {
+      foreground.appendChild(grass.register_single_pampas_grass_canvas(
+          Math.round(Math.random() * x), bottom - i, 1 - (i + edgeLow) / 85,
+          rgb2hex(...Array(3).fill(255 - (i + edgeLow)))));
+    }
   }
   // 把天子放出来 (原图高96)
   foreground.appendChild(createPixelMatrix(0, bottom - 96, imgMatrix));
-  foreground.appendChild(
-      grass.draw_pampas_grasses(x, bottom, Math.ceil(x / 18), pixelSize),
-  );
+  // 画草地 前景蒲苇
+  for (let i = edgeLow + 2; i > -edgeLow; i -= 1) {
+    for (let j = 0; j < Math.ceil(x / (160 - i)); j++) {
+      foreground.appendChild(grass.register_single_pampas_grass_canvas(
+          Math.round(Math.random() * x), bottom - i, 1 - (i + edgeLow) / 85,
+          rgb2hex(...Array(3).fill(255 - (i + edgeLow)))));
+    }
+  }
+  setTimeout(() => {
+    grass.compute_offscreen_canvases();
+    grass.start_move_element_animation();
+  }, 200);
 
   is_first_img_init = false;
 }
-
-// 监听窗口大小变化
-// window.addEventListener("resize", init);
-// 初始化页面
-// imgInit();
