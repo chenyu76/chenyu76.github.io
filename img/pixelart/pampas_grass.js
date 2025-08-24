@@ -77,7 +77,7 @@ class Grass {
     this.winds = [];
 
     // 蒲苇的抗风回弹能力
-    this.antiBend = 0.3;
+    this.antiBend = 0.6;
 
     // 将三维空间中最远处的蒲苇的距离视为1,
     // 最近的蒲苇的距离
