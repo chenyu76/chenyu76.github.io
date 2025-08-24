@@ -260,9 +260,9 @@ class Grass {
 
       // 更新蒲苇显示的canvas
       let newCanvasIndex = Math.min(
-          Math.max(Math.round(this.initialCanvasIndex + d.bent * 5), 0));
+          Math.max(Math.round(this.initialCanvasIndex + d.bent * 4), 0));
       // 限制最大值，在边缘时抖动
-      if (newCanvasIndex > this.totalCanvasCount - 1)
+      if (newCanvasIndex > this.totalCanvasCount - 2)
         newCanvasIndex =
             this.totalCanvasCount - 1 -
             (Math.round(Math.abs(
