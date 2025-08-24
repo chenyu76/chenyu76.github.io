@@ -77,7 +77,7 @@ class Grass {
     this.winds = [];
 
     // 蒲苇的抗风回弹能力
-    this.antiBend = 0.3;
+    this.antiBend = 0.6;
 
     // 将三维空间中最远处的蒲苇的距离视为1,
     // 最近的蒲苇的距离
@@ -87,7 +87,7 @@ class Grass {
     this.nextWindCreateInterval =
         this.rng.normal(4000, 500); // 下一次创建风的时间间隔
     this.lastAnimationTime = 0;     // 上一次动画帧的时间戳
-    this.skipFrame = 0;             // 是否跳过当前帧
+    this.updateInterval = 50;       // 每隔多少毫秒更新一次动画
 
     this.pgd_scale_factor = [
       1,
@@ -218,14 +218,12 @@ class Grass {
    * 移动蒲苇元素的动画
    */
   moveElementAnimation(timestamp) {
-    // 每4帧之间跳过一帧，降低计算量
-    if (this.skipFrame < 5) {
-      this.skipFrame++;
+    // 控制更新频率
+    if (timestamp - this.lastAnimationTime < this.updateInterval) {
       this.animationFrameId = requestAnimationFrame(
           (timestamp) => this.moveElementAnimation(timestamp));
       return;
     }
-    this.skipFrame = 0;
 
     // 过滤掉已经结束的风
     this.winds = this.winds.filter(wind => timestamp <= wind.t);
@@ -243,7 +241,12 @@ class Grass {
     }
     const deltaT_s = deltaT / 1000;
 
+    const oneHalf = Math.round(Math.random());
+    let count = 0;
     for (let d of this.data) {
+      if (++count % 2 === oneHalf)
+        continue; // 每次只更新一半的蒲苇，降低计算量
+
       // 计算蒲苇当前受到的风力
       let total_wind_force = 0;
       for (let wind of this.winds) {
@@ -260,9 +263,9 @@ class Grass {
 
       // 更新蒲苇显示的canvas
       let newCanvasIndex = Math.min(
-          Math.max(Math.round(this.initialCanvasIndex + d.bent * 5), 0));
+          Math.max(Math.round(this.initialCanvasIndex + d.bent * 4), 0));
       // 限制最大值，在边缘时抖动
-      if (newCanvasIndex > this.totalCanvasCount - 1)
+      if (newCanvasIndex > this.totalCanvasCount - 2)
         newCanvasIndex =
             this.totalCanvasCount - 1 -
             (Math.round(Math.abs(
