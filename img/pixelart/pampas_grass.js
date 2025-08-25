@@ -195,9 +195,9 @@ class Grass {
   #draw_pampas_grass(start, ctx, p_color, pgd,
                      rng_seed = Math.random() * 528491, wind_affect = 1) {
     this.rng.setSeed(rng_seed);
-    const bent =
-        ((i) => (i > 0 ? i : pgd[2]))(this.rng.normal(pgd[2], pgd[3])) *
-        wind_affect; // 苇草弯曲度
+    const bent = ((i) => (i > pgd[3] / 2 ? i : pgd[2]))(
+                     this.rng.normal(pgd[2], pgd[3])) *
+                 wind_affect; // 苇草弯曲度
     const length = this.#parabola_right_length_for_arc_length_approx(
         Math.round(this.rng.normal(pgd[0], pgd[1])), bent); // 苇草长度
     const branch_start = Math.round(
