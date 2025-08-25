@@ -239,6 +239,19 @@ $$
 l\approx\sqrt{\frac{\sqrt{64 a L^2+1}-1}{8 a}}.
 $$
 
+……至少计算结果是上面那样。
+
+实际上，我还是用了一些数学上不那么正确的方法，不然弯曲的时候草看上去太矮了。（还是说我算错了？）
+
+```javascript
+function parabola_right_length_for_arc_length_approx(L, a) {
+// 这个比较数学上正确，但是不好看
+// return Math.sqrt((Math.sqrt(1 + 64 * a * L * L) - 1) / (8 * a));
+// 这个比较好看，但是不太数学
+return (Math.sqrt((Math.sqrt(1 + 64 * a * L * L) - 1) / (8 * a))) / 2 +
+       (L / 3);
+}
+```
 
 ### 减少计算量
 

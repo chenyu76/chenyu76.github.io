@@ -166,7 +166,11 @@ class Grass {
 
   // 抛物线的近似弧长所对应的长度
   #parabola_right_length_for_arc_length_approx(L, a) {
-    return Math.sqrt((Math.sqrt(1 + 64 * a * L * L) - 1) / (8 * a));
+    // 这个比较数学上正确，但是不好看
+    // return Math.sqrt((Math.sqrt(1 + 64 * a * L * L) - 1) / (8 * a));
+    // 这个比较好看，但是不太数学
+    return (Math.sqrt((Math.sqrt(1 + 64 * a * L * L) - 1) / (8 * a))) / 2 +
+           (L / 3);
   }
 
   #homogeneous_cantilever_beam(start, k, L, EI, q = 1) {
