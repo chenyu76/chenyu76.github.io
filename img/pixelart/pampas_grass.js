@@ -42,6 +42,32 @@ class SeededRandom {
   }
 }
 
+/**
+ * 假ctx类
+ * 用于计算蒲苇需要的canvas尺寸
+ * 传入这个类的实例到绘制函数draw_pampas_grass中
+ * 实现假的fillRect方法，记录最大/最小x和y
+ */
+class FakeCtx {
+  constructor() {
+    this.maxX = -Infinity;
+    this.maxY = -Infinity;
+    this.minX = Infinity;
+    this.minY = Infinity;
+    this.fillStyle = "#000000"; // 没有用的
+  }
+  fillRect(x, y, w, h) {
+    if (x + w > this.maxX)
+      this.maxX = x + w;
+    if (y + h > this.maxY)
+      this.maxY = y + h;
+    if (x < this.minX)
+      this.minX = x;
+    if (y < this.minY)
+      this.minY = y;
+  }
+}
+
 class Grass {
   constructor(pixelSize) {
     this.pixelSize = pixelSize; // canvas的CSS zoom大小
@@ -58,11 +84,12 @@ class Grass {
      * @type {Array[Object{
      *   x: number,                 在父容器中的x位置，right定位
      *   y: number,                 在父容器中的y位置
+     *   pgd: Array                 蒲苇参数，计算不同帧时就不用再次计算了
+     *   adjustedColor              蒲苇颜色，同上
      *   scale: number,             缩放比例
      *   rngSeed: number,           随机数生成器种子
      *   x3D: number,               在三维空间中的x坐标（0, 1）,
      *                              我希望风从左到右所以0是左边
-     *   colorMultiplyer : string,  颜色乘色器
      *   nowCanvasIndex: number,    当前显示的canvas在离屏canvas数组中的索引
      *   bent: number,              当前蒲苇的弯曲度
      *   bentSpeed: number,         蒲苇弯曲度变化速度
@@ -109,8 +136,8 @@ class Grass {
       1,
     ];
     this.pgd = [
-      50,
-      15,
+      80,
+      20,
       0.0045,
       0.002,
       0.5,
@@ -137,6 +164,11 @@ class Grass {
     return (y) => two_a * y;
   }
 
+  // 抛物线的近似弧长所对应的长度
+  #parabola_right_length_for_arc_length_approx(L, a) {
+    return Math.sqrt((Math.sqrt(1 + 64 * a * L * L) - 1) / (8 * a));
+  }
+
   #homogeneous_cantilever_beam(start, k, L, EI, q = 1) {
     let q_over_24EI = q / (24 * EI);
     let four_L = L * 4;
@@ -157,14 +189,17 @@ class Grass {
    * pgd: 参数数组，包含芦苇的各种参数
    * rng_seed: 随机数生成器的种子，默认为随机
    * wind_affect: 风的影响程度，默认为1
+   *
+   * 为了计算需要的绘制大小，ctx可以塞入一些别的类，而不是画布上下文
    */
   #draw_pampas_grass(start, ctx, p_color, pgd,
                      rng_seed = Math.random() * 528491, wind_affect = 1) {
     this.rng.setSeed(rng_seed);
-    const length = Math.round(this.rng.normal(pgd[0], pgd[1])); // 苇草长度
     const bent =
         ((i) => (i > 0 ? i : pgd[2]))(this.rng.normal(pgd[2], pgd[3])) *
         wind_affect; // 苇草弯曲度
+    const length = this.#parabola_right_length_for_arc_length_approx(
+        Math.round(this.rng.normal(pgd[0], pgd[1])), bent); // 苇草长度
     const branch_start = Math.round(
         length * this.rng.normal(pgd[4], pgd[5])); // 苇草分支起始位置
 
@@ -196,7 +231,7 @@ class Grass {
     draw_branch(p_color[2], pgd[14], pgd[15]);
 
     ctx.fillStyle = p_color[2];
-    for (let y = 0; y < length; y++)
+    for (let y = 0; y < length; y++) // 主干
       ctx.fillRect(...f(y).map(Math.floor), 1, 1);
 
     return ctx;
@@ -349,15 +384,14 @@ class Grass {
     // 计算不同帧
     for (let d of this.data) {
       // 不同距离的蒲苇帧数不同
-      const initialCanvasIndex =
+      let initialCanvasIndex =
           Math.round(this.initialCanvasIndex * (d.y - minY) / (maxY - minY));
-      const totalCanvasCount =
+      let totalCanvasCount =
           Math.round(this.totalCanvasCount * (d.y - minY) / (maxY - minY));
 
       // 在初始位置时是1, 递增
       // 线性的应该够用
-      const windAffect = (i) =>
-          (i - initialCanvasIndex) / totalCanvasCount * 1 + 1;
+      const windAffect = (i) => (i - initialCanvasIndex) / totalCanvasCount + 1;
 
       const initalCanvas = document.createElement("canvas");
       initalCanvas.width = d.canvasOnScreen.width;
@@ -368,13 +402,26 @@ class Grass {
       // const initalCanvasSrc =
       // JSON.parse(JSON.stringify(d.canvasOnScreen.src));
 
+      initialCanvasIndex = Math.round(initialCanvasIndex);
+      totalCanvasCount = Math.round(totalCanvasCount);
       for (let i = 0; i < initialCanvasIndex; i++)
         d.canvasesOffScreen.push(this.#create_single_pampas_grass_canvas(
-            d.x, d.y, d.scale, d.colorMultiplyer, d.rngSeed, windAffect(i)));
+            d.x, d.y, d.rngSeed, windAffect(i), d.canvasOnScreen.width,
+            d.canvasOnScreen.height, d.pgd, d.adjustedColor));
       d.canvasesOffScreen.push(initalCanvas);
       for (let i = initialCanvasIndex + 1; i < totalCanvasCount; i++)
         d.canvasesOffScreen.push(this.#create_single_pampas_grass_canvas(
-            d.x, d.y, d.scale, d.colorMultiplyer, d.rngSeed, windAffect(i)));
+            d.x, d.y, d.rngSeed, windAffect(i), d.canvasOnScreen.width,
+            d.canvasOnScreen.height, d.pgd, d.adjustedColor));
+    }
+
+    // 删除不需要的变量，释放内存
+    for (let d of this.data) {
+      delete d.x;
+      delete d.y;
+      delete d.pgd;
+      delete d.adjustedColor;
+      delete d.scale;
     }
   }
   /**
@@ -385,17 +432,35 @@ class Grass {
   register_single_pampas_grass_canvas(x, y, scale = 1,
                                       color_multiplyer = "#FFFFFF") {
     const rngSeed = Math.floor(Math.random() * 528491);
+
+    const fakeCtx = [ new FakeCtx(), new FakeCtx() ];
+    const pgd = Array.from({length : this.pgd.length},
+                           (_, i) => this.pgd[i] *
+                                     Math.pow(scale, this.pgd_scale_factor[i]));
+    const adjusted_color = Grass.get_adjusted_color(color_multiplyer);
+    const whData =
+        [ 1, 2 ].map( // 这里的1, 2 是上面的 windAffect 函数最大最小值
+            (num, i) => this.#draw_pampas_grass(
+                [ 0, 0 ], fakeCtx[i], adjusted_color, pgd, rngSeed,
+                num - this.initialCanvasIndex / this.totalCanvasCount));
+
+    const width =
+        whData.map(c => c.maxX - c.minX).reduce((a, b) => Math.max(a, b)) + 2;
+    const height =
+        whData.map(c => c.maxY - c.minY).reduce((a, b) => Math.max(a, b)) + 2;
+
     const canvas = this.#create_single_pampas_grass_canvas(
-        x, y, scale, color_multiplyer, rngSeed, 1);
+        x, y, rngSeed, 1, width, height, pgd, adjusted_color);
 
     this.data.push({
       x : x,
       y : y,
-      x3D : 0,       // 在compute_offscreen_canvases中计算
-      bent : 0,      // 每帧计算
-      bentSpeed : 0, // 每帧计算
+      pgd : pgd,                      // 蒲苇参数，计算不同帧时就不用再次计算了
+      adjustedColor : adjusted_color, // 蒲苇颜色，同上
+      x3D : 0,                        // 在compute_offscreen_canvases中计算
+      bent : 0,                       // 每帧计算
+      bentSpeed : 0,                  // 每帧计算
       scale : scale,
-      colorMultiplyer : color_multiplyer,
       nowCanvasIndex : this.initialCanvasIndex,
       rngSeed : rngSeed,
       canvasOnScreen : canvas,
@@ -410,23 +475,23 @@ class Grass {
    * @param {number} y - canvas在父容器中的top定位值。
    * @param {number} scale - 蒲苇的缩放比例。
    * @param {string} [color_multiplyer="#FFFFFF"] - 用于生成蒲苇颜色的基础色。
+   * @param {number} [rng_seed=Math.random()*528491] - 随机数生成器的种子。
+   * @param {number} [wind_affect=1] - 风对蒲苇的影响程度。
+   * @param {number} [canvasWidth] - 画布宽度
+   * @param {number} [canvasHeight] - 画布高度
+   * @param {Array<number>} pgd - 蒲苇参数数组
+   * @param {Array<string>} adjusted_color - 蒲苇颜色数组
    * @returns {HTMLCanvasElement} -
    * 返回一个绝对定位的、包含蒲苇的canvas元素。
    */
-  #create_single_pampas_grass_canvas(x, y, scale = 1,
-                                     color_multiplyer = "#FFFFFF",
-                                     rng_seed = Math.random(),
-                                     wind_affect = 1) {
-    // 1. 根据缩放比例计算蒲苇的参数
-    const pgd = Array.from({length : this.pgd.length},
-                           (_, i) => this.pgd[i] *
-                                     Math.pow(scale, this.pgd_scale_factor[i]));
-    const adjusted_color = Grass.get_adjusted_color(color_multiplyer);
+  #create_single_pampas_grass_canvas(x, y, rng_seed, wind_affect, canvasWidth,
+                                     canvasHeight, pgd, adjusted_color) {
 
     // 2. 创建一个足够大的画布来绘制蒲苇，避免图像被裁剪
     //    尺寸可以基于主要长度参数进行估算，并增加一些余量
-    const canvasWidth = Math.ceil(pgd[0] * scale * 2 + pgd[10] * scale * 2);
-    const canvasHeight = Math.ceil(pgd[0] * scale * 3);
+    // const canvasWidth = Math.ceil(pgd[0] * scale * 2 + pgd[10]
+    // * scale * 2); const canvasHeight = Math.ceil(pgd[0] * scale
+    // * 3);
     const canvas = document.createElement("canvas");
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
@@ -450,7 +515,8 @@ class Grass {
   }
 
   // 获取根据天空的光线调整后的颜色
-  // color_multiplyer: 用于调整颜色的乘色器，默认为白色（不改变颜色）
+  // color_multiplyer:
+  // 用于调整颜色的乘色器，默认为白色（不改变颜色）
   static get_adjusted_color(color_multiplyer = "#FFFFFF") {
     // const pampas_color = ["#D7D1BA", "#A89268", "#426C13"];
     // const pampas_color = ["#E1D6AB", "#B5AF9F", "#6B6A54"];
