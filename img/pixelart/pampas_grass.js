@@ -52,7 +52,7 @@ class Grass {
     // this.yCapability = 30; // y方向容量
     this.animationFrameId = null; // 动画帧ID
     this.initialCanvasIndex = 2;  // 初始帧在离屏canvas数组中的索引
-    this.totalCanvasCount = 10;   // 离屏canvas总数
+    this.totalCanvasCount = 10;   // 最大离屏canvas总数,最小的是1
     /**
      * 蒲苇数据
      * @type {Array[Object{
@@ -242,10 +242,10 @@ class Grass {
     }
     const deltaT_s = deltaT / 1000;
 
-    const oneHalf = Math.round(Math.random());
-    let count = 0;
+    let count = Math.round(Math.random()) == 1 ? true : false;
     for (let d of this.data) {
-      if (++count % 2 === oneHalf)
+      count = !count;
+      if (count)
         continue; // 每次只更新一半的蒲苇，降低计算量
 
       // 计算蒲苇当前受到的风力
@@ -264,15 +264,18 @@ class Grass {
 
       // 更新蒲苇显示的canvas
       let newCanvasIndex =
-          Math.max(Math.round(this.initialCanvasIndex + d.bent * 4), 0);
+          Math.round((this.initialCanvasIndex + d.bent * 4) /
+                     this.totalCanvasCount * d.canvasesOffScreen.length);
       // 限制最大值，在边缘时抖动
-      if (newCanvasIndex > this.totalCanvasCount - 2)
+      if (newCanvasIndex > d.canvasesOffScreen.length - 1)
         newCanvasIndex =
-            this.totalCanvasCount - 1 -
+            d.canvasesOffScreen.length - 1 -
             (Math.round(Math.abs(
                  timestamp / (Math.round(Math.abs(d.rngSeed)) % 140 + 180) +
                  d.rngSeed)) %
              3);
+      // 限制最小值
+      newCanvasIndex = Math.max(newCanvasIndex, 0);
 
       if (newCanvasIndex !== d.nowCanvasIndex) {
         d.nowCanvasIndex = newCanvasIndex;
@@ -318,30 +321,6 @@ class Grass {
    * 这个挺耗时，需要在主线程之外运行
    */
   compute_offscreen_canvases() {
-    // 在初始位置时是1, 递增
-    // 线性的应该够用
-    const windAffect = (i) =>
-        (i - this.initialCanvasIndex) / this.totalCanvasCount * 1 + 1;
-    // 计算不同帧
-    for (let d of this.data) {
-      const initalCanvas = document.createElement("canvas");
-      initalCanvas.width = d.canvasOnScreen.width;
-      initalCanvas.height = d.canvasOnScreen.height;
-      const ctx = initalCanvas.getContext("2d");
-      ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(d.canvasOnScreen, 0, 0);
-      // const initalCanvasSrc =
-      // JSON.parse(JSON.stringify(d.canvasOnScreen.src));
-
-      for (let i = 0; i < this.initialCanvasIndex; i++)
-        d.canvasesOffScreen.push(this.#create_single_pampas_grass_canvas(
-            d.x, d.y, d.scale, d.colorMultiplyer, d.rngSeed, windAffect(i)));
-      d.canvasesOffScreen.push(initalCanvas);
-      for (let i = this.initialCanvasIndex + 1; i < this.totalCanvasCount; i++)
-        d.canvasesOffScreen.push(this.#create_single_pampas_grass_canvas(
-            d.x, d.y, d.scale, d.colorMultiplyer, d.rngSeed, windAffect(i)));
-    }
-
     // 计算三维坐标x3D
     let maxX = -Infinity;
     let minX = Infinity;
@@ -363,6 +342,37 @@ class Grass {
       const x3D = (1 - w) / 3 + w * (maxX - d.x) / (maxX - minX);
       // 上面的数字改成别的数可以让风看起来从别的方向吹来
       d.x3D = x3D;
+    }
+
+    // 计算不同帧
+    for (let d of this.data) {
+      // 不同距离的蒲苇帧数不同
+      const initialCanvasIndex =
+          Math.round(this.initialCanvasIndex * (d.y - minY) / (maxY - minY));
+      const totalCanvasCount =
+          Math.round(this.totalCanvasCount * (d.y - minY) / (maxY - minY));
+
+      // 在初始位置时是1, 递增
+      // 线性的应该够用
+      const windAffect = (i) =>
+          (i - initialCanvasIndex) / totalCanvasCount * 1 + 1;
+
+      const initalCanvas = document.createElement("canvas");
+      initalCanvas.width = d.canvasOnScreen.width;
+      initalCanvas.height = d.canvasOnScreen.height;
+      const ctx = initalCanvas.getContext("2d");
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(d.canvasOnScreen, 0, 0);
+      // const initalCanvasSrc =
+      // JSON.parse(JSON.stringify(d.canvasOnScreen.src));
+
+      for (let i = 0; i < initialCanvasIndex; i++)
+        d.canvasesOffScreen.push(this.#create_single_pampas_grass_canvas(
+            d.x, d.y, d.scale, d.colorMultiplyer, d.rngSeed, windAffect(i)));
+      d.canvasesOffScreen.push(initalCanvas);
+      for (let i = initialCanvasIndex + 1; i < totalCanvasCount; i++)
+        d.canvasesOffScreen.push(this.#create_single_pampas_grass_canvas(
+            d.x, d.y, d.scale, d.colorMultiplyer, d.rngSeed, windAffect(i)));
     }
   }
   /**
