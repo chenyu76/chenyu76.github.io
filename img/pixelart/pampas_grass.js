@@ -374,15 +374,14 @@ class Grass {
         maxY = d.y;
     }
     for (let d of this.data) {
+      // 计算三维坐标x3D
       const w = ((d.y - minY) + (maxY - d.y) * this.grass3DDistanceMin) /
                 (maxY - minY);
       const x3D = (1 - w) / 3 + w * (maxX - d.x) / (maxX - minX);
       // 上面的数字改成别的数可以让风看起来从别的方向吹来
       d.x3D = x3D;
-    }
 
-    // 计算不同帧
-    for (let d of this.data) {
+      // 计算不同帧
       // 不同距离的蒲苇帧数不同
       let initialCanvasIndex =
           Math.round(this.initialCanvasIndex * (d.y - minY) / (maxY - minY));
@@ -399,8 +398,6 @@ class Grass {
       const ctx = initalCanvas.getContext("2d");
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(d.canvasOnScreen, 0, 0);
-      // const initalCanvasSrc =
-      // JSON.parse(JSON.stringify(d.canvasOnScreen.src));
 
       initialCanvasIndex = Math.round(initialCanvasIndex);
       totalCanvasCount = Math.round(totalCanvasCount);
@@ -413,10 +410,8 @@ class Grass {
         d.canvasesOffScreen.push(this.#create_single_pampas_grass_canvas(
             d.x, d.y, d.rngSeed, windAffect(i), d.canvasOnScreen.width,
             d.canvasOnScreen.height, d.pgd, d.adjustedColor));
-    }
 
-    // 删除不需要的变量，释放内存
-    for (let d of this.data) {
+      // 删除不需要的变量，释放内存
       delete d.x;
       delete d.y;
       delete d.pgd;
@@ -487,30 +482,22 @@ class Grass {
   #create_single_pampas_grass_canvas(x, y, rng_seed, wind_affect, canvasWidth,
                                      canvasHeight, pgd, adjusted_color) {
 
-    // 2. 创建一个足够大的画布来绘制蒲苇，避免图像被裁剪
-    //    尺寸可以基于主要长度参数进行估算，并增加一些余量
-    // const canvasWidth = Math.ceil(pgd[0] * scale * 2 + pgd[10]
-    // * scale * 2); const canvasHeight = Math.ceil(pgd[0] * scale
-    // * 3);
+    // 创建画布来绘制蒲苇，避免图像被裁剪
     const canvas = document.createElement("canvas");
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
     const ctx = canvas.getContext("2d");
     ctx.imageSmoothingEnabled = false;
 
-    // 3. 在画布的特定位置开始绘制，确保蒲苇完整绘制在画布内
-    //    起始点选在左下角区域
     const startPosition = [ 2, canvasHeight + 1 ];
     this.#draw_pampas_grass(startPosition, ctx, adjusted_color, pgd, rng_seed,
                             wind_affect);
 
-    // 4. 设置最终canvas的样式
     canvas.style.position = "absolute";
     canvas.style.right = `${x - canvasWidth}px`;
     canvas.style.top = `${y - canvasHeight}px`;
     canvas.style.zoom = this.pixelSize;
 
-    // 5. 返回配置好的canvas
     return canvas;
   }
 
