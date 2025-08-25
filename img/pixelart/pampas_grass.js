@@ -175,7 +175,9 @@ class Grass {
 
     let draw_branch = (color, base_branch_length, precent = 1) => {
       ctx.fillStyle = color;
-      for (let y = branch_start; y < length * precent; y++) {
+      for (let y = branch_start; y < length; y++) {
+        if (this.rng.uniform() > precent)
+          continue; // 控制分支密度
         let branch_length = Math.round(
             this.rng.normal(base_branch_length, base_branch_length / 2),
         );
