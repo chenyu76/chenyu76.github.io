@@ -242,10 +242,10 @@ class Grass {
     }
     const deltaT_s = deltaT / 1000;
 
-    const oneHalf = Math.round(Math.random());
-    let count = 0;
+    let count = Math.round(Math.random()) == 1 ? true : false;
     for (let d of this.data) {
-      if (++count % 2 === oneHalf)
+      count = !count;
+      if (count)
         continue; // 每次只更新一半的蒲苇，降低计算量
 
       // 计算蒲苇当前受到的风力
