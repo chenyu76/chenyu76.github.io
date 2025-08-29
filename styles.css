@@ -348,6 +348,56 @@ hr {
 	text-indent: 0;
 }
 
-.markdown-alert {
+.markdown-alert-title {
 	text-indent: 0;
+	color: black;
+
+}
+
+.markdown-alert-title svg {
+	margin-right: 0.5rem;
+}
+
+.markdown-alert {
+	padding: 0.1rem 1rem;
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+	border-radius: 0px;
+	border-left: 0.25rem solid;
+	/* 用于添加左侧的彩色条 */
+}
+
+/* 注意 */
+.markdown-alert-note {
+	background-color: #e6f6ff;
+	border-left-color: #0c6a8e;
+	color: #31708f;
+}
+
+/* 提示 */
+.markdown-alert-tip {
+	background-color: #e6ffec;
+	border-left-color: #28a745;
+	color: #216d33;
+}
+
+/* 重要 */
+.markdown-alert-important {
+	background-color: #f3e6ff;
+	border-left-color: #6f42c1;
+	color: #553493;
+}
+
+/* 警告 */
+.markdown-alert-warning {
+	background-color: #fffbe6;
+	border-left-color: #ffc107;
+	color: #856404;
+}
+
+/* 小心 */
+.markdown-alert-caution {
+	background-color: #ffebe6;
+	border-left-color: #dc3545;
+	color: #721c24;
 }
