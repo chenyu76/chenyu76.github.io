@@ -88,8 +88,11 @@
 <li>背景的棋盘抖动颜色是看《16bit的感动》学的（虽然动画改的剧情不好看）</li>
 <li>晚上的星星和流星全是div</li>
 <li>其他细节请看js源文件</li>
-<li>最近可以预定天子的FUMO,感兴趣的快去下单吧！</li>
 </ul>
+<div class="markdown-alert markdown-alert-tip">
+<p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p>最近可以预定天子的FUMO,感兴趣的快去下单吧！</p>
+</div>
 <h2 id="h2-u7f51u9875u5185u5bb9u7ec8u4e8eu4e0du662fu5728u5ba2u6237u7aefu5904u7406u7684u4e86">网页内容终于不是在客户端处理的了！</h2><ul>
 <li>python脚本换成了node.js在Github上先编译好。</li>
 </ul>
@@ -273,7 +276,7 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
 </ol>
 <p>然后，我们就可以通过3D中的横坐标位置应用风的效果了。</p>
 <h3 id="h3-u98ce">风</h3><p>我希望风从左到右吹，一阵接一阵，吹到时草会摆动。</p>
-<p>风的函数<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span>非常简单，</p>
+<p>风关于位置和时间的力度函数<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(x,t)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span>非常简单，</p>
 <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>t</mi><mo stretchy="false">)</mo><mo>=</mo><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>if </mtext><mi>v</mi><mo stretchy="false">(</mo><mi>t</mi><mo>−</mo><msub><mi>t</mi><mn>0</mn></msub><mo stretchy="false">)</mo><mo>−</mo><mi>x</mi><mo>≤</mo><mn>0</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>h</mi><mo>⋅</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mrow><mi>v</mi><mo stretchy="false">(</mo><mi>t</mi><mo>−</mo><msub><mi>t</mi><mn>0</mn></msub><mo stretchy="false">)</mo><mo>−</mo><mi>x</mi></mrow><mi>w</mi></mfrac></mstyle></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>if </mtext><mn>0</mn><mo>&lt;</mo><mi>v</mi><mo stretchy="false">(</mo><mi>t</mi><mo>−</mo><msub><mi>t</mi><mn>0</mn></msub><mo stretchy="false">)</mo><mo>−</mo><mi>x</mi><mo>&lt;</mo><mi>w</mi></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>h</mi><mo>⋅</mo><mrow><mo fence="true">(</mo><mn>2</mn><mo>−</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mrow><mi>v</mi><mo stretchy="false">(</mo><mi>t</mi><mo>−</mo><msub><mi>t</mi><mn>0</mn></msub><mo stretchy="false">)</mo><mo>−</mo><mi>x</mi></mrow><mi>w</mi></mfrac></mstyle><mo fence="true">)</mo></mrow></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>if </mtext><mi>w</mi><mo>≤</mo><mi>v</mi><mo stretchy="false">(</mo><mi>t</mi><mo>−</mo><msub><mi>t</mi><mn>0</mn></msub><mo stretchy="false">)</mo><mo>−</mo><mi>x</mi><mo>&lt;</mo><mn>2</mn><mi>w</mi></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>if </mtext><mi>v</mi><mo stretchy="false">(</mo><mi>t</mi><mo>−</mo><msub><mi>t</mi><mn>0</mn></msub><mo stretchy="false">)</mo><mo>−</mo><mi>x</mi><mo>≥</mo><mn>2</mn><mi>w</mi></mrow></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">f(x, t) =
 \begin{cases}
 0 &amp; \text{if } v(t - t_0) - x \leq 0 \\
@@ -392,17 +395,13 @@ s76,-153,76,-153s77,-151,77,-151c0.7,0.7,35.7,202,105,604c67.3,400.7,102,602.7,1
 </code></pre>
 <h3 id="h3-u51cfu5c11u8ba1u7b97u91cf">减少计算量</h3><p>时时刻刻动态绘制动画很浪费CPU，总得做一些优化。</p>
 <ul>
-<li><p>每一棵草的所有可能的动态帧都先提前绘制好，需要时直接在内存里面取</p>
-<ul>
+<li>每一棵草的所有可能的动态帧都先提前绘制好，需要时直接在内存里面取<ul>
 <li>而且不能在网页加载时开始绘制，会让网页看起来卡住，需要先显示一个没有动画的版本，再在后台计算草的动态帧</li>
 </ul>
 </li>
-<li><p>帧数上限为20帧，对于像素动画来说还不错？</p>
-</li>
-<li><p>每帧只更新一半的草</p>
-</li>
-<li><p>对于近且大的草，可以绘制更多帧数，远而小的，粗略绘制就可以了</p>
-</li>
+<li>帧数上限为20帧，对于像素动画来说还不错？</li>
+<li>每帧只更新一半的草</li>
+<li>对于近且大的草，可以绘制更多帧数，远而小的，粗略绘制就可以了</li>
 </ul>
 </div>
 			<div id="footnote">2025年2月6日。 7月4日更新1。8月25日更新2。</div>
