@@ -85,6 +85,11 @@ html {
 	/* margin: 5px auto; */
 }
 
+p {
+	text-indent: 2em;
+	/* 段首空两格 */
+}
+
 #content {
 	margin: 0;
 	line-height: 1.75;
@@ -119,12 +124,6 @@ html {
 	text-decoration: underline;
 	color: #2b92ff;
 	/* 悬停时颜色 */
-}
-
-/* 修改 p 标签的段首空两格 */
-#content p {
-	text-indent: 2em;
-	/* 段首空两格 */
 }
 
 #footnote {
@@ -243,11 +242,17 @@ blockquote {
 	/* 更改文本颜色 */
 }
 
-ol li::marker {
+ol::marker li::marker {
 	font-weight: bold;
 	/* 加粗编号 */
 	color: #333333;
 	/* 更改编号颜色 */
+}
+
+ul p,
+ol p,
+li p {
+	text-indent: 0;
 }
 
 h1,
@@ -338,10 +343,11 @@ hr {
 }
 
 /* 脚注样式 */
-.footnotes p {
+.footnotes {
+	font-size: 0.8em;
 	text-indent: 0;
 }
 
-.footnotes {
-	font-size: 0.8em;
+.markdown-alert {
+	text-indent: 0;
 }
