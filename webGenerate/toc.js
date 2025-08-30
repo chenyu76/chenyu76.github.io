@@ -126,7 +126,7 @@ function folderTreeHtml(dir, articles) {
 
     return table;
   }
-  return `<p style="text-indent:0;line-height:100%">/root<br>\n${
+  return `<p style="text-indent:0;line-height:70%">/root<br>\n${
       folderTree(dir).join("\n").replace(
           /<\/span><span style="color:gray">/g,
           "",

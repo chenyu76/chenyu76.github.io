@@ -218,7 +218,7 @@ p {
 
 .hiddenContent.show {
 	opacity: 1;
-	line-height: 100%;
+	line-height: 70%;
 }
 
 /* 在标题的路径中使用 */
