@@ -76,8 +76,8 @@ function folderTreeHtml(dir, articles) {
                                              : articleTitle}</a><br>`);
     }
     // 改变文本颜色的函数
-    function col(str, color = "gray") {
-      return `<span style="color:${color}">${str}</span>`;
+    function col(str, color = "gray", label = "code") {
+      return `<${label} style="color:${color}">${str}</${label}>`;
     }
 
     items.forEach((item, index) => {
