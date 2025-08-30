@@ -124,7 +124,7 @@ export function generateRecommend(type = 0, articles = {}) {
   const listItems = recommend.map((item) => {
     let date;
     if (typeof item.date !== 'number') {
-      date = new Date(item.date).toLocaleDateString("en-US", {
+      date = new Date(item.date).toLocaleDateString("zh-CN", {
         day : "2-digit",
         month : "long",
         year : "numeric",
@@ -135,7 +135,7 @@ export function generateRecommend(type = 0, articles = {}) {
             new Date(
                 String(item.date).replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
                 )
-                .toLocaleDateString("en-US", {
+                .toLocaleDateString("zh-CN", {
                   day : "2-digit",
                   month : "long",
                   year : "numeric",
@@ -144,7 +144,7 @@ export function generateRecommend(type = 0, articles = {}) {
         date = new Date(
                    String(item.date).replace(/(\d{4})(\d{2})/, "$1-$2"),
                    )
-                   .toLocaleDateString("en-US",
+                   .toLocaleDateString("zh-CN",
                                        {month : "long", year : "numeric"});
       } else {
         date = "----";
