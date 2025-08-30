@@ -18,6 +18,21 @@ const folderBlackList = [ "node_modules", "webGenerate" ];
 // 文件路径含有这些的js文件将不会被显示
 const jsFolderBlackList = [ "webGenerate", "program", "img", "libs" ];
 
+// 翻译函数，将一些英文翻译成中文
+function tr(str) {
+  const dict = {
+    "node_modules" : "依赖包",
+    "program" : "程序",
+    "writings" : "文章",
+    "img" : "图片",
+    "docs" : "文档",
+    "test-pages" : "测试页面",
+    "excerpts" : "摘录",
+    "webGenerate" : "网站生成",
+  };
+  return str in dict ? dict[str] : str;
+}
+
 // 创建文件目录树
 function folderTreeHtml(dir, articles) {
   // 递归文件夹，生成目录树
@@ -60,7 +75,7 @@ function folderTreeHtml(dir, articles) {
                   articleTitle === undefined ? baseName
                                              : articleTitle}</a><br>`);
     }
-    // 改变文本颜色
+    // 改变文本颜色的函数
     function col(str, color = "gray") {
       return `<span style="color:${color}">${str}</span>`;
     }
@@ -88,7 +103,7 @@ function folderTreeHtml(dir, articles) {
             (isLast ? 0 : 1 << depth) + lineD,
         );
         if (children.length > 0) {
-          table.push(`${style}${item}<br>`);
+          table.push(`${style}${tr(item)}<br>`);
           if (children.length > 10 && lineD === 0) {
             children.splice(
                 7,
@@ -124,7 +139,7 @@ export function generateRecommend(type = 0, articles = {}) {
   const listItems = recommend.map((item) => {
     let date;
     if (typeof item.date !== 'number') {
-      date = new Date(item.date).toLocaleDateString("en-US", {
+      date = new Date(item.date).toLocaleDateString("zh-CN", {
         day : "2-digit",
         month : "long",
         year : "numeric",
@@ -135,7 +150,7 @@ export function generateRecommend(type = 0, articles = {}) {
             new Date(
                 String(item.date).replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
                 )
-                .toLocaleDateString("en-US", {
+                .toLocaleDateString("zh-CN", {
                   day : "2-digit",
                   month : "long",
                   year : "numeric",
@@ -144,7 +159,7 @@ export function generateRecommend(type = 0, articles = {}) {
         date = new Date(
                    String(item.date).replace(/(\d{4})(\d{2})/, "$1-$2"),
                    )
-                   .toLocaleDateString("en-US",
+                   .toLocaleDateString("zh-CN",
                                        {month : "long", year : "numeric"});
       } else {
         date = "----";
