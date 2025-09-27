@@ -1,25 +1,225 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:shiro="http://www.ncss.cn/thymeleaf/shiro" xmlns="http://www.w3.org/1999/html">
 
 <head>
-  <meta charset="UTF-8">
-  <title>面向未来的创新创业概论</title>
-  <link rel="stylesheet" href="styles.css">
+	<meta charset="UTF-8" />
+	<title>个人中心</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta http-equiv="x-dns-prefetch-control" content="on">
+	<meta name="renderer" content="webkit" />
+	<!-- <link rel="stylesheet" href="https://t4.chei.com.cn/ncss/cy/web/lib/bootstrap.min-1.0.0.css" /> -->
+	<link rel="stylesheet" href="./bootstrap.min-1.0.0.css" />
 </head>
+<!-- <link rel="stylesheet" href="https://t3.chei.com.cn/ncss/cy/web/css/myProjects-1.0.2.css?t=2025" /> -->
+<link rel="stylesheet" href="./myProjects-1.0.2.css" />
+<style>
+	.popover-title {
+		padding: 0;
+	}
+
+	.popover.top>.arrow {
+		margin-left: -74px;
+	}
+
+	#settingLink {
+		position: relative;
+	}
+
+	#settingLink .tishi {
+		position: absolute;
+		left: 2px;
+		font-size: 14px;
+		color: red;
+		display: block;
+		font-size: 12px;
+		border: 1px solid red;
+		border-radius: 10px;
+		cursor: pointer;
+		padding: 0 2px 0 3px;
+	}
+
+	.side-nav li:not(.time-box):not(.link-box) {
+		padding-left: 35px;
+	}
+
+	.side-nav li .dot {
+		left: 100px;
+	}
+
+	.project-list li .top h3 a {
+		word-break: break-word;
+		word-wrap: break-word;
+		white-space: normal;
+	}
+
+	#projectList {
+		min-height: unset;
+	}
+
+	.sub-tabs {
+		margin-bottom: 20px;
+	}
+
+	.sub-tab {
+		float: left;
+		padding: 6px 0;
+		width: 170px;
+		font-size: 14px;
+		cursor: pointer;
+		color: #888;
+		background: #e6e6e6;
+		border-radius: 4px;
+		text-align: center;
+	}
+
+	.sub-tab+.sub-tab {
+		margin-left: 14px;
+	}
+
+	.sub-tab.active {
+		background: #e1e7f3;
+		color: #4889ed;
+	}
+
+	.project-list li .top .tag.mt {
+		background: #ffac36;
+		color: #fff;
+	}
+
+	.joined-projects li {
+		height: 230px;
+	}
+
+	.joined-projects2 li {
+		height: 217px;
+	}
+
+	.joined-projects2 li .top {
+		height: 70px;
+	}
+
+	.joined-projects2 li .state,
+	.joined-projects li .state,
+	.joined-projects2 li .prize,
+	.joined-projects li .prize {
+		margin-top: 22px;
+	}
+
+	.project-list li .top svg {
+		vertical-align: top;
+		margin-right: 5px;
+	}
+
+	.project-list .mt-item {
+		height: auto;
+		padding-bottom: 35px;
+	}
+
+	.project-list .mt-item .top h3 {
+		display: block;
+		height: auto;
+		padding-top: 24px;
+		padding-bottom: 4px;
+	}
+
+	.project-list .mt-item .top h3 a {
+		display: block;
+	}
+
+	.project-list .mt-item .top {
+		height: auto;
+	}
+
+	.project-list .mt-item .top-mtname {
+		margin-top: 4px;
+	}
+
+	.user-info-content {
+		max-width: 770px;
+	}
+
+	.user-info-content .user-info-tags {
+		width: 770px;
+	}
+
+	.user-info-content .user-info-tags span.school {
+		max-width: 310px;
+	}
+
+	.user-info-content .user-info-tags span.major {
+		max-width: 280px;
+	}
+</style>
 
 <body>
-  <div class="image-container">
-    <img src="bg.png" alt="Background Image">
-    <div id="text1" class="text text1">项目名称</div>
-    <div id="text2" class="text text2">负责人：某某</div>
-  </div>
-  <input type="text" id="input1" placeholder="输入项目名称" required>
-  <input type="text" id="input2" placeholder="输入 负责人：某人" required>
-  <button onclick="updateText()">放上去</button>
-  <div class="description">
-    <p>你可能需要把网页通过Ctrl+滚轮调小一点让他看起来真一些然后截图</p>
-  </div>
-  <script src="script.js"></script>
+	<div class="container right-main">
+		<div class="main-content" style="width:100%;margin:40px;">
+			<div id="myCreated" style="width:100%">
+				<ul class="project-list clearfix otherShow" id="projectList">
+					<li class="project-item">
+						<div class="top">
+							<div class="tag main">主赛道</div>
+
+							<h3>
+								<a class="project-name" id="project-name">项目名称</a>
+							</h3>
+							<p class="oprate-box">
+
+								<span class="a-box">
+									<a>编辑</a>
+
+									<a class="del-project" data-toggle="modal" data-target="#deletproject">删除</a>
+
+								</span>
+							</p>
+						</div>
+						<div class="mid">
+							<p class="creater ellipsis" style="line-height: 2.35rem;">
+								负责人：<a id="leader-name" style="color:#666">某人</a>
+								<br>
+								<a style="color:#38b46f">（报名成功，等待学校审核）</a>
+							</p>
+						</div>
+						<div class="bot">
+							<a class="btn join-btn join-contest"> 取消报名 </a>
+						</div>
+						<div class="last">
+							<a class="btn-live disabled">选择答辩人员</a>
+						</div>
+					</li>
+					<li class="create-project">
+						<a id="creatNew" style="cursor: pointer">
+							<div class="plus">+</div>
+							<p class="create-p">创建项目（高教、红旅、职教赛道）</p>
+						</a>
+					</li>
+					<li class="create-project" style="padding: 20px;line-height: 2rem;">
+						<div>
+							修改项目名称和负责人：
+						</div>
+						<br>
+						<div>
+							<input type="text" id="project-name-input" placeholder="输入项目名称" required>
+						</div>
+						<br>
+						<div>
+							<input type="text" id="leader-name-input" placeholder="输入负责人" required>
+						</div>
+						<br>
+						<div>
+							<button onclick="updateText()">更新文本</button>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<script>
+		function updateText() {
+			document.getElementById('project-name').textContent = document.getElementById('project-name-input').value;
+			document.getElementById('leader-name').textContent = document.getElementById('leader-name-input').value;
+		}
+	</script>
 </body>
 
 </html>
