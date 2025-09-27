@@ -267,9 +267,9 @@ return (Math.sqrt((Math.sqrt(1 + 64 * a * L * L) - 1) / (8 * a))) / 2 +
 
 
 
-## 更新3：$\text{fumo}^{\text{2}}$
+## 更新3：fumo²
 
-fumofumo，收到了，fumo。
+收到了fumo！
 
 ![fumofumo](./assets/tenshi_fumo_PXL_20250920_174940982.webp)
 
