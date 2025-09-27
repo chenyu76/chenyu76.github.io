@@ -9,9 +9,11 @@
 </head>
 
 <body>
-	<div id="pixel-art-background"></div>
-	<div id="pixel-art-midground"></div>
-	<div id="pixel-art-foreground"></div>
+	<div id="pixel-art">
+		<div id="pixel-art-background"></div>
+		<div id="pixel-art-midground"></div>
+		<div id="pixel-art-foreground"></div>
+	</div>
 	<script src="imgMatrix.js"></script>
 	<script src="sky_element.js"></script>
 	<script src="land.js"></script>
@@ -19,8 +21,6 @@
 	<script src="script.js"></script>
 	<script>
 		window.addEventListener('load', () => {
-			// 页面已经加载，现在可以使用 setTimeout 来延迟执行耗时任务
-			// 0 毫秒延迟会将任务推迟到下一个事件循环
 			setTimeout(imgInit, 0);
 		});
 	</script>

@@ -18,7 +18,7 @@ const folderBlackList = [ "node_modules", "webGenerate" ];
 // 文件路径含有这些的js文件将不会被显示
 const jsFolderBlackList = [ "webGenerate", "program", "img", "libs" ];
 
-// 翻译函数，将一些英文翻译成中文
+// 翻译函数，将一些目录的英文翻译成中文
 function tr(str) {
   const dict = {
     "node_modules" : "依赖包",
@@ -29,6 +29,7 @@ function tr(str) {
     "test-pages" : "测试页面",
     "excerpts" : "摘录",
     "webGenerate" : "网站生成",
+    "quick-references" : "速查",
   };
   return str in dict ? dict[str] : str;
 }

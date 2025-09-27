@@ -2,7 +2,7 @@
 
 ## 鼠标左键拖拽，右键旋转，尝试把这些块拼入方格内吧
 
-[START](program/7-piece-puzzle/puzzle.html)
+[START](https://chenyu76.github.io/program/7-piece-puzzle/puzzle.html)
 
 左上角可选择关卡
 

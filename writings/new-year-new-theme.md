@@ -267,4 +267,10 @@ return (Math.sqrt((Math.sqrt(1 + 64 * a * L * L) - 1) / (8 * a))) / 2 +
 
 
 
-2025年2月6日。 7月4日更新1。8月25日更新2。
+## 更新3：$\text{fumo}^{\text{2}}$
+
+fumofumo，收到了，fumo。
+
+![fumofumo](./assets/tenshi_fumo_PXL_20250920_174940982.webp)
+
+2025年2月6日。 7月4日更新1。8月25日更新2。9月20日更新3。
