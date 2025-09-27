@@ -153,6 +153,23 @@
 
 <body>
 	<div class="container right-main">
+		<div style="padding:2px;line-height: 2rem;margin:40px;">
+			<div>
+				修改项目名称和负责人：
+			</div>
+			<br>
+			<div>
+				<input type="text" id="project-name-input" placeholder="输入项目名称" required>
+			</div>
+			<br>
+			<div>
+				<input type="text" id="leader-name-input" placeholder="输入负责人" required>
+			</div>
+			<br>
+			<div>
+				<button onclick="updateText()">更新文本</button>
+			</div>
+		</div>
 		<div class="main-content" style="width:100%;margin:40px;">
 			<div id="myCreated" style="width:100%">
 				<ul class="project-list clearfix otherShow" id="projectList">
@@ -192,23 +209,6 @@
 							<div class="plus">+</div>
 							<p class="create-p">创建项目（高教、红旅、职教赛道）</p>
 						</a>
-					</li>
-					<li class="create-project" style="padding: 20px;line-height: 2rem;">
-						<div>
-							修改项目名称和负责人：
-						</div>
-						<br>
-						<div>
-							<input type="text" id="project-name-input" placeholder="输入项目名称" required>
-						</div>
-						<br>
-						<div>
-							<input type="text" id="leader-name-input" placeholder="输入负责人" required>
-						</div>
-						<br>
-						<div>
-							<button onclick="updateText()">更新文本</button>
-						</div>
 					</li>
 				</ul>
 			</div>

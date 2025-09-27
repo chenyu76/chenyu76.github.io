@@ -78,7 +78,7 @@ class Grass {
     // this.yCapability = 30; // y方向容量
     this.animationFrameId = null; // 动画帧ID
     this.initialCanvasIndex = 2;  // 初始帧在离屏canvas数组中的索引
-    this.totalCanvasCount = 10;   // 最大离屏canvas总数,最小的是1
+    this.totalCanvasCount = 7;    // 最大离屏canvas总数,最小的是1
     /**
      * 蒲苇数据
      * @type {Array[Object{
@@ -115,7 +115,8 @@ class Grass {
     this.nextWindCreateInterval =
         this.rng.normal(4000, 500); // 下一次创建风的时间间隔
     this.lastAnimationTime = 0;     // 上一次动画帧的时间戳
-    this.updateInterval = 50;       // 每隔多少毫秒更新一次动画
+    this.updateInterval = 100;      // 每隔多少毫秒更新一次动画
+    this.windX3DResolution = 16;    // 计算风力时x3D的分辨率
 
     this.pgd_scale_factor = [
       1,
@@ -274,13 +275,29 @@ class Grass {
     }
 
     // 过滤掉已经结束的风
-    this.winds = this.winds.filter(wind => timestamp <= wind.t);
+    for (let i = this.winds.length - 1; i >= 0; i--) {
+      const wind = this.winds[i];
+      if (timestamp > wind.t) {
+        this.winds.splice(i, 1);
+      }
+    }
     // 创建新风
     if (timestamp - this.lastWindCreateTime > this.nextWindCreateInterval) {
       this.winds.push(this.#create_wind_function(timestamp));
       this.nextWindCreateInterval = this.rng.normal(2000, 500);
       this.lastWindCreateTime = timestamp;
     }
+
+    // 计算不同位置的风力
+    let wind_per_x3D =
+        Array.from({length : this.windX3DResolution + 1}, (_, i) => {
+          let x3D = i / this.windX3DResolution;
+          let total_wind_force = 0;
+          for (let wind of this.winds) {
+            total_wind_force += wind.f(x3D, timestamp);
+          }
+          return total_wind_force;
+        });
 
     // 间隔太久就直接更新lastAnimationTime，避免风力过大
     let deltaT = timestamp - this.lastAnimationTime;
@@ -289,20 +306,17 @@ class Grass {
     }
     const deltaT_s = deltaT / 1000;
 
-    let count = Math.round(Math.random()) == 1 ? true : false;
+    // let count = Math.random() < 0.5;
     for (let d of this.data) {
-      count = !count;
-      if (count)
-        continue; // 每次只更新一半的蒲苇，降低计算量
+      // 每次只更新一半的蒲苇，降低计算量
+      // count = !count;
+      // if (count)
+      //   continue;
 
       // 计算蒲苇当前受到的风力
-      let total_wind_force = 0;
-      for (let wind of this.winds) {
-        total_wind_force += wind.f(d.x3D, timestamp);
-      }
-
       // 根据风力调整蒲苇的弯曲度
-      d.bentSpeed += total_wind_force * deltaT_s;
+      d.bentSpeed +=
+          wind_per_x3D[Math.round(d.x3D * this.windX3DResolution)] * deltaT_s;
       // 蒲苇越弯，受到的恢复力越大
       d.bentSpeed -= d.bent * this.antiBend * deltaT_s;
       // 阻尼，防止一直摆动
@@ -317,10 +331,8 @@ class Grass {
       if (newCanvasIndex > d.canvasesOffScreen.length - 1)
         newCanvasIndex =
             d.canvasesOffScreen.length - 1 -
-            (Math.round(Math.abs(
-                 timestamp / (Math.round(Math.abs(d.rngSeed)) % 140 + 180) +
-                 d.rngSeed)) %
-             3);
+            (Math.round(Math.abs(timestamp / d.jitterFrequency + d.rngSeed)) %
+             2);
       // 限制最小值
       newCanvasIndex = Math.max(newCanvasIndex, 0);
 
@@ -468,6 +480,7 @@ class Grass {
       scale : scale,
       nowCanvasIndex : this.initialCanvasIndex,
       rngSeed : rngSeed,
+      jitterFrequency : Math.round(Math.abs(rngSeed)) % 140 + 180,
       canvasOnScreen : canvas,
       ctx : canvas.getContext("2d"),
       canvasesOffScreen : []
