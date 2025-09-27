@@ -332,7 +332,7 @@ class Grass {
         newCanvasIndex =
             d.canvasesOffScreen.length - 1 -
             (Math.round(Math.abs(timestamp / d.jitterFrequency + d.rngSeed)) %
-             3);
+             2);
       // 限制最小值
       newCanvasIndex = Math.max(newCanvasIndex, 0);
 
