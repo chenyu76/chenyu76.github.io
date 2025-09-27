@@ -247,6 +247,7 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   const background = document.getElementById("pixel-art-background");
   const midground = document.getElementById("pixel-art-midground");
   const foreground = document.getElementById("pixel-art-foreground");
+  const container = document.getElementById("pixel-art");
 
   currentHour = time;
   // currentHour = 12;

@@ -256,6 +256,12 @@ class Grass {
       cancelAnimationFrame(this.animationFrameId);
     this.animationFrameId = null;
   }
+  toggle_move_element_animation() {
+    if (this.animationFrameId === null)
+      this.start_move_element_animation();
+    else
+      this.stop_move_element_animation();
+  }
   /**
    * 移动蒲苇元素的动画
    */
