@@ -116,26 +116,9 @@ class Grass {
         this.rng.normal(4000, 500); // 下一次创建风的时间间隔
     this.lastAnimationTime = 0;     // 上一次动画帧的时间戳
     this.updateInterval = 100;      // 每隔多少毫秒更新一次动画
-    this.windX3DResolution = 16;    // 计算风力时x3D的分辨率
 
-    this.pgd_scale_factor = [
-      1,
-      1,
-      -1.25,
-      -1.25,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-    ];
+    this.pgd_scale_factor =
+        [ 1, 1, -1.25, -1.25, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ];
     this.pgd = [
       80,
       20,
@@ -153,6 +136,8 @@ class Grass {
       0.8,
       2,
       0.4,
+      60, // 不同株的草在同一组中的最大偏移范围x
+      7,  // 不同株的草在同一组中的最大偏移范围y
     ];
   }
 
@@ -186,6 +171,23 @@ class Grass {
     ];
   }
 
+  // 调用多个 draw_pampas_grass
+  #draw_bunch_pampas_grass(start, ctx, p_color, pgd,
+                           rng_seed = Math.random() * 528491, wind_affect = 1) {
+    this.rng.setSeed(rng_seed);
+    const bunchNum = 8;
+    const seeds = Array.from({length : bunchNum},
+                             () => { return this.rng.uniform() * 528491; });
+    for (let i = 0; i < bunchNum; i++) {
+      this.#draw_pampas_grass(
+          [
+            start[0] + Math.round(seeds[i] % pgd[16]),
+            start[1] + Math.round(i / bunchNum * pgd[17])
+          ],
+          ctx, p_color, pgd, seeds[i], wind_affect);
+    }
+    return ctx;
+  }
   /*
    * 在给定的画布ctx上，画一条芦苇，返回这个ctx
    * start: 起始点坐标[x, y]
@@ -288,17 +290,6 @@ class Grass {
       this.lastWindCreateTime = timestamp;
     }
 
-    // 计算不同位置的风力
-    let wind_per_x3D =
-        Array.from({length : this.windX3DResolution + 1}, (_, i) => {
-          let x3D = i / this.windX3DResolution;
-          let total_wind_force = 0;
-          for (let wind of this.winds) {
-            total_wind_force += wind.f(x3D, timestamp);
-          }
-          return total_wind_force;
-        });
-
     // 间隔太久就直接更新lastAnimationTime，避免风力过大
     let deltaT = timestamp - this.lastAnimationTime;
     if (deltaT > 500) {
@@ -314,9 +305,12 @@ class Grass {
       //   continue;
 
       // 计算蒲苇当前受到的风力
+      let total_wind_force = 0;
+      for (let wind of this.winds)
+        total_wind_force += wind.f(d.x3D, timestamp);
+
       // 根据风力调整蒲苇的弯曲度
-      d.bentSpeed +=
-          wind_per_x3D[Math.round(d.x3D * this.windX3DResolution)] * deltaT_s;
+      d.bentSpeed += total_wind_force * deltaT_s;
       // 蒲苇越弯，受到的恢复力越大
       d.bentSpeed -= d.bent * this.antiBend * deltaT_s;
       // 阻尼，防止一直摆动
@@ -325,7 +319,7 @@ class Grass {
 
       // 更新蒲苇显示的canvas
       let newCanvasIndex =
-          Math.round((this.initialCanvasIndex + d.bent * 4) /
+          Math.round((this.initialCanvasIndex + d.bent * 3) /
                      this.totalCanvasCount * d.canvasesOffScreen.length);
       // 限制最大值，在边缘时抖动
       if (newCanvasIndex > d.canvasesOffScreen.length - 1)
@@ -457,7 +451,7 @@ class Grass {
     const adjusted_color = Grass.get_adjusted_color(color_multiplyer);
     const whData =
         [ 1, 2 ].map( // 这里的1, 2 是上面的 windAffect 函数最大最小值
-            (num, i) => this.#draw_pampas_grass(
+            (num, i) => this.#draw_bunch_pampas_grass(
                 [ 0, 0 ], fakeCtx[i], adjusted_color, pgd, rngSeed,
                 num - this.initialCanvasIndex / this.totalCanvasCount));
 
@@ -513,8 +507,8 @@ class Grass {
     ctx.imageSmoothingEnabled = false;
 
     const startPosition = [ 2, canvasHeight + 1 ];
-    this.#draw_pampas_grass(startPosition, ctx, adjusted_color, pgd, rng_seed,
-                            wind_affect);
+    this.#draw_bunch_pampas_grass(startPosition, ctx, adjusted_color, pgd,
+                                  rng_seed, wind_affect);
 
     canvas.style.position = "absolute";
     canvas.style.right = `${x - canvasWidth}px`;

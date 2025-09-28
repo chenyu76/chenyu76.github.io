@@ -332,7 +332,7 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   // 画草地 背景蒲苇
   var grass = new Grass(pixelSize);
   const edgeLow = 20;
-  for (let i = 30; i > -edgeLow + 2; i -= 1) {
+  for (let i = 30; i > -edgeLow + 2; i -= 6) {
     for (let j = 0; j < Math.ceil(x / (150 - 2 * i)); j++) {
       foreground.appendChild(grass.register_single_pampas_grass_canvas(
           Math.round(Math.random() * x), bottom - i, 1 - (i + edgeLow) / 85,
@@ -342,7 +342,7 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
   // 把天子放出来 (原图高96)
   foreground.appendChild(createPixelMatrix(0, bottom - 96, imgMatrix));
   // 画草地 前景蒲苇
-  for (let i = -edgeLow + 2; i > -edgeLow; i -= 1) {
+  for (let i = -edgeLow + 2; i > -edgeLow; i -= 2) {
     for (let j = 0; j < Math.ceil(x / (150 - 2 * i)); j++) {
       foreground.appendChild(grass.register_single_pampas_grass_canvas(
           Math.round(Math.random() * x), bottom - i, 1 - (i + edgeLow) / 85,
