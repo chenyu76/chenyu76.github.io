@@ -64,6 +64,12 @@ const recommend = [
     info : "(pdf文件) 简单的迭代居然能生成复杂而迷人的图形。（某个课程作业）",
   },
   {
+    date : "Nov 17, 2024",
+    link : "https://github.com/chenyu76/MMA-Hirota-D-operators",
+    title : "Hirota D 算子的 Mathematica 实现",
+    info : "（Github 链接）"
+  },
+  {
     date : 20240909,
     link : "program/7-piece-puzzle/Readme and solution.html",
     title : "一个拼图游戏",
