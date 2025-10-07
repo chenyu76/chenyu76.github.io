@@ -16661,6 +16661,7 @@ defineMacro("\\kaGreen", "\\textcolor{##71B307}{#1}");
 
 
 
+
 // List of commands that act like macros but aren't defined as a macro,
 // function, or symbol.  Used in `isDefined`.
 const implicitCommands = {
@@ -16806,7 +16807,7 @@ class MacroExpander {
 
     this.pushToken(new Token("EOF", end.loc));
     this.pushTokens(tokens);
-    return start.range(end, "");
+    return new Token("", SourceLocation.range(start, end));
   }
   /**
    * Consume all following space tokens, without expansion.
@@ -18971,7 +18972,7 @@ const renderToHTMLTree = function (expression, options) {
   }
 };
 
-const version = "0.16.22";
+const version = "0.16.23";
 const __domTree = {
   Span: Span,
   Anchor: Anchor,

@@ -16314,7 +16314,7 @@ class MacroExpander {
 
     this.pushToken(new Token("EOF", end.loc));
     this.pushTokens(tokens);
-    return start.range(end, "");
+    return new Token("", SourceLocation.range(start, end));
   }
   /**
    * Consume all following space tokens, without expansion.
@@ -18445,7 +18445,7 @@ var renderToHTMLTree = function renderToHTMLTree(expression, options) {
   }
 };
 
-var version = "0.16.22";
+var version = "0.16.23";
 var __domTree = {
   Span,
   Anchor,
