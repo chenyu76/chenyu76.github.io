@@ -13,7 +13,7 @@ const recommend = [
   {
     date : 20250825,
     link : "writings/new-year-new-theme.html",
-    title : "本网页上的草现在随风摆动",
+    title : "本网页背景上的草现在随风摆动",
     info :
         "可能需要稍等一会才会有风吹来。<br>也许会对您的设备有些许性能影响（虽然我已经尽量优化了）。"
   },
@@ -40,7 +40,7 @@ const recommend = [
   {
     date : 20250412,
     link : "writings/remarkable_cover.html",
-    info : "便宜实用手感好，避免屏幕被划伤（就是不耐脏？）",
+    info : "便宜实用手感好，避免屏幕被划伤，但是不耐脏？",
   },
   {
     date : 20250311,
@@ -50,7 +50,7 @@ const recommend = [
   {
     date : 20250220,
     link : "writings/Add-citation-in-LaTeX.html",
-    info : "总是有同学问我怎么引用文章，就有了这一篇基础的LaTeX引用方法",
+    info : "有同学问我怎么引用文章，就有了这一篇基础的LaTeX引用方法",
   },
   {
     date : 20250206,
@@ -61,7 +61,7 @@ const recommend = [
     date : 20241215,
     link : "writings/julia-set.pdf",
     title : "Julia集的计算机艺术",
-    info : "(pdf文件) 简单的迭代居然能生成复杂而迷人的图形。（某个课程作业）",
+    info : "（pdf文件)（某课程作业）简单的迭代居然能生成复杂而迷人的图形。",
   },
   {
     date : "Nov 17, 2024",
