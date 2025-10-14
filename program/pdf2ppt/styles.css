@@ -1,0 +1,67 @@
+html,
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	background-color: #f0f2f5;
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	padding: 20px;
+	box-sizing: border-box;
+	text-align: center;
+	transition: background-color 0.3s ease;
+}
+
+.container.dragover {
+	background-color: #e0e4e8;
+	border: 4px dashed #007bff;
+}
+
+#pdf-input {
+	display: none;
+}
+
+.upload-btn {
+	display: inline-block;
+	padding: 30px 50px;
+	font-size: 28px;
+	font-weight: bold;
+	color: #fff;
+	background-color: #007bff;
+	border: none;
+	border-radius: 12px;
+	cursor: pointer;
+	transition: background-color 0.3s ease, transform 0.2s ease;
+	margin-bottom: 25px;
+}
+
+.upload-btn:hover {
+	background-color: #0056b3;
+	transform: translateY(-2px);
+}
+
+.upload-btn:active {
+	transform: translateY(1px);
+}
+
+.info-text {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-size: 16px;
+	color: #6c757d;
+	max-width: 600px;
+}
+
+.info-text a {
+	color: #007bff;
+	text-decoration: none;
+}
