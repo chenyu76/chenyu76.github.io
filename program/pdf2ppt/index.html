@@ -12,6 +12,12 @@
 <body>
 
 	<div id="drop-container" class="container">
+		<p class="info-text">
+			Convert .pdf to .pptx.
+		</p>
+		<p class="info-text">Resolution: <input style="max-width: 70px;" class="info-text" type="text"
+				id="resolution-input" placeholder="2560">px
+		</p>
 		<label for="pdf-input" id="upload-label" class="upload-btn">
 			Choose PDF
 		</label>
@@ -19,9 +25,11 @@
 		<p class="info-text" id="info-text-downloaded">
 		</p>
 		<p class="info-text">
-			Convert .pdf to .pptx.
-			<br>
 			Drag & drop or click to select a .pdf file.
+			<br>
+			This converter converts each page of PDF into a picture and puts it into PPT, so the content
+			cannot be
+			edited directly, but the PDF style can be perfectly preserved.
 			<br>
 			Powered by <a href="https://mozilla.github.io/pdf.js/" target="_blank">PDF.js</a> & <a
 				href="https://gitbrent.github.io/PptxGenJS/" target="_blank">PptxGenJS</a>.

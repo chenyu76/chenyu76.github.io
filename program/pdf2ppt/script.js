@@ -87,7 +87,9 @@ async function processPdf(file) {
         const page = await pdf.getPage(i);
 
         const originalViewport = page.getViewport({scale : 1});
-        const targetPixels = 2560; // resolution
+        const pxStr = document.getElementById("resolution-input").value;
+        const targetPixels = pxStr == "" ? 2560 : parseInt(pxStr); // resolution
+
         const longestSide =
             Math.max(originalViewport.width, originalViewport.height);
         const scaleFor4k = targetPixels / longestSide;

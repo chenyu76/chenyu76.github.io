@@ -32,8 +32,8 @@ body {
 
 .upload-btn {
 	display: inline-block;
-	padding: 30px 50px;
-	font-size: 28px;
+	padding: 15px 25px;
+	font-size: 1.5em;
 	font-weight: bold;
 	color: #fff;
 	background-color: #007bff;
@@ -42,6 +42,7 @@ body {
 	cursor: pointer;
 	transition: background-color 0.3s ease, transform 0.2s ease;
 	margin-bottom: 25px;
+	margin-top: 25px;
 }
 
 .upload-btn:hover {
