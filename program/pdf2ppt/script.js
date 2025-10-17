@@ -81,14 +81,14 @@ async function processPdf(file) {
       });
       pptx.layout = 'CUSTOM_PDF_LAYOUT';
 
+      const pxStr = document.getElementById("resolution-input").value;
+      const targetPixels = pxStr == "" ? 2560 : parseInt(pxStr); // resolution
       for (let i = 1; i <= numPages; i++) {
         uploadLabel.textContent = `Processing page ${i}/${numPages}`;
 
         const page = await pdf.getPage(i);
 
         const originalViewport = page.getViewport({scale : 1});
-        const pxStr = document.getElementById("resolution-input").value;
-        const targetPixels = pxStr == "" ? 2560 : parseInt(pxStr); // resolution
 
         const longestSide =
             Math.max(originalViewport.width, originalViewport.height);

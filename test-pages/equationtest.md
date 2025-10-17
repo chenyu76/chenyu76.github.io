@@ -45,8 +45,8 @@ Here is a simple footnote[^1].
 A footnote can also have multiple lines[^2].
 
 [^1]: My reference.
-[^2]: To add line breaks within a footnote, prefix new lines with 2 spaces.
-  This is a second line.
+[^2]: To add line breaks within a footnote, prefix new lines with many spaces.
+    This is a second line.
 
 
 A strange picture:
@@ -71,3 +71,18 @@ what?
 
 > [!CAUTION]
 > Negative potential consequences of an action.
+
+## wao
+
+> [!CAUTION]
+> 数域$X$上的两个不相交的闭集$A$, $B$有可能可以并成$X$。
+> 例如考虑$\mathbb Q$上的集合
+> 
+> $$
+> A = \{x\in \mathbb Q \mid x^2 <2 \}, \quad B = \{x\in \mathbb Q \mid x^2 > 2\}.
+> $$
+> 这两个集合在$\mathbb Q$上都是既开又闭的，但$A\cup B=\mathbb Q$.
+> 但是由于$\mathbb R$是连通的，所以这种集合不存在。
+
+
+
