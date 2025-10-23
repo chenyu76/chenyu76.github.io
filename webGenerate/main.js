@@ -1,11 +1,12 @@
 import path from "path";
-import { generateRecommend, tocGen, __dirname, __filename } from "./toc.js";
+
 import {
-	readTemplateHTML,
-	allMarkdown2Html,
-	generateHtmlFile,
-	convertMarkdown,
+  allMarkdown2Html,
+  convertMarkdown,
+  generateHtmlFile,
+  readTemplateHTML,
 } from "./convert2HTML.js";
+import {__dirname, __filename, generateRecommend, tocGen} from "./toc.js";
 
 const foldingFuncForTOC = `
 <script>
@@ -38,35 +39,35 @@ const rootPath = path.dirname(__dirname);
 const articles = allMarkdown2Html(rootPath, templateHTML);
 // 文件生成完成后生成目录
 generateHtmlFile(
-	path.join(rootPath, "toc.html"),
-	templateHTML,
-	"文档索引",
-	"",
-	`<h1>文档索引</h1>`,
-	tocGen(rootPath, articles),
-	"",
-	foldingFuncForTOC,
+    path.join(rootPath, "toc.html"),
+    templateHTML,
+    "文档索引",
+    "",
+    `<h1>文档索引</h1>`,
+    tocGen(rootPath, articles),
+    "",
+    foldingFuncForTOC,
 );
 // 生成主页
 generateHtmlFile(
-	path.join(rootPath, "index.html"),
-	templateHTML,
-	"欢迎来到我的主页",
-	"",
-	`<h1>主页</h1>`,
-	`${convertMarkdown(path.join(rootPath, "README.md")).html}<br> 
+    path.join(rootPath, "index.html"),
+    templateHTML,
+    "chenyu76的主页",
+    "",
+    `<h1>主页</h1>`,
+    `${convertMarkdown(path.join(rootPath, "README.md")).html}<br> 
   ${generateRecommend(1, articles)}`,
-	"",
-	"",
+    "",
+    "",
 );
 // 生成404页面
 generateHtmlFile(
-	path.join(rootPath, "404.html"),
-	templateHTML,
-	"404 not found",
-	"",
-	"<h1>404 Not Found</h1>",
-	"<p>你访问的页面不存在，可能是因为链接错误或者页面已被移动或删除。</p><br><img src=\"/img/404.svg\" />",
-	"",
-	"",
+    path.join(rootPath, "404.html"),
+    templateHTML,
+    "404 not found",
+    "",
+    "<h1>404 Not Found</h1>",
+    "<p>你访问的页面不存在，可能是因为链接错误或者页面已被移动或删除。</p><br><img src=\"/img/404.svg\" />",
+    "",
+    "",
 );
