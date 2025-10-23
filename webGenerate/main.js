@@ -56,7 +56,8 @@ generateHtmlFile(
     "",
     `<h1>主页</h1>`,
     `${convertMarkdown(path.join(rootPath, "README.md")).html}<br> 
-  ${generateRecommend(1, articles)}`,
+${generateRecommend(1, articles)}<br><hr>
+${convertMarkdown(path.join(rootPath, "program", "readme.md")).html}`,
     "",
     "",
 );
