@@ -85,13 +85,13 @@
 		#pointer-svg {
 			position: absolute;
 			/* 定位在转盘包装器的右侧中间 */
-			top: 50%;
-			left: 100%;
+			top: 0%;
+			left: 50%;
 			/* 贴在右边 */
-			width: 40px;
-			height: 16px;
+			width: 16px;
+			height: 40px;
 			/* (x, y) 向左平移一点使其尖端指向圆心，向上平移一半高度 */
-			transform: translate(-30px, -50%);
+			transform: translate(-50%, -10px);
 			z-index: 10;
 			/* 确保在转盘上层 */
 			overflow: visible;
@@ -100,13 +100,7 @@
 		#pointer-path {
 			fill: #333;
 			stroke: #333;
-			/* 预留的指针旋转效果：
-              设置旋转原点为指针的"根部" (0% 50%)
-              您可以通过 JS 修改 transform 来让它摆动
-            */
-			transform-origin: 100% 50%;
-			/* transition: transform 0.1s ease-out; */
-			/* 示例: transform: rotate(10deg); */
+			transform-origin: 50% 0%;
 		}
 
 		/* 5. 控件样式 */
@@ -151,8 +145,8 @@
 				<svg id="turntable-svg" viewBox="-105 -105 210 210">
 				</svg>
 
-				<svg id="pointer-svg" viewBox="0 0 40 10">
-					<path id="pointer-path" d="M 0 5 L 40 0 L 40 10 Z" />
+				<svg id="pointer-svg" viewBox="0 0 10 40">
+					<path id="pointer-path" d="M 5 40 L 0 0 L 10 0 Z" />
 				</svg>
 			</div>
 		</div>
@@ -329,7 +323,7 @@
 					spinButton.disabled = false; // 允许再次旋转
 
 					// --- 计算最终指向 ---
-					const finalAngle = (450 - turntablePhysics.x) % 360; // 0度在顶部
+					const finalAngle = (360 - turntablePhysics.x) % 360; // 0度在顶部
 					const itemIndex = Math.floor(finalAngle / (360 / items.length));
 					console.log(items[itemIndex]);
 				}
@@ -339,7 +333,7 @@
 					let d = turntableDimensions;
 					return d.k1 * x + d.k3 * x * x * x;
 				}
-				const x0 = (turntablePhysics.x + 270) % (360 / items.length);
+				const x0 = (turntablePhysics.x) % (360 / items.length);
 				const x1 = x0 < 3 ? -f(x0 / 57.29578) * 57.29578 : 0;
 				if (pointerPhysics.x < x1) {
 					pointerPhysics.a = -pointerPhysics.x * pointerPhysics.da * deltaTime;
