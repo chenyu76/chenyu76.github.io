@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "highlight.js": "^11.11.1",
-    "marked": "^16.4.1",
+    "marked": "^17.0.0",
     "marked-alert": "^2.1.2",
     "marked-footnote": "^1.4.0",
-    "marked-highlight": "^2.2.2",
-    "marked-katex-extension": "^5.1.5"
+    "marked-highlight": "^2.2.3",
+    "marked-katex-extension": "^5.1.6"
   }
 }

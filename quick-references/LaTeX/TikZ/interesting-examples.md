@@ -1472,6 +1472,8 @@
 \documentclass[a4paper,zihao=5,UTF8]{ctexart}
 \usepackage{tikz}
 \usetikzlibrary{positioning, shapes.geometric}
+% 原图来自
+% https://x.com/hatadanna/status/1762484912446153031
 
 \begin{document}
 這個是風鈴：
