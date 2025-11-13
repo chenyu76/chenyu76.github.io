@@ -2,419 +2,421 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Turntable</title>
-	<style>
-		/* 1. 基础和背景设置 */
-		html,
-		body {
-			margin: 0;
-			padding: 0;
-			width: 100%;
-			height: 100%;
-			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-			overflow: hidden;
-		}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Turntable</title>
+  <link rel="icon" type="image/x-icon" href="/img/icon/turntable.svg">
+  <style>
+    /* 1. 基础和背景设置 */
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow: hidden;
+    }
 
-		body {
-			background-color: #f0f0f0;
-			/* 淡灰色背景 */
-		}
+    body {
+      background-color: #f0f0f0;
+      /* 淡灰色背景 */
+    }
 
-		/* 2. 响应式布局容器 */
-		.container {
-			display: flex;
-			width: 100vw;
-			height: 100vh;
-			/* 默认竖屏：转盘在上，按钮在下 */
-			flex-direction: column;
-		}
+    /* 2. 响应式布局容器 */
+    .container {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      /* 默认竖屏：转盘在上，按钮在下 */
+      flex-direction: column;
+    }
 
-		/* 横屏时：转盘在左，按钮在右 */
-		@media (orientation: landscape) {
-			.container {
-				flex-direction: row;
-			}
-		}
+    /* 横屏时：转盘在左，按钮在右 */
+    @media (orientation: landscape) {
+      .container {
+        flex-direction: row;
+      }
+    }
 
-		/* 3. 布局区域 */
-		.turntable-area,
-		.controls-area {
-			flex: 1 1 50%;
-			/* 两个区域平分空间 */
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			position: relative;
-			/* 为指针定位提供锚点 */
-			padding: 20px;
-			box-sizing: border-box;
-		}
+    /* 3. 布局区域 */
+    .turntable-area,
+    .controls-area {
+      flex: 1 1 50%;
+      /* 两个区域平分空间 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      /* 为指针定位提供锚点 */
+      padding: 20px;
+      box-sizing: border-box;
+    }
 
-		.controls-area {
-			flex-direction: column;
-			/* 按钮区内部垂直排列 */
-			gap: 15px;
-		}
+    .controls-area {
+      flex-direction: column;
+      /* 按钮区内部垂直排列 */
+      gap: 15px;
+    }
 
-		/* 4. 转盘和指针样式 */
+    /* 4. 转盘和指针样式 */
 
-		/* 使用一个包装器来精确定位转盘和指针 */
-		.wheel-wrapper {
-			position: relative;
-			/* 使用 vmin 来确保转盘在屏幕上始终可见 */
-			width: 80vmin;
-			height: 80vmin;
-			max-width: 400px;
-			max-height: 400px;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
+    /* 使用一个包装器来精确定位转盘和指针 */
+    .wheel-wrapper {
+      position: relative;
+      /* 使用 vmin 来确保转盘在屏幕上始终可见 */
+      width: 80vmin;
+      height: 80vmin;
+      max-width: 400px;
+      max-height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-		#turntable-svg {
-			width: 100%;
-			height: 100%;
-			/* 确保SVG背景透明 */
-			background-color: transparent;
-			/* 初始旋转角度 */
-			transform: rotate(0deg);
-		}
+    #turntable-svg {
+      width: 100%;
+      height: 100%;
+      /* 确保SVG背景透明 */
+      background-color: transparent;
+      /* 初始旋转角度 */
+      transform: rotate(0deg);
+    }
 
-		#pointer-svg {
-			position: absolute;
-			/* 定位在转盘包装器的右侧中间 */
-			top: 0%;
-			left: 50%;
-			/* 贴在右边 */
-			width: 16px;
-			height: 40px;
-			/* (x, y) 向左平移一点使其尖端指向圆心，向上平移一半高度 */
-			transform: translate(-50%, -10px);
-			z-index: 10;
-			/* 确保在转盘上层 */
-			overflow: visible;
-		}
+    #pointer-svg {
+      position: absolute;
+      /* 定位在转盘包装器的右侧中间 */
+      top: 0%;
+      left: 50%;
+      /* 贴在右边 */
+      width: 16px;
+      height: 40px;
+      /* (x, y) 向左平移一点使其尖端指向圆心，向上平移一半高度 */
+      transform: translate(-50%, -10px);
+      z-index: 10;
+      /* 确保在转盘上层 */
+      overflow: visible;
+    }
 
-		#pointer-path {
-			fill: #333;
-			stroke: #333;
-			transform-origin: 50% 0%;
-		}
+    #pointer-path {
+      fill: #333;
+      stroke: #333;
+      transform-origin: 50% 0%;
+    }
 
-		/* 5. 控件样式 */
-		#item-input {
-			width: 80%;
-			max-width: 300px;
-			padding: 10px;
-			font-size: 16px;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-		}
+    /* 5. 控件样式 */
+    #item-input {
+      width: 80%;
+      max-width: 300px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
 
-		#spin-button {
-			padding: 12px 25px;
-			font-size: 18px;
-			font-weight: bold;
-			color: white;
-			background-color: #007bff;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-			transition: background-color 0.2s;
-		}
+    #spin-button {
+      padding: 12px 25px;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
 
-		#spin-button:hover {
-			background-color: #0056b3;
-		}
+    #spin-button:hover {
+      background-color: #0056b3;
+    }
 
-		#spin-button:disabled {
-			background-color: #aaa;
-			cursor: not-allowed;
-		}
-	</style>
+    #spin-button:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+  </style>
 </head>
 
 <body>
 
-	<div class="container">
+  <div class="container">
 
-		<div class="turntable-area">
-			<div class="wheel-wrapper">
-				<svg id="turntable-svg" viewBox="-105 -105 210 210">
-				</svg>
+    <div class="turntable-area">
+      <div class="wheel-wrapper">
+        <svg id="turntable-svg" viewBox="-105 -105 210 210">
+        </svg>
 
-				<svg id="pointer-svg" viewBox="0 0 10 40">
-					<path id="pointer-path" d="M 5 40 L 0 0 L 10 0 Z" />
-				</svg>
-			</div>
-		</div>
+        <svg id="pointer-svg" viewBox="0 0 10 40">
+          <path id="pointer-path" d="M 5 40 L 0 0 L 10 0 Z" />
+        </svg>
+      </div>
+    </div>
 
-		<div class="controls-area">
-			<textarea id="item-input" rows="5"
-				placeholder="A number or items separated by new lines or commas."></textarea>
-			<button id="spin-button">↻</button>
-		</div>
+    <div class="controls-area">
+      <textarea id="item-input" rows="5" placeholder="A number or items separated by new lines or commas."></textarea>
+      <button id="spin-button">↻</button>
+    </div>
 
-	</div>
+  </div>
 
-	<script>
-		var turntableDimensions = {
-			R: 0, // 转盘半径
-			L: 0, // 指针长度
-			S: 0, // 指针根部端到圆心距离
-			k1: 0, // 展开的一次项
-			k3: 0 // 展开的3次项
-		}
+  <script>
+    var turntableDimensions = {
+      R: 0, // 转盘半径
+      L: 0, // 指针长度
+      S: 0, // 指针根部端到圆心距离
+      k1: 0, // 展开的一次项
+      k3: 0 // 展开的3次项
+    }
 
-		var pointerPhysics = {
-			x: 0, // 角位移
-			v: 0, // 角速度
-			a: 0, // 角加速度
-			da: 0.01, // 阻尼系数
-			dv: 0.01, // 速度
-			dx: 0.01 // 位移
-		}
+    var pointerPhysics = {
+      x: 0, // 角位移
+      v: 0, // 角速度
+      a: 0, // 角加速度
+      da: 0.01, // 阻尼系数
+      dv: 0.01, // 速度
+      dx: 0.01 // 位移
+    }
 
-		var turntablePhysics = {
-			x: 0, // 当前角度
-			v: 0, // 角速度
-			a: 0, // 角加速度
-			da: 0.005, // 阻尼系数
-			dv: 0.01, // 速度
-			dx: 0.01 // 位移
-		}
+    var turntablePhysics = {
+      x: 0, // 当前角度
+      v: 0, // 角速度
+      a: 0, // 角加速度
+      da: 0.005, // 阻尼系数
+      dv: 0.01, // 速度
+      dx: 0.01 // 位移
+    }
 
-		var lastTimestamp = 0; // 上一帧时间戳
+    var lastTimestamp = 0; // 上一帧时间戳
 
-		function calculateDimensions() {
-			let d = turntableDimensions;
-			const wheelSVG = document.getElementById('turntable-svg');
-			const pointerSVG = document.getElementById('pointer-svg');
-			const turntableRect = wheelSVG.getBoundingClientRect();
-			const pointerRect = pointerSVG.getBoundingClientRect();
-			turntableDimensions.R = turntableRect.width / 2;
-			turntableDimensions.L = pointerRect.width;
-			turntableDimensions.S = d.R + 10;
-			turntableDimensions.k1 = d.R / (-d.R + d.S)
-			turntableDimensions.k3 = (d.R * d.S * (d.R + d.S)) / (6 * Math.pow(d.R - d.S, 3));
+    function calculateDimensions() {
+      let d = turntableDimensions;
+      const wheelSVG = document.getElementById('turntable-svg');
+      const pointerSVG = document.getElementById('pointer-svg');
+      const turntableRect = wheelSVG.getBoundingClientRect();
+      const pointerRect = pointerSVG.getBoundingClientRect();
+      turntableDimensions.R = turntableRect.width / 2;
+      turntableDimensions.L = pointerRect.width;
+      turntableDimensions.S = d.R + 10;
+      turntableDimensions.k1 = d.R / (-d.R + d.S)
+      turntableDimensions.k3 = (d.R * d.S * (d.R + d.S)) / (6 * Math.pow(d.R - d.S, 3));
 
-		}
+    }
 
-		calculateDimensions();
-		// 窗口大小改变时重新计算
-		window.addEventListener('resize', calculateDimensions);
-
-
-		document.addEventListener('DOMContentLoaded', () => {
-
-			// --- 1. 获取 DOM 元素 ---
-			const wheelSVG = document.getElementById('turntable-svg');
-			const spinButton = document.getElementById('spin-button');
-			const itemInput = document.getElementById('item-input');
-			const pointerPath = document.getElementById('pointer-path'); // 指针路径
-
-			// --- 2. 动画变量 ---
-			//let currentRotation = 0;    // 当前旋转角度
-			//let angularVelocity = 0;    // 角速度
-			//const damping = 0.995;      // 阻尼系数 (0.99 ~ 0.999 之间)
-			let isSpinning = false;     // 是否正在旋转
-
-			let items = [];              // 当前转盘项目列表
-
-			// --- 3. 辅助函数：角度转 SVG 坐标 ---
-			// (0,0)为圆心, r为半径, angleInDegrees为角度 (0度在顶部)
-			function polarToCartesian(r, angleInDegrees) {
-				const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
-				return {
-					x: r * Math.cos(angleInRadians),
-					y: r * Math.sin(angleInRadians)
-				};
-			}
-
-			// --- 4. 核心功能：生成转盘 SVG ---
-			function generateWheel(items) {
-				// 清空旧的 SVG 内容
-				wheelSVG.innerHTML = '';
-				const numItems = items.length;
-				if (numItems === 0) return;
-
-				const anglePerItem = 360 / numItems;
-				const radius = 100; // SVG viewBox 的半径
-
-				items.forEach((item, i) => {
-					const startAngle = i * anglePerItem;
-					const midAngle = startAngle + anglePerItem / 2;
-
-					// A. 绘制分割线 (实线)
-					const {x, y} = polarToCartesian(radius, startAngle);
-					const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-					line.setAttribute('x1', '0');
-					line.setAttribute('y1', '0');
-					line.setAttribute('x2', x);
-					line.setAttribute('y2', y);
-					line.setAttribute('stroke', '#333'); // 实线
-					line.setAttribute('stroke-width', '1');
-					wheelSVG.appendChild(line);
-
-					// B. 绘制文字 (并旋转)
-					const textRadius = radius * 0.6; // 文字放在 60% 半径处
-					const textPos = polarToCartesian(textRadius, midAngle);
-
-					const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-					text.setAttribute('x', textPos.x);
-					text.setAttribute('y', textPos.y);
-					text.setAttribute('dy', '.35em'); // 垂直居中
-					text.setAttribute('text-anchor', 'middle'); // 水平居中
-					// 核心：旋转文字，使其朝向外侧
-					text.setAttribute('transform', `rotate(${midAngle}, ${textPos.x}, ${textPos.y})`);
-					text.textContent = item;
-					text.style.fontSize = "10px"; // 可根据需要调整
-					text.style.userSelect = "none"; // 防止选中
-					wheelSVG.appendChild(text);
-				});
-
-				// C. 绘制外围实线圆形
-				const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-				circle.setAttribute('cx', '0');
-				circle.setAttribute('cy', '0');
-				circle.setAttribute('r', radius);
-				circle.setAttribute('fill', 'none'); // 透明背景
-				circle.setAttribute('stroke', '#333'); // 实线
-				circle.setAttribute('stroke-width', '2');
-				wheelSVG.appendChild(circle);
-			}
-
-			// --- 5. 核心功能：动画循环 ---
-			function animationLoop(timestamp) {
-				// 计算时间差
-				var deltaTime = timestamp - lastTimestamp;
-				if (deltaTime < 16) {  // 大约每16ms更新一次 (~60FPS)
-					requestAnimationFrame(animationLoop);
-					return;
-				}
-				lastTimestamp = timestamp;
-				if (deltaTime > 128) deltaTime = 128; // 限制最大时间差，防止卡顿时跳动过大
-
-				if (!isSpinning) {
-					// 即使不旋转也要保持循环，以便随时响应
-					requestAnimationFrame(animationLoop);
-					return;
-				}
-
-				if (Math.abs(turntablePhysics.v) > 0.1) {
-					// 速度越快，阻力越大
-					turntablePhysics.a = -turntablePhysics.v * turntablePhysics.da * deltaTime;
-					turntablePhysics.v += turntablePhysics.a * turntablePhysics.dv * deltaTime;
-					turntablePhysics.x += turntablePhysics.v * turntablePhysics.dx * deltaTime
-					turntablePhysics.x = turntablePhysics.x % 360;
-
-					// 更新 SVG 样式
-					wheelSVG.style.transform = `rotate(${turntablePhysics.x}deg)`;
-				}
-				else {
-					// 停止条件
-					turntablePhysics.x = 0;
-					turntablePhysics.v = 0;
-					turntablePhysics.a = 0;
-
-					isSpinning = false;
-					spinButton.disabled = false; // 允许再次旋转
-
-					// --- 计算最终指向 ---
-					const finalAngle = (360 - turntablePhysics.x) % 360; // 0度在顶部
-					const itemIndex = Math.floor(finalAngle / (360 / items.length));
-					console.log(items[itemIndex]);
-				}
-
-				// --- 指针摆动 ---
-				function f(x) {
-					let d = turntableDimensions;
-					return d.k1 * x + d.k3 * x * x * x;
-				}
-				const x0 = (turntablePhysics.x) % (360 / items.length);
-				const x1 = x0 < 3 ? -f(x0 / 57.29578) * 57.29578 : 0;
-				if (pointerPhysics.x < x1) {
-					pointerPhysics.a = -pointerPhysics.x * pointerPhysics.da * deltaTime;
-					pointerPhysics.v += pointerPhysics.a * pointerPhysics.dv * deltaTime;
-					pointerPhysics.x += pointerPhysics.v * pointerPhysics.dx * deltaTime;
-				}
-				else {
-					pointerPhysics.x = x1;
-				}
-				if (pointerPhysics.x > 80) {
-					pointerPhysics.x = 80;
-					pointerPhysics.v = 0;
-				}
-				if (pointerPhysics.x < -80) {
-					pointerPhysics.x = -80;
-					pointerPhysics.v = 0;
-				}
-				pointerPath.style.transform = `rotate(${pointerPhysics.x}deg)`;
+    calculateDimensions();
+    // 窗口大小改变时重新计算
+    window.addEventListener('resize', calculateDimensions);
 
 
-				requestAnimationFrame(animationLoop);
-			}
+    document.addEventListener('DOMContentLoaded', () => {
 
-			// --- 6. 事件监听 ---
+      // --- 1. 获取 DOM 元素 ---
+      const wheelSVG = document.getElementById('turntable-svg');
+      const spinButton = document.getElementById('spin-button');
+      const itemInput = document.getElementById('item-input');
+      const pointerPath = document.getElementById('pointer-path'); // 指针路径
 
-			// 旋转按钮点击
-			spinButton.addEventListener('click', () => {
-				if (isSpinning) return;
+      // --- 2. 动画变量 ---
+      //let currentRotation = 0;    // 当前旋转角度
+      //let angularVelocity = 0;    // 角速度
+      //const damping = 0.995;      // 阻尼系数 (0.99 ~ 0.999 之间)
+      let isSpinning = false;     // 是否正在旋转
 
-				isSpinning = true;
-				spinButton.disabled = true;
+      let items = [];              // 当前转盘项目列表
 
-				// 给一个随机的初始角速度
-				turntablePhysics.v = Math.random() * 150 + 150;
-			});
+      // --- 3. 辅助函数：角度转 SVG 坐标 ---
+      // (0,0)为圆心, r为半径, angleInDegrees为角度 (0度在顶部)
+      function polarToCartesian(r, angleInDegrees) {
+        const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+        return {
+          x: r * Math.cos(angleInRadians),
+          y: r * Math.sin(angleInRadians)
+        };
+      }
 
-			// 输入框内容变化时，重新生成转盘
-			function updateWheelFromInput() {
-				const text = itemInput.value.trim();
-				const lineItems = text.split('\n').filter(line => line.trim() !== ''); // 按行分割，并移除空行
+      // --- 4. 核心功能：生成转盘 SVG ---
+      function generateWheel(items) {
+        // 清空旧的 SVG 内容
+        wheelSVG.innerHTML = '';
+        const numItems = items.length;
+        if (numItems === 0) return;
 
-				if (lineItems.length == 1) {
-					// 如果只有一行，尝试按逗号分割
-					// 替换全角逗号为半角逗号
-					lineItems[0] = lineItems[0].replace(/，/g, ',');
-					const commaItems = lineItems[0].split(',').map(item => item.trim()).filter(item => item !== '');
-					if (commaItems.length > 1) {
-						items = commaItems;
-						generateWheel(items);
-						return;
-					}
-					else {
-						var numberItems = parseInt(lineItems[0]);
-						if (!isNaN(numberItems) && numberItems > 1) {
-							// 如果是一个数字，生成对应数量的默认项目
-							if (numberItems > 100) numberItems = 100; // 限制最大数量
-							const defaultItems = Array.from({length: numberItems}, (_, i) => `${i + 1}`);
-							items = defaultItems;
-							generateWheel(items);
-							return;
-						}
-					}
-				}
-				else if (lineItems.length > 0) {
-					items = lineItems;
-					generateWheel(items);
-					return;
-				}
-				// 如果没有输入，使用默认值
-				items = ['A', 'B', 'C', 'D', 'E'];
-				generateWheel(items);
+        const anglePerItem = 360 / numItems;
+        const radius = 100; // SVG viewBox 的半径
 
-			}
+        items.forEach((item, i) => {
+          const startAngle = i * anglePerItem;
+          const midAngle = startAngle + anglePerItem / 2;
 
-			itemInput.addEventListener('input', updateWheelFromInput);
+          // A. 绘制分割线 (实线)
+          const {x, y} = polarToCartesian(radius, startAngle);
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', '0');
+          line.setAttribute('y1', '0');
+          line.setAttribute('x2', x);
+          line.setAttribute('y2', y);
+          line.setAttribute('stroke', '#333'); // 实线
+          line.setAttribute('stroke-width', '1');
+          wheelSVG.appendChild(line);
 
-			// --- 7. 初始启动 ---
-			updateWheelFromInput(); // 使用默认值或输入框的 placeholder 内容初始化
-			animationLoop(); // 启动动画循环
-		});
-	</script>
+          // B. 绘制文字 (并旋转)
+          const textRadius = radius * 0.6; // 文字放在 60% 半径处
+          const textPos = polarToCartesian(textRadius, midAngle);
+
+          const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          text.setAttribute('x', textPos.x);
+          text.setAttribute('y', textPos.y);
+          text.setAttribute('dy', '.35em'); // 垂直居中
+          text.setAttribute('text-anchor', 'middle'); // 水平居中
+          // 核心：旋转文字，使其朝向外侧
+          text.setAttribute('transform', `rotate(${midAngle}, ${textPos.x}, ${textPos.y})`);
+          text.textContent = item;
+          text.style.fontSize = "10px"; // 可根据需要调整
+          text.style.userSelect = "none"; // 防止选中
+          wheelSVG.appendChild(text);
+        });
+
+        // C. 绘制外围实线圆形
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', '0');
+        circle.setAttribute('cy', '0');
+        circle.setAttribute('r', radius);
+        circle.setAttribute('fill', 'none'); // 透明背景
+        circle.setAttribute('stroke', '#333'); // 实线
+        circle.setAttribute('stroke-width', '2');
+        wheelSVG.appendChild(circle);
+      }
+
+      // --- 5. 核心功能：动画循环 ---
+      function animationLoop(timestamp) {
+        // 计算时间差
+        var deltaTime = timestamp - lastTimestamp;
+        if (deltaTime < 16) {  // 大约每16ms更新一次 (~60FPS)
+          requestAnimationFrame(animationLoop);
+          return;
+        }
+        lastTimestamp = timestamp;
+        if (deltaTime > 128) deltaTime = 128; // 限制最大时间差，防止卡顿时跳动过大
+
+        if (!isSpinning) {
+          // 即使不旋转也要保持循环，以便随时响应
+          requestAnimationFrame(animationLoop);
+          return;
+        }
+
+        if (Math.abs(turntablePhysics.v) > 0.1) {
+          // 速度越快，阻力越大
+          turntablePhysics.a = -turntablePhysics.v * turntablePhysics.da * deltaTime;
+          turntablePhysics.v += turntablePhysics.a * turntablePhysics.dv * deltaTime;
+          turntablePhysics.x += turntablePhysics.v * turntablePhysics.dx * deltaTime
+          turntablePhysics.x = turntablePhysics.x % 360;
+
+          // 更新 SVG 样式
+          wheelSVG.style.transform = `rotate(${turntablePhysics.x}deg)`;
+        }
+        else {
+          // 停止条件
+          turntablePhysics.x = 0;
+          turntablePhysics.v = 0;
+          turntablePhysics.a = 0;
+
+          isSpinning = false;
+          spinButton.disabled = false; // 允许再次旋转
+
+          // --- 计算最终指向 ---
+          const finalAngle = (360 - turntablePhysics.x) % 360; // 0度在顶部
+          const itemIndex = Math.floor(finalAngle / (360 / items.length));
+          console.log(items[itemIndex]);
+        }
+
+        // --- 指针摆动 ---
+        function f(x) {
+          let d = turntableDimensions;
+          return d.k1 * x + d.k3 * x * x * x;
+        }
+        const x0 = (turntablePhysics.x) % (360 / items.length);
+        const x1 = x0 < 3 ? -f(x0 / 57.29578) * 57.29578 : 0;
+        if (pointerPhysics.x < x1) {
+          pointerPhysics.a = -pointerPhysics.x * pointerPhysics.da * deltaTime;
+          pointerPhysics.v += pointerPhysics.a * pointerPhysics.dv * deltaTime;
+          pointerPhysics.x += pointerPhysics.v * pointerPhysics.dx * deltaTime;
+        }
+        else {
+          pointerPhysics.x = x1;
+        }
+        if (pointerPhysics.x > 80) {
+          pointerPhysics.x = 80;
+          pointerPhysics.v = 0;
+        }
+        if (pointerPhysics.x < -80) {
+          pointerPhysics.x = -80;
+          pointerPhysics.v = 0;
+        }
+        pointerPath.style.transform = `rotate(${pointerPhysics.x}deg)`;
+
+
+        requestAnimationFrame(animationLoop);
+      }
+
+      // --- 6. 事件监听 ---
+
+      // 旋转按钮点击
+      spinButton.addEventListener('click', () => {
+        if (isSpinning) return;
+
+        isSpinning = true;
+        spinButton.disabled = true;
+
+        // 给一个随机的初始角速度
+        turntablePhysics.v = Math.random() * 150 + 150;
+        //给一个随机的初始角度
+        turntablePhysics.x = Math.random() * 360;
+      });
+
+      // 输入框内容变化时，重新生成转盘
+      function updateWheelFromInput() {
+        const text = itemInput.value.trim();
+        const lineItems = text.split('\n').filter(line => line.trim() !== ''); // 按行分割，并移除空行
+
+        if (lineItems.length == 1) {
+          // 如果只有一行，尝试按逗号分割
+          // 替换全角逗号为半角逗号
+          lineItems[0] = lineItems[0].replace(/，/g, ',');
+          const commaItems = lineItems[0].split(',').map(item => item.trim()).filter(item => item !== '');
+          if (commaItems.length > 1) {
+            items = commaItems;
+            generateWheel(items);
+            return;
+          }
+          else {
+            var numberItems = parseInt(lineItems[0]);
+            if (!isNaN(numberItems) && numberItems > 1) {
+              // 如果是一个数字，生成对应数量的默认项目
+              if (numberItems > 100) numberItems = 100; // 限制最大数量
+              const defaultItems = Array.from({length: numberItems}, (_, i) => `${i + 1}`);
+              items = defaultItems;
+              generateWheel(items);
+              return;
+            }
+          }
+        }
+        else if (lineItems.length > 0) {
+          items = lineItems;
+          generateWheel(items);
+          return;
+        }
+        // 如果没有输入，使用默认值
+        items = ['A', 'B', 'C', 'D', 'E'];
+        generateWheel(items);
+
+      }
+
+      itemInput.addEventListener('input', updateWheelFromInput);
+
+      // --- 7. 初始启动 ---
+      updateWheelFromInput(); // 使用默认值或输入框的 placeholder 内容初始化
+      animationLoop(); // 启动动画循环
+    });
+  </script>
 
 </body>
 
