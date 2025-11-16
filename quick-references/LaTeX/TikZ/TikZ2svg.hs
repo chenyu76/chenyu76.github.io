@@ -1,5 +1,11 @@
 #!/usr/bin/env runhaskell
 
+-- TikZ to SVG converter using xelatex and inkscape
+-- Reads TikZ code from stdin and outputs SVG to stdout
+-- Dependencies: xelatex, inkscape
+-- Usage: cat diagram.tikz | runhaskell TikZ2svg.hs > diagram.svg
+-- Or in vim: select TikZ code and run :'<,'>!./TikZ2svg.hs
+
 import Control.Monad (unless)
 import Data.Functor ((<&>))
 import System.Exit (ExitCode (..), exitWith)
