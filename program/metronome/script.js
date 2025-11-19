@@ -15,12 +15,48 @@ const beatIndicatorSvg = document.getElementById('beat-indicator-svg');
 const rippleEl = document.getElementById('ripple-layer');
 const playIcon = document.getElementById('play-icon');
 const pauseIcon = document.getElementById('pause-icon');
+const metronomeArm = document.getElementById('metronome-arm')
+const metronomeArmBg = document.getElementById('metronome-arm-bg')
 
 // 全局变量用于存储唤醒锁对象
 let wakeLock = null;
 
+let metronomeAnimationFrameId = null;
+
+// 节拍器摆动最大角度
+const maxAngle = 10;
+let currentAngle = 0;
+
 // === 初始化 ===
 function init() { drawBeatIndicators(); }
+
+function metronomeAnimateLoop(timestamp) {
+  // 如果当前状态为暂停，则退出（安全检查，通常由 cancelAnimationFrame 控制）
+  if (!isPlaying) {
+    return;
+  }
+
+  const period = (60 * 1000 / bpm); // 每拍周期，单位ms
+  const remainingTime = nextNoteTime - timestamp;
+
+  // 计算当前摆臂角度（使用正弦函数实现平滑摆动）
+  const angle =
+      maxAngle * Math.sin((Math.PI / period) * (period - remainingTime));
+  if (Math.abs(angle - currentAngle) < 0.1) {
+    rotateMetronomeArm(angle);
+    currentAngle = angle;
+  } else {
+    rotateMetronomeArm(-angle);
+    currentAngle = -angle;
+  }
+
+  animationFrameId = window.requestAnimationFrame(metronomeAnimateLoop);
+}
+
+function rotateMetronomeArm(angle) {
+  metronomeArm.setAttribute('transform', `rotate(${angle}, 100, 180)`);
+  metronomeArmBg.setAttribute('transform', `rotate(${angle}, 100, 180)`);
+}
 
 // === 逻辑控制 ===
 function changeBpm(amount) {
@@ -109,6 +145,13 @@ async function togglePlay() {
     // 在开始播放时请求唤醒锁
     await requestWakeLock();
 
+    if (metronomeAnimationFrameId !== null) {
+      window.cancelAnimationFrame(metronomeAnimationFrameId);
+    }
+    // 启动动画循环
+    metronomeAnimationFrameId =
+        window.requestAnimationFrame(metronomeAnimateLoop);
+
     scheduler();
   } else {
     // 停止逻辑
@@ -116,6 +159,11 @@ async function togglePlay() {
     playIcon.style.display = 'block';
     pauseIcon.style.display = 'none';
     resetVisuals();
+
+    if (metronomeAnimationFrameId !== null) {
+      window.cancelAnimationFrame(metronomeAnimationFrameId);
+      metronomeAnimationFrameId = null; // 清空 ID
+    }
 
     // 在停止播放时释放唤醒锁
     await releaseWakeLock();
@@ -169,6 +217,7 @@ function scheduleNote(beatNumber, time) {
   osc.stop(time + 0.05);
 
   const timeUntilDraw = (time - audioCtx.currentTime) * 1000;
+  // 触发视觉效果
   setTimeout(() => { triggerVisuals(beatNumber); }, Math.max(0, timeUntilDraw));
 }
 
