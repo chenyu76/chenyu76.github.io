@@ -4,6 +4,7 @@
   --theme-color: #333333;
   --accent-color: #555555;
   --ripple-opacity: 0.4;
+  --main-stroke-width: 3px;
 }
 
 body {
@@ -19,6 +20,81 @@ body {
   user-select: none;
   overflow: hidden;
 }
+
+/* ==================================== */
+/* 1. 默认状态 (横向空间不足): 垂直排列 */
+/* ==================================== */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  /* 默认垂直堆叠 */
+  align-items: center;
+  /* 垂直时，子项在水平居中 */
+  min-height: 300px;
+}
+
+.metronome-ui {
+  padding: 20px;
+  margin: 10px;
+  /* 垂直状态下，子项的宽度 */
+  width: 90%;
+  text-align: center;
+  min-width: 384px;
+
+  display: flex;
+  /* 启用 Flex 布局 */
+  flex-direction: column;
+  /* 保持子项（如 beat-controls）垂直堆叠 */
+  align-items: center;
+  /* 在主轴垂直时，使子项在交叉轴（水平方向）居中 */
+  justify-content: center;
+  /* （可选）如果您也希望内容在垂直方向上居中 */
+}
+
+/* 确保在非常小的高度下，节拍器宽度仍然适应屏幕 */
+#metronome {
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+@media (max-width: 768px) {
+  #metronome {
+    height: calc(90vh - 110vw);
+  }
+}
+
+@media (max-width: 500px) {
+  .metronome-ui {
+    transform: scale(0.8);
+  }
+}
+
+@media (max-height: 500px) {
+  #metronome {
+    height: calc(90vh - 30px);
+  }
+
+  .metronome-ui {
+    transform: scale(0.8);
+  }
+}
+
+@media (min-width: 768px) {
+  .main-container {
+    flex-direction: row;
+    /* 切换为横向并排 */
+    justify-content: center;
+    /* 横向时，子项在水平居中 */
+    align-items: flex-start;
+    /* 保持顶部对齐（可选）*/
+  }
+
+  .metronome-ui {
+    /* 横向状态下，子项的宽度 */
+    width: 45%;
+  }
+}
+
 
 /* 通用 SVG 按钮样式 */
 .btn-svg {
