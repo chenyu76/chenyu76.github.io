@@ -24,6 +24,7 @@ const metronomeArmBg = document.getElementById('metronome-arm-bg')
 let wakeLock = null;
 
 let metronomeAnimationFrameId = null;
+let metronomeStartTime = 0;
 
 // 节拍器摆动最大角度
 const maxAngle = 10;
@@ -35,11 +36,9 @@ function metronomeAnimateLoop(_timestamp) {
   if (!isPlaying)
     return;
 
-  const secondsPerBeat = 60 / bpm;
-  const currentTime = audioCtx.currentTime;
-
-  // 直接映射到余弦波
-  const angle = -maxAngle * Math.cos(Math.PI * currentTime / secondsPerBeat);
+  const angle = -maxAngle *
+                Math.cos(Math.PI * (audioCtx.currentTime - metronomeStartTime) /
+                         (60 / bpm));
 
   rotateMetronomeArm(angle);
   animationFrameId = window.requestAnimationFrame(metronomeAnimateLoop);
@@ -138,6 +137,7 @@ async function togglePlay() {
 
     currentBeatIndex = 0;
     nextNoteTime = audioCtx.currentTime;
+    metronomeStartTime = nextNoteTime;
     playIcon.style.display = 'none';
     pauseIcon.style.display = 'block';
 
