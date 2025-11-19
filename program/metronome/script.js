@@ -16,6 +16,9 @@ const rippleEl = document.getElementById('ripple-layer');
 const playIcon = document.getElementById('play-icon');
 const pauseIcon = document.getElementById('pause-icon');
 
+// 全局变量用于存储唤醒锁对象
+let wakeLock = null;
+
 // === 初始化 ===
 function init() { drawBeatIndicators(); }
 
@@ -46,10 +49,51 @@ function changeBeats(amount) {
   }
 }
 
-function togglePlay() {
+// 辅助函数：封装请求唤醒锁的逻辑
+async function requestWakeLock() {
+  // 仅当浏览器支持 Wake Lock 且当前没有锁时才尝试获取
+  if ('wakeLock' in navigator && wakeLock === null) {
+    try {
+      wakeLock = await navigator.wakeLock.request('screen');
+      // console.log('Screen Wake Lock successfully acquired.');
+
+      // === 释放事件监听器 ===
+      wakeLock.addEventListener('release', async () => {
+        // console.log('Screen Wake Lock was released automatically.');
+
+        // 检查：如果音乐仍在播放 且 页面可见，则尝试重新获取锁
+        // (页面可见性检查是必要的，因为锁通常在页面隐藏时释放)
+        if (isPlaying && document.visibilityState === 'visible') {
+          // console.log('Music is still playing. Re-acquiring Wake Lock...');
+          wakeLock = null; // 在重新请求前清除旧的引用
+          await requestWakeLock();
+        } else {
+          wakeLock = null; // 确保状态同步
+        }
+      });
+
+    } catch (err) {
+      console.error(`Could not acquire wake lock: ${err.name}, ${err.message}`);
+      wakeLock = null;
+    }
+  }
+}
+
+// 辅助函数：封装释放唤醒锁的逻辑
+async function releaseWakeLock() {
+  if (wakeLock !== null) {
+    await wakeLock.release();
+    wakeLock = null;
+    // console.log('Screen Wake Lock released.');
+  }
+}
+
+// **核心函数：已整合 Wake Lock 调用**
+async function togglePlay() {
   isPlaying = !isPlaying;
 
   if (isPlaying) {
+    // 播放逻辑
     if (!audioCtx) {
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
@@ -61,14 +105,31 @@ function togglePlay() {
     nextNoteTime = audioCtx.currentTime;
     playIcon.style.display = 'none';
     pauseIcon.style.display = 'block';
+
+    // 在开始播放时请求唤醒锁
+    await requestWakeLock();
+
     scheduler();
   } else {
+    // 停止逻辑
     window.clearTimeout(timerID);
     playIcon.style.display = 'block';
     pauseIcon.style.display = 'none';
     resetVisuals();
+
+    // 在停止播放时释放唤醒锁
+    await releaseWakeLock();
   }
 }
+
+// 当用户从其他标签页切回当前播放页面时，需要重新获取锁
+document.addEventListener('visibilitychange', async () => {
+  if (isPlaying && document.visibilityState === 'visible') {
+    // 如果音乐正在播放 且 页面重新可见，则尝试获取锁
+    await requestWakeLock();
+  }
+  // 注意：在页面隐藏时，浏览器通常会自动释放锁，无需手动调用 release。
+});
 
 // === 音频引擎 ===
 function scheduler() {
