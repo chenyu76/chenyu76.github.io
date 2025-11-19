@@ -11,6 +11,8 @@ const lookahead = 25.0;
 const scheduleAheadTime = 0.1;
 
 const bpmDisplay = document.getElementById('bpm-value');
+const bpmContainer = document.getElementById('bpm-container');
+const bpmInput = document.getElementById('bpm-input');
 const beatIndicatorSvg = document.getElementById('beat-indicator-svg');
 const rippleEl = document.getElementById('ripple-layer');
 const playIcon = document.getElementById('play-icon');
@@ -25,47 +27,44 @@ let metronomeAnimationFrameId = null;
 
 // 节拍器摆动最大角度
 const maxAngle = 10;
-let currentAngle = 0;
 
 // === 初始化 ===
 function init() { drawBeatIndicators(); }
 
-function metronomeAnimateLoop(timestamp) {
-  // 如果当前状态为暂停，则退出（安全检查，通常由 cancelAnimationFrame 控制）
-  if (!isPlaying) {
+function metronomeAnimateLoop(_timestamp) {
+  if (!isPlaying)
     return;
-  }
 
-  const period = (60 * 1000 / bpm); // 每拍周期，单位ms
-  const remainingTime = nextNoteTime - timestamp;
+  const secondsPerBeat = 60 / bpm;
+  const currentTime = audioCtx.currentTime;
 
-  // 计算当前摆臂角度（使用正弦函数实现平滑摆动）
-  const angle =
-      maxAngle * Math.sin((Math.PI / period) * (period - remainingTime));
-  if (Math.abs(angle - currentAngle) < 0.1) {
-    rotateMetronomeArm(angle);
-    currentAngle = angle;
-  } else {
-    rotateMetronomeArm(-angle);
-    currentAngle = -angle;
-  }
+  // 直接映射到余弦波
+  const angle = -maxAngle * Math.cos(Math.PI * currentTime / secondsPerBeat);
 
+  rotateMetronomeArm(angle);
   animationFrameId = window.requestAnimationFrame(metronomeAnimateLoop);
 }
 
 function rotateMetronomeArm(angle) {
+  currentAngle = angle;
   metronomeArm.setAttribute('transform', `rotate(${angle}, 100, 180)`);
   metronomeArmBg.setAttribute('transform', `rotate(${angle}, 100, 180)`);
 }
 
 // === 逻辑控制 ===
 function changeBpm(amount) {
+  if (amount > 1 && bpm == 1)
+    bpm = 0;
   bpm += amount;
   if (bpm < 1)
     bpm = 1;
   if (bpm > 300)
     bpm = 300;
   bpmDisplay.textContent = bpm;
+  if (isPlaying) { // 重新启动以应用新的 BPM
+    togglePlay();
+    togglePlay();
+  }
 }
 
 function changeBeats(amount) {
@@ -332,6 +331,51 @@ function toggleAbout() {
     aboutSection.style.display = 'none';
   } else {
     aboutSection.style.display = 'block';
+  }
+}
+
+// 点击BPM显示区域切换到输入模式
+bpmContainer.addEventListener('click', function() {
+  // 隐藏显示值，显示输入框
+  bpmDisplay.style.display = 'none';
+  bpmInput.style.display = 'block';
+
+  // 设置输入框的值
+  bpmInput.value = bpm;
+
+  // 自动聚焦并选择文本
+  bpmInput.focus();
+  bpmInput.select();
+});
+// 当输入框失去焦点时保存
+bpmInput.addEventListener('blur', saveBPM);
+// 按Enter键保存
+bpmInput.addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    saveBPM();
+  }
+});
+// 使用输入框保存BPM值的函数
+function saveBPM() {
+  const newBPM = parseInt(bpmInput.value);
+
+  // 验证输入
+  if (isNaN(newBPM) || newBPM < 1 || newBPM > 600) {
+    // 如果输入无效，恢复原值
+    bpmInput.value = bpm;
+  } else {
+    // 更新BPM值
+    bpm = newBPM;
+    bpmDisplay.textContent = bpm;
+  }
+
+  // 切换回显示模式
+  bpmDisplay.style.display = 'block';
+  bpmInput.style.display = 'none';
+
+  if (isPlaying) { // 重新启动以应用新的 BPM
+    togglePlay();
+    togglePlay();
   }
 }
 

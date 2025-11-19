@@ -213,7 +213,9 @@ body {
   z-index: 10;
 }
 
+#bpm-input,
 #bpm-value {
+  text-align: center;
   font-size: 80px;
   font-weight: bold;
   z-index: 20;
