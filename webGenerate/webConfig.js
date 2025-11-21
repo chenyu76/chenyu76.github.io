@@ -7,9 +7,17 @@
  * title:
  * 标题（可选，若不填，尝试从对应的markdown文件的第一行寻找标题）
  * info:
- * 介绍（可选，若不填，我希望能从生成的html文件里找到第一个<p>填进去，但目前还没实现）
+ * 介绍（html格式）
+ * （可选，若不填，我希望能从生成的html文件里找到第一个<p>填进去，但目前还没实现）
  */
 export const recommend = [
+  {
+    date : 20251121,
+    link : "https://github.com/chenyu76/glyph-ascii-canvas",
+    title : "Glyph ASCII Canvas",
+    info :
+        "（Github链接）一个可以将图片转换为ASCII艺术的Python程序。<br>This program generates ASCII art from images using a sliding window template matching approach. Unlike simpler ASCII converters that map pixels directly to characters based on brightness, this algorithm considers the shape and spatial relationships by comparing image patches against rendered font templates using Mean Squared Error (MSE)."
+  },
   {
     date : 20250825,
     link : "writings/new-year-new-theme.html",
@@ -116,6 +124,6 @@ export const gitRepositories = {
   ].map(myRepo)
 };
 
-function myRepo(repo) { return `git@github.com:chenyu76/${repo}.git`; }
+function myRepo(repo) { return `https://github.com/chenyu76/${repo}.git`; }
 
 export default {recommend, gitRepositories};
