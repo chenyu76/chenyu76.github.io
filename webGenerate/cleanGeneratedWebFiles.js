@@ -66,7 +66,7 @@ function removeFile(path) {
 // 执行清理操作
 const rootPath = path.dirname(__dirname);
 deleteGeneratedHTML(rootPath);
-deleteRepositories(rootPath, gitRepositories)
+await deleteRepositories(rootPath, gitRepositories)
 removeFile(path.join(rootPath, "index.html"));
 removeFile(path.join(rootPath, "toc.html"));
 removeFile(path.join(rootPath, "404.html"));
