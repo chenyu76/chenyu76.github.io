@@ -9,7 +9,7 @@
  * info:
  * 介绍（可选，若不填，我希望能从生成的html文件里找到第一个<p>填进去，但目前还没实现）
  */
-const recommend = [
+export const recommend = [
   {
     date : 20250825,
     link : "writings/new-year-new-theme.html",
@@ -105,4 +105,17 @@ const recommend = [
   },
 ];
 
-export default recommend;
+/*
+ * Git 仓库列表
+ * 键为相对于根目录的路径
+ * 值为该路径下需要同步的 Git 仓库 URL 列表
+ */
+export const gitRepositories = {
+  "program" : [
+    "draw-n-pointed-star", "color_wars", "hextris", "metronome", "tetris"
+  ].map(myRepo)
+};
+
+function myRepo(repo) { return `git@github.com:chenyu76/${repo}.git`; }
+
+export default {recommend, gitRepositories};

@@ -6,7 +6,9 @@ import {
   generateHtmlFile,
   readTemplateHTML,
 } from "./convert2HTML.js";
+import {syncRepositories} from "./syncRepositories.js";
 import {__dirname, __filename, generateRecommend, tocGen} from "./toc.js";
+import {gitRepositories} from "./webConfig.js";
 
 const foldingFuncForTOC = `
 <script>
@@ -34,7 +36,10 @@ function toggleNextNextVis(self) {
 
 // 遍历文件夹，处理其中的 .md 文件,生成html文件
 const templateHTML = readTemplateHTML(path.join(__dirname, "template.html"));
+// 获取项目根目录，即脚本目录的上一级目录
 const rootPath = path.dirname(__dirname);
+// 同步git仓库
+await syncRepositories(rootPath, gitRepositories);
 // 生成makdown文件对应的html文件
 const articles = allMarkdown2Html(rootPath, templateHTML);
 // 文件生成完成后生成目录
