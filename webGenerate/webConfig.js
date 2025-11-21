@@ -1,3 +1,17 @@
+/*
+ * 网站提交时附带的其他 Git 仓库列表
+ * submodule 要反复同步更新这些仓库，不是很方便
+ * 键为相对于根目录的路径
+ * 值为该路径下需要同步的 Git 仓库 URL 列表
+ */
+export const gitRepositories = {
+  "program" : [
+    "draw-n-pointed-star", "color_wars", "hextris", "metronome", "tetris"
+  ].map(myRepo)
+};
+
+function myRepo(repo) { return `https://github.com/chenyu76/${repo}`; }
+
 /**
  * 主页的推荐内容
  * link: 链接
@@ -112,18 +126,5 @@ export const recommend = [
     info : "第一篇文章",
   },
 ];
-
-/*
- * Git 仓库列表
- * 键为相对于根目录的路径
- * 值为该路径下需要同步的 Git 仓库 URL 列表
- */
-export const gitRepositories = {
-  "program" : [
-    "draw-n-pointed-star", "color_wars", "hextris", "metronome", "tetris"
-  ].map(myRepo)
-};
-
-function myRepo(repo) { return `https://github.com/chenyu76/${repo}.git`; }
 
 export default {recommend, gitRepositories};
