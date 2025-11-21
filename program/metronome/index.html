@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metronome</title>
+  <link rel="icon" type="image/x-icon" href="./favicon.svg">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <div class="main-container">
+    <div class="metronome-display metronome-ui">
+      <svg id="metronome" viewBox="0 0 200 200" stroke-linecap="round">
+        <polygon points="100,20 80,180 120,180" fill="none" stroke="var(--theme-color)"
+          stroke-width="var(--main-stroke-width)" />
+        <line id="metronome-arm-bg" x1="100" y1="160" x2="100" y2="50" stroke="var(--bg-color)"
+          style="stroke-width: calc(var(--main-stroke-width) * 2);" />
+        <line id="metronome-arm" x1="100" y1="180" x2="100" y2="50" stroke="var(--theme-color)"
+          stroke-width="var(--main-stroke-width)" />
+      </svg>
+    </div>
+
+    <div class="metronome-controls metronome-ui">
+      <div class="beat-controls">
+        <svg class="btn-svg" width="30" height="30" viewBox="0 -960 960 960" onclick="changeBeats(-1)">
+          <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+        </svg>
+
+        <svg id="beat-indicator-svg"></svg>
+
+        <svg class="btn-svg" width="30" height="30" viewBox="0 -960 960 960" onclick="changeBeats(1)">
+          <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+        </svg>
+        </svg>
+      </div>
+
+      <div class="bpm-container">
+        <div class="control-group">
+          <svg xmlns="http://www.w3.org/2000/svg" class="btn-svg" width="24" height="24" viewBox="0 -960 960 960"
+            onclick="changeBpm(-20)">
+            <path d="M160-240H80v-480h80v480Zm320 0L240-480l240-240 56 56-143 144h487v80H393l144 144-57 56Z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="btn-svg" width="24" height="24" viewBox="0 -960 960 960"
+            onclick="changeBpm(-5)">
+            <path
+              d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="btn-svg" width="24" height="24" viewBox="0 -960 960 960"
+            onclick="changeBpm(-1)">
+            <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+          </svg>
+        </div>
+
+        <div class="bpm-display-wrapper" id="bpm-container">
+          <div id="ripple-layer" class="ripple"></div>
+          <div id="bpm-value">120</div>
+          <input type="number" id="bpm-input" min="40" max="300" style="display: none;">
+        </div>
+
+        <div class="control-group">
+          <svg xmlns="http://www.w3.org/2000/svg" class="btn-svg" width="24" height="24" viewBox="0 -960 960 960"
+            onclick="changeBpm(1)">
+            <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="btn-svg" width="24" height="24" viewBox="0 -960 960 960"
+            onclick="changeBpm(5)">
+            <path
+              d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="btn-svg" width="24" height="24" viewBox="0 -960 960 960"
+            onclick="changeBpm(20)">
+            <path d="M800-240v-480h80v480h-80Zm-320 0-57-56 144-144H80v-80h487L424-664l56-56 240 240-240 240Z" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="play-controls">
+        <svg id="play-btn" class="btn-svg" width="60" height="60" viewBox="0 -960 960 960" onclick="togglePlay()">
+          <path id="play-icon" d="M320-200v-560l440 280-440 280Zm80-280Zm0 134 210-134-210-134v268Z" />
+          <path id="pause-icon"
+            d="M520-200v-560h240v560H520Zm-320 0v-560h240v560H200Zm400-80h80v-400h-80v400Zm-320 0h80v-400h-80v400Zm0-400v400-400Zm320 0v400-400Z"
+            style="display: none;" />
+        </svg>
+      </div>
+
+      <div class="footer">
+        <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px"
+          onclick="toggleAbout()" class="btn-svg">
+          <path
+            d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+        </svg>
+        <div id="about-text" style="display: none;">
+          <p>
+            Metronome.
+            <br>
+            Press
+            <svg id="play-btn-2" class="btn-svg" width="1em" height="1em" viewBox="0 -960 960 960"
+              onclick="togglePlay()" transform="translate(0,2)">
+              <path id="play-icon" d="M320-200v-560l440 280-440 280Zm80-280Zm0 134 210-134-210-134v268Z" />
+            </svg>
+            to start or stop the metronome.
+            <br>
+            Icon from <a href="https://fonts.google.com/icons?icon.size=24&icon.color=%231f1f1f">Google</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script.js" defer></script>
+</body>
+
+</html>

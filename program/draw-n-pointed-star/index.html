@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>N角星</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <svg id="polygonSvg" width="400" height="400" viewBox="0 0 400 400">
+        <!-- 多边形边将在这里动态生成 -->
+      </svg>
+      <div class="controls">
+        <label for="sides">形状:</label>
+        <input id="sides" value="5:3" />
+        <button id="helpBtn">帮助</button>
+        <div id="tooltip" class="tooltip">
+          <p>
+            这是一个N角星绘制工具， 在框中输入<code>n₁:m₁, n₂:m₂, ...</code
+            >格式的数据来绘制图形， 其中nₛ是边数，mₛ是连接间隔，例如输入<code>5:2</code>表示在5个顶点中，每个顶点连接其后第2个顶点（模5）。<br />
+          </p>
+          <p><strong>示例：</strong></p>
+          <ul>
+            <li><code>5:2</code> → 五角星（5个顶点，间隔2个点连接）</li>
+            <li><code>8:3</code> → 八角星（8个顶点，间隔3个点连接）</li>
+            <li><code>6:2</code> → 六芒星（6个顶点，间隔2个点连接）</li>
+            <li><code>10:2,5:2</code> → 由两个五角形组成的十角星</li>
+            <li><code>35:5,7:2</code> → 由5个7角形组成的35角星</li>
+          </ul>
+          <p>
+            <code>mₛ</code>可以替换为<code>[mₛ₁, mₛ₂, ...]</code>
+            使用不同间隔轮流填充
+          </p>
+          <p><strong>示例：</strong></p>
+          <ul>
+            <li>
+              <code>16:[4,2]</code> → 16角星，但是轮流使用八边形和四边形填充
+            </li>
+          </ul>
+          <p>在连接间隔后面加上小数点可以使形状不调用接下来的间隔</p>
+          <p><strong>示例：</strong></p>
+          <ul>
+            <li>
+              <code>10:[2,2.],5:2</code> → 由一个五边形和一个五角形组成的10角星
+            </li>
+            <li><code>60:[12,12.],5:2</code> → 由五边形和五角形组成的60角星</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script src="./script.js" defer></script>
+  </body>
+</html>

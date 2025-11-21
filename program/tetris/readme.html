@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>由算法控制难度的俄罗斯方块</title>
+
+	<!-- css样式 -->
+	<link rel="stylesheet" href="/styles.css" />
+	<!-- 标签页图标 -->
+	<link rel="icon" href="/favicon.png" type="image/png" />
+
+	<!-- 背景css -->
+	<link rel="stylesheet" href="/img/pixelart/styles.css" />
+
+	
+</head>
+
+<body>
+	<!-- 背景js -->
+	<div id="pixel-art">
+		<div id="pixel-art-background"></div>
+		<div id="pixel-art-midground"></div>
+		<div id="pixel-art-foreground"></div>
+	</div>
+	<script src="/img/pixelart/imgMatrix.js"></script>
+	<script src="/img/pixelart/sky_element.js"></script>
+	<script src="/img/pixelart/land.js"></script>
+	<script src="/img/pixelart/pampas_grass.js"></script>
+	<script src="/img/pixelart/script.js"></script>
+
+	<div id="title-container">
+		<div id="spacer"></div>
+		<div id="top-buttons-wrapper" class="top-buttons">
+			<a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc"
+					class="icon" /></a><a href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg"
+					alt="Home" class="icon" /></a><a href="https://github.com/chenyu76" target="_blank"
+				title="跳转到 GitHub" class="fade-in"><img src="/img/icon/github.svg" alt="Github" class="icon" /></a><a
+				href="/About.html" title="关于" class="fade-in"><img src="/img/icon/info.svg" alt="Info"
+					class="icon" /></a>
+		</div>
+		<div id="heading"><h3>program/tetris</h3><h1>由算法控制难度的俄罗斯方块</h1></div>
+	</div>
+	<div id="anime-spacer" class="shrinked"></div>
+	<div id="content-wrapper-bg">
+		<div id="content-wrapper">
+			<div id="content"><div class="toc">
+<h2>目录</h2>
+<ul>
+<ul>
+<li><a href="#h2-u7b97u6cd5u5b9eu73b0">算法实现</a></li>
+<ul>
+<li><a href="#h3-u8bc4u4f30u51fdu6570">评估函数</a></li>
+<li><a href="#h3-u4e00u4e9bu5b9eu73b0u7ec6u8282">一些实现细节</a></li>
+</ul>
+<li><a href="#h2-u8ba9aiu51b3u5b9au4e0bu4e00u4e2au65b9u5757-u4ee5u6b64u63a7u5236u96beu5ea6">让AI决定下一个方块，以此控制难度</a></li>
+<li><a href="#h2-u5df2u77e5bug">已知bug</a></li>
+</ul>
+</ul>
+</div>
+<hr>
+<p>如果一个俄罗斯方块每次给你的方块不是随机的，而是暗中由算法控制，或是帮助你，或是阻止你。</p>
+<p><a href="https://chenyu76.github.io/program/tetris/index.html">开始游戏</a></p>
+<h2 id="h2-u7b97u6cd5u5b9eu73b0">算法实现</h2><p>AI的核心思想是模拟。对于当前正在下落的方块，AI会穷举其所有可能的旋转状态和最终落点位置。对每一种可能性，它都会模拟方块下落后形成的新局面，然后使用一个评估函数来为这个新局面打分。分数越低，代表局面越优。最终，AI会选择那个能够产生最低分（即最优局面）的操作来执行。</p>
+<h3 id="h3-u8bc4u4f30u51fdu6570">评估函数</h3><p>评估函数是AI的决策核心，它通过计算损失值来判断一个局面的好坏。这个损失值由四个指标加权计算得出：</p>
+<ul>
+<li>接触面：计算方块落稳后，其边缘与其他方块或边界接触的总面数。接触面越多，通常意味着方块嵌入得越好，结构越稳定。</li>
+<li>消除行： 一次操作能消除的行数，游戏的核心目标。</li>
+<li>空洞：指的是在方块下方被封闭住的空格。空洞是游戏中的坏状态，难以填补且浪费空间。</li>
+<li>高度：方块堆积的平均高度。高度越低，未来的操作空间就越大，局面越有利。</li>
+</ul>
+<p>通过调整这四个指标的权重，可以改变AI的行为策略，例如让它变得更激进（专注于消行）或更稳健（专注于保持低高度和无空洞）。</p>
+<p>实现中，算法四个权重是我选取的经验值，并不一定最优。</p>
+<h3 id="h3-u4e00u4e9bu5b9eu73b0u7ec6u8282">一些实现细节</h3><ol>
+<li>双层模拟：AI不仅仅考虑当前方块的最佳落点，还会预读下一个即将出现的方块。 具体流程如下：<ol>
+<li>对于当前方块的每一种可能走法，AI会先计算出落子后的临时局面和损失值（loss1）。</li>
+<li>接着，基于这个临时局面，AI会继续对下一个方块进行完全相同的模拟，找出下一个方块在该局面下的最优走法，并计算其损失值（loss2）。</li>
+<li>最终，AI会将两个损失值相加（loss1 + loss2），并将这个总和作为评价当前方块走法的最终依据。</li>
+</ol>
+</li>
+<li>对称性优化：为了提高计算效率，AI在模拟旋转时利用了方块的对称群。即：<ul>
+<li>“O”型方块（正方形）只有1种旋转形态。</li>
+<li>“I”型、“S”型、“Z”型方块只有2种有效旋转形态。</li>
+<li>“L”型、“J”型、“T”型方块有4种旋转形态。</li>
+</ul>
+</li>
+</ol>
+<h2 id="h2-u8ba9aiu51b3u5b9au4e0bu4e00u4e2au65b9u5757-u4ee5u6b64u63a7u5236u96beu5ea6">让AI决定下一个方块，以此控制难度</h2><p>基于上述指标，AI可以评估不同类型的方块对于当前局面的利弊。 AI可以模拟出如果下一个方块是“I”、“L”、“T”等任意一种时，局面的最优损失值分别是多少。这样，它就能判断出：</p>
+<ul>
+<li>最佳方块：哪种方块是当前局面最需要的（最低loss）。</li>
+<li>最差方块：哪种方块是当前局面最不希望遇到的（最高loss）。</li>
+</ul>
+<p>在游戏中，有一个难度条，当为0时，是原版默认的俄罗斯方块；
+当为正数时，每个下落的方块会有难度数值的概率转交给AI决定，使用当前情况下的最差方块；
+当为负数时，每个下落的方块会有难度数值绝对值的概率转交给AI决定，使用当前情况下的最佳方块。</p>
+<h2 id="h2-u5df2u77e5bug">已知bug</h2><ul>
+<li>有时玩到后期旧方块没完全下落同时生成新方块，方块相撞导致游戏结束；</li>
+<li>游玩时未暂停切出标签页不会自动暂停。</li>
+</ul>
+</div>
+			<div id="footnote"></div>
+		</div>
+		<div class="bottom-button">
+			<button onclick="scrollToTop()" title="滚动到顶部">
+				<img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+			</button>
+		</div>
+	</div>
+	<script src="/script.js"></script>
+	
+</body>
+
+</html>
