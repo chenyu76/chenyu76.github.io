@@ -31,7 +31,7 @@ function parseRepoInfo(url) {
  * 下载对应Github仓库并解压 (Sync via Zip)
  * 清理旧目录 -> curl 下载 -> unzip 解压 -> 修正文件夹名称
  */
-async function syncRepositories(rootPath, reps) {
+export async function syncRepositories(rootPath, reps) {
   console.log(`开始在 ${rootPath} 下同步仓库 (ZIP 下载模式)...\n`);
 
   for (const [relativePath, urls] of Object.entries(reps)) {
