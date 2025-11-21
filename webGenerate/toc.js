@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import {fileURLToPath} from "url";
 
-import recommend from "./recommend.js";
+import {recommend} from "./webConfig.js";
 
 // 获取当前文件的路径
 export const __filename = fileURLToPath(import.meta.url);
