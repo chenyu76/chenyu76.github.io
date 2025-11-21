@@ -124,6 +124,6 @@ export const gitRepositories = {
   ].map(myRepo)
 };
 
-function myRepo(repo) { return `git@github.com:chenyu76/${repo}.git`; }
+function myRepo(repo) { return `https://github.com/chenyu76/${repo}.git`; }
 
 export default {recommend, gitRepositories};
