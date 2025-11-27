@@ -6,7 +6,8 @@
  */
 export const gitRepositories = {
   "program" : [
-    "draw-n-pointed-star", "color_wars", "hextris", "metronome", "tetris"
+    "draw-n-pointed-star", "color_wars", "hextris", "metronome", "tetris",
+    "turntable-web"
   ].map(myRepo)
 };
 
