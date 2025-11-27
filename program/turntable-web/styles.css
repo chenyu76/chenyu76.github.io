@@ -1,0 +1,127 @@
+/* 1. 基础和背景设置 */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+}
+
+body {
+  background-color: #f0f0f0;
+  /* 淡灰色背景 */
+}
+
+/* 2. 响应式布局容器 */
+.container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  /* 默认竖屏：转盘在上，按钮在下 */
+  flex-direction: column;
+}
+
+/* 横屏时：转盘在左，按钮在右 */
+@media (orientation: landscape) {
+  .container {
+    flex-direction: row;
+  }
+}
+
+/* 3. 布局区域 */
+.turntable-area,
+.controls-area {
+  flex: 1 1 50%;
+  /* 两个区域平分空间 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  /* 为指针定位提供锚点 */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.controls-area {
+  flex-direction: column;
+  /* 按钮区内部垂直排列 */
+  gap: 15px;
+}
+
+/* 4. 转盘和指针样式 */
+
+/* 使用一个包装器来精确定位转盘和指针 */
+.wheel-wrapper {
+  position: relative;
+  /* 使用 vmin 来确保转盘在屏幕上始终可见 */
+  width: 80vmin;
+  height: 80vmin;
+  max-width: 400px;
+  max-height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#turntable-svg {
+  width: 100%;
+  height: 100%;
+  /* 确保SVG背景透明 */
+  background-color: transparent;
+  /* 初始旋转角度 */
+  transform: rotate(0deg);
+}
+
+#pointer-svg {
+  position: absolute;
+  /* 定位在转盘包装器的右侧中间 */
+  top: 0%;
+  left: 50%;
+  /* 贴在右边 */
+  width: 16px;
+  height: 40px;
+  /* (x, y) 向左平移一点使其尖端指向圆心，向上平移一半高度 */
+  transform: translate(-50%, -10px);
+  z-index: 10;
+  /* 确保在转盘上层 */
+  overflow: visible;
+}
+
+#pointer-path {
+  fill: #333;
+  stroke: #333;
+  transform-origin: 50% 0%;
+}
+
+/* 5. 控件样式 */
+#item-input {
+  width: 80%;
+  max-width: 300px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#spin-button {
+  padding: 12px 25px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#spin-button:hover {
+  background-color: #0056b3;
+}
+
+#spin-button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}

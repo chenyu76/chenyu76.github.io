@@ -1,0 +1,260 @@
+var turntableDimensions = {
+  R : 0,  // 转盘半径
+  L : 0,  // 指针长度
+  S : 0,  // 指针根部端到圆心距离
+  k1 : 0, // 展开的一次项
+  k3 : 0  // 展开的3次项
+}
+
+var pointerPhysics = {
+  x : 0,     // 角位移
+  v : 0,     // 角速度
+  a : 0,     // 角加速度
+  da : 0.01, // 阻尼系数
+  dv : 0.01, // 速度
+  dx : 0.01  // 位移
+}
+
+var turntablePhysics = {
+  x : 0,      // 当前角度
+  v : 0,      // 角速度
+  a : 0,      // 角加速度
+  da : 0.005, // 阻尼系数
+  dv : 0.01,  // 速度
+  dx : 0.01   // 位移
+}
+
+var lastTimestamp = 0; // 上一帧时间戳
+
+function calculateDimensions() {
+  let d = turntableDimensions;
+  const wheelSVG = document.getElementById('turntable-svg');
+  const pointerSVG = document.getElementById('pointer-svg');
+  const turntableRect = wheelSVG.getBoundingClientRect();
+  const pointerRect = pointerSVG.getBoundingClientRect();
+  turntableDimensions.R = turntableRect.width / 2;
+  turntableDimensions.L = pointerRect.width;
+  turntableDimensions.S = d.R + 10;
+  turntableDimensions.k1 = d.R / (-d.R + d.S)
+  turntableDimensions.k3 =
+      (d.R * d.S * (d.R + d.S)) / (6 * Math.pow(d.R - d.S, 3));
+}
+
+calculateDimensions();
+// 窗口大小改变时重新计算
+window.addEventListener('resize', calculateDimensions);
+
+document.addEventListener('DOMContentLoaded', () => {
+  // --- 1. 获取 DOM 元素 ---
+  const wheelSVG = document.getElementById('turntable-svg');
+  const spinButton = document.getElementById('spin-button');
+  const itemInput = document.getElementById('item-input');
+  const pointerPath = document.getElementById('pointer-path'); // 指针路径
+
+  // --- 2. 动画变量 ---
+  // let currentRotation = 0;    // 当前旋转角度
+  // let angularVelocity = 0;    // 角速度
+  // const damping = 0.995;      // 阻尼系数 (0.99 ~ 0.999 之间)
+  let isSpinning = false; // 是否正在旋转
+
+  let items = []; // 当前转盘项目列表
+
+  // --- 3. 辅助函数：角度转 SVG 坐标 ---
+  // (0,0)为圆心, r为半径, angleInDegrees为角度 (0度在顶部)
+  function polarToCartesian(r, angleInDegrees) {
+    const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+    return {x : r * Math.cos(angleInRadians), y : r * Math.sin(angleInRadians)};
+  }
+
+  // --- 4. 核心功能：生成转盘 SVG ---
+  function generateWheel(items) {
+    // 清空旧的 SVG 内容
+    wheelSVG.innerHTML = '';
+    const numItems = items.length;
+    if (numItems === 0)
+      return;
+
+    const anglePerItem = 360 / numItems;
+    const radius = 100; // SVG viewBox 的半径
+
+    items.forEach((item, i) => {
+      const startAngle = i * anglePerItem;
+      const midAngle = startAngle + anglePerItem / 2;
+
+      // A. 绘制分割线 (实线)
+      const {x, y} = polarToCartesian(radius, startAngle);
+      const line =
+          document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', '0');
+      line.setAttribute('y1', '0');
+      line.setAttribute('x2', x);
+      line.setAttribute('y2', y);
+      line.setAttribute('stroke', '#333'); // 实线
+      line.setAttribute('stroke-width', '1');
+      wheelSVG.appendChild(line);
+
+      // B. 绘制文字 (并旋转)
+      const textRadius = radius * 0.6; // 文字放在 60% 半径处
+      const textPos = polarToCartesian(textRadius, midAngle);
+
+      const text =
+          document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.setAttribute('x', textPos.x);
+      text.setAttribute('y', textPos.y);
+      text.setAttribute('dy', '.35em');           // 垂直居中
+      text.setAttribute('text-anchor', 'middle'); // 水平居中
+      // 核心：旋转文字，使其朝向外侧
+      text.setAttribute('transform',
+                        `rotate(${midAngle}, ${textPos.x}, ${textPos.y})`);
+      text.textContent = item;
+      text.style.fontSize = "10px";   // 可根据需要调整
+      text.style.userSelect = "none"; // 防止选中
+      wheelSVG.appendChild(text);
+    });
+
+    // C. 绘制外围实线圆形
+    const circle =
+        document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('cx', '0');
+    circle.setAttribute('cy', '0');
+    circle.setAttribute('r', radius);
+    circle.setAttribute('fill', 'none');   // 透明背景
+    circle.setAttribute('stroke', '#333'); // 实线
+    circle.setAttribute('stroke-width', '2');
+    wheelSVG.appendChild(circle);
+  }
+
+  // --- 5. 核心功能：动画循环 ---
+  function animationLoop(timestamp) {
+    // 计算时间差
+    var deltaTime = timestamp - lastTimestamp;
+    if (deltaTime < 16) { // 大约每16ms更新一次 (~60FPS)
+      requestAnimationFrame(animationLoop);
+      return;
+    }
+    lastTimestamp = timestamp;
+    if (deltaTime > 128)
+      deltaTime = 128; // 限制最大时间差，防止卡顿时跳动过大
+
+    if (!isSpinning) {
+      // 即使不旋转也要保持循环，以便随时响应
+      requestAnimationFrame(animationLoop);
+      return;
+    }
+
+    if (Math.abs(turntablePhysics.v) > 0.1) {
+      // 速度越快，阻力越大
+      turntablePhysics.a =
+          -turntablePhysics.v * turntablePhysics.da * deltaTime;
+      turntablePhysics.v +=
+          turntablePhysics.a * turntablePhysics.dv * deltaTime;
+      turntablePhysics.x += turntablePhysics.v * turntablePhysics.dx * deltaTime
+      turntablePhysics.x = turntablePhysics.x % 360;
+
+      // 更新 SVG 样式
+      wheelSVG.style.transform = `rotate(${turntablePhysics.x}deg)`;
+    } else {
+      // 停止条件
+      turntablePhysics.x = 0;
+      turntablePhysics.v = 0;
+      turntablePhysics.a = 0;
+
+      isSpinning = false;
+      spinButton.disabled = false; // 允许再次旋转
+
+      // --- 计算最终指向 ---
+      const finalAngle = (360 - turntablePhysics.x) % 360; // 0度在顶部
+      const itemIndex = Math.floor(finalAngle / (360 / items.length));
+      console.log(items[itemIndex]);
+    }
+
+    // --- 指针摆动 ---
+    function f(x) {
+      let d = turntableDimensions;
+      return d.k1 * x + d.k3 * x * x * x;
+    }
+    const x0 = (turntablePhysics.x) % (360 / items.length);
+    const x1 = x0 < 3 ? -f(x0 / 57.29578) * 57.29578 : 0;
+    if (pointerPhysics.x < x1) {
+      pointerPhysics.a = -pointerPhysics.x * pointerPhysics.da * deltaTime;
+      pointerPhysics.v += pointerPhysics.a * pointerPhysics.dv * deltaTime;
+      pointerPhysics.x += pointerPhysics.v * pointerPhysics.dx * deltaTime;
+    } else {
+      pointerPhysics.x = x1;
+    }
+    if (pointerPhysics.x > 80) {
+      pointerPhysics.x = 80;
+      pointerPhysics.v = 0;
+    }
+    if (pointerPhysics.x < -80) {
+      pointerPhysics.x = -80;
+      pointerPhysics.v = 0;
+    }
+    pointerPath.style.transform = `rotate(${pointerPhysics.x}deg)`;
+
+    requestAnimationFrame(animationLoop);
+  }
+
+  // --- 6. 事件监听 ---
+
+  // 旋转按钮点击
+  spinButton.addEventListener('click', () => {
+    if (isSpinning)
+      return;
+
+    isSpinning = true;
+    spinButton.disabled = true;
+
+    // 给一个随机的初始角速度
+    turntablePhysics.v = Math.random() * 150 + 150;
+    // 给一个随机的初始角度
+    turntablePhysics.x = Math.random() * 360;
+  });
+
+  // 输入框内容变化时，重新生成转盘
+  function updateWheelFromInput() {
+    const text = itemInput.value.trim();
+    const lineItems = text.split('\n').filter(
+        line => line.trim() !== ''); // 按行分割，并移除空行
+
+    if (lineItems.length == 1) {
+      // 如果只有一行，尝试按逗号分割
+      // 替换全角逗号为半角逗号
+      lineItems[0] = lineItems[0].replace(/，/g, ',');
+      const commaItems = lineItems[0]
+                             .split(',')
+                             .map(item => item.trim())
+                             .filter(item => item !== '');
+      if (commaItems.length > 1) {
+        items = commaItems;
+        generateWheel(items);
+        return;
+      } else {
+        var numberItems = parseInt(lineItems[0]);
+        if (!isNaN(numberItems) && numberItems > 1) {
+          // 如果是一个数字，生成对应数量的默认项目
+          if (numberItems > 100)
+            numberItems = 100; // 限制最大数量
+          const defaultItems =
+              Array.from({length : numberItems}, (_, i) => `${i + 1}`);
+          items = defaultItems;
+          generateWheel(items);
+          return;
+        }
+      }
+    } else if (lineItems.length > 0) {
+      items = lineItems;
+      generateWheel(items);
+      return;
+    }
+    // 如果没有输入，使用默认值
+    items = [ 'A', 'B', 'C', 'D', 'E' ];
+    generateWheel(items);
+  }
+
+  itemInput.addEventListener('input', updateWheelFromInput);
+
+  // --- 7. 初始启动 ---
+  updateWheelFromInput(); // 使用默认值或输入框的 placeholder 内容初始化
+  animationLoop();        // 启动动画循环
+});

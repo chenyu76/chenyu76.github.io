@@ -213,6 +213,10 @@ body {
   z-index: 10;
 }
 
+.bpm-info-text {
+  color: var(--accent-color);
+}
+
 #bpm-input,
 #bpm-value {
   text-align: center;
@@ -220,6 +224,8 @@ body {
   font-weight: bold;
   z-index: 20;
 }
+
+.bpm-display {}
 
 .pulse-text {
   animation: text-pop 0.15s ease-out;
@@ -252,7 +258,6 @@ body {
 
 #about-text {
   margin-left: 10px;
-  font-size: 14px;
   color: var(--accent-color);
 }
 

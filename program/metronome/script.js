@@ -13,6 +13,7 @@ const scheduleAheadTime = 0.1;
 const bpmDisplay = document.getElementById('bpm-value');
 const bpmContainer = document.getElementById('bpm-container');
 const bpmInput = document.getElementById('bpm-input');
+const bpmMarking = document.getElementById('bpm-marking');
 const beatIndicatorSvg = document.getElementById('beat-indicator-svg');
 const rippleEl = document.getElementById('ripple-layer');
 const playIcon = document.getElementById('play-icon');
@@ -30,7 +31,47 @@ let metronomeStartTime = 0;
 const maxAngle = 10;
 
 // === 初始化 ===
-function init() { drawBeatIndicators(); }
+function init() {
+  drawBeatIndicators();
+  updateTempoMarking();
+}
+
+/**
+ * 根据给定的 BPM 数值返回对应的意大利语速度术语
+ * @param {number} bpm - 每分钟拍数
+ * @returns {string} 对应的意大利语术语 (例如 "Andante")
+ */
+function getTempoMarking(bpm) {
+  // 确保输入是有效数字
+  if (typeof bpm !== 'number' || bpm <= 0) {
+    return "Invalid BPM";
+  }
+
+  // 定义速度范围配置表 (按最大值排序)
+  // 范围参考了现代通用的节拍器标准
+  const tempos = [
+    {limit : 24, term : "Larghissimo"},      // 极广板
+    {limit : 40, term : "Grave"},            // 庄板
+    {limit : 60, term : "Largo"},            // 广板
+    {limit : 66, term : "Lento"},            // 慢板
+    {limit : 76, term : "Adagio"},           // 柔板
+    {limit : 108, term : "Andante"},         // 行板
+    {limit : 120, term : "Moderato"},        // 中板
+    {limit : 156, term : "Allegro"},         // 快板
+    {limit : 176, term : "Vivace"},          // 活板
+    {limit : 200, term : "Presto"},          // 急板
+    {limit : Infinity, term : "Prestissimo"} // 最急板
+  ];
+
+  // 使用 find 查找第一个 limit 大于等于输入 bpm 的对象
+  const match = tempos.find(t => bpm <= t.limit);
+
+  return match ? match.term : "Prestissimo";
+}
+
+function updateTempoMarking() {
+  bpmMarking.textContent = getTempoMarking(parseInt(bpmDisplay.textContent));
+}
 
 function metronomeAnimateLoop(_timestamp) {
   if (!isPlaying)
@@ -57,13 +98,14 @@ function changeBpm(amount) {
   bpm += amount;
   if (bpm < 1)
     bpm = 1;
-  if (bpm > 300)
-    bpm = 300;
+  if (bpm > 600)
+    bpm = 600;
   bpmDisplay.textContent = bpm;
   if (isPlaying) { // 重新启动以应用新的 BPM
     togglePlay();
     togglePlay();
   }
+  updateTempoMarking();
 }
 
 function changeBeats(amount) {
@@ -339,6 +381,7 @@ bpmContainer.addEventListener('click', function() {
   // 隐藏显示值，显示输入框
   bpmDisplay.style.display = 'none';
   bpmInput.style.display = 'block';
+  bpmMarking.style.display = 'none';
 
   // 设置输入框的值
   bpmInput.value = bpm;
@@ -372,6 +415,8 @@ function saveBPM() {
   // 切换回显示模式
   bpmDisplay.style.display = 'block';
   bpmInput.style.display = 'none';
+  bpmMarking.style.display = 'block';
+  updateTempoMarking();
 
   if (isPlaying) { // 重新启动以应用新的 BPM
     togglePlay();

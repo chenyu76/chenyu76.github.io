@@ -55,7 +55,11 @@
 
         <div class="bpm-display-wrapper" id="bpm-container">
           <div id="ripple-layer" class="ripple"></div>
-          <div id="bpm-value">120</div>
+          <div class="bpm-display" id="bpm-display">
+            <div class="bpm-info-text" id="bpm-marking">Moderato</div>
+            <div id="bpm-value">120</div>
+            <div class="bpm-info-text">BPM</div>
+          </div>
           <input type="number" id="bpm-input" min="40" max="300" style="display: none;">
         </div>
 
@@ -103,6 +107,8 @@
             to start or stop the metronome.
             <br>
             Icon from <a href="https://fonts.google.com/icons?icon.size=24&icon.color=%231f1f1f">Google</a>.
+            <br>
+            Source code available on <a href="https://github.com/chenyu76/metronome">GitHub</a>.
           </p>
         </div>
       </div>
