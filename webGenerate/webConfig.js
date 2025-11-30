@@ -1,28 +1,31 @@
 /*
- * 网站提交时附带的其他 Git 仓库列表
- * submodule 要反复同步更新这些仓库，不是很方便
+ * 网站附带的其他 Git 仓库列表
+ * 这些仓库将可在网站生成时被同步更新
  * 键为相对于根目录的路径
  * 值为该路径下需要同步的 Git 仓库 URL 列表
+ * （submodule 要反复同步更新这些仓库，不是很方便，所以不想用）
+ * NOTE: 由于使用github自动打包的zip，所以gitlab等其他平台的仓库应该不适用
  */
 export const gitRepositories = {
   "program" : [
     "draw-n-pointed-star", "color_wars", "hextris", "metronome", "tetris",
     "turntable-web", "guitar-sight-reading-trainer-web"
-  ].map(myRepo)
+  ].map(repo => `https://github.com/chenyu76/${repo}`)
 };
-
-function myRepo(repo) { return `https://github.com/chenyu76/${repo}`; }
 
 /**
  * 主页的推荐内容
- * link: 链接
+ * link:  链接
+ *
  * date:
- * 日期，格式YYYYMMDD 或 YYYYMM
- * 或字符串（这会移交给JavaScript的Date对象处理）
+ * 日期，格式YYYYMMDD 或 YYYYMM 或 YYYY 或
+ * 字符串（这会移交给JavaScript的Date对象处理）
+ *
  * title:
  * 标题（可选，若不填，尝试从对应的markdown文件的第一行寻找标题）
+ *
  * info:
- * 介绍（html格式）
+ * html格式的介绍
  * （可选，若不填，我希望能从生成的html文件里找到第一个<p>填进去，但目前还没实现）
  */
 export const recommend = [

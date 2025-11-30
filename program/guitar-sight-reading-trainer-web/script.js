@@ -1,3 +1,8 @@
+// --- 全局变量 ---
+// 完成数量
+let completed_num = 0;
+let completed_display = document.getElementById('completed-number');
+
 // --- 音频引擎 (Web Audio API) ---
 const AudioEngine = {
   ctx : null,
@@ -183,7 +188,9 @@ function checkAnswer() {
 
     if (STATE.idx >= STATE.notes.length) {
       const btn = document.getElementById('btn-check');
-      btn.innerText = "完成! 下一组...";
+      completed_num += 1;
+      completed_display.innerText = completed_num;
+      btn.innerText = `第${completed_num}组完成! 下一组...`;
       btn.style.background = "#34C759";
       setTimeout(newLevel, 800);
     }
@@ -230,7 +237,6 @@ function renderStaff() {
 transform="scale(1.6) translate(10,25)"
 />
 `;
-  // html += `<circle cx="25" cy="90" r="3" fill="#333"/>`;
 
   STATE.notes.forEach((note, i) => {
     const cx = startX + (i * spacing);
