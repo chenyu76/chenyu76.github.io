@@ -1,0 +1,293 @@
+:root {
+  --primary: #007AFF;
+  /* iOS Blue */
+  --success: #34C759;
+  --fail: #FF3B30;
+  --bg: #F2F2F7;
+  --card-bg: #FFFFFF;
+  --text: #000000;
+  --picker-height: 200px;
+  --item-height: 50px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+  background-color: var(--bg);
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* --- 顶部：五线谱区域 --- */
+#staff-area {
+  flex: 1;
+  margin: 15px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#staff-container {
+  /* flex: 1; */
+  background: var(--card-bg);
+  margin: 15px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  /* display: flex; */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+  max-height: 220px;
+}
+
+.settings-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #f0f0f0;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  border: none;
+  z-index: 10;
+}
+
+/* --- 中间提示区 --- */
+#status-area {
+  text-align: center;
+  background: #fff;
+  padding: 10px 0 5px 0;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.03);
+  z-index: 5;
+}
+
+.hint-text {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.hint-values {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.note-badge {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin-left: 8px;
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+/* --- 底部：老虎机滚轮 --- */
+#picker-wrapper {
+  height: var(--picker-height);
+  background: #fff;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  /* border-top: 1px solid #eee; */
+}
+
+.picker-highlight {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: var(--item-height);
+  margin-top: calc(var(--item-height) / -2);
+  background: rgba(0, 0, 0, 0.04);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.picker-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0) 60%,
+      rgba(255, 255, 255, 0.95) 100%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.picker-col {
+  flex: 1;
+  height: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  scrollbar-width: none;
+}
+
+.picker-col::-webkit-scrollbar {
+  display: none;
+}
+
+.picker-item {
+  height: var(--item-height);
+  line-height: var(--item-height);
+  scroll-snap-align: center;
+  font-size: 1.2rem;
+  color: #bbb;
+  transition: all 0.2s;
+}
+
+/* 占位符让首尾能滚到中间 */
+.picker-col::before,
+.picker-col::after {
+  content: '';
+  display: block;
+  height: calc((var(--picker-height) - var(--item-height)) / 2);
+}
+
+.col-label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  color: #999;
+  pointer-events: none;
+  z-index: 4;
+  font-weight: bold;
+}
+
+/* --- 按钮区 --- */
+#action-area {
+  background: #fff;
+  padding: 10px 20px 30px 20px;
+}
+
+#btn-check {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#btn-check:active {
+  opacity: 0.8;
+}
+
+/* --- 弹窗 --- */
+#modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background: white;
+  width: 80%;
+  max-width: 300px;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.setting-row {
+  margin: 15px 0;
+}
+
+.setting-row label {
+  display: block;
+  margin-bottom: 5px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.setting-row input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.modal-actions {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.btn-text {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+/* 动画 */
+.wrong {
+  animation: wrong 0.4s ease-in-out;
+}
+
+@keyframes wrong {
+
+  0%,
+  100% {
+    transform: translateX(0);
+    background-color: var(--primary);
+  }
+
+  25% {
+    transform: translateX(-5px);
+    background-color: var(--fail);
+  }
+
+  75% {
+    transform: translateX(5px);
+    background-color: var(--fail);
+  }
+}

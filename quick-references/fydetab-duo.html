@@ -51,6 +51,14 @@
 <ul>
 <li><a href="#h2-android">Android</a></li>
 <li><a href="#h2-archlinux">ArchLinux</a></li>
+<ul>
+<li><a href="#h3-u5b89u88c5u540e">安装后</a></li>
+<ul>
+<li><a href="#h4-u6362u6e90">换源</a></li>
+<li><a href="#h4-u8f93u5165u6cd5">输入法</a></li>
+<li><a href="#h4-u4e2du6587u5b57u4f53">中文字体</a></li>
+</ul>
+</ul>
 <li><a href="#h2-fyde-os">Fyde OS</a></li>
 <ul>
 <li><a href="#h3-android-u5b50u7cfbu7edf">Android 子系统</a></li>
@@ -68,10 +76,19 @@
 </ul>
 </div>
 <hr>
-<p>买了一台 Fydetab Duo 折腾，配到哪写到哪，完全没有逻辑</p>
+<p>买了一台 Fydetab Duo 折腾，配到哪写到哪，完全没有逻辑。</p>
 <h2 id="h2-android">Android</h2><p>如果能从sd卡启动android就好了</p>
 <p>旋转屏幕可以使用<a href="https://play.google.com/store/apps/details?id=com.pranavpandey.rotation">Rotation</a></p>
-<h2 id="h2-archlinux">ArchLinux</h2><p>关闭屏幕再打开后触控会失效，不知道如何解决</p>
+<h2 id="h2-archlinux">ArchLinux</h2><p><a href="https://wiki.fydetabduo.com/Available-OS/ArchLinux/arch-intro">Arch Linux</a>如wiki上写的开箱即用，我通过<a href="https://rufus.ie/zh/">Rufus</a>安装到tf中，这样在拔出tf卡后还可以回到Fyde OS，某种不算很方便的双系统。</p>
+<h3 id="h3-u5b89u88c5u540e">安装后</h3><h4 id="h4-u6362u6e90">换源</h4><p><a href="https://mirrors.tuna.tsinghua.edu.cn/help/archlinuxarm/">清华大学开源软件镜像站  Arch Linux ARM 软件仓库</a></p>
+<h4 id="h4-u8f93u5165u6cd5">输入法</h4><p>gnome使用<a href="https://wiki.archlinux.org/title/IBus">iBus</a></p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> pacman -S ibus-rime
+</code></pre>
+<p>重启后去设置里配置键盘即可。</p>
+<h4 id="h4-u4e2du6587u5b57u4f53">中文字体</h4><p>刚安装好时缺字体，从<a href="https://arch.icekylin.online/guide/rookie/desktop-env-and-app.html">这里</a>抄一份字体清单。</p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> pacman -S adobe-source-han-serif-cn-fonts wqy-zenhei <span class="hljs-comment"># 安装几个开源中文字体。一般装上文泉驿就能解决大多 wine 应用中文方块的问题</span>
+<span class="hljs-built_in">sudo</span> pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra <span class="hljs-comment"># 安装谷歌开源字体及表情</span>
+</code></pre>
 <h2 id="h2-fyde-os">Fyde OS</h2><h3 id="h3-android-u5b50u7cfbu7edf">Android 子系统</h3><p>似乎在<a href="chrome://flags"><code>chrome://flags</code></a>里打开<code>Enable custom ARCVM memory size</code>可以优化某些占内存软件的体验</p>
 <ul>
 <li>其下面的小猫猫代理可以系统范围的使用，包括Crostini</li>
@@ -98,7 +115,7 @@ XMODIFIERS=@im=fcitx
 <p>安装好后可能没法通过快捷键开启，但可以通过<code>fcitx-remote</code>临时测试，再编辑配置文件设置好键位</p>
 <p>GTK应用用不了输入法？为什么呢</p>
 </div>
-			<div id="footnote">2025/06/24</div>
+			<div id="footnote">2025/11/29</div>
 		</div>
 		<div class="bottom-button">
 			<button onclick="scrollToTop()" title="滚动到顶部">

@@ -1,6 +1,6 @@
 # Fydetab Duo 折腾
 
-买了一台 Fydetab Duo 折腾，配到哪写到哪，完全没有逻辑
+买了一台 Fydetab Duo 折腾，配到哪写到哪，完全没有逻辑。
 
 ## Android
 
@@ -10,7 +10,32 @@
 
 ## ArchLinux
 
-关闭屏幕再打开后触控会失效，不知道如何解决
+[Arch Linux](https://wiki.fydetabduo.com/Available-OS/ArchLinux/arch-intro)如wiki上写的开箱即用，我通过[Rufus](https://rufus.ie/zh/)安装到tf中，这样在拔出tf卡后还可以回到Fyde OS，某种不算很方便的双系统。
+
+### 安装后
+
+#### 换源
+
+[清华大学开源软件镜像站  Arch Linux ARM 软件仓库](https://mirrors.tuna.tsinghua.edu.cn/help/archlinuxarm/)
+
+#### 输入法
+
+gnome使用[iBus](https://wiki.archlinux.org/title/IBus)
+
+```bash
+sudo pacman -S ibus-rime
+```
+
+重启后去设置里配置键盘即可。
+
+#### 中文字体
+
+刚安装好时缺字体，从[这里](https://arch.icekylin.online/guide/rookie/desktop-env-and-app.html)抄一份字体清单。
+
+```bash
+sudo pacman -S adobe-source-han-serif-cn-fonts wqy-zenhei # 安装几个开源中文字体。一般装上文泉驿就能解决大多 wine 应用中文方块的问题
+sudo pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra # 安装谷歌开源字体及表情
+```
 
 ## Fyde OS
 
@@ -61,4 +86,4 @@ XMODIFIERS=@im=fcitx
 
 GTK应用用不了输入法？为什么呢
 
-2025/06/24
+2025/11/29

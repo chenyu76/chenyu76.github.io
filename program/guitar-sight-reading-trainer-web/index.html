@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>吉他滚轮识谱 (带发音)</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div id="staff-area">
+    <button class="settings-btn" onclick="openSettings()">
+      <svg class="settings-icon gear-icon" viewBox="0 0 12.7 12.7" version="1.1" id="svg1" transform="scale(0.6)"
+        xmlns="http://www.w3.org/2000/svg">
+        <defs id="defs1" />
+        <path id="rect1"
+          style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.927007;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+          d="m 5.6020231,0.46350351 c -0.3694626,0 -0.6662885,0.29753543 -0.6662885,0.66699799 V 2.1263832 A 4.463041,4.463041 0 0 0 4.3632093,2.3629222 L 3.6592739,1.6589866 c -0.2612509,-0.2612507 -0.6813565,-0.2612507 -0.9426061,0 l -1.057681,1.0576798 c -0.2612482,0.261251 -0.2612482,0.6813555 0,0.9426064 L 2.3629235,4.3632095 A 4.463041,4.463041 0 0 0 2.1263832,4.9357348 H 1.1305028 c -0.3694653,0 -0.66699929,0.2975352 -0.66699929,0.6669978 v 1.4945333 c 0,0.3694626 0.29753399,0.6669978 0.66699929,0.6669978 H 2.1263832 A 4.463041,4.463041 0 0 0 2.3629235,8.336789 L 1.6589868,9.0407257 c -0.2612482,0.2612509 -0.2612482,0.6813554 0,0.9426061 l 1.057681,1.0576802 c 0.2612496,0.261251 0.6813552,0.261251 0.9426061,0 l 0.7039354,-0.703936 a 4.463041,4.463041 0 0 0 0.5725253,0.236539 v 0.995882 c 0,0.369464 0.2968259,0.666999 0.6662885,0.666999 H 7.097266 c 0.3694653,0 0.6669992,-0.297535 0.6669992,-0.666999 v -0.995882 a 4.463041,4.463041 0 0 0 0.5725253,-0.236539 l 0.7039354,0.703936 c 0.2612509,0.261251 0.6813565,0.261251 0.9426077,0 L 11.041013,9.9833318 c 0.26125,-0.2612507 0.26125,-0.6813552 0,-0.9426061 L 10.337076,8.336789 a 4.463041,4.463041 0 0 0 0.236541,-0.5725253 h 0.99588 c 0.369465,0 0.666999,-0.2975352 0.666999,-0.6669978 V 5.6027326 c 0,-0.3694626 -0.297534,-0.6669978 -0.666999,-0.6669978 H 10.58143 A 4.463041,4.463041 0 0 0 10.342049,4.3582363 l 0.698964,-0.6989635 c 0.26125,-0.2612509 0.26125,-0.6813554 0,-0.9426064 L 9.9833336,1.6589866 c -0.2612512,-0.2612507 -0.6813568,-0.2612507 -0.9426077,0 L 8.3417624,2.3579503 A 4.463041,4.463041 0 0 0 7.7642652,2.1178596 V 1.1305015 c 0,-0.36946256 -0.2975339,-0.66699799 -0.6669992,-0.66699799 z M 6.3500001,3.9426939 A 2.4074409,2.4074411 0 0 1 8.7573046,6.3499999 2.4074409,2.4074411 0 0 1 6.3500001,8.7573044 2.4074409,2.4074411 0 0 1 3.9426952,6.3499999 2.4074409,2.4074411 0 0 1 6.3500001,3.9426939 Z" />
+      </svg>
+    </button>
+    <div id="staff-container">
+      <svg id="staff-svg" viewBox="0 0 350 140" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+  </div>
+
+  <div id="status-area">
+    <div class="hint-text">当前选择</div>
+    <div class="hint-values">
+      <span id="disp-string">1弦</span>
+      <span id="disp-fret">0品</span>
+      <span id="disp-note" class="note-badge">E4</span>
+    </div>
+  </div>
+
+  <div id="picker-wrapper">
+    <div class="picker-mask"></div>
+    <div class="picker-highlight"></div>
+
+    <ul class="picker-col" id="col-string"></ul>
+    <div class="col-label" style="left: 35%">弦</div>
+
+    <ul class="picker-col" id="col-fret"></ul>
+    <div class="col-label" style="right: 15%">品</div>
+  </div>
+
+  <div id="action-area">
+    <button id="btn-check" onclick="checkAnswer()">确 认</button>
+  </div>
+
+  <div id="modal-overlay">
+    <div class="modal">
+      <h3>⚙️ 练习设置</h3>
+      <div class="setting-row">
+        <label>最低品 (Min Fret)</label>
+        <input type="number" id="set-min" value="0" min="0" max="12">
+      </div>
+      <div class="setting-row">
+        <label>最高品 (Max Fret)</label>
+        <input type="number" id="set-max" value="3" min="0" max="15">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-text" onclick="saveSettings()">保存并刷新</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
