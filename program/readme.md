@@ -4,3 +4,4 @@
 - [随机转盘](https://chenyu76.github.io/program/turntable-web/index.html)
 - [计数器](https://chenyu76.github.io/program/counter.html)
 - [节拍器](https://chenyu76.github.io/program/metronome/index.html)
+- [练习吉他识谱](https://chenyu76.github.io/program/guitar-sight-reading-trainer-web/index.html)

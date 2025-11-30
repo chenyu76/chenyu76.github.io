@@ -8,6 +8,12 @@
   --text: #000000;
   --picker-height: 200px;
   --item-height: 50px;
+
+  /* 指板特定变量 */
+  --string-color: #888;
+  --fret-color: #999;
+
+  --card-radius: 20px;
 }
 
 body {
@@ -19,13 +25,16 @@ body {
   flex-direction: column;
   overflow: hidden;
   user-select: none;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* --- 顶部：五线谱区域 --- */
 #staff-area {
   flex: 1;
+  /* 固定高度，不被挤压 */
   margin: 15px;
-  border-radius: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,15 +43,11 @@ body {
 }
 
 #staff-container {
-  /* flex: 1; */
+  width: 100%;
   background: var(--card-bg);
-  margin: 15px;
+  margin-top: 10px;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  /* display: flex; */
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   position: relative;
 }
 
@@ -50,37 +55,66 @@ svg {
   width: 100%;
   height: 100%;
   max-height: 220px;
+  display: block;
+  /* 消除SVG底部空隙 */
 }
 
 .settings-btn {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 10px;
+  right: 10px;
   background: #f0f0f0;
   border-radius: 50%;
   height: 36px;
+  width: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 1.2rem;
   border: none;
   z-index: 10;
 }
 
-/* --- 中间提示区 --- */
+#completed-number-badge {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  background: var(--success);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 12px;
+  text-align: center;
+}
+
+/* --- 模式通用逻辑 --- */
+#mode-picker-container,
+#mode-fretboard-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* 防止溢出 */
+  border-top-left-radius: var(--card-radius);
+  border-top-right-radius: var(--card-radius);
+  box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.03);
+}
+
+/* === 模式 A: 滚轮选择器样式 === */
 #status-area {
   text-align: center;
   background: #fff;
   padding: 10px 0 5px 0;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  border-top-left-radius: var(--card-radius);
+  border-top-right-radius: var(--card-radius);
   box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.03);
   z-index: 5;
 }
 
 .hint-text {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 500;
   color: #666;
   margin-bottom: 5px;
@@ -101,17 +135,16 @@ svg {
   font-size: 1rem;
   margin-left: 8px;
   vertical-align: middle;
-  font-weight: bold;
 }
 
-/* --- 底部：老虎机滚轮 --- */
 #picker-wrapper {
-  height: var(--picker-height);
+  flex: 1;
+  /* 占据剩余空间 */
   background: #fff;
   position: relative;
   display: flex;
   justify-content: center;
-  /* border-top: 1px solid #eee; */
+  overflow: hidden;
 }
 
 .picker-highlight {
@@ -146,7 +179,7 @@ svg {
 .picker-col {
   flex: 1;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   scroll-snap-type: y mandatory;
   padding: 0;
   margin: 0;
@@ -170,12 +203,13 @@ svg {
   transition: all 0.2s;
 }
 
-/* 占位符让首尾能滚到中间 */
+/* 占位符 */
 .picker-col::before,
 .picker-col::after {
   content: '';
   display: block;
-  height: calc((var(--picker-height) - var(--item-height)) / 2);
+  /* 动态计算占位高度，JS中可能需要微调，或者用 flex center */
+  height: calc(50% - var(--item-height) / 2);
 }
 
 .col-label {
@@ -189,7 +223,6 @@ svg {
   font-weight: bold;
 }
 
-/* --- 按钮区 --- */
 #action-area {
   background: #fff;
   padding: 10px 20px 30px 20px;
@@ -212,7 +245,122 @@ svg {
   opacity: 0.8;
 }
 
-/* --- 弹窗 --- */
+/* === 模式 B: 指板可视化样式 === */
+#info-bar {
+  text-align: center;
+  padding: 10px;
+  color: #666;
+  font-size: 0.9rem;
+  background: var(--card-bg);
+  border-top-left-radius: var(--card-radius);
+  border-top-right-radius: var(--card-radius);
+}
+
+#fretboard-viewport {
+  flex: 1;
+  background: var(--card-bg);
+  overflow-x: auto;
+  /* 允许横向滑动 */
+  overflow-y: hidden;
+  position: relative;
+  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.1);
+  scrollbar-width: none;
+  width: 100%;
+}
+
+#fretboard-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+#fretboard-inner {
+  height: 100%;
+  position: relative;
+  /* width 由 JS 计算 */
+}
+
+.guitar-string {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: var(--string-color);
+  pointer-events: none;
+}
+
+.fret-wire {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(to right, var(--bg), var(--fret-color), var(--bg));
+  pointer-events: none;
+}
+
+.inlay {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.1);
+  /* 在浅色背景下用深色半透明 */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.fret-number {
+  position: absolute;
+  bottom: 10px;
+  color: #999;
+  font-size: 12px;
+  font-weight: bold;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.touch-zone {
+  position: absolute;
+  cursor: pointer;
+  z-index: 10;
+  /* 调试用: border: 1px solid rgba(0,0,0,0.1); */
+}
+
+.touch-zone:active {
+  background: rgba(0, 122, 255, 0.1);
+}
+
+.marker {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.marker.correct {
+  background: var(--success);
+}
+
+.marker.wrong {
+  background: var(--fail);
+}
+
+@keyframes popIn {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+  }
+
+  to {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* === 设置弹窗 === */
 #modal-overlay {
   position: fixed;
   top: 0;
@@ -228,10 +376,17 @@ svg {
 
 .modal {
   background: white;
-  width: 80%;
-  max-width: 300px;
+  width: 85%;
+  max-width: 320px;
   border-radius: 16px;
-  padding: 20px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal h3 {
+  margin-top: 0;
+  text-align: center;
+  color: #333;
 }
 
 .setting-row {
@@ -240,22 +395,26 @@ svg {
 
 .setting-row label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   color: #666;
   font-size: 0.9rem;
+  font-weight: 500;
 }
 
-.setting-row input {
+.setting-row input,
+.setting-row select {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   box-sizing: border-box;
   border: 1px solid #ddd;
   border-radius: 8px;
+  font-size: 1rem;
+  background: #f9f9f9;
 }
 
 .modal-actions {
   text-align: right;
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 .btn-text {
@@ -263,16 +422,17 @@ svg {
   border: none;
   color: var(--primary);
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 10px 20px;
 }
 
-/* 动画 */
-.wrong {
-  animation: wrong 0.4s ease-in-out;
+/* 动画工具类 */
+.wrong-anim {
+  animation: shake 0.4s ease-in-out;
 }
 
-@keyframes wrong {
+@keyframes shake {
 
   0%,
   100% {
