@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const rightSidebar = document.getElementById("right-sidebar");
   const mobileBtn = document.getElementById("toc-mobile-btn");
   const mobileTocContent = document.getElementById("toc-content-mobile");
-  const titleContainer = document.getElementById("title-container");
 
   // 检查目录是否为空
   if (tocContent &&
@@ -77,25 +76,29 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(nightModeControl, 1001);
 });
 
-// 2. 滚动监听：控制左侧栏显示
-window.addEventListener(
-    "scroll", debounce(() => {
-      const leftSidebar = document.getElementById("left-sidebar");
-      const topButtons = document.getElementById("top-buttons-wrapper");
-
-      if (!leftSidebar || !topButtons)
-        return;
-
-      // 获取顶部按钮组的位置
-      const topButtonsRect = topButtons.getBoundingClientRect();
-
-      // 当顶部按钮的底部边缘跑到了视口上方 ( < 0 )，说明已经完全滚出去了
-      if (topButtonsRect.bottom < 0) {
-        leftSidebar.classList.add("show");
-      } else {
-        leftSidebar.classList.remove("show");
-      }
-    }, 50), true);
+// 滚动监听：
+// 控制左侧栏显示
+// 控制背景可见性
+const titleContainer = document.getElementById("title-container");
+const leftSidebar = document.getElementById("left-sidebar");
+const iframeBackground = document.getElementById("iframe-background");
+var currentTopContentScrollStatus = false; // 为真时是滚动到下方了
+window.addEventListener("scroll", () => {
+  if (!leftSidebar)
+    return;
+  // 当顶部的底部边缘跑到了视口上方，说明已经完全滚出去了
+  let newScrollStatus = titleContainer.getBoundingClientRect().bottom < 0;
+  if (newScrollStatus == currentTopContentScrollStatus)
+    return;
+  currentTopContentScrollStatus = newScrollStatus;
+  if (currentTopContentScrollStatus) {
+    leftSidebar.classList.add("show");
+    iframeBackground.style.display = "none";
+  } else {
+    leftSidebar.classList.remove("show");
+    iframeBackground.style.display = "";
+  }
+}, true);
 
 // 3. 移动端目录切换
 function toggleToc() {
