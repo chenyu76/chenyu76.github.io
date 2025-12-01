@@ -244,8 +244,10 @@ function normalize(v) {
 function dot(v1, v2) { return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2]; }
 
 // 初始化
-async function imgInit(h = document.documentElement.clientHeight,
-                       time = getDecimalHour()) {
+async function imgInit(
+    h = document.documentElement.clientHeight, time = getDecimalHour()
+    // time = Math.random() * 24
+) {
   // 获取背景和前景容器
   const background = document.getElementById("pixel-art-background");
   const midground = document.getElementById("pixel-art-midground");
