@@ -84,7 +84,7 @@ function generateMeteor(w, pixelSize) {
   function moveMeteorAnimation(timestamp) {
     // 确保第一次渲染或达到延迟时间后才更新
     const elapsed = timestamp - lastUpdateTime;
-    if (lastUpdateTime === 0 || elapsed >= delay_time) {
+    if (lastUpdateTime === 0 || elapsed >= delay_time && !isPaused) {
 
       let visiblePartsCount = 0;
       // 遍历所有“节”来更新它们的位置
@@ -164,7 +164,7 @@ function generateMeteor_old(w) {
 
       function moveElementAnimation(timestamp) {
         const elapsed = timestamp - lastUpdateTime;
-        if (elapsed >= delay_time) {
+        if (elapsed >= delay_time && !isPaused) {
           let y = pixelSize * (pos[1] - life + pass_time);
           if (y > window.innerHeight) {
             mp.remove(); // 超出屏幕后删除

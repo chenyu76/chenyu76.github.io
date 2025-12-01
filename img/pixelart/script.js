@@ -77,6 +77,8 @@ var is_first_img_init = true;
 var pixelSize;
 var currentHour;
 var isNight = false;
+var isPaused = false; // 全局暂停标志，
+// 目前没有会使他变为true的代码
 
 // https://stackoverflow.com/questions/8022885/rgb-to-hsv-color-in-javascript
 // input: r,g,b in [0,1], out: h in [0,360) and s,v in [0,1]

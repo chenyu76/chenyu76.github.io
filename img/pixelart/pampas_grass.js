@@ -275,6 +275,13 @@ class Grass {
           (timestamp) => this.moveElementAnimation(timestamp));
       return;
     }
+    // 暂停时不更新动画，只更新时间戳
+    if (isPaused) {
+      this.lastAnimationTime = timestamp;
+      this.animationFrameId = requestAnimationFrame(
+          (timestamp) => this.moveElementAnimation(timestamp));
+      return;
+    }
 
     // 过滤掉已经结束的风
     for (let i = this.winds.length - 1; i >= 0; i--) {
