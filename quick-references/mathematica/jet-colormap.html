@@ -2,50 +2,53 @@
 <html lang="zh-CN">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Jet Colormap</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jet Colormap</title>
 
-	<!-- css样式 -->
-	<link rel="stylesheet" href="/styles.css" />
-	<!-- 标签页图标 -->
-	<link rel="icon" href="/favicon.png" type="image/png" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
 
-	<!-- 背景css -->
-	<link rel="stylesheet" href="/img/pixelart/styles.css" />
-
-	<link rel="stylesheet" href="/styles-code.css">
+  <link rel="stylesheet" href="/styles-code.css">
 </head>
 
 <body>
-	<!-- 背景js -->
-	<div id="pixel-art">
-		<div id="pixel-art-background"></div>
-		<div id="pixel-art-midground"></div>
-		<div id="pixel-art-foreground"></div>
-	</div>
-	<script src="/img/pixelart/imgMatrix.js"></script>
-	<script src="/img/pixelart/sky_element.js"></script>
-	<script src="/img/pixelart/land.js"></script>
-	<script src="/img/pixelart/pampas_grass.js"></script>
-	<script src="/img/pixelart/script.js"></script>
+  <iframe id="iframe-background" src="/img/pixelart/index.html" title="background"></iframe>
 
-	<div id="title-container">
-		<div id="spacer"></div>
-		<div id="top-buttons-wrapper" class="top-buttons">
-			<a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc"
-					class="icon" /></a><a href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg"
-					alt="Home" class="icon" /></a><a href="https://github.com/chenyu76" target="_blank"
-				title="跳转到 GitHub" class="fade-in"><img src="/img/icon/github.svg" alt="Github" class="icon" /></a><a
-				href="/About.html" title="关于" class="fade-in"><img src="/img/icon/info.svg" alt="Info"
-					class="icon" /></a>
-		</div>
-		<div id="heading"><h3>quick-references/mathematica</h3><h1>Jet Colormap</h1></div>
-	</div>
-	<div id="anime-spacer" class="shrinked"></div>
-	<div id="content-wrapper-bg">
-		<div id="content-wrapper">
-			<div id="content"><pre><code class="language-Mathematica"><span class="hljs-variable">jet</span><span class="hljs-punctuation">[</span><span class="hljs-type">u_</span><span class="hljs-operator">?</span><span class="hljs-built_in">NumericQ</span><span class="hljs-punctuation">]</span> <span class="hljs-operator">:=</span> 
+  <div id="title-container">
+    <div id="spacer"></div>
+    <div id="top-buttons-wrapper" class="top-buttons">
+      <a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a><a
+        href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a><a
+        href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub" class="fade-in"><img
+          src="/img/icon/github.svg" alt="Github" class="icon" /></a><a href="/About.html" title="关于"
+        class="fade-in"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
+    </div>
+    <div id="heading"><h3>quick-references/mathematica</h3><h1>Jet Colormap</h1></div>
+  </div>
+
+  <div id="anime-spacer" class="shrinked"></div>
+
+  <div id="content-wrapper-bg">
+    <div id="main-grid-container">
+
+      <div id="left-sidebar" class="sidebar">
+        <div class="sidebar-card">
+          <div class="vertical-buttons">
+            <a href="/toc.html" title="文档索引"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a>
+            <a href="/index.html" title="返回主页"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a>
+            <a href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub"><img src="/img/icon/github.svg"
+                alt="Github" class="icon" /></a>
+            <a href="/About.html" title="关于"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
+            <button onclick="scrollToTop()" title="滚动到顶部" class="scroll-top-btn">
+              <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="content-wrapper">
+        <div id="content"><pre><code class="language-Mathematica"><span class="hljs-variable">jet</span><span class="hljs-punctuation">[</span><span class="hljs-type">u_</span><span class="hljs-operator">?</span><span class="hljs-built_in">NumericQ</span><span class="hljs-punctuation">]</span> <span class="hljs-operator">:=</span> 
  <span class="hljs-built_in">Blend</span><span class="hljs-punctuation">[</span><span class="hljs-punctuation">{</span><span class="hljs-punctuation">{</span><span class="hljs-number">0</span><span class="hljs-operator">,</span> <span class="hljs-built_in">RGBColor</span><span class="hljs-punctuation">[</span><span class="hljs-number">0</span><span class="hljs-operator">,</span> <span class="hljs-number">0</span><span class="hljs-operator">,</span> <span class="hljs-number">9</span><span class="hljs-operator">/</span><span class="hljs-number">16</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> <span class="hljs-punctuation">{</span><span class="hljs-number">1</span><span class="hljs-operator">/</span><span class="hljs-number">9</span><span class="hljs-operator">,</span> <span class="hljs-built_in">Blue</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> <span class="hljs-punctuation">{</span><span class="hljs-number">23</span><span class="hljs-operator">/</span><span class="hljs-number">63</span><span class="hljs-operator">,</span> <span class="hljs-built_in">Cyan</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> <span class="hljs-punctuation">{</span><span class="hljs-number">13</span><span class="hljs-operator">/</span><span class="hljs-number">21</span><span class="hljs-operator">,</span>
       <span class="hljs-built_in">Yellow</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> <span class="hljs-punctuation">{</span><span class="hljs-number">47</span><span class="hljs-operator">/</span><span class="hljs-number">63</span><span class="hljs-operator">,</span> <span class="hljs-built_in">Orange</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> <span class="hljs-punctuation">{</span><span class="hljs-number">55</span><span class="hljs-operator">/</span><span class="hljs-number">63</span><span class="hljs-operator">,</span> <span class="hljs-built_in">Red</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> <span class="hljs-punctuation">{</span><span class="hljs-number">1</span><span class="hljs-operator">,</span> 
      <span class="hljs-built_in">RGBColor</span><span class="hljs-punctuation">[</span><span class="hljs-number">1</span><span class="hljs-operator">/</span><span class="hljs-number">2</span><span class="hljs-operator">,</span> <span class="hljs-number">0</span><span class="hljs-operator">,</span> <span class="hljs-number">0</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> <span class="hljs-variable">u</span><span class="hljs-punctuation">]</span> <span class="hljs-operator">/;</span> <span class="hljs-number">0</span> <span class="hljs-operator">&lt;=</span> <span class="hljs-variable">u</span> <span class="hljs-operator">&lt;=</span> <span class="hljs-number">1</span>
@@ -55,16 +58,42 @@
  <span class="hljs-built_in">ColorFunction</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-variable">jet</span><span class="hljs-operator">,</span> <span class="hljs-built_in">Mesh</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-built_in">None</span><span class="hljs-punctuation">]</span>
 </code></pre>
 </div>
-			<div id="footnote"></div>
-		</div>
-		<div class="bottom-button">
-			<button onclick="scrollToTop()" title="滚动到顶部">
-				<img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-			</button>
-		</div>
-	</div>
-	<script src="/script.js"></script>
-	
+        <div id="footnote"></div>
+      </div>
+
+      <div id="right-sidebar" class="sidebar">
+        <div id="toc-card" class="sidebar-card">
+          <div class="toc-header">目录</div>
+          <div id="toc-content">
+            
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-button mobile-only">
+      <button onclick="scrollToTop()" title="滚动到顶部">
+        <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+      </button>
+    </div>
+  </div>
+
+  <script src="/script.js"></script>
+
+  <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+    <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
+  </button>
+
+  <div id="toc-mobile-wrapper">
+    <div class="toc-header-mobile">
+      <span>目录</span>
+      <button onclick="toggleToc()" class="toc-close-btn">×</button>
+    </div>
+    <div id="toc-content-mobile"></div>
+  </div>
+
+  
 <script>
 document.querySelectorAll('pre').forEach(pre => {
   const btn = document.createElement('button');

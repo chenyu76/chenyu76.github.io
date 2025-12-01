@@ -2,66 +2,53 @@
 <html lang="zh-CN">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>关于这个网站</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>关于这个网站</title>
 
-	<!-- css样式 -->
-	<link rel="stylesheet" href="/styles.css" />
-	<!-- 标签页图标 -->
-	<link rel="icon" href="/favicon.png" type="image/png" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
 
-	<!-- 背景css -->
-	<link rel="stylesheet" href="/img/pixelart/styles.css" />
-
-	
+  
 </head>
 
 <body>
-	<!-- 背景js -->
-	<div id="pixel-art">
-		<div id="pixel-art-background"></div>
-		<div id="pixel-art-midground"></div>
-		<div id="pixel-art-foreground"></div>
-	</div>
-	<script src="/img/pixelart/imgMatrix.js"></script>
-	<script src="/img/pixelart/sky_element.js"></script>
-	<script src="/img/pixelart/land.js"></script>
-	<script src="/img/pixelart/pampas_grass.js"></script>
-	<script src="/img/pixelart/script.js"></script>
+  <iframe id="iframe-background" src="/img/pixelart/index.html" title="background"></iframe>
 
-	<div id="title-container">
-		<div id="spacer"></div>
-		<div id="top-buttons-wrapper" class="top-buttons">
-			<a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc"
-					class="icon" /></a><a href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg"
-					alt="Home" class="icon" /></a><a href="https://github.com/chenyu76" target="_blank"
-				title="跳转到 GitHub" class="fade-in"><img src="/img/icon/github.svg" alt="Github" class="icon" /></a><a
-				href="/About.html" title="关于" class="fade-in"><img src="/img/icon/info.svg" alt="Info"
-					class="icon" /></a>
-		</div>
-		<div id="heading"><h3>writings</h3><h1>关于这个网站</h1></div>
-	</div>
-	<div id="anime-spacer" class="shrinked"></div>
-	<div id="content-wrapper-bg">
-		<div id="content-wrapper">
-			<div id="content"><div class="toc">
-<h2>目录</h2>
-<ul>
-<ul>
-<li><a href="#h2-u7f18u8d77">缘起</a></li>
-<li><a href="#h2-u6280u672fu5b9eu73b0">技术实现</a></li>
-<ul>
-<li><a href="#h3-24-07-28u66f4u65b0">24/07/28更新</a></li>
-<li><a href="#h3-25-02-08u66f4u65b0">25/02/08更新</a></li>
-</ul>
-<li><a href="#h2-todo-list">TODO List</a></li>
-<li><a href="#h2-known-bug">Known Bug</a></li>
-</ul>
-</ul>
-</div>
-<hr>
-<p>这就是我的第一篇文章了。</p>
+  <div id="title-container">
+    <div id="spacer"></div>
+    <div id="top-buttons-wrapper" class="top-buttons">
+      <a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a><a
+        href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a><a
+        href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub" class="fade-in"><img
+          src="/img/icon/github.svg" alt="Github" class="icon" /></a><a href="/About.html" title="关于"
+        class="fade-in"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
+    </div>
+    <div id="heading"><h3>writings</h3><h1>关于这个网站</h1></div>
+  </div>
+
+  <div id="anime-spacer" class="shrinked"></div>
+
+  <div id="content-wrapper-bg">
+    <div id="main-grid-container">
+
+      <div id="left-sidebar" class="sidebar">
+        <div class="sidebar-card">
+          <div class="vertical-buttons">
+            <a href="/toc.html" title="文档索引"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a>
+            <a href="/index.html" title="返回主页"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a>
+            <a href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub"><img src="/img/icon/github.svg"
+                alt="Github" class="icon" /></a>
+            <a href="/About.html" title="关于"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
+            <button onclick="scrollToTop()" title="滚动到顶部" class="scroll-top-btn">
+              <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="content-wrapper">
+        <div id="content"><p>这就是我的第一篇文章了。</p>
 <h2 id="h2-u7f18u8d77">缘起</h2><p>在几年前便闲得无聊用<a href="https://hexo.io/">hexo</a>搭过一次，但也许是我没有分享欲，也许是我肚子里没点墨水，搭建起来后便再也没管过它。荒废已久，长满了电子杂草。直到最近看到<a href="https://jinqking.github.io/">一个朋友的这个漂亮的 Github 主页</a>。（他真的写了很多内容！）才又萌发了重启它的念头。</p>
 <p>既然是重启，我自然是不想再来一遍hexo，于是在GPT的帮助下，凭借着玩<a href="https://screeps.com/">Screeps</a>学的一点JavaScript皮毛，还有现学现用的HTML和CSS知识把这个<del>简陋</del>简洁的网站做出来了。</p>
 <p>但我真的会在以后的日子里写些什么东西放在这个网页上吗？我也不确定，谁知道呢？</p>
@@ -93,16 +80,55 @@
 <li>toc.py在最后一个项目是空文件夹时虽然不会显示此文件夹但仍会显示连接线</li>
 </ul>
 </div>
-			<div id="footnote">缘起段完成于2024年6月20日</div>
-		</div>
-		<div class="bottom-button">
-			<button onclick="scrollToTop()" title="滚动到顶部">
-				<img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-			</button>
-		</div>
-	</div>
-	<script src="/script.js"></script>
-	
+        <div id="footnote">缘起段完成于2024年6月20日</div>
+      </div>
+
+      <div id="right-sidebar" class="sidebar">
+        <div id="toc-card" class="sidebar-card">
+          <div class="toc-header">目录</div>
+          <div id="toc-content">
+            <div class="toc">
+<ul>
+<ul>
+<li><a href="#h2-u7f18u8d77">缘起</a></li>
+<li><a href="#h2-u6280u672fu5b9eu73b0">技术实现</a></li>
+<ul>
+<li><a href="#h3-24-07-28u66f4u65b0">24/07/28更新</a></li>
+<li><a href="#h3-25-02-08u66f4u65b0">25/02/08更新</a></li>
+</ul>
+<li><a href="#h2-todo-list">TODO List</a></li>
+<li><a href="#h2-known-bug">Known Bug</a></li>
+</ul>
+</ul>
+</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-button mobile-only">
+      <button onclick="scrollToTop()" title="滚动到顶部">
+        <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+      </button>
+    </div>
+  </div>
+
+  <script src="/script.js"></script>
+
+  <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+    <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
+  </button>
+
+  <div id="toc-mobile-wrapper">
+    <div class="toc-header-mobile">
+      <span>目录</span>
+      <button onclick="toggleToc()" class="toc-close-btn">×</button>
+    </div>
+    <div id="toc-content-mobile"></div>
+  </div>
+
+  
 </body>
 
 </html>

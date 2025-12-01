@@ -2,28 +2,85 @@
 <html lang="zh-CN">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>像素图背景</title>
-	<link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>像素图背景</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-	<div id="pixel-art">
-		<div id="pixel-art-background"></div>
-		<div id="pixel-art-midground"></div>
-		<div id="pixel-art-foreground"></div>
-	</div>
-	<script src="imgMatrix.js"></script>
-	<script src="sky_element.js"></script>
-	<script src="land.js"></script>
-	<script src="pampas_grass.js"></script>
-	<script src="script.js"></script>
-	<script>
-		window.addEventListener('load', () => {
-			setTimeout(imgInit, 0);
-		});
-	</script>
+  <div id="pixel-art">
+    <div id="pixel-art-background"></div>
+    <div id="pixel-art-midground"></div>
+    <div id="pixel-art-foreground"></div>
+  </div>
+  <script src="imgMatrix.js"></script>
+  <script src="sky_element.js"></script>
+  <script src="land.js"></script>
+  <script src="pampas_grass.js"></script>
+  <script src="script.js"></script>
+  <script>
+    window.addEventListener('load', () => {
+      setTimeout(imgInit, 0);
+    });
+
+    // let pixelImgInit = () => {
+    //   if (window.innerHeight > window.innerWidth) {
+    //     if (typeof imgInit === "function")
+    //       imgInit(window.innerHeight);
+    //     let t = document.getElementById("title-container");
+    //     if (t)
+    //       t.style.height = "38.2vh";
+    //   } else {
+    //     if (typeof imgInit === "function")
+    //       imgInit(window.innerHeight);
+    //     let t = document.getElementById("title-container");
+    //     if (t)
+    //       t.style.height = "61.8vh";
+    //   }
+    //
+    //   // 夜间模式适配
+    //   if (typeof isNight !== 'undefined' && isNight) {
+    //     let div = document.getElementById("top-buttons-wrapper");
+    //     if (div) {
+    //       let children = div.querySelectorAll("*");
+    //       children.forEach((element) => {
+    //         let img = element.querySelector("img");
+    //         if (img)
+    //           img.style.filter = "invert(1)";
+    //       });
+    //     }
+    //     let hdiv = document.getElementById("heading");
+    //     if (hdiv)
+    //       hdiv.style.color = "white";
+    //   }
+    // };
+
+    // window.addEventListener('load', () => {setTimeout(pixelImgInit, 0);});
+    // 每隔十分钟更新背景
+    // setInterval(pixelImgInit, 600000);
+
+    // 每隔十分钟更新背景
+    setInterval(imgInit, 600000);
+
+    // 防抖函数
+    function debounce(func, delay = 250) {
+      let timeoutId;
+      return (...args) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {func.apply(this, args);}, delay);
+      };
+    }
+
+    // 处理窗口大小变化
+    function handleResize() {
+      if (typeof is_first_img_init !== 'undefined')
+        is_first_img_init = true;
+      imgInit();
+    }
+    const debouncedResize = debounce(handleResize, 300);
+    window.addEventListener("resize", debouncedResize);
+  </script>
 </body>
 
 </html>

@@ -2,67 +2,53 @@
 <html lang="zh-CN">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>reMarkable 各种折腾的备忘录</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>reMarkable 各种折腾的备忘录</title>
 
-	<!-- css样式 -->
-	<link rel="stylesheet" href="/styles.css" />
-	<!-- 标签页图标 -->
-	<link rel="icon" href="/favicon.png" type="image/png" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
 
-	<!-- 背景css -->
-	<link rel="stylesheet" href="/img/pixelart/styles.css" />
-
-	<link rel="stylesheet" href="/styles-code.css">
+  <link rel="stylesheet" href="/styles-code.css">
 </head>
 
 <body>
-	<!-- 背景js -->
-	<div id="pixel-art">
-		<div id="pixel-art-background"></div>
-		<div id="pixel-art-midground"></div>
-		<div id="pixel-art-foreground"></div>
-	</div>
-	<script src="/img/pixelart/imgMatrix.js"></script>
-	<script src="/img/pixelart/sky_element.js"></script>
-	<script src="/img/pixelart/land.js"></script>
-	<script src="/img/pixelart/pampas_grass.js"></script>
-	<script src="/img/pixelart/script.js"></script>
+  <iframe id="iframe-background" src="/img/pixelart/index.html" title="background"></iframe>
 
-	<div id="title-container">
-		<div id="spacer"></div>
-		<div id="top-buttons-wrapper" class="top-buttons">
-			<a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc"
-					class="icon" /></a><a href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg"
-					alt="Home" class="icon" /></a><a href="https://github.com/chenyu76" target="_blank"
-				title="跳转到 GitHub" class="fade-in"><img src="/img/icon/github.svg" alt="Github" class="icon" /></a><a
-				href="/About.html" title="关于" class="fade-in"><img src="/img/icon/info.svg" alt="Info"
-					class="icon" /></a>
-		</div>
-		<div id="heading"><h3>quick-references</h3><h1>reMarkable 各种折腾的备忘录</h1></div>
-	</div>
-	<div id="anime-spacer" class="shrinked"></div>
-	<div id="content-wrapper-bg">
-		<div id="content-wrapper">
-			<div id="content"><div class="toc">
-<h2>目录</h2>
-<ul>
-<ul>
-<li><a href="#h2-u4e2du6587u5b57u4f53">中文字体</a></li>
-<li><a href="#h2-u4f11u7720u58c1u7eb8">休眠壁纸</a></li>
-<li><a href="#h2-u53efu80fdu6709u7528u7684u94feu63a5">可能有用的链接</a></li>
-<ul>
-<li><a href="#h3-toltec">Toltec</a></li>
-</ul>
-<li><a href="#h2-u5c4fu5e55u5c3au5bf8">屏幕尺寸</a></li>
-<li><a href="#h2-u4f20u8f93u5927u4e8e100mu7684u6587u4ef6">传输大于100M的文件</a></li>
-<li><a href="#h2-u5173u4e8eusb-connection">关于USB connection</a></li>
-</ul>
-</ul>
-</div>
-<hr>
-<h2 id="h2-u4e2du6587u5b57u4f53">中文字体</h2><p>似乎下面的内容多余了，<a href="https://remarkable.jms1.info/info/fonts.html">参考</a>，只需要把字体放在<code>/home/root/.local/share/fonts/</code></p>
+  <div id="title-container">
+    <div id="spacer"></div>
+    <div id="top-buttons-wrapper" class="top-buttons">
+      <a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a><a
+        href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a><a
+        href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub" class="fade-in"><img
+          src="/img/icon/github.svg" alt="Github" class="icon" /></a><a href="/About.html" title="关于"
+        class="fade-in"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
+    </div>
+    <div id="heading"><h3>quick-references</h3><h1>reMarkable 各种折腾的备忘录</h1></div>
+  </div>
+
+  <div id="anime-spacer" class="shrinked"></div>
+
+  <div id="content-wrapper-bg">
+    <div id="main-grid-container">
+
+      <div id="left-sidebar" class="sidebar">
+        <div class="sidebar-card">
+          <div class="vertical-buttons">
+            <a href="/toc.html" title="文档索引"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a>
+            <a href="/index.html" title="返回主页"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a>
+            <a href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub"><img src="/img/icon/github.svg"
+                alt="Github" class="icon" /></a>
+            <a href="/About.html" title="关于"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
+            <button onclick="scrollToTop()" title="滚动到顶部" class="scroll-top-btn">
+              <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="content-wrapper">
+        <div id="content"><h2 id="h2-u4e2du6587u5b57u4f53">中文字体</h2><p>似乎下面的内容多余了，<a href="https://remarkable.jms1.info/info/fonts.html">参考</a>，只需要把字体放在<code>/home/root/.local/share/fonts/</code></p>
 <p>Any time you add, remove, or update font files, you need to rebuild the font cache files.</p>
 <pre><code class="language-bash">fc-cache -fv
 </code></pre>
@@ -118,16 +104,56 @@ launcherctl switch-launcher --start remux
 <p>说明见<a href="https://www.informaticar.net/how-to-transfer-files-to-remarkable-paper-pro-without-cloud/">这里</a></p>
 <h2 id="h2-u5173u4e8eusb-connection">关于USB connection</h2><p>主流浏览器似乎会默认阻止不安全的http连接，所以我只能用<a href="https://wiki.gnome.org/Apps/Eolie">Eolie</a>连上</p>
 </div>
-			<div id="footnote"></div>
-		</div>
-		<div class="bottom-button">
-			<button onclick="scrollToTop()" title="滚动到顶部">
-				<img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-			</button>
-		</div>
-	</div>
-	<script src="/script.js"></script>
-	
+        <div id="footnote"></div>
+      </div>
+
+      <div id="right-sidebar" class="sidebar">
+        <div id="toc-card" class="sidebar-card">
+          <div class="toc-header">目录</div>
+          <div id="toc-content">
+            <div class="toc">
+<ul>
+<ul>
+<li><a href="#h2-u4e2du6587u5b57u4f53">中文字体</a></li>
+<li><a href="#h2-u4f11u7720u58c1u7eb8">休眠壁纸</a></li>
+<li><a href="#h2-u53efu80fdu6709u7528u7684u94feu63a5">可能有用的链接</a></li>
+<ul>
+<li><a href="#h3-toltec">Toltec</a></li>
+</ul>
+<li><a href="#h2-u5c4fu5e55u5c3au5bf8">屏幕尺寸</a></li>
+<li><a href="#h2-u4f20u8f93u5927u4e8e100mu7684u6587u4ef6">传输大于100M的文件</a></li>
+<li><a href="#h2-u5173u4e8eusb-connection">关于USB connection</a></li>
+</ul>
+</ul>
+</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-button mobile-only">
+      <button onclick="scrollToTop()" title="滚动到顶部">
+        <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+      </button>
+    </div>
+  </div>
+
+  <script src="/script.js"></script>
+
+  <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+    <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
+  </button>
+
+  <div id="toc-mobile-wrapper">
+    <div class="toc-header-mobile">
+      <span>目录</span>
+      <button onclick="toggleToc()" class="toc-close-btn">×</button>
+    </div>
+    <div id="toc-content-mobile"></div>
+  </div>
+
+  
 <script>
 document.querySelectorAll('pre').forEach(pre => {
   const btn = document.createElement('button');

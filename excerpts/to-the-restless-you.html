@@ -2,50 +2,53 @@
 <html lang="zh-CN">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>给不安的你</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>给不安的你</title>
 
-	<!-- css样式 -->
-	<link rel="stylesheet" href="/styles.css" />
-	<!-- 标签页图标 -->
-	<link rel="icon" href="/favicon.png" type="image/png" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
 
-	<!-- 背景css -->
-	<link rel="stylesheet" href="/img/pixelart/styles.css" />
-
-	
+  
 </head>
 
 <body>
-	<!-- 背景js -->
-	<div id="pixel-art">
-		<div id="pixel-art-background"></div>
-		<div id="pixel-art-midground"></div>
-		<div id="pixel-art-foreground"></div>
-	</div>
-	<script src="/img/pixelart/imgMatrix.js"></script>
-	<script src="/img/pixelart/sky_element.js"></script>
-	<script src="/img/pixelart/land.js"></script>
-	<script src="/img/pixelart/pampas_grass.js"></script>
-	<script src="/img/pixelart/script.js"></script>
+  <iframe id="iframe-background" src="/img/pixelart/index.html" title="background"></iframe>
 
-	<div id="title-container">
-		<div id="spacer"></div>
-		<div id="top-buttons-wrapper" class="top-buttons">
-			<a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc"
-					class="icon" /></a><a href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg"
-					alt="Home" class="icon" /></a><a href="https://github.com/chenyu76" target="_blank"
-				title="跳转到 GitHub" class="fade-in"><img src="/img/icon/github.svg" alt="Github" class="icon" /></a><a
-				href="/About.html" title="关于" class="fade-in"><img src="/img/icon/info.svg" alt="Info"
-					class="icon" /></a>
-		</div>
-		<div id="heading"><h3>excerpts</h3><h1>给不安的你</h1></div>
-	</div>
-	<div id="anime-spacer" class="shrinked"></div>
-	<div id="content-wrapper-bg">
-		<div id="content-wrapper">
-			<div id="content"><p><em>松浦弥太郎</em></p>
+  <div id="title-container">
+    <div id="spacer"></div>
+    <div id="top-buttons-wrapper" class="top-buttons">
+      <a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a><a
+        href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a><a
+        href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub" class="fade-in"><img
+          src="/img/icon/github.svg" alt="Github" class="icon" /></a><a href="/About.html" title="关于"
+        class="fade-in"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
+    </div>
+    <div id="heading"><h3>excerpts</h3><h1>给不安的你</h1></div>
+  </div>
+
+  <div id="anime-spacer" class="shrinked"></div>
+
+  <div id="content-wrapper-bg">
+    <div id="main-grid-container">
+
+      <div id="left-sidebar" class="sidebar">
+        <div class="sidebar-card">
+          <div class="vertical-buttons">
+            <a href="/toc.html" title="文档索引"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a>
+            <a href="/index.html" title="返回主页"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a>
+            <a href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub"><img src="/img/icon/github.svg"
+                alt="Github" class="icon" /></a>
+            <a href="/About.html" title="关于"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
+            <button onclick="scrollToTop()" title="滚动到顶部" class="scroll-top-btn">
+              <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="content-wrapper">
+        <div id="content"><p><em>松浦弥太郎</em></p>
 <p>去旅行的时候，有些人的行李总是多得惊人。</p>
 <p>尽管为雨天准备了折伞，为应付连伞都撑不住的暴风雨准备了雨衣，还带了适合徒步的鞋子和去饭店时要穿的皮鞋，但倘若碰到倾盆大雨的日子，恐怕还需要一双长靴吧？</p>
 <p>随着想象无穷无尽地扩散，行李也愈带愈多。他们大都是在想象自己并不乐于见到的未来。</p>
@@ -60,16 +63,42 @@
 <p>我有一个建议，何不试着换一种思维方式呢？那就是──只去看那些此时此刻在眼前发生的事，只处理眼前的问题。不是把焦点放在明天或后天，也不是明年或十年后，而是把精神集中在“现在”这一刻。假使你已经预测到未来“可能会发生那样的情况”，在事情实际发生前，何不把那些预想都忘掉呢？</p>
 <p>只要以这种态度定下基本的思维方式，我想“不安的未来”也将会离你愈来愈远。</p>
 </div>
-			<div id="footnote"></div>
-		</div>
-		<div class="bottom-button">
-			<button onclick="scrollToTop()" title="滚动到顶部">
-				<img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-			</button>
-		</div>
-	</div>
-	<script src="/script.js"></script>
-	
+        <div id="footnote"></div>
+      </div>
+
+      <div id="right-sidebar" class="sidebar">
+        <div id="toc-card" class="sidebar-card">
+          <div class="toc-header">目录</div>
+          <div id="toc-content">
+            
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-button mobile-only">
+      <button onclick="scrollToTop()" title="滚动到顶部">
+        <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+      </button>
+    </div>
+  </div>
+
+  <script src="/script.js"></script>
+
+  <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+    <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
+  </button>
+
+  <div id="toc-mobile-wrapper">
+    <div class="toc-header-mobile">
+      <span>目录</span>
+      <button onclick="toggleToc()" class="toc-close-btn">×</button>
+    </div>
+    <div id="toc-content-mobile"></div>
+  </div>
+
+  
 </body>
 
 </html>

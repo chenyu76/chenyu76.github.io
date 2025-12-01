@@ -2,81 +2,53 @@
 <html lang="zh-CN">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>LaTeX 表格速查</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LaTeX 表格速查</title>
 
-	<!-- css样式 -->
-	<link rel="stylesheet" href="/styles.css" />
-	<!-- 标签页图标 -->
-	<link rel="icon" href="/favicon.png" type="image/png" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
 
-	<!-- 背景css -->
-	<link rel="stylesheet" href="/img/pixelart/styles.css" />
-
-	<link rel="stylesheet" href="/styles-code.css">
+  <link rel="stylesheet" href="/styles-code.css">
 </head>
 
 <body>
-	<!-- 背景js -->
-	<div id="pixel-art">
-		<div id="pixel-art-background"></div>
-		<div id="pixel-art-midground"></div>
-		<div id="pixel-art-foreground"></div>
-	</div>
-	<script src="/img/pixelart/imgMatrix.js"></script>
-	<script src="/img/pixelart/sky_element.js"></script>
-	<script src="/img/pixelart/land.js"></script>
-	<script src="/img/pixelart/pampas_grass.js"></script>
-	<script src="/img/pixelart/script.js"></script>
+  <iframe id="iframe-background" src="/img/pixelart/index.html" title="background"></iframe>
 
-	<div id="title-container">
-		<div id="spacer"></div>
-		<div id="top-buttons-wrapper" class="top-buttons">
-			<a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc"
-					class="icon" /></a><a href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg"
-					alt="Home" class="icon" /></a><a href="https://github.com/chenyu76" target="_blank"
-				title="跳转到 GitHub" class="fade-in"><img src="/img/icon/github.svg" alt="Github" class="icon" /></a><a
-				href="/About.html" title="关于" class="fade-in"><img src="/img/icon/info.svg" alt="Info"
-					class="icon" /></a>
-		</div>
-		<div id="heading"><h3>quick-references/LaTeX</h3><h1>LaTeX 表格速查</h1></div>
-	</div>
-	<div id="anime-spacer" class="shrinked"></div>
-	<div id="content-wrapper-bg">
-		<div id="content-wrapper">
-			<div id="content"><div class="toc">
-<h2>目录</h2>
-<ul>
-<ul>
-<li><a href="#h2-u57fau672cu8bbeu7f6e">基本设置</a></li>
-<li><a href="#h2-u57fau7840u8868u683cu52a0u8fb9u6846">基础表格加边框</a></li>
-<li><a href="#h2-booktabs-u4e09u7ebfu8868">`booktabs` 三线表</a></li>
-<ul>
-<li><a href="#h3-booktabs-u7684-cmidrule-u9ad8u7ea7u7528u6cd5">`booktabs` 的 `\cmidrule` 高级用法</a></li>
-</ul>
-<li><a href="#h2-u5355u5143u683cu591au884cu5185u5bb9">单元格多行内容</a></li>
-<li><a href="#h2-u5408u5e76u5355u5143u683c">合并单元格</a></li>
-<ul>
-<li><a href="#h3-u6a2au5411u5408u5e76-multicolumn">横向合并 (multicolumn)</a></li>
-<li><a href="#h3-u7eb5u5411u5408u5e76-multirow">纵向合并 (multirow)</a></li>
-<li><a href="#h3-u7ec4u5408u5408u5e76">组合合并</a></li>
-</ul>
-<li><a href="#h2-u6700u4f73u5b9eu8df5">最佳实践</a></li>
-<li><a href="#h2-u5bf9u9f50u65b9u5f0f">对齐方式</a></li>
-<li><a href="#h2-table-u73afu5883">`table` 环境</a></li>
-<li><a href="#h2-tabularx-u667au80fdu8868u683c">`tabularx` 智能表格</a></li>
-<li><a href="#h2-u5168u5c40u589eu5927u8868u683cu884cu8ddd">全局增大表格行距</a></li>
-<ul>
-<li><a href="#h3-u65b9u6cd51-u8c03u6574u884cu9ad8u7cfbu6570">方法1：调整行高系数</a></li>
-<li><a href="#h3-u65b9u6cd52-makecell-u5b8fu5305">方法2：`makecell` 宏包</a></li>
-<li><a href="#h3-u65b9u6cd53-setspace-u5b8fu5305-u5f71u54cdu6574u4e2au6587u6863">方法3：`setspace` 宏包（影响整个文档）</a></li>
-</ul>
-</ul>
-</ul>
-</div>
-<hr>
-<h2 id="h2-u57fau672cu8bbeu7f6e">基本设置</h2><pre><code class="language-latex"><span class="hljs-keyword">\usepackage</span>{booktabs}   <span class="hljs-comment">% 三线表</span>
+  <div id="title-container">
+    <div id="spacer"></div>
+    <div id="top-buttons-wrapper" class="top-buttons">
+      <a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a><a
+        href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a><a
+        href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub" class="fade-in"><img
+          src="/img/icon/github.svg" alt="Github" class="icon" /></a><a href="/About.html" title="关于"
+        class="fade-in"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
+    </div>
+    <div id="heading"><h3>quick-references/LaTeX</h3><h1>LaTeX 表格速查</h1></div>
+  </div>
+
+  <div id="anime-spacer" class="shrinked"></div>
+
+  <div id="content-wrapper-bg">
+    <div id="main-grid-container">
+
+      <div id="left-sidebar" class="sidebar">
+        <div class="sidebar-card">
+          <div class="vertical-buttons">
+            <a href="/toc.html" title="文档索引"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a>
+            <a href="/index.html" title="返回主页"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a>
+            <a href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub"><img src="/img/icon/github.svg"
+                alt="Github" class="icon" /></a>
+            <a href="/About.html" title="关于"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
+            <button onclick="scrollToTop()" title="滚动到顶部" class="scroll-top-btn">
+              <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="content-wrapper">
+        <div id="content"><h2 id="h2-u57fau672cu8bbeu7f6e">基本设置</h2><pre><code class="language-latex"><span class="hljs-keyword">\usepackage</span>{booktabs}   <span class="hljs-comment">% 三线表</span>
 <span class="hljs-keyword">\usepackage</span>{multirow}   <span class="hljs-comment">% 合并多行</span>
 <span class="hljs-keyword">\usepackage</span>{makecell}   <span class="hljs-comment">% 单元格内换行</span>
 </code></pre>
@@ -245,16 +217,70 @@
 <span class="hljs-keyword">\doublespacing</span>       <span class="hljs-comment">% 2倍行距</span>
 </code></pre>
 </div>
-			<div id="footnote"></div>
-		</div>
-		<div class="bottom-button">
-			<button onclick="scrollToTop()" title="滚动到顶部">
-				<img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-			</button>
-		</div>
-	</div>
-	<script src="/script.js"></script>
-	
+        <div id="footnote"></div>
+      </div>
+
+      <div id="right-sidebar" class="sidebar">
+        <div id="toc-card" class="sidebar-card">
+          <div class="toc-header">目录</div>
+          <div id="toc-content">
+            <div class="toc">
+<ul>
+<ul>
+<li><a href="#h2-u57fau672cu8bbeu7f6e">基本设置</a></li>
+<li><a href="#h2-u57fau7840u8868u683cu52a0u8fb9u6846">基础表格加边框</a></li>
+<li><a href="#h2-booktabs-u4e09u7ebfu8868">`booktabs` 三线表</a></li>
+<ul>
+<li><a href="#h3-booktabs-u7684-cmidrule-u9ad8u7ea7u7528u6cd5">`booktabs` 的 `\cmidrule` 高级用法</a></li>
+</ul>
+<li><a href="#h2-u5355u5143u683cu591au884cu5185u5bb9">单元格多行内容</a></li>
+<li><a href="#h2-u5408u5e76u5355u5143u683c">合并单元格</a></li>
+<ul>
+<li><a href="#h3-u6a2au5411u5408u5e76-multicolumn">横向合并 (multicolumn)</a></li>
+<li><a href="#h3-u7eb5u5411u5408u5e76-multirow">纵向合并 (multirow)</a></li>
+<li><a href="#h3-u7ec4u5408u5408u5e76">组合合并</a></li>
+</ul>
+<li><a href="#h2-u6700u4f73u5b9eu8df5">最佳实践</a></li>
+<li><a href="#h2-u5bf9u9f50u65b9u5f0f">对齐方式</a></li>
+<li><a href="#h2-table-u73afu5883">`table` 环境</a></li>
+<li><a href="#h2-tabularx-u667au80fdu8868u683c">`tabularx` 智能表格</a></li>
+<li><a href="#h2-u5168u5c40u589eu5927u8868u683cu884cu8ddd">全局增大表格行距</a></li>
+<ul>
+<li><a href="#h3-u65b9u6cd51-u8c03u6574u884cu9ad8u7cfbu6570">方法1：调整行高系数</a></li>
+<li><a href="#h3-u65b9u6cd52-makecell-u5b8fu5305">方法2：`makecell` 宏包</a></li>
+<li><a href="#h3-u65b9u6cd53-setspace-u5b8fu5305-u5f71u54cdu6574u4e2au6587u6863">方法3：`setspace` 宏包（影响整个文档）</a></li>
+</ul>
+</ul>
+</ul>
+</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-button mobile-only">
+      <button onclick="scrollToTop()" title="滚动到顶部">
+        <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+      </button>
+    </div>
+  </div>
+
+  <script src="/script.js"></script>
+
+  <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+    <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
+  </button>
+
+  <div id="toc-mobile-wrapper">
+    <div class="toc-header-mobile">
+      <span>目录</span>
+      <button onclick="toggleToc()" class="toc-close-btn">×</button>
+    </div>
+    <div id="toc-content-mobile"></div>
+  </div>
+
+  
 <script>
 document.querySelectorAll('pre').forEach(pre => {
   const btn = document.createElement('button');

@@ -2,89 +2,55 @@
 <html lang="zh-CN">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>some SZU LaTeX templates</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>some SZU LaTeX templates</title>
 
-	<!-- css样式 -->
-	<link rel="stylesheet" href="/styles.css" />
-	<!-- 标签页图标 -->
-	<link rel="icon" href="/favicon.png" type="image/png" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
 
-	<!-- 背景css -->
-	<link rel="stylesheet" href="/img/pixelart/styles.css" />
-
-	<link rel="stylesheet" href="/styles-code.css">
+  <link rel="stylesheet" href="/styles-code.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous">
     
 </head>
 
 <body>
-	<!-- 背景js -->
-	<div id="pixel-art">
-		<div id="pixel-art-background"></div>
-		<div id="pixel-art-midground"></div>
-		<div id="pixel-art-foreground"></div>
-	</div>
-	<script src="/img/pixelart/imgMatrix.js"></script>
-	<script src="/img/pixelart/sky_element.js"></script>
-	<script src="/img/pixelart/land.js"></script>
-	<script src="/img/pixelart/pampas_grass.js"></script>
-	<script src="/img/pixelart/script.js"></script>
+  <iframe id="iframe-background" src="/img/pixelart/index.html" title="background"></iframe>
 
-	<div id="title-container">
-		<div id="spacer"></div>
-		<div id="top-buttons-wrapper" class="top-buttons">
-			<a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc"
-					class="icon" /></a><a href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg"
-					alt="Home" class="icon" /></a><a href="https://github.com/chenyu76" target="_blank"
-				title="跳转到 GitHub" class="fade-in"><img src="/img/icon/github.svg" alt="Github" class="icon" /></a><a
-				href="/About.html" title="关于" class="fade-in"><img src="/img/icon/info.svg" alt="Info"
-					class="icon" /></a>
-		</div>
-		<div id="heading"><h3>writings</h3><h1>some SZU LaTeX templates</h1></div>
-	</div>
-	<div id="anime-spacer" class="shrinked"></div>
-	<div id="content-wrapper-bg">
-		<div id="content-wrapper">
-			<div id="content"><div class="toc">
-<h2>目录</h2>
-<ul>
-<li><a href="#h1-u5404u4e2au6a21u677fu4f7fu7528u8bf4u660e">各个模板使用说明</a></li>
-<ul>
-<li><a href="#h2-u5927u5b66u7269u7406u5b9eu9a8cu62a5u544a">大学物理实验报告</a></li>
-<ul>
-<li><a href="#h3-u5efau8baeu6d41u7a0b">建议流程：</a></li>
-<li><a href="#h3-u539fu7406u8bf4u660e">原理说明</a></li>
-<li><a href="#h3-u4feeu6539u9ed8u8ba4u914du7f6e">修改默认配置</a></li>
-<ul>
-<li><a href="#h4-u4feeu6539u5c01u9762u6837u5f0f">修改封面样式</a></li>
-<li><a href="#h4-u4feeu6539u4e2au4ebau4fe1u606f">修改个人信息</a></li>
-<li><a href="#h4-u53efu9009-u589eu52a0u4f60u9700u8981u7684u4feeu6539u4fe1u606f">[ 可选 ] 增加你需要的修改信息</a></li>
-</ul>
-<li><a href="#h3-u5176u5b83">其它</a></li>
-</ul>
-<li><a href="#h2-u5927u5b66u7269u7406u5b9eu9a8cu5b9eu9a8cu8bbau6587">大学物理实验实验论文</a></li>
-<li><a href="#h2-u5927u5b66u7269u7406u5b9eu9a8cu8c03u7814u62a5u544a">大学物理实验调研报告</a></li>
-<ul>
-<li><a href="#h3-u9700u8981u6ce8u610fu7684u5730u65b9">需要注意的地方：</a></li>
-</ul>
-<li><a href="#h2-u6df1u5733u5927u5b66u8003u8bd5u7b54u9898u7eb8">深圳大学考试答题纸</a></li>
-<li><a href="#h2-u5927u5b66u751fu521bu65b0u8badu7ec3u9879u76eeu7533u62a5u4e66">大学生创新训练项目申报书</a></li>
-<ul>
-<li><a href="#h3-u6ce8u610fu4e8bu9879">注意事项</a></li>
-</ul>
-</ul>
-<li><a href="#h1-u767bu9646u6821u56edu7f51pythonu811au672c">登陆校园网Python脚本</a></li>
-<li><a href="#h1-u5982u679cu4f60u7684u8001u5e08u53eau5141u8bb8u63d0u4ea4-docxu6587u4ef6">如果你的老师只允许提交.docx文件……</a></li>
-<ul>
-<li><a href="#h2-u65b9u68481">方案1</a></li>
-<li><a href="#h2-u65b9u68482">方案2</a></li>
-</ul>
-</ul>
-</div>
-<hr>
-<p><a href="https://github.com/chenyu76/some-SZU-LaTeX-templates">仓库地址</a></p>
+  <div id="title-container">
+    <div id="spacer"></div>
+    <div id="top-buttons-wrapper" class="top-buttons">
+      <a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a><a
+        href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a><a
+        href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub" class="fade-in"><img
+          src="/img/icon/github.svg" alt="Github" class="icon" /></a><a href="/About.html" title="关于"
+        class="fade-in"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
+    </div>
+    <div id="heading"><h3>writings</h3><h1>some SZU LaTeX templates</h1></div>
+  </div>
+
+  <div id="anime-spacer" class="shrinked"></div>
+
+  <div id="content-wrapper-bg">
+    <div id="main-grid-container">
+
+      <div id="left-sidebar" class="sidebar">
+        <div class="sidebar-card">
+          <div class="vertical-buttons">
+            <a href="/toc.html" title="文档索引"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a>
+            <a href="/index.html" title="返回主页"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a>
+            <a href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub"><img src="/img/icon/github.svg"
+                alt="Github" class="icon" /></a>
+            <a href="/About.html" title="关于"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
+            <button onclick="scrollToTop()" title="滚动到顶部" class="scroll-top-btn">
+              <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="content-wrapper">
+        <div id="content"><p><a href="https://github.com/chenyu76/some-SZU-LaTeX-templates">仓库地址</a></p>
 <p>一些（我自己用的）深大的照着Word版本抄的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>LaTeX</mtext></mrow><annotation encoding="application/x-tex">\LaTeX</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8988em;vertical-align:-0.2155em;"></span><span class="mord text"><span class="mord textrm">L</span><span class="mspace" style="margin-right:-0.36em;"></span><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6833em;"><span style="top:-2.905em;"><span class="pstrut" style="height:2.7em;"></span><span class="mord"><span class="mord textrm mtight sizing reset-size6 size3">A</span></span></span></span></span></span><span class="mspace" style="margin-right:-0.15em;"></span><span class="mord text"><span class="mord textrm">T</span><span class="mspace" style="margin-right:-0.1667em;"></span><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4678em;"><span style="top:-2.7845em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord textrm">E</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2155em;"><span></span></span></span></span><span class="mspace" style="margin-right:-0.125em;"></span><span class="mord textrm">X</span></span></span></span></span></span>模板</p>
 <hr>
 <p>学校的很多文档都只提供Word格式的模板，写起来不习惯，就使用<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>LaTeX</mtext></mrow><annotation encoding="application/x-tex">\LaTeX</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8988em;vertical-align:-0.2155em;"></span><span class="mord text"><span class="mord textrm">L</span><span class="mspace" style="margin-right:-0.36em;"></span><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6833em;"><span style="top:-2.905em;"><span class="pstrut" style="height:2.7em;"></span><span class="mord"><span class="mord textrm mtight sizing reset-size6 size3">A</span></span></span></span></span></span><span class="mspace" style="margin-right:-0.15em;"></span><span class="mord text"><span class="mord textrm">T</span><span class="mspace" style="margin-right:-0.1667em;"></span><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4678em;"><span style="top:-2.7845em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord textrm">E</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2155em;"><span></span></span></span></span><span class="mspace" style="margin-right:-0.125em;"></span><span class="mord textrm">X</span></span></span></span></span></span>复刻了一部分，并分享在这个仓库中，供能找到的人自取。</p>
@@ -269,16 +235,76 @@
 </li>
 </ol>
 </div>
-			<div id="footnote">2024/12/15</div>
-		</div>
-		<div class="bottom-button">
-			<button onclick="scrollToTop()" title="滚动到顶部">
-				<img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-			</button>
-		</div>
-	</div>
-	<script src="/script.js"></script>
-	
+        <div id="footnote">2024/12/15</div>
+      </div>
+
+      <div id="right-sidebar" class="sidebar">
+        <div id="toc-card" class="sidebar-card">
+          <div class="toc-header">目录</div>
+          <div id="toc-content">
+            <div class="toc">
+<ul>
+<li><a href="#h1-u5404u4e2au6a21u677fu4f7fu7528u8bf4u660e">各个模板使用说明</a></li>
+<ul>
+<li><a href="#h2-u5927u5b66u7269u7406u5b9eu9a8cu62a5u544a">大学物理实验报告</a></li>
+<ul>
+<li><a href="#h3-u5efau8baeu6d41u7a0b">建议流程：</a></li>
+<li><a href="#h3-u539fu7406u8bf4u660e">原理说明</a></li>
+<li><a href="#h3-u4feeu6539u9ed8u8ba4u914du7f6e">修改默认配置</a></li>
+<ul>
+<li><a href="#h4-u4feeu6539u5c01u9762u6837u5f0f">修改封面样式</a></li>
+<li><a href="#h4-u4feeu6539u4e2au4ebau4fe1u606f">修改个人信息</a></li>
+<li><a href="#h4-u53efu9009-u589eu52a0u4f60u9700u8981u7684u4feeu6539u4fe1u606f">[ 可选 ] 增加你需要的修改信息</a></li>
+</ul>
+<li><a href="#h3-u5176u5b83">其它</a></li>
+</ul>
+<li><a href="#h2-u5927u5b66u7269u7406u5b9eu9a8cu5b9eu9a8cu8bbau6587">大学物理实验实验论文</a></li>
+<li><a href="#h2-u5927u5b66u7269u7406u5b9eu9a8cu8c03u7814u62a5u544a">大学物理实验调研报告</a></li>
+<ul>
+<li><a href="#h3-u9700u8981u6ce8u610fu7684u5730u65b9">需要注意的地方：</a></li>
+</ul>
+<li><a href="#h2-u6df1u5733u5927u5b66u8003u8bd5u7b54u9898u7eb8">深圳大学考试答题纸</a></li>
+<li><a href="#h2-u5927u5b66u751fu521bu65b0u8badu7ec3u9879u76eeu7533u62a5u4e66">大学生创新训练项目申报书</a></li>
+<ul>
+<li><a href="#h3-u6ce8u610fu4e8bu9879">注意事项</a></li>
+</ul>
+</ul>
+<li><a href="#h1-u767bu9646u6821u56edu7f51pythonu811au672c">登陆校园网Python脚本</a></li>
+<li><a href="#h1-u5982u679cu4f60u7684u8001u5e08u53eau5141u8bb8u63d0u4ea4-docxu6587u4ef6">如果你的老师只允许提交.docx文件……</a></li>
+<ul>
+<li><a href="#h2-u65b9u68481">方案1</a></li>
+<li><a href="#h2-u65b9u68482">方案2</a></li>
+</ul>
+</ul>
+</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-button mobile-only">
+      <button onclick="scrollToTop()" title="滚动到顶部">
+        <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+      </button>
+    </div>
+  </div>
+
+  <script src="/script.js"></script>
+
+  <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+    <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
+  </button>
+
+  <div id="toc-mobile-wrapper">
+    <div class="toc-header-mobile">
+      <span>目录</span>
+      <button onclick="toggleToc()" class="toc-close-btn">×</button>
+    </div>
+    <div id="toc-content-mobile"></div>
+  </div>
+
+  
 <script>
 document.querySelectorAll('pre').forEach(pre => {
   const btn = document.createElement('button');

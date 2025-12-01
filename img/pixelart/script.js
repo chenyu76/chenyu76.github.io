@@ -242,7 +242,8 @@ function normalize(v) {
 function dot(v1, v2) { return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2]; }
 
 // 初始化
-async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
+async function imgInit(h = document.documentElement.clientHeight,
+                       time = getDecimalHour()) {
   // 获取背景和前景容器
   const background = document.getElementById("pixel-art-background");
   const midground = document.getElementById("pixel-art-midground");
@@ -375,7 +376,7 @@ async function imgInit(h = window.innerHeight, time = getDecimalHour()) {
         grass.start_move_element_animation();
         hasPassedThreshold = false; // 更新状态，以便下次超过时能再次触发
       }
-    });
+    }, true);
   }
 
   is_first_img_init = false;

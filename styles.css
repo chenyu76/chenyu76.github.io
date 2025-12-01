@@ -1,407 +1,523 @@
-/* styles.css */
-body,
-html {
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	background-size: cover;
-
-	/* 淡灰色背景 */
-	margin: 0;
-	padding: 0;
-	height: 100%;
-	width: 100%;
-	overflow: auto;
-	/* 确保纵向滚动 */
-
-	body {
-		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
-	}
+:root {
+  --bg-color: #f0f0f0;
+  --card-bg-color: #ffffff;
+  --main-width: 800px;
+  --right-sidebar-width: 260px;
+  --lett-sidebar-width: 60px;
 }
 
+/* styles.css */
 html {
-	background-color: #f0f0f0;
+  background-color: var(--bg-color);
+}
+
+body,
+html {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  /* 防止横向滚动条 */
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+
+
+/* 背景图片的样式设置 */
+#iframe-background {
+  width: 100%;
+  height: 61.8vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -10;
+  border: none;
 }
 
 #spacer {
-	flex-grow: 1;
-	/* 占据剩余空间 */
+  flex-grow: 1;
 }
 
 #title-container {
-	display: flex;
-	flex-direction: column;
-	width: 80%;
-	max-width: 800px;
-	margin: 0px auto;
-	/* 居中对齐 */
-
-	height: 61.8vh;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  max-width: var(--main-width);
+  margin: 0px auto;
+  height: 61.8vh;
+  transition: width 0.5s ease-in-out;
+  transition: height 0.5s ease-in-out;
 }
 
-/* 定义动画 */
+/* 动画定义 */
 @keyframes shrink {
-	0% {
-		height: 50vh;
-	}
+  0% {
+    height: 50vh;
+  }
 
-	100% {
-		height: 0.1vh;
-	}
+  100% {
+    height: 0.1vh;
+  }
 }
 
-/* 应用动画 */
 #anime-spacer {
-	animation: shrink 0.5s ease forwards;
-	/* forwards 保持动画结束状态 */
+  animation: shrink 0.5s ease forwards;
 }
 
 #content-wrapper-bg {
-	background-color: #f0f0f0;
-	margin: 0px 0px;
-	width: 100%;
+  background-color: var(--bg-color);
+  margin: 0px 0px;
+  width: 100%;
 }
 
+/* --- 核心布局重构 (Flex + Sticky) --- */
+
+/* 主网格容器 */
+#main-grid-container {
+  display: flex;
+  justify-content: center;
+  /* 关键：使用 stretch 让侧边栏高度自动填满，这样 sticky 才能在长文中生效 */
+  align-items: stretch;
+  width: 95%;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 20px;
+  padding-bottom: 50px;
+  position: relative;
+}
+
+/* 侧边栏轨道 */
+.sidebar {
+  display: none;
+  /* 移动端默认隐藏 */
+  width: var(left-sidebar-width);
+  /* 左侧栏宽度 */
+  flex-shrink: 0;
+  /* 高度由 flex stretch 自动撑开，不需要设置 height */
+}
+
+#right-sidebar {
+  width: var(--right-sidebar-width);
+  /* 右侧栏宽度 */
+}
+
+/* 侧边栏内部的卡片 (Sticky 效果在这里) */
+.sidebar-card {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 20px;
+  /* 距离视口顶部的距离 */
+
+  background-color: var(--card-bg-color);
+  /* 轻微透明背景 */
+  /* backdrop-filter: blur(5px); */
+  padding: 15px;
+  /* border-radius: 8px; */
+
+  /* 限制最大高度，防止目录太长超出屏幕 */
+  max-height: 85vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+/* 中间内容区域 */
 #content-wrapper {
-	background-color: white;
-	/* 白色背景 */
-	width: 80%;
-	/* 默认宽度 */
-	max-width: 800px;
-	padding: 30px;
-	margin: 0px auto;
-	/* 居中对齐 */
+  background-color: white;
+  width: auto;
+  flex-grow: 1;
+  /* 占据剩余空间 */
+  max-width: var(--main-width);
+  padding: 40px;
+  margin: 0;
+  min-height: 80vh;
+  /* 保证内容区至少有高度 */
 }
 
+/* --- 左侧边栏 (滚动后显示) --- */
+#left-sidebar {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+  z-index: 100;
+}
+
+#left-sidebar.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.vertical-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.vertical-buttons a img,
+.vertical-buttons button img {
+  width: 24px;
+  height: 24px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  display: block;
+}
+
+.vertical-buttons a:hover img,
+.vertical-buttons button:hover img {
+  opacity: 1;
+}
+
+.scroll-top-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+
+/* --- 头部样式 --- */
 #heading {
-	width: 80%;
-	/* 默认宽度 */
-	max-width: 800px;
-	margin: 5px 0px;
+  width: 100%;
+  margin: 5px 0px;
 }
 
 #top-buttons-wrapper {
-	width: 80%;
-	/* 默认宽度 */
-	max-width: 800px;
-	padding: 0px;
-	margin: 5px 0px;
-	/* margin: 5px auto; */
+  width: 100%;
+  padding: 0px;
+  margin: 5px 0px;
 }
 
+/* --- 文章内容样式 --- */
 p {
-	text-indent: 2em;
-	/* 段首空两格 */
+  text-indent: 2em;
 }
 
 #content {
-	margin: 0;
-	line-height: 1.75;
+  margin: 0;
+  line-height: 1.75;
 }
 
 #content img {
-	width: 80%;
-	height: auto;
-	/* 保持图片的宽高比 */
-	display: block;
-	/* 防止图片右侧多余的空白 */
-	margin: 2rem auto;
-	/* 图片居中 */
+  width: 80%;
+  height: auto;
+  display: block;
+  margin: 2rem auto;
 }
 
 #content a {
-	text-decoration: none;
-	/* 去掉下划线 */
-	color: #0056b3;
-	/* color: #1E90FF; */
-	/* color: #007BFF; */
-	/* 默认颜色 */
-}
-
-#content a:visited {
-	text-decoration: none;
-	color: #004bb3;
-	/* 点击后颜色 */
+  text-decoration: none;
+  color: #0056b3;
 }
 
 #content a:hover {
-	text-decoration: underline;
-	color: #2b92ff;
-	/* 悬停时颜色 */
+  text-decoration: underline;
+  color: #2b92ff;
 }
 
 #footnote {
-	color: gray;
-	/* 设置字体颜色为灰色 */
-	font-size: 0.8em;
-	/* 设置字体大小为普通字体的0.8倍 */
+  color: gray;
+  font-size: 0.8em;
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
 }
 
+/* 顶部按钮 */
 .top-buttons {
-	text-align: left;
-	margin: 10px 0;
+  text-align: left;
+  margin: 10px 0;
 }
 
 .icon {
-	height: 1.5em;
-	/* 高度和宽度保持一致 */
-	font-size: 16px;
-	/* 设置字体大小与默认 i 标签大小一致 */
+  height: 1.5em;
+  font-size: 16px;
+  vertical-align: middle;
 }
 
-/* 按钮动画显现效果 */
+/* 按钮动画 */
 .fade-in {
-	opacity: 0;
-	animation: fadeIn 0.5s forwards;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
 }
 
 .fade-in:nth-child(1) {
-	animation-delay: 0.2s;
+  animation-delay: 0.2s;
 }
 
 .fade-in:nth-child(2) {
-	animation-delay: 0.3s;
+  animation-delay: 0.3s;
 }
 
 .fade-in:nth-child(3) {
-	animation-delay: 0.4s;
+  animation-delay: 0.4s;
 }
 
 .fade-in:nth-child(4) {
-	animation-delay: 0.5s;
+  animation-delay: 0.5s;
 }
 
 @keyframes fadeIn {
-	to {
-		opacity: 1;
-	}
+  to {
+    opacity: 1;
+  }
 }
 
-.bottom-button {
-	text-align: center;
-	margin: 10px 0 50px;
+.top-buttons a {
+  margin: 0 5px;
+  padding: 10px;
+  color: #101010;
+  text-decoration: none;
+  font-size: 20px;
 }
 
-.top-buttons a,
-.bottom-button button {
-	margin: 0 5px;
-	padding: 10px;
-	color: #101010;
-	text-decoration: none;
-	background-color: transparent;
-	border: none#0056b3;
-	border-radius: 5px;
-	cursor: pointer;
-	font-size: 20px;
+/* --- 右侧目录样式 --- */
+.toc-header {
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ddd;
+  font-size: 1.1em;
+  color: #333;
 }
 
-.top-buttons a:hover,
-.bottom-button button:hover {
-	color: #0056b3;
+#toc-content ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
 }
 
-.top-buttons a i,
-.bottom-button button i {
-	pointer-events: none;
+#toc-content ul ul {
+  padding-left: 1.2em;
 }
 
-.hiddenContent {
-	/* 初始隐藏内容 */
-	opacity: 0;
-	line-height: 0%;
-	display: none;
-	transition:
-		line-height 0.3s ease,
-		opacity 0.2s ease;
-	/* 过渡动画 */
+#toc-content li {
+  margin: 6px 0;
+  font-size: 0.9em;
+  line-height: 1.4;
 }
 
-.hiddenContent.show {
-	opacity: 1;
-	line-height: 70%;
+#toc-content a {
+  text-decoration: none;
+  color: #666;
+  display: block;
+  transition: color 0.2s;
 }
 
-/* 在标题的路径中使用 */
-h4 {
-	margin-bottom: 0;
+#toc-content a:hover {
+  color: #0056b3;
 }
 
+/* --- 响应式设计 --- */
+.mobile-only {
+  display: none;
+}
+
+/* 移动端 (小于1200px) */
+@media (max-width: 1199px) {
+
+  #iframe-background,
+  #title-container {
+    height: 38.2vh;
+  }
+
+
+  #main-grid-container {
+    display: block;
+    /* 恢复块级布局 */
+    width: 100%;
+    margin: 0;
+  }
+
+  #content-wrapper {
+    width: 90%;
+    margin: 0 auto;
+    max-width: var(--main-width);
+    padding: 20px;
+  }
+
+  /* 隐藏 PC 端侧边栏 */
+  .sidebar {
+    display: none !important;
+  }
+
+  /* 显示底部按钮 */
+  .mobile-only {
+    display: block;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .bottom-button button {
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+
+  /* 移动端悬浮目录按钮 */
+  #toc-mobile-btn {
+    display: flex;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  /* 移动端目录面板 */
+  #toc-mobile-wrapper {
+    display: block;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: var(--right-sidebar-width);
+    max-height: 60vh;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    transform: translateY(20px) scale(0.95);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow-y: auto;
+  }
+
+  #toc-mobile-wrapper.active {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .toc-header-mobile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  .toc-close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #999;
+  }
+
+  #toc-content-mobile ul {
+    list-style: none;
+    padding-left: 10px;
+  }
+
+  #toc-content-mobile li {
+    margin: 5px 0;
+    font-size: 0.9em;
+  }
+
+  #toc-content-mobile a {
+    text-decoration: none;
+    color: #333;
+  }
+}
+
+/* PC 端 (大于等于1200px) */
+@media (min-width: 1200px) {
+  #right-sidebar {
+    display: block;
+  }
+
+  #title-container {
+    max-width: calc(var(--main-width) + var(--right-sidebar-width));
+  }
+
+  #left-sidebar {
+    display: block;
+  }
+
+  /* 初始opacity为0 */
+  #toc-mobile-btn {
+    display: none;
+  }
+
+  #toc-mobile-wrapper {
+    display: none;
+  }
+}
+
+/* Markdown 特殊样式 */
+blockquote {
+  margin: 1em 10px;
+  padding: 0.5em 10px;
+  border-left: 3px solid #ccc;
+  font-style: italic;
+  color: #666;
+}
 
 pre {
-	position: relative;
-	padding: 0em;
-	border-radius: 0px;
-	margin: 0em 0;
-}
-
-/* 引用文本的样式 */
-blockquote {
-	margin: 1em 10px;
-	padding: 0.5em 10px;
-	border-left: 3px solid #ccc;
-	/* 添加左侧边框 */
-	font-style: italic;
-	/* 斜体文本 */
-	color: #666;
-	/* 更改文本颜色 */
-}
-
-ol::marker li::marker {
-	font-weight: bold;
-	/* 加粗编号 */
-	color: #333333;
-	/* 更改编号颜色 */
-}
-
-ul p,
-ol p,
-li p {
-	text-indent: 0;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	position: relative;
-}
-
-h1:hover::before {
-	content: "h1";
-}
-
-h2:hover::before {
-	content: "h2";
-}
-
-h3:hover::before {
-	content: "h3";
-}
-
-h4:hover::before {
-	content: "h4";
-}
-
-h5:hover::before {
-	content: "h5";
-}
-
-h6:hover::before {
-	content: "h6";
-}
-
-h1:hover::before,
-h2:hover::before,
-h3:hover::before,
-h4:hover::before,
-h5:hover::before,
-h6:hover::before {
-	position: absolute;
-	left: -1.5em;
-	bottom: 0.2em;
-	color: #888;
-	font-size: 0.6em;
-	pointer-events: none;
+  position: relative;
+  padding: 0em;
+  border-radius: 0px;
+  margin: 0em 0;
 }
 
 hr {
-	border: none;
-	/* 移除默认边框 */
-	height: 1rem;
-	background-color: #f0f0f0;
-	color: #f0f0f0;
-	margin: 20px -31px;
-	/* 负边距让它超出内容padding区域,需要比内容的padding大 */
+  border: none;
+  height: 1rem;
+  background-color: var(--bg-color);
+  margin: 20px -60px;
 }
 
-/* 目录样式 */
-.toc {
-	padding: 1em;
-	margin-bottom: 1em;
-}
-
-.toc h2 {
-	margin-top: 0;
-	font-size: 1.2em;
-}
-
-.toc ul {
-	list-style: none;
-	padding-left: 1em;
-	margin: 0.5em 0;
-}
-
-.toc li {
-	margin: 0.3em 0;
-}
-
-.toc a {
-	text-decoration: none;
-	color: #007bff;
-}
-
-.toc a:hover {
-	text-decoration: underline;
-}
-
-/* 脚注样式 */
-.footnotes {
-	font-size: 0.8em;
-	text-indent: 0;
-}
-
-.markdown-alert-title {
-	text-indent: 0;
-	color: black;
-
-}
-
-.markdown-alert-title svg {
-	margin-right: 0.5rem;
-}
-
+/* Markdown Alerts */
 .markdown-alert {
-	padding: 0.1rem 1rem;
-	margin-top: 0.5rem;
-	margin-bottom: 0.5rem;
-	border-radius: 0px;
-	border-left: 0.25rem solid;
-	/* 用于添加左侧的彩色条 */
+  padding: 0.1rem 1rem;
+  margin: 0.5rem 0;
+  border-left: 0.25rem solid;
 }
 
-/* 注意 */
 .markdown-alert-note {
-	background-color: #e6f6ff;
-	border-left-color: #0c6a8e;
-	color: #31708f;
+  background-color: #e6f6ff;
+  border-left-color: #0c6a8e;
+  color: #31708f;
 }
 
-/* 提示 */
 .markdown-alert-tip {
-	background-color: #e6ffec;
-	border-left-color: #28a745;
-	color: #216d33;
+  background-color: #e6ffec;
+  border-left-color: #28a745;
+  color: #216d33;
 }
 
-/* 重要 */
 .markdown-alert-important {
-	background-color: #f3e6ff;
-	border-left-color: #6f42c1;
-	color: #553493;
+  background-color: #f3e6ff;
+  border-left-color: #6f42c1;
+  color: #553493;
 }
 
-/* 警告 */
 .markdown-alert-warning {
-	background-color: #fffbe6;
-	border-left-color: #ffc107;
-	color: #856404;
+  background-color: #fffbe6;
+  border-left-color: #ffc107;
+  color: #856404;
 }
 
-/* 小心 */
 .markdown-alert-caution {
-	background-color: #ffebe6;
-	border-left-color: #dc3545;
-	color: #721c24;
+  background-color: #ffebe6;
+  border-left-color: #dc3545;
+  color: #721c24;
 }
