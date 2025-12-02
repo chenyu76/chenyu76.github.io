@@ -37,7 +37,7 @@ function toggleNextNextVis(self) {
 const templateHTML = readTemplateHTML(path.join(__dirname, "template.html"));
 // 获取项目根目录，即脚本目录的上一级目录
 const rootPath = path.dirname(__dirname);
-// 生成主页
+// 生成测试页
 generateHtmlFile(
     path.join(rootPath, "index.html"),
     templateHTML,
@@ -49,17 +49,6 @@ generateHtmlFile(
 ${convertMarkdown(path.join(rootPath, "program", "readme.md")).html}
 ${convertMarkdown(path.join(rootPath, "excerpts", "nightfall.md")).html}
 `,
-    "",
-    "",
-);
-// 生成404页面
-generateHtmlFile(
-    path.join(rootPath, "404.html"),
-    templateHTML,
-    "404 not found",
-    "",
-    "<h1>404 Not Found</h1>",
-    "<p>你访问的页面不存在，可能是因为链接错误或者页面已被移动或删除。</p><br><img src=\"/img/404.svg\" />",
     "",
     "",
 );

@@ -20,46 +20,7 @@
   <script src="pampas_grass.js"></script>
   <script src="script.js"></script>
   <script>
-    window.addEventListener('load', () => {
-      setTimeout(imgInit, 0);
-    });
-
-    // let pixelImgInit = () => {
-    //   if (window.innerHeight > window.innerWidth) {
-    //     if (typeof imgInit === "function")
-    //       imgInit(window.innerHeight);
-    //     let t = document.getElementById("title-container");
-    //     if (t)
-    //       t.style.height = "38.2vh";
-    //   } else {
-    //     if (typeof imgInit === "function")
-    //       imgInit(window.innerHeight);
-    //     let t = document.getElementById("title-container");
-    //     if (t)
-    //       t.style.height = "61.8vh";
-    //   }
-    //
-    //   // 夜间模式适配
-    //   if (typeof isNight !== 'undefined' && isNight) {
-    //     let div = document.getElementById("top-buttons-wrapper");
-    //     if (div) {
-    //       let children = div.querySelectorAll("*");
-    //       children.forEach((element) => {
-    //         let img = element.querySelector("img");
-    //         if (img)
-    //           img.style.filter = "invert(1)";
-    //       });
-    //     }
-    //     let hdiv = document.getElementById("heading");
-    //     if (hdiv)
-    //       hdiv.style.color = "white";
-    //   }
-    // };
-
-    // window.addEventListener('load', () => {setTimeout(pixelImgInit, 0);});
-    // 每隔十分钟更新背景
-    // setInterval(pixelImgInit, 600000);
-
+    imgInit();
     // 每隔十分钟更新背景
     setInterval(imgInit, 600000);
 
