@@ -10,15 +10,13 @@
 
 ## ArchLinux
 
-[Arch Linux](https://wiki.fydetabduo.com/Available-OS/ArchLinux/arch-intro)如wiki上写的开箱即用，我通过[Rufus](https://rufus.ie/zh/)安装到tf中，这样在拔出tf卡后还可以回到Fyde OS，某种不算很方便的双系统。
+[Arch Linux](https://wiki.fydetabduo.com/Available-OS/ArchLinux/arch-intro)如wiki上写的开箱即用。
 
-### 安装后
-
-#### 换源
+### 换源
 
 [清华大学开源软件镜像站  Arch Linux ARM 软件仓库](https://mirrors.tuna.tsinghua.edu.cn/help/archlinuxarm/)
 
-#### 输入法
+### 输入法
 
 gnome使用[iBus](https://wiki.archlinux.org/title/IBus)
 
@@ -26,16 +24,39 @@ gnome使用[iBus](https://wiki.archlinux.org/title/IBus)
 sudo pacman -S ibus-rime
 ```
 
-重启后去设置里配置键盘即可。
+重启后去系统设置里配置键盘即可。
 
-#### 中文字体
+### YAY
+
+See [arch wiki yay](https://wiki.archlinuxcn.org/zh-cn/Yay)
+
+### 中文字体
 
 刚安装好时缺字体，从[这里](https://arch.icekylin.online/guide/rookie/desktop-env-and-app.html)抄一份字体清单。
 
 ```bash
-sudo pacman -S adobe-source-han-serif-cn-fonts wqy-zenhei # 安装几个开源中文字体。一般装上文泉驿就能解决大多 wine 应用中文方块的问题
-sudo pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra # 安装谷歌开源字体及表情
+sudo pacman -S --needed adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
 ```
+
+### 软件包
+
+```bash
+ sudo pacman -S --needed git firefox syncthing nvim vim neovim-qt wl-clipboard inkscape gimp fish ibus ibus-rime eog evince texlive texlive-lang
+```
+
+### Gnome 插件
+
+安装
+
+```bash
+pacman -S gnome-browser-connector
+```
+
+在Firefox打开[Gnome Extensions](https://extensions.gnome.org/)，安装对应firefox插件。
+
+- Screen Rotate
+- TouchUp
+- Caffine
 
 ## Fyde OS
 
