@@ -1,8 +1,10 @@
 # 我的Syncthing 配置
 
-系统：Arch Linux
+> [Syncthing](https://syncthing.net/) is a **continuous file synchronization** program. It synchronizes files between two or more computers in real time, safely protected from prying eyes. Your data is your data alone and you deserve to choose where it is stored, whether it is shared with some third party, and how it’s transmitted over the internet.
 
 ## 基础安装
+
+基于Arch Linux
 
 ```bash
 # 1. 安装本体
@@ -104,6 +106,9 @@ chmod +x ~/.Executable/syncthing_power_monitor.sh
 
 路径：`~/.config/systemd/user/syncthing-power-monitor.service`
 
+> [!WARNING]
+> `ExecStart`需要按需修改脚本路径，`%h`会被解析为家目录
+
 ```ini
 [Unit]
 Description=Syncthing Power Monitor Script
@@ -111,7 +116,7 @@ After=syncthing.service network.target
 
 [Service]
 Type=simple
-ExecStart=%h/.scripts/syncthing_power_monitor.sh
+ExecStart=%h/Executable/syncthing_power_monitor.sh
 Restart=on-failure
 RestartSec=10
 Environment=PYTHONUNBUFFERED=1
