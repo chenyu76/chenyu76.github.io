@@ -30,7 +30,7 @@ class Land {
                                       hex2rgb(c),
                                       interpolate_time_color(currentHour,
                                                              skyColorDict[2]),
-                                      1 - i * 0.2))),
+                                      1 - i * 0.4))),
     ];
 
     for (let i = 2; i >= 0; i--) {
