@@ -175,6 +175,27 @@ function colorMultiply(c1 = [ 255, 255, 255 ], c2 = [ 255, 255, 255 ]) {
   ];
 }
 
+// 两个颜色相乘，
+// 输入输出：hex #FFFFFF 形式颜色
+function colorMultiplyHex(c1, c2) {
+  return rgb2hex(...colorMultiply(hex2rgb(c1), hex2rgb(c2)));
+}
+
+// 两个颜色平均值，
+// 输入输出：rgb [r,g,b] 形式颜色
+function colorAverage(c1 = [ 255, 255, 255 ], c2 = [ 255, 255, 255 ],
+                      w1 = 0.5) {
+  return [
+    Math.ceil(c1[0] * w1 + c2[0] * (1 - w1)),
+    Math.ceil(c1[1] * w1 + c2[1] * (1 - w1)),
+    Math.ceil(c1[2] * w1 + c2[2] * (1 - w1)),
+  ];
+}
+
+function colorAverageHex(c1, c2, w1 = 0.5) {
+  return rgb2hex(...colorAverage(hex2rgb(c1), hex2rgb(c2), w1));
+}
+
 // 计算网格宽度 x (像素图大小的宽)
 function calculateGridWidth(h = window.innerHeight, w = window.innerWidth) {
   return Math.ceil((GRID_HEIGHT / h) * w);
