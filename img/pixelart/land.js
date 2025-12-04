@@ -35,12 +35,13 @@ class Land {
 
     for (let i = 2; i >= 0; i--) {
       for (let j = 0; j < 2; j++) {
-        let mh = Math.round(h * (Math.random() * 0.03 + 0.03)) * (1 / (i + 1));
+        let mh =
+            Math.round(h * (Math.random() * 0.03 + 0.03)) * (1 / (i / 2 + 1));
         let mw = Math.round(w * (Math.random() * 0.5 + 0.2));
         let x = Math.round(Math.random() * (w - mw));
         this.#draw_mountain(ctx, land_color[3 + i],
                             colorMultiplyHex(land_color[3 + i], "#EEEEEE"), x,
-                            h - 35 - mh, mw, mh, 0.5, 3);
+                            h - 35 - mh, mw, mh, 0.5 - i / 5, 4 + i);
       }
     }
 
@@ -170,10 +171,6 @@ class Land {
         ctx.fillStyle = color;
         ctx.fillRect(xi, yi, 1, yi3 - yi2);
         ctx.fillStyle = shading_color;
-        // for (let j = yi2; j < yi3; j++) {
-        //   ctx.fillStyle = (xi + j) % 2 == 1 ? color : shading_color;
-        //   ctx.fillRect(xi, j, 1, 1);
-        // }
         ctx.fillRect(xi, yi2, 1, yi3 - yi2);
       }
     }
