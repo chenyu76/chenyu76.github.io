@@ -352,6 +352,7 @@ async function imgInit(h = document.documentElement.clientHeight,
   }
 
   // From ./pampas_grass.js
+  // 画背景地，画山
   var land = new Land();
   foreground.appendChild(land.draw_background_land(x, bottom, pixelSize));
   // 画草地 背景蒲苇

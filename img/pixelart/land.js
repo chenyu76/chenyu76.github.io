@@ -30,18 +30,20 @@ class Land {
                                       hex2rgb(c),
                                       interpolate_time_color(currentHour,
                                                              skyColorDict[2]),
-                                      1 - i * 0.4))),
+                                      1 - i * 0.3))),
     ];
 
     for (let i = 2; i >= 0; i--) {
-      for (let j = 0; j < 2; j++) {
-        let mh =
-            Math.round(h * (Math.random() * 0.03 + 0.03)) * (1 / (i / 2 + 1));
-        let mw = Math.round(w * (Math.random() * 0.5 + 0.2));
+      for (let j = 0; j < 5; j++) {
+        let mh = Math.round(h * (Math.random() * 0.03 * ((j + 1) / 5) + 0.03)) *
+                 (1 / (i / 2 + 1));
+        let mw =
+            Math.round(w * (Math.random() * 0.3 * ((j / 2 + 3) / 5) + 0.15) *
+                       (1 / (i / 2 + 1)));
         let x = Math.round(Math.random() * (w - mw));
         this.#draw_mountain(ctx, land_color[3 + i],
                             colorMultiplyHex(land_color[3 + i], "#EEEEEE"), x,
-                            h - 35 - mh, mw, mh, 0.5 - i / 5, 4 + i);
+                            h - 35 - mh, mw, mh, 0.5 + i / 5, 4 + i);
       }
     }
 
@@ -169,7 +171,7 @@ class Land {
         let yi2 = Math.round(h + y - (h + y - yi) ** (0.8));
         let yi3 = Math.round(h + y);
         ctx.fillStyle = color;
-        ctx.fillRect(xi, yi, 1, yi3 - yi2);
+        ctx.fillRect(xi, yi, 1, yi2 - yi);
         ctx.fillStyle = shading_color;
         ctx.fillRect(xi, yi2, 1, yi3 - yi2);
       }
