@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我的Syncthing 配置</title>
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
+
+  <link rel="stylesheet" href="/styles-code.css">
+</head>
+
+<body>
+  <iframe id="iframe-background" src="/img/pixelart/index.html" title="background"></iframe>
+
+  <div id="title-container">
+    <div id="spacer"></div>
+    <div id="top-buttons-wrapper" class="top-buttons">
+      <a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a><a
+        href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a><a
+        href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub" class="fade-in"><img
+          src="/img/icon/github.svg" alt="Github" class="icon" /></a><a href="/About.html" title="关于"
+        class="fade-in"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
+    </div>
+    <div id="heading"><h3>quick-references</h3><h1>我的Syncthing 配置</h1></div>
+  </div>
+
+  <div id="anime-spacer" class="shrinked"></div>
+
+  <div id="content-wrapper-bg">
+    <div id="main-grid-container">
+
+      <div id="left-sidebar" class="sidebar">
+        <div class="sidebar-card">
+          <div class="vertical-buttons">
+            <a href="/toc.html" title="文档索引"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a>
+            <a href="/index.html" title="返回主页"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a>
+            <a href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub"><img src="/img/icon/github.svg"
+                alt="Github" class="icon" /></a>
+            <a href="/About.html" title="关于"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
+            <button onclick="scrollToTop()" title="滚动到顶部" class="scroll-top-btn">
+              <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="content-wrapper">
+        <div id="content"><blockquote>
+<p><a href="https://syncthing.net/">Syncthing</a> is a <strong>continuous file synchronization</strong> program. It synchronizes files between two or more computers in real time, safely protected from prying eyes. Your data is your data alone and you deserve to choose where it is stored, whether it is shared with some third party, and how it’s transmitted over the internet.</p>
+</blockquote>
+<h2 id="h2-u57fau7840u5b89u88c5">基础安装</h2><p>基于Arch Linux</p>
+<pre><code class="language-bash"><span class="hljs-comment"># 1. 安装本体</span>
+<span class="hljs-built_in">sudo</span> pacman -S syncthing
+
+<span class="hljs-comment"># 2. 安装 Syncthing Tray</span>
+yay -S syncthingtray-qt6
+</code></pre>
+<h2 id="h2-u542fu52a8u6838u5fc3u670du52a1">启动核心服务</h2><p>使用 <code>systemd --user</code> 模式，这样不需要 root 权限，且配置文件位于 Home 目录下，方便迁移。</p>
+<pre><code class="language-bash"><span class="hljs-comment"># 启动并设置开机自启</span>
+systemctl --user <span class="hljs-built_in">enable</span> --now syncthing.service
+
+<span class="hljs-comment"># 检查状态 (应为 Active)</span>
+systemctl --user status syncthing.service
+</code></pre>
+<div class="markdown-alert markdown-alert-note">
+<p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>此时可以通过浏览器访问 <code>http://127.0.0.1:8384</code> 进入管理界面。</p>
+</div>
+<h2 id="h2-u914du7f6e-syncthing-tray">配置 Syncthing Tray</h2><ol>
+<li>打开 Syncthing Tray设置。</li>
+<li>Tray -&gt; Connection:<ul>
+<li>Url: <code>http://localhost:8384</code></li>
+<li>API Key: 在浏览器打开 Syncthing 网页版 -&gt; 右上角操作 -&gt; 设置 -&gt; 常规 -&gt; 复制 <strong>API 密钥</strong> 填入此处。</li>
+</ul>
+</li>
+<li>Startup -&gt; Systemd:<ul>
+<li>勾选 Show start/stop button on tray for local instance whe systemd is available。</li>
+<li>勾选 Consider systemd unit status for ...</li>
+<li>Service name 填 <code>syncthing.service</code>。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="h2-u6839u636eu63d2u7535u72b6u6001u5f00u5173syncthing">根据插电状态开关Syncthing</h2><p>我希望Syncthing只在我的笔记本插电的时候才同步，节省离电时的电量。</p>
+<h3 id="h3-u521bu5efau811au672cu6587u4ef6">创建脚本文件</h3><p>随便放在某个我喜欢的地方，比如</p>
+<ul>
+<li><code>~/Application/syncthing_power_monitor.sh</code></li>
+<li><code>~/Executable/syncthing_power_monitor.sh</code></li>
+</ul>
+<pre><code class="language-bash"><span class="hljs-meta">#!/bin/bash</span>
+
+<span class="hljs-comment"># 在不同电脑上，修改此变量以匹配 ls /sys/class/power_supply/ 的结果</span>
+TARGET_DEVICE_NAME=<span class="hljs-string">&quot;AC&quot;</span> 
+CHECK_INTERVAL=60
+<span class="hljs-comment"># 构造完整路径</span>
+POWER_SUPPLY_PATH=<span class="hljs-string">&quot;/sys/class/power_supply/<span class="hljs-variable">$TARGET_DEVICE_NAME</span>/online&quot;</span>
+
+<span class="hljs-comment"># 检查路径是否存在，不存在则报错并退出（避免后台空转）</span>
+<span class="hljs-keyword">if</span> [ ! -f <span class="hljs-string">&quot;<span class="hljs-variable">$POWER_SUPPLY_PATH</span>&quot;</span> ]; <span class="hljs-keyword">then</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;错误: 找不到电源路径 <span class="hljs-variable">$POWER_SUPPLY_PATH</span>&quot;</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;请运行 &#x27;ls /sys/class/power_supply/&#x27; 确认设备名称，并修改脚本中的 TARGET_DEVICE_NAME。&quot;</span>
+    <span class="hljs-built_in">exit</span> 1
+<span class="hljs-keyword">fi</span>
+
+<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;开始监控电源状态，目标设备: <span class="hljs-variable">$TARGET_DEVICE_NAME</span>&quot;</span>
+
+<span class="hljs-keyword">while</span> <span class="hljs-literal">true</span>; <span class="hljs-keyword">do</span>
+    <span class="hljs-comment"># 读取电源状态 (1=接通, 0=离电)</span>
+    POWER_STATUS=$(<span class="hljs-built_in">cat</span> <span class="hljs-string">&quot;<span class="hljs-variable">$POWER_SUPPLY_PATH</span>&quot;</span>)
+    
+    <span class="hljs-comment"># 检查 Syncthing systemd 服务状态</span>
+    IS_ACTIVE=$(systemctl --user is-active syncthing)
+
+    <span class="hljs-keyword">if</span> [ <span class="hljs-string">&quot;<span class="hljs-variable">$POWER_STATUS</span>&quot;</span> == <span class="hljs-string">&quot;1&quot;</span> ]; <span class="hljs-keyword">then</span>
+        <span class="hljs-comment"># 接通电源</span>
+        <span class="hljs-keyword">if</span> [ <span class="hljs-string">&quot;<span class="hljs-variable">$IS_ACTIVE</span>&quot;</span> != <span class="hljs-string">&quot;active&quot;</span> ]; <span class="hljs-keyword">then</span>
+            <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;[<span class="hljs-subst">$(date)</span>] 电源已接通，启动 Syncthing...&quot;</span>
+            systemctl --user start syncthing
+        <span class="hljs-keyword">fi</span>
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-comment"># 电池供电</span>
+        <span class="hljs-keyword">if</span> [ <span class="hljs-string">&quot;<span class="hljs-variable">$IS_ACTIVE</span>&quot;</span> == <span class="hljs-string">&quot;active&quot;</span> ]; <span class="hljs-keyword">then</span>
+            <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;[<span class="hljs-subst">$(date)</span>] 检测到电池供电，停止 Syncthing...&quot;</span>
+            systemctl --user stop syncthing
+        <span class="hljs-keyword">fi</span>
+    <span class="hljs-keyword">fi</span>
+
+    <span class="hljs-built_in">sleep</span> <span class="hljs-variable">$CHECK_INTERVAL</span>
+<span class="hljs-keyword">done</span>
+</code></pre>
+<p>给这个脚本赋予执行权限：</p>
+<pre><code class="language-bash"><span class="hljs-built_in">chmod</span> +x ~/.Executable/syncthing_power_monitor.sh
+</code></pre>
+<h3 id="h3-u521bu5efa-systemd-unit">创建 Systemd Unit</h3><p>路径：<code>~/.config/systemd/user/syncthing-power-monitor.service</code></p>
+<div class="markdown-alert markdown-alert-warning">
+<p class="markdown-alert-title"><svg class="octicon octicon-alert mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p>
+<p><code>ExecStart</code>需要按需修改脚本路径，<code>%h</code>会被解析为家目录</p>
+</div>
+<pre><code class="language-ini"><span class="hljs-section">[Unit]</span>
+<span class="hljs-attr">Description</span>=Syncthing Power Monitor Script
+<span class="hljs-attr">After</span>=syncthing.service network.target
+
+<span class="hljs-section">[Service]</span>
+<span class="hljs-attr">Type</span>=simple
+<span class="hljs-attr">ExecStart</span>=%h/Executable/syncthing_power_monitor.sh
+<span class="hljs-attr">Restart</span>=<span class="hljs-literal">on</span>-failure
+<span class="hljs-attr">RestartSec</span>=<span class="hljs-number">10</span>
+<span class="hljs-attr">Environment</span>=PYTHONUNBUFFERED=<span class="hljs-number">1</span>
+
+<span class="hljs-section">[Install]</span>
+<span class="hljs-attr">WantedBy</span>=default.target
+</code></pre>
+<h3 id="h3-u6fc0u6d3bu76d1u63a7">激活监控</h3><pre><code class="language-bash">systemctl --user daemon-reload
+systemctl --user <span class="hljs-built_in">enable</span> --now syncthing-power-monitor.service
+</code></pre>
+</div>
+        <div id="footnote">2025/12/03</div>
+      </div>
+
+      <div id="right-sidebar" class="sidebar">
+        <div id="toc-card" class="sidebar-card">
+          <div class="toc-header">目录</div>
+          <div id="toc-content">
+            <div class="toc">
+<ul>
+<ul>
+<li><a href="#h2-u57fau7840u5b89u88c5">基础安装</a></li>
+<li><a href="#h2-u542fu52a8u6838u5fc3u670du52a1">启动核心服务</a></li>
+<li><a href="#h2-u914du7f6e-syncthing-tray">配置 Syncthing Tray</a></li>
+<li><a href="#h2-u6839u636eu63d2u7535u72b6u6001u5f00u5173syncthing">根据插电状态开关Syncthing</a></li>
+<ul>
+<li><a href="#h3-u521bu5efau811au672cu6587u4ef6">创建脚本文件</a></li>
+<li><a href="#h3-u521bu5efa-systemd-unit">创建 Systemd Unit</a></li>
+<li><a href="#h3-u6fc0u6d3bu76d1u63a7">激活监控</a></li>
+</ul>
+</ul>
+</ul>
+</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-button mobile-only">
+      <button onclick="scrollToTop()" title="滚动到顶部">
+        <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
+      </button>
+    </div>
+  </div>
+
+  <script src="/script.js"></script>
+
+  <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+    <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
+  </button>
+
+  <div id="toc-mobile-wrapper">
+    <div class="toc-header-mobile">
+      <span>目录</span>
+      <button onclick="toggleToc()" class="toc-close-btn">×</button>
+    </div>
+    <div id="toc-content-mobile"></div>
+  </div>
+
+  
+<script>
+document.querySelectorAll('pre').forEach(pre => {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = '📋';
+  
+  // 添加到DOM
+  pre.prepend(btn);
+
+  // 绑定点击事件
+  btn.addEventListener('click', async () => {
+    try {
+      const code = pre.querySelector('code').innerText;
+      await navigator.clipboard.writeText(code);
+      
+      btn.textContent = ' ✓ ';
+      setTimeout(() => btn.textContent = '📋', 1500);
+    } catch (err) {
+      btn.textContent = 'FAIL！';
+      btn.style.color = '#dc3545';
+    }
+  });
+});
+</script>
+
+</body>
+
+</html>

@@ -13,25 +13,34 @@ class Land {
     ctx.imageSmoothingEnabled = false;
 
     const mountain_colors = [ "#5F7E8C", "#6C91C2", "#D0E2EE" ];
+    // 0,1,2 是草地颜色，3,4,5是山脉颜色
     const land_color = [
       ...Grass.get_adjusted_color(),
-      ...mountain_colors.map(
-          (c) => rgb2hex(
-              ...colorMultiply(
-                  hex2rgb(c),
-                  interpolate_time_color(currentHour, lightColorDict),
+      ...mountain_colors
+          .map(
+              (c) => rgb2hex(
+                  ...colorMultiply(
+                      hex2rgb(c),
+                      interpolate_time_color(currentHour, lightColorDict),
+                      ),
                   ),
-              ),
-          ),
+              )
+          .map((c, i) => i == 0 ? c
+                                : rgb2hex(...colorAverage(
+                                      hex2rgb(c),
+                                      interpolate_time_color(currentHour,
+                                                             skyColorDict[2]),
+                                      1 - i * 0.4))),
     ];
 
     for (let i = 2; i >= 0; i--) {
       for (let j = 0; j < 2; j++) {
-        let mh = Math.round(h * (Math.random() * 0.01 + 0.02)) * (1 / (i + 1));
+        let mh = Math.round(h * (Math.random() * 0.03 + 0.03)) * (1 / (i + 1));
         let mw = Math.round(w * (Math.random() * 0.5 + 0.2));
         let x = Math.round(Math.random() * (w - mw));
-        this.#draw_mountain(ctx, land_color[3 + i], x, h - 35 - mh, mw, mh, 0.5,
-                            3, "#EEEEEE");
+        this.#draw_mountain(ctx, land_color[3 + i],
+                            colorMultiplyHex(land_color[3 + i], "#EEEEEE"), x,
+                            h - 35 - mh, mw, mh, 0.5, 3);
       }
     }
 
@@ -138,13 +147,13 @@ class Land {
   #draw_mountain(
       ctx,
       color = "#AAAAAA",
+      shading_color = "#FFFFFF",
       x = 0,
       y = 0,
       w = 0,
       h = 0,
       roughness = 0.5,
       iterations = 2,
-      shading = "#EEEEEE",
   ) {
     // 生成山脉点
     const p = this.#generate_mountain_points(w, h, roughness, iterations);
@@ -156,17 +165,26 @@ class Land {
                     (xi - p[i].x - x) +
                 p[i].y + y,
         );
+        let yi2 = Math.round(h + y - (h + y - yi) ** (0.8));
+        let yi3 = Math.round(h + y);
         ctx.fillStyle = color;
-        ctx.fillRect(xi, yi, 1, y + h - yi);
-        ctx.fillStyle =
-            rgb2hex(...colorMultiply(hex2rgb(color), hex2rgb(shading)));
-        let yi2 = Math.round(h + y - Math.sqrt(h + y - yi));
-        ctx.fillRect(xi, yi2, 1, y + h - yi2);
+        ctx.fillRect(xi, yi, 1, yi3 - yi2);
+        ctx.fillStyle = shading_color;
+        // for (let j = yi2; j < yi3; j++) {
+        //   ctx.fillStyle = (xi + j) % 2 == 1 ? color : shading_color;
+        //   ctx.fillRect(xi, j, 1, 1);
+        // }
+        ctx.fillRect(xi, yi2, 1, yi3 - yi2);
       }
     }
   }
 
   // 生成山脉点的函数（中点位移算法）
+  // w: 山脉宽度
+  // h: 山脉高度
+  // roughness: 粗糙度（0到1之间）
+  // iterations: 迭代次数（决定细节层次）
+  // 返回: 山脉点数组 [{x, y}, ...]
   #generate_mountain_points(w, h, roughness, iterations) {
     // 设置点数组
     let points = [
@@ -178,7 +196,7 @@ class Land {
     // 迭代生成山脉点
     for (let i = 0; i < iterations; i++) {
       const newPoints = [ points[0] ];
-      const displacement = (w / 20) * Math.pow(roughness, i);
+      const displacement = h * Math.pow(roughness, i);
 
       for (let j = 0; j < points.length - 1; j++) {
         const left = points[j];
