@@ -16,6 +16,7 @@ export const gitRepositories = {
 /**
  * 主页的推荐内容
  * link:  链接
+ * 如果是markdown文档，直接用html后缀即可，网站编译时会生成对应的html文件
  *
  * date:
  * 日期，格式YYYYMMDD 或 YYYYMM 或 YYYY 或
@@ -29,6 +30,11 @@ export const gitRepositories = {
  * （可选，若不填，我希望能从生成的html文件里找到第一个<p>填进去，但目前还没实现）
  */
 export const recommend = [
+  {
+    date: 20251207,
+    link: "writings/deans-office-latex.html",
+    info: "在经过本科几年与这些超级表格文档的“抗争”后，我终于实现了一个比较满意的LaTeX解决方案，可以比较方便的创建类似的文档。"
+  }
   {
     date : 20251121,
     link : "https://github.com/chenyu76/glyph-ascii-canvas",
