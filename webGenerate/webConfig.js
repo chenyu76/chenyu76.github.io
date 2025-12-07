@@ -34,7 +34,7 @@ export const recommend = [
     date: 20251207,
     link: "writings/deans-office-latex.html",
     info: "在经过本科几年与这些超级表格文档的“抗争”后，我终于实现了一个比较满意的LaTeX解决方案，可以比较方便的创建类似的文档。"
-  }
+  },
   {
     date : 20251121,
     link : "https://github.com/chenyu76/glyph-ascii-canvas",
