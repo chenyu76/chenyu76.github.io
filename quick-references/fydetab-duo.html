@@ -72,8 +72,32 @@
 <li>TouchUp</li>
 <li>Caffine</li>
 </ul>
-<h3 id="h3-mathematica-arm">Mathematica ARM</h3><p><a href="https://archive.raspberrypi.org/debian/pool/main/w/wolfram-engine/">软件包下载</a></p>
-<p><a href="https://github.com/your-diary/Install-Wolfram-Engine-on-Arch-Linux-ARM">安装脚本</a></p>
+<h3 id="h3-mathematica-arm">Mathematica ARM</h3><p>Mathematica为树莓派提供了一个<a href="https://archive.raspberrypi.org/debian/pool/main/w/wolfram-engine/">免费非商用版本</a>。因为树莓派是arm的，所以这个deb包实际可以运行在其他linux arm机器中。your-diary 编写了一个<a href="https://github.com/your-diary/Install-Wolfram-Engine-on-Arch-Linux-ARM">安装脚本</a>，虽然好像年久失修，我无法运行，但是可以手动按其中的步骤安装，大体就只是</p>
+<ol>
+<li>下载deb包</li>
+<li>解压deb包得到里面的data</li>
+<li>将里面的文件复制到<code>/opt</code>下</li>
+<li>创建符号链接到<code>/usr/bin</code></li>
+</ol>
+<p>这个软件包自带给树莓派的授权，所以其他linux机器会导致鉴权失败无法启动，因此需要手动把Licensing文件夹删除。其位于</p>
+<pre><code>/opt/Wolfram/WolframEngine/{version}/Configuration/
+</code></pre>
+<p>下。然后自行激活。(可以参考 <a href="https://tiebamma.github.io/InstallTutorial/">https://tiebamma.github.io/InstallTutorial/</a> )</p>
+<p>然后一个方便的desktop文件自然是极好的：</p>
+<pre><code class="language-bash">[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Mathematica
+Comment=Wolfram Mathematica Computational System
+Exec=/opt/Wolfram/WolframEngine/14.3/Executables/Mathematica %F
+Icon=/path/to/icon
+Terminal=<span class="hljs-literal">false</span>
+Categories=Education;Science;Math;
+Keywords=mathematica;math;wolfram;calculation;
+MimeType=application/mathematica;application/x-mathematica;
+StartupNotify=<span class="hljs-literal">true</span>
+</code></pre>
+<p>命名为<code>Mathematica.desktop</code>然后放到<code>/usr/share/applications</code>中。</p>
 <h2 id="h2-fyde-os">Fyde OS</h2><h3 id="h3-android-u5b50u7cfbu7edf">Android 子系统</h3><p>似乎在<a href="chrome://flags"><code>chrome://flags</code></a>里打开<code>Enable custom ARCVM memory size</code>可以优化某些占内存软件的体验</p>
 <ul>
 <li>其下面的小猫猫代理可以系统范围的使用，包括Crostini</li>
