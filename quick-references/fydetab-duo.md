@@ -58,6 +58,12 @@ pacman -S gnome-browser-connector
 - TouchUp
 - Caffine
 
+### Mathematica ARM
+
+[软件包下载](https://archive.raspberrypi.org/debian/pool/main/w/wolfram-engine/)
+
+[安装脚本](https://github.com/your-diary/Install-Wolfram-Engine-on-Arch-Linux-ARM)
+
 ## Fyde OS
 
 ### Android 子系统

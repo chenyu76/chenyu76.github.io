@@ -12544,13 +12544,18 @@ defineFunction({
           var data = value.split(",");
 
           for (var i = 0; i < data.length; i++) {
-            var keyVal = data[i].split("=");
+            var item = data[i];
+            var firstEquals = item.indexOf("=");
 
-            if (keyVal.length !== 2) {
-              throw new ParseError("Error parsing key-value for \\htmlData");
+            if (firstEquals < 0) {
+              throw new ParseError("\\htmlData key/value '" + item + "'" + " missing equals sign");
             }
 
-            attributes["data-" + keyVal[0].trim()] = keyVal[1].trim();
+            var key = item.slice(0, firstEquals);
+
+            var _value = item.slice(firstEquals + 1);
+
+            attributes["data-" + key.trim()] = _value;
           }
 
           trustContext = {
@@ -13431,7 +13436,8 @@ defineFunction({
   type: "op",
   names: ["\\int", "\\iint", "\\iiint", "\\oint", "\\oiint", "\\oiiint", "\u222b", "\u222c", "\u222d", "\u222e", "\u222f", "\u2230"],
   props: {
-    numArgs: 0
+    numArgs: 0,
+    allowedInArgument: true
   },
 
   handler(_ref5) {
@@ -18437,7 +18443,7 @@ var renderToHTMLTree = function renderToHTMLTree(expression, options) {
   }
 };
 
-var version = "0.16.25";
+var version = "0.16.27";
 var __domTree = {
   Span,
   Anchor,
