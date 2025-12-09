@@ -60,9 +60,39 @@ pacman -S gnome-browser-connector
 
 ### Mathematica ARM
 
-[软件包下载](https://archive.raspberrypi.org/debian/pool/main/w/wolfram-engine/)
+Mathematica为树莓派提供了一个[免费非商用版本](https://archive.raspberrypi.org/debian/pool/main/w/wolfram-engine/)。因为树莓派是arm的，所以这个deb包实际可以运行在其他linux arm机器中。your-diary 编写了一个[安装脚本](https://github.com/your-diary/Install-Wolfram-Engine-on-Arch-Linux-ARM)，虽然好像年久失修，我无法运行，但是可以手动按其中的步骤安装，大体就只是
 
-[安装脚本](https://github.com/your-diary/Install-Wolfram-Engine-on-Arch-Linux-ARM)
+1. 下载deb包
+2. 解压deb包得到里面的data
+3. 将里面的文件复制到`/opt`下
+4. 创建符号链接到`/usr/bin`
+
+这个软件包自带给树莓派的授权，所以其他linux机器会导致鉴权失败无法启动，因此需要手动把Licensing文件夹删除。其位于
+
+```
+/opt/Wolfram/WolframEngine/{version}/Configuration/
+```
+
+下。然后自行激活。(可以参考 https://tiebamma.github.io/InstallTutorial/ )
+
+然后一个方便的desktop文件自然是极好的：
+
+```bash
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Mathematica
+Comment=Wolfram Mathematica Computational System
+Exec=/opt/Wolfram/WolframEngine/14.3/Executables/Mathematica %F
+Icon=/path/to/icon
+Terminal=false
+Categories=Education;Science;Math;
+Keywords=mathematica;math;wolfram;calculation;
+MimeType=application/mathematica;application/x-mathematica;
+StartupNotify=true
+```
+
+命名为`Mathematica.desktop`然后放到`/usr/share/applications`中。
 
 ## Fyde OS
 
