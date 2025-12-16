@@ -111,7 +111,7 @@ function folderTreeHtml(dir, articles) {
                 0,
                 `${prefix}${
                     col("│　　")}<a href="javascript:void(0);" style="font-size:80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a><br>
-            <span class="hiddenContent">`,
+            <span class="hiddenContent" style="display: none;">`,
             );
             children.push("</span>");
           }
