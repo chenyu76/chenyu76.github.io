@@ -454,7 +454,7 @@ p {
   }
 
   #title-container {
-    max-width: calc(var(--main-width) + var(--right-sidebar-width));
+    max-width: var(--main-width);
   }
 
   #left-sidebar {
