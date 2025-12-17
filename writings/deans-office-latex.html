@@ -1,54 +1,84 @@
 <!doctype html>
 <html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>那些由一个又一个表格组成的Word文档</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>那些由一个又一个表格组成的Word文档</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
 
-  <link rel="stylesheet" href="/styles.css" />
-  <link rel="icon" href="/favicon.png" type="image/png" />
+    
+  </head>
 
-  
-</head>
+  <body>
+    <iframe
+      id="iframe-background"
+      src="/img/pixelart/index.html"
+      title="background"
+    ></iframe>
 
-<body>
-  <iframe id="iframe-background" src="/img/pixelart/index.html" title="background"></iframe>
-
-  <div id="title-container">
     <div id="spacer"></div>
-    <div id="top-buttons-wrapper" class="top-buttons">
-      <a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a><a
-        href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a><a
-        href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub" class="fade-in"><img
-          src="/img/icon/github.svg" alt="Github" class="icon" /></a><a href="/About.html" title="关于"
-        class="fade-in"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
-    </div>
-    <div id="heading"><h3>writings</h3><h1>那些由一个又一个表格组成的Word文档</h1></div>
-  </div>
 
-  <div id="anime-spacer" class="shrinked"></div>
+    <div id="anime-spacer" class="shrinked"></div>
 
-  <div id="content-wrapper-bg">
-    <div id="main-grid-container">
-
-      <div id="left-sidebar" class="sidebar">
-        <div class="sidebar-card">
-          <div class="vertical-buttons">
-            <a href="/toc.html" title="文档索引"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a>
-            <a href="/index.html" title="返回主页"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a>
-            <a href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub"><img src="/img/icon/github.svg"
-                alt="Github" class="icon" /></a>
-            <a href="/About.html" title="关于"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
-            <button onclick="scrollToTop()" title="滚动到顶部" class="scroll-top-btn">
-              <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-            </button>
+    <div id="content-wrapper-bg">
+      <div id="main-grid-container">
+        <div id="left-sidebar" class="sidebar">
+          <div class="sidebar-card">
+            <div class="vertical-buttons">
+              <a href="/toc.html" title="文档索引"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon"
+              /></a>
+              <a href="/index.html" title="返回主页"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon"
+              /></a>
+              <a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon"
+              /></a>
+              <a href="/About.html" title="关于"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+              <button
+                onclick="scrollToTop()"
+                title="滚动到顶部"
+                class="scroll-top-btn"
+              >
+                <img
+                  src="/img/icon/arrow-upward.svg"
+                  alt="Return Top"
+                  class="icon"
+                />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div id="content-wrapper">
-        <div id="content"><p>在经过本科几年与这些超级表格文档的“抗争”后，我终于实现了一个<a href="https://github.com/chenyu76/deans-Office-LaTeX">比较满意的LaTeX解决方案</a>，可以比较方便的创建类似的文档。</p>
+        <div>
+          <div id="title-container">
+            <div id="heading"><h3>writings</h3><h1>那些由一个又一个表格组成的Word文档</h1></div>
+            <div id="top-buttons-wrapper" class="top-buttons">
+              <a href="/toc.html" title="文档索引" class="fade-in"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
+              ><a href="/index.html" title="返回主页" class="fade-in"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon" /></a
+              ><a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                class="fade-in"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon" /></a
+              ><a href="/About.html" title="关于" class="fade-in"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+            </div>
+          </div>
+
+          <div id="content-wrapper">
+            <div id="content"><p>在经过本科几年与这些超级表格文档的“抗争”后，我终于实现了一个<a href="https://github.com/chenyu76/deans-Office-LaTeX">比较满意的LaTeX解决方案</a>，可以比较方便的创建类似的文档。</p>
 <p>由于不是很会用Word，特别是当遇到公式、引用、参考文献的复杂问题时，我总是希望使用LaTeX完成工作，但是学校的文档总是只有Word模板提供，并且这些Word文档里面总是由一个超大的表格构成，然而LaTeX并不能很好的实现这一点。在这几年的摸索中，我逐渐找到了一个还算可以的方案，并最终在写毕设的开题报告时将其实现了出来。可喜可贺，可喜可贺。</p>
 <p>下面来看看这个模板的效果：</p>
 <p><img src="./assets/deans-office-latex/1.webp" alt="p1"></p>
@@ -57,42 +87,43 @@
 <p><img src="./assets/deans-office-latex/4.webp" alt="p4"></p>
 <p><img src="./assets/deans-office-latex/5.webp" alt="p5"></p>
 </div>
-        <div id="footnote">2025/12/7</div>
-      </div>
+            <div id="footnote">2025/12/7</div>
+          </div>
+        </div>
 
-      <div id="right-sidebar" class="sidebar">
-        <div id="toc-card" class="sidebar-card">
-          <div class="toc-header">目录</div>
-          <div id="toc-content">
-            
+        <div class="bottom-button mobile-only">
+          <button onclick="scrollToTop()" title="滚动到顶部">
+            <img
+              src="/img/icon/arrow-upward.svg"
+              alt="Return Top"
+              class="icon"
+            />
+          </button>
+        </div>
+
+        <div id="right-sidebar" class="sidebar">
+          <div id="toc-card" class="sidebar-card">
+            <div class="toc-header">目录</div>
+            <div id="toc-content"></div>
           </div>
         </div>
       </div>
-
     </div>
 
-    <div class="bottom-button mobile-only">
-      <button onclick="scrollToTop()" title="滚动到顶部">
-        <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-      </button>
+    <script src="/script.js"></script>
+
+    <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+      <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
+    </button>
+
+    <div id="toc-mobile-wrapper">
+      <div class="toc-header-mobile">
+        <span>目录</span>
+        <button onclick="toggleToc()" class="toc-close-btn">×</button>
+      </div>
+      <div id="toc-content-mobile"></div>
     </div>
-  </div>
 
-  <script src="/script.js"></script>
-
-  <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
-    <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
-  </button>
-
-  <div id="toc-mobile-wrapper">
-    <div class="toc-header-mobile">
-      <span>目录</span>
-      <button onclick="toggleToc()" class="toc-close-btn">×</button>
-    </div>
-    <div id="toc-content-mobile"></div>
-  </div>
-
-  
-</body>
-
+    
+  </body>
 </html>

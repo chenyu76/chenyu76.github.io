@@ -1,56 +1,86 @@
 <!doctype html>
 <html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Julia集的计算机艺术</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Julia集的计算机艺术</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
 
-  <link rel="stylesheet" href="/styles.css" />
-  <link rel="icon" href="/favicon.png" type="image/png" />
-
-  
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous">
     
-</head>
+  </head>
 
-<body>
-  <iframe id="iframe-background" src="/img/pixelart/index.html" title="background"></iframe>
+  <body>
+    <iframe
+      id="iframe-background"
+      src="/img/pixelart/index.html"
+      title="background"
+    ></iframe>
 
-  <div id="title-container">
     <div id="spacer"></div>
-    <div id="top-buttons-wrapper" class="top-buttons">
-      <a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a><a
-        href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a><a
-        href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub" class="fade-in"><img
-          src="/img/icon/github.svg" alt="Github" class="icon" /></a><a href="/About.html" title="关于"
-        class="fade-in"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
-    </div>
-    <div id="heading"><h3>writings</h3><h1>Julia集的计算机艺术</h1></div>
-  </div>
 
-  <div id="anime-spacer" class="shrinked"></div>
+    <div id="anime-spacer" class="shrinked"></div>
 
-  <div id="content-wrapper-bg">
-    <div id="main-grid-container">
-
-      <div id="left-sidebar" class="sidebar">
-        <div class="sidebar-card">
-          <div class="vertical-buttons">
-            <a href="/toc.html" title="文档索引"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a>
-            <a href="/index.html" title="返回主页"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a>
-            <a href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub"><img src="/img/icon/github.svg"
-                alt="Github" class="icon" /></a>
-            <a href="/About.html" title="关于"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
-            <button onclick="scrollToTop()" title="滚动到顶部" class="scroll-top-btn">
-              <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-            </button>
+    <div id="content-wrapper-bg">
+      <div id="main-grid-container">
+        <div id="left-sidebar" class="sidebar">
+          <div class="sidebar-card">
+            <div class="vertical-buttons">
+              <a href="/toc.html" title="文档索引"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon"
+              /></a>
+              <a href="/index.html" title="返回主页"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon"
+              /></a>
+              <a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon"
+              /></a>
+              <a href="/About.html" title="关于"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+              <button
+                onclick="scrollToTop()"
+                title="滚动到顶部"
+                class="scroll-top-btn"
+              >
+                <img
+                  src="/img/icon/arrow-upward.svg"
+                  alt="Return Top"
+                  class="icon"
+                />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div id="content-wrapper">
-        <div id="content"><p><a href="https://github.com/chenyu76/Qt-Julia-Set-Plot">Github链接</a></p>
+        <div>
+          <div id="title-container">
+            <div id="heading"><h3>writings</h3><h1>Julia集的计算机艺术</h1></div>
+            <div id="top-buttons-wrapper" class="top-buttons">
+              <a href="/toc.html" title="文档索引" class="fade-in"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
+              ><a href="/index.html" title="返回主页" class="fade-in"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon" /></a
+              ><a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                class="fade-in"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon" /></a
+              ><a href="/About.html" title="关于" class="fade-in"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+            </div>
+          </div>
+
+          <div id="content-wrapper">
+            <div id="content"><p><a href="https://github.com/chenyu76/Qt-Julia-Set-Plot">Github链接</a></p>
 <p>本页面内容由tex转换而来，但看上去显示问题似乎多多，更推荐阅读此<a href="/writings/julia-set.pdf">PDF版本</a></p>
 <p><img src="/img/mandelbrot_trans_axis.png" alt="Mandelbrot集"></p>
 <p><img src="/img/julia_-0.77+0.1i_1000_1080p.png" alt="julia_-0.77+0.1i_1000_1080p_Rainbow_z(0.6,0)_1.png"></p>
@@ -217,14 +247,24 @@ M347 1759 V0 H263 V1759 v0 v1759 h84z"/></svg></span></span></span><span class="
         1, &amp; a &gt; 1.
     \end{cases}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">clamp</span></span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:4.32em;vertical-align:-1.91em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.35em;"><span style="top:-2.2em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎩</span></span></span><span style="top:-2.192em;"><span class="pstrut" style="height:3.15em;"></span><span style="height:0.316em;width:0.8889em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.8889em" height="0.316em" style="width:0.8889em" viewBox="0 0 888.89 316" preserveAspectRatio="xMinYMin"><path d="M384 0 H504 V316 H384z M384 0 H504 V316 H384z"/></svg></span></span><span style="top:-3.15em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎨</span></span></span><span style="top:-4.292em;"><span class="pstrut" style="height:3.15em;"></span><span style="height:0.316em;width:0.8889em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.8889em" height="0.316em" style="width:0.8889em" viewBox="0 0 888.89 316" preserveAspectRatio="xMinYMin"><path d="M384 0 H504 V316 H384z M384 0 H504 V316 H384z"/></svg></span></span><span style="top:-4.6em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎧</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.85em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.41em;"><span style="top:-4.41em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">0</span><span class="mpunct">,</span></span></span><span style="top:-2.97em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="mpunct">,</span></span></span><span style="top:-1.53em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">1</span><span class="mpunct">,</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.91em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:1em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.41em;"><span style="top:-4.41em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">0</span><span class="mpunct">,</span></span></span><span style="top:-2.97em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">1</span><span class="mpunct">,</span></span></span><span style="top:-1.53em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">1.</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.91em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
 </div>
-        <div id="footnote">2024年12月15日 一个课程作业</div>
-      </div>
+            <div id="footnote">2024年12月15日 一个课程作业</div>
+          </div>
+        </div>
 
-      <div id="right-sidebar" class="sidebar">
-        <div id="toc-card" class="sidebar-card">
-          <div class="toc-header">目录</div>
-          <div id="toc-content">
-            <div class="toc">
+        <div class="bottom-button mobile-only">
+          <button onclick="scrollToTop()" title="滚动到顶部">
+            <img
+              src="/img/icon/arrow-upward.svg"
+              alt="Return Top"
+              class="icon"
+            />
+          </button>
+        </div>
+
+        <div id="right-sidebar" class="sidebar">
+          <div id="toc-card" class="sidebar-card">
+            <div class="toc-header">目录</div>
+            <div id="toc-content"><div class="toc">
 <ul>
 <li><a href="#h1-u52a8u529bu7cfbu7edfu4e0ejuliau96c6">动力系统与Julia集</a></li>
 <ul>
@@ -248,35 +288,26 @@ M347 1759 V0 H263 V1759 v0 v1759 h84z"/></svg></span></span></span><span class="
 </ul>
 </ul>
 </ul>
-</div>
+</div></div>
           </div>
         </div>
       </div>
-
     </div>
 
-    <div class="bottom-button mobile-only">
-      <button onclick="scrollToTop()" title="滚动到顶部">
-        <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-      </button>
+    <script src="/script.js"></script>
+
+    <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+      <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
+    </button>
+
+    <div id="toc-mobile-wrapper">
+      <div class="toc-header-mobile">
+        <span>目录</span>
+        <button onclick="toggleToc()" class="toc-close-btn">×</button>
+      </div>
+      <div id="toc-content-mobile"></div>
     </div>
-  </div>
 
-  <script src="/script.js"></script>
-
-  <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
-    <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
-  </button>
-
-  <div id="toc-mobile-wrapper">
-    <div class="toc-header-mobile">
-      <span>目录</span>
-      <button onclick="toggleToc()" class="toc-close-btn">×</button>
-    </div>
-    <div id="toc-content-mobile"></div>
-  </div>
-
-  
-</body>
-
+    
+  </body>
 </html>

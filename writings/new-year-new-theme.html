@@ -1,56 +1,86 @@
 <!doctype html>
 <html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>新年新主题！</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>新年新主题！</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
 
-  <link rel="stylesheet" href="/styles.css" />
-  <link rel="icon" href="/favicon.png" type="image/png" />
-
-  <link rel="stylesheet" href="/styles-code.css">
+    <link rel="stylesheet" href="/styles-code.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous">
     
-</head>
+  </head>
 
-<body>
-  <iframe id="iframe-background" src="/img/pixelart/index.html" title="background"></iframe>
+  <body>
+    <iframe
+      id="iframe-background"
+      src="/img/pixelart/index.html"
+      title="background"
+    ></iframe>
 
-  <div id="title-container">
     <div id="spacer"></div>
-    <div id="top-buttons-wrapper" class="top-buttons">
-      <a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a><a
-        href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a><a
-        href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub" class="fade-in"><img
-          src="/img/icon/github.svg" alt="Github" class="icon" /></a><a href="/About.html" title="关于"
-        class="fade-in"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
-    </div>
-    <div id="heading"><h3>writings</h3><h1>新年新主题！</h1></div>
-  </div>
 
-  <div id="anime-spacer" class="shrinked"></div>
+    <div id="anime-spacer" class="shrinked"></div>
 
-  <div id="content-wrapper-bg">
-    <div id="main-grid-container">
-
-      <div id="left-sidebar" class="sidebar">
-        <div class="sidebar-card">
-          <div class="vertical-buttons">
-            <a href="/toc.html" title="文档索引"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a>
-            <a href="/index.html" title="返回主页"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a>
-            <a href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub"><img src="/img/icon/github.svg"
-                alt="Github" class="icon" /></a>
-            <a href="/About.html" title="关于"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
-            <button onclick="scrollToTop()" title="滚动到顶部" class="scroll-top-btn">
-              <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-            </button>
+    <div id="content-wrapper-bg">
+      <div id="main-grid-container">
+        <div id="left-sidebar" class="sidebar">
+          <div class="sidebar-card">
+            <div class="vertical-buttons">
+              <a href="/toc.html" title="文档索引"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon"
+              /></a>
+              <a href="/index.html" title="返回主页"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon"
+              /></a>
+              <a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon"
+              /></a>
+              <a href="/About.html" title="关于"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+              <button
+                onclick="scrollToTop()"
+                title="滚动到顶部"
+                class="scroll-top-btn"
+              >
+                <img
+                  src="/img/icon/arrow-upward.svg"
+                  alt="Return Top"
+                  class="icon"
+                />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div id="content-wrapper">
-        <div id="content"><p>新的一年，给网站换了一个新的风格！</p>
+        <div>
+          <div id="title-container">
+            <div id="heading"><h3>writings</h3><h1>新年新主题！</h1></div>
+            <div id="top-buttons-wrapper" class="top-buttons">
+              <a href="/toc.html" title="文档索引" class="fade-in"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
+              ><a href="/index.html" title="返回主页" class="fade-in"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon" /></a
+              ><a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                class="fade-in"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon" /></a
+              ><a href="/About.html" title="关于" class="fade-in"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+            </div>
+          </div>
+
+          <div id="content-wrapper">
+            <div id="content"><p>新的一年，给网站换了一个新的风格！</p>
 <p>背景天空会根据时间变换颜色和风格，白天有☁️，晚上有✨和🌠。
 在<a href="/img/pixelart/index.html">这里</a>有全屏的版本。</p>
 <h2 id="h2-u4e00u4e9bu6709u8da3u7684u6280u672fu7ec6u8282">一些有趣的技术细节</h2><ul>
@@ -377,14 +407,24 @@ s76,-153,76,-153s77,-151,77,-151c0.7,0.7,35.7,202,105,604c67.3,400.7,102,602.7,1
 <h2 id="h2-u66f4u65b03-fumo">更新3：fumo²</h2><p>收到了fumo！</p>
 <p><img src="./assets/tenshi_fumo_PXL_20250920_174940982.webp" alt="fumofumo"></p>
 </div>
-        <div id="footnote">2025年2月6日。 7月4日更新1。8月25日更新2。9月20日更新3。</div>
-      </div>
+            <div id="footnote">2025年2月6日。 7月4日更新1。8月25日更新2。9月20日更新3。</div>
+          </div>
+        </div>
 
-      <div id="right-sidebar" class="sidebar">
-        <div id="toc-card" class="sidebar-card">
-          <div class="toc-header">目录</div>
-          <div id="toc-content">
-            <div class="toc">
+        <div class="bottom-button mobile-only">
+          <button onclick="scrollToTop()" title="滚动到顶部">
+            <img
+              src="/img/icon/arrow-upward.svg"
+              alt="Return Top"
+              class="icon"
+            />
+          </button>
+        </div>
+
+        <div id="right-sidebar" class="sidebar">
+          <div id="toc-card" class="sidebar-card">
+            <div class="toc-header">目录</div>
+            <div id="toc-content"><div class="toc">
 <ul>
 <ul>
 <li><a href="#h2-u4e00u4e9bu6709u8da3u7684u6280u672fu7ec6u8282">一些有趣的技术细节</a></li>
@@ -414,35 +454,27 @@ s76,-153,76,-153s77,-151,77,-151c0.7,0.7,35.7,202,105,604c67.3,400.7,102,602.7,1
 <li><a href="#h2-u66f4u65b03-fumo">更新3：fumo²</a></li>
 </ul>
 </ul>
-</div>
+</div></div>
           </div>
         </div>
       </div>
-
     </div>
 
-    <div class="bottom-button mobile-only">
-      <button onclick="scrollToTop()" title="滚动到顶部">
-        <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-      </button>
+    <script src="/script.js"></script>
+
+    <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+      <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
+    </button>
+
+    <div id="toc-mobile-wrapper">
+      <div class="toc-header-mobile">
+        <span>目录</span>
+        <button onclick="toggleToc()" class="toc-close-btn">×</button>
+      </div>
+      <div id="toc-content-mobile"></div>
     </div>
-  </div>
 
-  <script src="/script.js"></script>
-
-  <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
-    <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
-  </button>
-
-  <div id="toc-mobile-wrapper">
-    <div class="toc-header-mobile">
-      <span>目录</span>
-      <button onclick="toggleToc()" class="toc-close-btn">×</button>
-    </div>
-    <div id="toc-content-mobile"></div>
-  </div>
-
-  
+    
 <script>
 document.querySelectorAll('pre').forEach(pre => {
   const btn = document.createElement('button');
@@ -468,6 +500,5 @@ document.querySelectorAll('pre').forEach(pre => {
 });
 </script>
 
-</body>
-
+  </body>
 </html>

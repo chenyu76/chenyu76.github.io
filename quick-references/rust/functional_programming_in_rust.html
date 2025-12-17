@@ -1,54 +1,84 @@
 <!doctype html>
 <html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rust 中进行函数式编程</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rust 中进行函数式编程</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
 
-  <link rel="stylesheet" href="/styles.css" />
-  <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="/styles-code.css">
+  </head>
 
-  <link rel="stylesheet" href="/styles-code.css">
-</head>
+  <body>
+    <iframe
+      id="iframe-background"
+      src="/img/pixelart/index.html"
+      title="background"
+    ></iframe>
 
-<body>
-  <iframe id="iframe-background" src="/img/pixelart/index.html" title="background"></iframe>
-
-  <div id="title-container">
     <div id="spacer"></div>
-    <div id="top-buttons-wrapper" class="top-buttons">
-      <a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a><a
-        href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a><a
-        href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub" class="fade-in"><img
-          src="/img/icon/github.svg" alt="Github" class="icon" /></a><a href="/About.html" title="关于"
-        class="fade-in"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
-    </div>
-    <div id="heading"><h3>quick-references/rust</h3><h1>Rust 中进行函数式编程</h1></div>
-  </div>
 
-  <div id="anime-spacer" class="shrinked"></div>
+    <div id="anime-spacer" class="shrinked"></div>
 
-  <div id="content-wrapper-bg">
-    <div id="main-grid-container">
-
-      <div id="left-sidebar" class="sidebar">
-        <div class="sidebar-card">
-          <div class="vertical-buttons">
-            <a href="/toc.html" title="文档索引"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a>
-            <a href="/index.html" title="返回主页"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a>
-            <a href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub"><img src="/img/icon/github.svg"
-                alt="Github" class="icon" /></a>
-            <a href="/About.html" title="关于"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
-            <button onclick="scrollToTop()" title="滚动到顶部" class="scroll-top-btn">
-              <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-            </button>
+    <div id="content-wrapper-bg">
+      <div id="main-grid-container">
+        <div id="left-sidebar" class="sidebar">
+          <div class="sidebar-card">
+            <div class="vertical-buttons">
+              <a href="/toc.html" title="文档索引"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon"
+              /></a>
+              <a href="/index.html" title="返回主页"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon"
+              /></a>
+              <a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon"
+              /></a>
+              <a href="/About.html" title="关于"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+              <button
+                onclick="scrollToTop()"
+                title="滚动到顶部"
+                class="scroll-top-btn"
+              >
+                <img
+                  src="/img/icon/arrow-upward.svg"
+                  alt="Return Top"
+                  class="icon"
+                />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div id="content-wrapper">
-        <div id="content"><p>在 Rust 中进行函数式编程（Functional Programming, FP）是可行的，尽管 Rust 不是纯函数式语言（如 Haskell），但它提供了许多函数式编程的特性。</p>
+        <div>
+          <div id="title-container">
+            <div id="heading"><h3>quick-references/rust</h3><h1>Rust 中进行函数式编程</h1></div>
+            <div id="top-buttons-wrapper" class="top-buttons">
+              <a href="/toc.html" title="文档索引" class="fade-in"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
+              ><a href="/index.html" title="返回主页" class="fade-in"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon" /></a
+              ><a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                class="fade-in"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon" /></a
+              ><a href="/About.html" title="关于" class="fade-in"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+            </div>
+          </div>
+
+          <div id="content-wrapper">
+            <div id="content"><p>在 Rust 中进行函数式编程（Functional Programming, FP）是可行的，尽管 Rust 不是纯函数式语言（如 Haskell），但它提供了许多函数式编程的特性。</p>
 <h2 id="h2-1-u4f7fu7528u4e0du53efu53d8u6570u636e-immutability">1. **使用不可变数据（Immutability）**</h2><p>函数式编程强调不可变性，Rust 默认变量是不可变的（除非用 <code>mut</code> 声明）。</p>
 <pre><code class="language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">x</span> = <span class="hljs-number">5</span>;      <span class="hljs-comment">// 不可变</span>
 <span class="hljs-comment">// x = 6;       // 错误，不能修改不可变变量</span>
@@ -190,14 +220,24 @@ y = <span class="hljs-number">20</span>;         <span class="hljs-comment">// �
 <span class="hljs-keyword">let</span> <span class="hljs-variable">vec2</span> = Arc::<span class="hljs-title function_ invoke__">clone</span>(&amp;vec1); <span class="hljs-comment">// 共享数据</span>
 </code></pre>
 </div>
-        <div id="footnote"></div>
-      </div>
+            <div id="footnote"></div>
+          </div>
+        </div>
 
-      <div id="right-sidebar" class="sidebar">
-        <div id="toc-card" class="sidebar-card">
-          <div class="toc-header">目录</div>
-          <div id="toc-content">
-            <div class="toc">
+        <div class="bottom-button mobile-only">
+          <button onclick="scrollToTop()" title="滚动到顶部">
+            <img
+              src="/img/icon/arrow-upward.svg"
+              alt="Return Top"
+              class="icon"
+            />
+          </button>
+        </div>
+
+        <div id="right-sidebar" class="sidebar">
+          <div id="toc-card" class="sidebar-card">
+            <div class="toc-header">目录</div>
+            <div id="toc-content"><div class="toc">
 <ul>
 <ul>
 <li><a href="#h2-1-u4f7fu7528u4e0du53efu53d8u6570u636e-immutability">1. **使用不可变数据（Immutability）**</a></li>
@@ -212,35 +252,27 @@ y = <span class="hljs-number">20</span>;         <span class="hljs-comment">// �
 <li><a href="#h2-10-u4e0du53efu53d8u6570u636eu7ed3u6784">10. **不可变数据结构**</a></li>
 </ul>
 </ul>
-</div>
+</div></div>
           </div>
         </div>
       </div>
-
     </div>
 
-    <div class="bottom-button mobile-only">
-      <button onclick="scrollToTop()" title="滚动到顶部">
-        <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-      </button>
+    <script src="/script.js"></script>
+
+    <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+      <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
+    </button>
+
+    <div id="toc-mobile-wrapper">
+      <div class="toc-header-mobile">
+        <span>目录</span>
+        <button onclick="toggleToc()" class="toc-close-btn">×</button>
+      </div>
+      <div id="toc-content-mobile"></div>
     </div>
-  </div>
 
-  <script src="/script.js"></script>
-
-  <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
-    <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
-  </button>
-
-  <div id="toc-mobile-wrapper">
-    <div class="toc-header-mobile">
-      <span>目录</span>
-      <button onclick="toggleToc()" class="toc-close-btn">×</button>
-    </div>
-    <div id="toc-content-mobile"></div>
-  </div>
-
-  
+    
 <script>
 document.querySelectorAll('pre').forEach(pre => {
   const btn = document.createElement('button');
@@ -266,6 +298,5 @@ document.querySelectorAll('pre').forEach(pre => {
 });
 </script>
 
-</body>
-
+  </body>
 </html>

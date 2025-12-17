@@ -1,56 +1,86 @@
 <!doctype html>
 <html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>多角星的生成</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>多角星的生成</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
 
-  <link rel="stylesheet" href="/styles.css" />
-  <link rel="icon" href="/favicon.png" type="image/png" />
-
-  
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous">
     
-</head>
+  </head>
 
-<body>
-  <iframe id="iframe-background" src="/img/pixelart/index.html" title="background"></iframe>
+  <body>
+    <iframe
+      id="iframe-background"
+      src="/img/pixelart/index.html"
+      title="background"
+    ></iframe>
 
-  <div id="title-container">
     <div id="spacer"></div>
-    <div id="top-buttons-wrapper" class="top-buttons">
-      <a href="/toc.html" title="文档索引" class="fade-in"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a><a
-        href="/index.html" title="返回主页" class="fade-in"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a><a
-        href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub" class="fade-in"><img
-          src="/img/icon/github.svg" alt="Github" class="icon" /></a><a href="/About.html" title="关于"
-        class="fade-in"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
-    </div>
-    <div id="heading"><h3>program/draw-n-pointed-star</h3><h1>多角星的生成</h1></div>
-  </div>
 
-  <div id="anime-spacer" class="shrinked"></div>
+    <div id="anime-spacer" class="shrinked"></div>
 
-  <div id="content-wrapper-bg">
-    <div id="main-grid-container">
-
-      <div id="left-sidebar" class="sidebar">
-        <div class="sidebar-card">
-          <div class="vertical-buttons">
-            <a href="/toc.html" title="文档索引"><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a>
-            <a href="/index.html" title="返回主页"><img src="/img/icon/home.svg" alt="Home" class="icon" /></a>
-            <a href="https://github.com/chenyu76" target="_blank" title="跳转到 GitHub"><img src="/img/icon/github.svg"
-                alt="Github" class="icon" /></a>
-            <a href="/About.html" title="关于"><img src="/img/icon/info.svg" alt="Info" class="icon" /></a>
-            <button onclick="scrollToTop()" title="滚动到顶部" class="scroll-top-btn">
-              <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-            </button>
+    <div id="content-wrapper-bg">
+      <div id="main-grid-container">
+        <div id="left-sidebar" class="sidebar">
+          <div class="sidebar-card">
+            <div class="vertical-buttons">
+              <a href="/toc.html" title="文档索引"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon"
+              /></a>
+              <a href="/index.html" title="返回主页"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon"
+              /></a>
+              <a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon"
+              /></a>
+              <a href="/About.html" title="关于"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+              <button
+                onclick="scrollToTop()"
+                title="滚动到顶部"
+                class="scroll-top-btn"
+              >
+                <img
+                  src="/img/icon/arrow-upward.svg"
+                  alt="Return Top"
+                  class="icon"
+                />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div id="content-wrapper">
-        <div id="content"><p>我们都知道，正五角星只有一种画法（除去平凡的正五边形情形），但当点数增大时，画法就有很多了。我感觉当点数增加时，绘制的形状应该会很好看，于是就写了这个网页画着玩。</p>
+        <div>
+          <div id="title-container">
+            <div id="heading"><h3>program/draw-n-pointed-star</h3><h1>多角星的生成</h1></div>
+            <div id="top-buttons-wrapper" class="top-buttons">
+              <a href="/toc.html" title="文档索引" class="fade-in"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
+              ><a href="/index.html" title="返回主页" class="fade-in"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon" /></a
+              ><a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                class="fade-in"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon" /></a
+              ><a href="/About.html" title="关于" class="fade-in"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+            </div>
+          </div>
+
+          <div id="content-wrapper">
+            <div id="content"><p>我们都知道，正五角星只有一种画法（除去平凡的正五边形情形），但当点数增大时，画法就有很多了。我感觉当点数增加时，绘制的形状应该会很好看，于是就写了这个网页画着玩。</p>
 <p>结论：确实好看。</p>
 <p>在下面的输入框中输入 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mn>1</mn></msub><mo>:</mo><msub><mi>m</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>n</mi><mn>2</mn></msub><mo>:</mo><msub><mi>m</mi><mn>2</mn></msub><mo separator="true">,</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">n_1:m_1, n_2:m_2, \dots</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span></span></span></span> 格式的数据来绘制图形， 其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">n_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 是边数， <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>m</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">m_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 是连接间隔，例如输入 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><mo>:</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">5:2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">5</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> 表示在一个圆上逆时针均匀排布5个顶点中，每个顶点连接其后第2个顶点 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mspace></mspace><mspace width="0.4444em"/><mo stretchy="false">(</mo><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">d</mi></mrow><mspace width="0.3333em"/><mn>5</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\pmod 5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0em;"></span><span class="mspace allowbreak"></span><span class="mspace" style="margin-right:0.4444em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord mathrm">mod</span></span></span><span class="mspace" style="margin-right:0.3333em;"></span><span class="mord">5</span><span class="mclose">)</span></span></span></span> ，按顺序 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>→</mo><mn>2</mn><mo>→</mo><mn>4</mn><mo>→</mo><mn>1</mn><mo>→</mo><mn>3</mn><mo>→</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">0 \rightarrow 2 \rightarrow 4 \rightarrow 1 \rightarrow 3 \rightarrow 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> 绘制出五角星。 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>max</mi><mo>⁡</mo></mrow><mi>i</mi></msub><msub><mi>n</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\max_i n_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mop"><span class="mop">max</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 决定绘制的是几角星，剩余的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">n_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 控制子图形的连接间隔。</p>
 <p><img src="./pentagram.svg" alt="五角星"></p>
@@ -106,42 +136,43 @@
 </ul>
 <p>不过如果使用不同间隔 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><msub><mi>m</mi><mrow><mi>i</mi><mo separator="true">,</mo><mn>1</mn></mrow></msub><mo separator="true">,</mo><msub><mi>m</mi><mrow><mi>i</mi><mo separator="true">,</mo><mn>2</mn></mrow></msub><mo separator="true">,</mo><mo>…</mo><mtext> </mtext><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[m_{i,1},m_{i,2}, \dots]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mopen">[</span><span class="mord"><span class="mord mathnormal">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mclose">]</span></span></span></span> 轮流填充就没有什么理论保证了，所以当你使用这个语法时，有时候会能看到有些顶点被重复使用，有些顶点却没被使用。</p>
 </div>
-        <div id="footnote">2025/07/17</div>
-      </div>
+            <div id="footnote">2025/07/17</div>
+          </div>
+        </div>
 
-      <div id="right-sidebar" class="sidebar">
-        <div id="toc-card" class="sidebar-card">
-          <div class="toc-header">目录</div>
-          <div id="toc-content">
-            
+        <div class="bottom-button mobile-only">
+          <button onclick="scrollToTop()" title="滚动到顶部">
+            <img
+              src="/img/icon/arrow-upward.svg"
+              alt="Return Top"
+              class="icon"
+            />
+          </button>
+        </div>
+
+        <div id="right-sidebar" class="sidebar">
+          <div id="toc-card" class="sidebar-card">
+            <div class="toc-header">目录</div>
+            <div id="toc-content"></div>
           </div>
         </div>
       </div>
-
     </div>
 
-    <div class="bottom-button mobile-only">
-      <button onclick="scrollToTop()" title="滚动到顶部">
-        <img src="/img/icon/arrow-upward.svg" alt="Return Top" class="icon" />
-      </button>
+    <script src="/script.js"></script>
+
+    <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+      <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
+    </button>
+
+    <div id="toc-mobile-wrapper">
+      <div class="toc-header-mobile">
+        <span>目录</span>
+        <button onclick="toggleToc()" class="toc-close-btn">×</button>
+      </div>
+      <div id="toc-content-mobile"></div>
     </div>
-  </div>
 
-  <script src="/script.js"></script>
-
-  <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
-    <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
-  </button>
-
-  <div id="toc-mobile-wrapper">
-    <div class="toc-header-mobile">
-      <span>目录</span>
-      <button onclick="toggleToc()" class="toc-close-btn">×</button>
-    </div>
-    <div id="toc-content-mobile"></div>
-  </div>
-
-  
-</body>
-
+    
+  </body>
 </html>
