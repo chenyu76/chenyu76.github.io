@@ -45,18 +45,25 @@ body {
 }
 
 #spacer {
-  flex-grow: 1;
+  /* flex-grow: 1; */
+  height: 61.8vh;
 }
 
 #title-container {
   display: flex;
-  flex-direction: column;
-  width: 80%;
+  flex-direction: row;
+  /* width: 80%; */
   max-width: var(--main-width);
-  margin: 0px auto;
-  height: 61.8vh;
+  margin: 1em auto;
+  /* height: 61.8vh; */
   transition: width 0.5s ease-in-out;
   transition: height 0.5s ease-in-out;
+  align-items: center;
+}
+#title-container h1 {
+  margin: 0;
+  /* padding: 20px 0 10px 0; */
+  font-size: 3em;
 }
 
 /* 动画定义 */
@@ -188,12 +195,13 @@ body {
 
 /* --- 头部样式 --- */
 #heading {
-  width: 100%;
+  /* width: 100%; */
+  flex: 1;
   margin: 5px 0px;
 }
 
 #top-buttons-wrapper {
-  width: 100%;
+  /* width: 100%; */
   padding: 0px;
   margin: 5px 0px;
 }
@@ -229,7 +237,7 @@ p {
   color: gray;
   font-size: 0.8em;
   margin-top: 30px;
-  border-top: 1px solid #eee;
+  /* border-top: 1px solid #eee; */
   padding-top: 10px;
 }
 
@@ -326,7 +334,7 @@ p {
 /* 移动端 (小于1200px) */
 @media (max-width: 1199px) {
   #iframe-background,
-  #title-container {
+  #spacer {
     height: 38.2vh;
   }
 

@@ -59,7 +59,7 @@ generateHtmlFile(
     templateHTML,
     "chenyu76的主页",
     "",
-    `<h1>主页</h1>`,
+    `<h1>chenyu76<span style="color: #888888;">.github.io</span></h1>`,
     `${convertMarkdown(path.join(rootPath, "README.md")).html}<br> 
 ${generateRecommend(1, articles)}<br><hr><h2>小工具</h2>
 ${convertMarkdown(path.join(rootPath, "program", "readme.md")).html}`,
