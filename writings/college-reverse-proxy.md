@@ -54,19 +54,19 @@ $$
 在我们的场景里，简单来说，现在你（user）想访问校内的网络资源，但是校内的网络资源不直接对外开放，所以我们可以借用client，所有校内的网络资源都通过client访问，并将获取的信息都转发给你。当然，由于很多时候user和client之间并没有直接的网络连接，所以需要server作为中转，client先将内容发送至server，server再将内容传回user。
 
 $$
-\overbracket{
+\overbrace{
 \fbox{校内服务器}
 \Longleftrightarrow
-\underbracket{
+\underbrace{
 \fbox{Client}
 }_{可访问公网}
 }^{\text{校园内部网}}
 \Longleftrightarrow
-\underbracket{
+\underbrace{
 \fbox{Server}
 }_{\text{位于公网}}
 \Longleftrightarrow
-\underbracket{
+\underbrace{
 \fbox{User}
 }_{\text{可访问公网}}
 $$
@@ -266,5 +266,15 @@ sudo systemctl status frpc
 ```
 
 如果你看到一片绿色的 **`active (running)`**，那就说明我们的 `frpc` 已经成功穿透校园网，开始为你工作。
+
+## 需要注意的事项
+
+### UPS 的电池容量
+
+树莓派低功耗待机不需要20W的功耗，不一定需要这么大电池容量，但具体功耗我也没测试过。
+
+### 登陆校园网
+
+如果Client无法连接校园网，那这套方案是完全不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的[这个仓库](https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetwork.py)里就有这样一个脚本，可以用于登陆宿舍区校园网，但记得配置一个定时连接的服务。
 
 2025/12/21
