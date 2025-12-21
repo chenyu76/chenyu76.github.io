@@ -501,33 +501,76 @@ hr {
   margin: 0.5rem 0;
   border-left: 0.25rem solid;
 }
-
+.markdown-alert svg {
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
 .markdown-alert-note {
   background-color: #e6f6ff;
   border-left-color: #0c6a8e;
   color: #31708f;
 }
-
+.markdown-alert-note svg {
+  fill: #31708f;
+}
 .markdown-alert-tip {
   background-color: #e6ffec;
   border-left-color: #28a745;
   color: #216d33;
 }
-
+.markdown-alert-tip svg {
+  fill: #216d33;
+}
 .markdown-alert-important {
   background-color: #f3e6ff;
   border-left-color: #6f42c1;
   color: #553493;
 }
-
+.markdown-alert-important svg {
+  fill: #553493;
+}
 .markdown-alert-warning {
   background-color: #fffbe6;
   border-left-color: #ffc107;
   color: #856404;
 }
-
+.markdown-alert-warning svg {
+  fill: #856404;
+}
 .markdown-alert-caution {
   background-color: #ffebe6;
   border-left-color: #dc3545;
   color: #721c24;
+}
+.markdown-alert-caution svg {
+  fill: #721c24;
+}
+
+/* table 标签 样式：三线表 */
+table {
+  margin: 20px auto; /* 居中 */
+  border-collapse: collapse; /* 合并边框 */
+  min-width: 300px;
+  text-align: center;
+
+  /* 三线表的顶线和底线 */
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
+}
+/* 作用于所有表头 */
+th {
+  padding: 12px 15px;
+  border-bottom: 1px solid #000; /* 三线表的中间线 */
+  font-weight: bold;
+}
+/* 作用于所有单元格 */
+td {
+  padding: 10px 15px;
+}
+/* 移除所有默认的竖线和中间横线（确保纯净的三线效果） */
+table,
+th,
+td {
+  border-left: none;
+  border-right: none;
 }
