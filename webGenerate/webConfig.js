@@ -31,9 +31,16 @@ export const gitRepositories = {
  */
 export const recommend = [
   {
-    date: 20251207,
-    link: "writings/deans-office-latex.html",
-    info: "在经过本科几年与这些超级表格文档的“抗争”后，我终于实现了一个比较满意的LaTeX解决方案，可以比较方便的创建类似的文档。"
+    date : 20251221,
+    link : "writings/college-reverse-proxy.md",
+    info :
+        "我们将在校园网内计算机上使用frp配置反向代理并安装WireGuard实现访问校内的网络资源。"
+  },
+  {
+    date : 20251207,
+    link : "writings/deans-office-latex.html",
+    info :
+        "在经过本科几年与这些超级表格文档的“抗争”后，我终于实现了一个比较满意的LaTeX解决方案，可以比较方便的创建类似的文档。"
   },
   {
     date : 20251121,
