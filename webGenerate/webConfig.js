@@ -32,7 +32,7 @@ export const gitRepositories = {
 export const recommend = [
   {
     date : 20251221,
-    link : "writings/college-reverse-proxy.md",
+    link : "writings/college-reverse-proxy.html",
     info :
         "我们将在校园网内计算机上使用frp配置反向代理并安装WireGuard实现访问校内的网络资源。"
   },

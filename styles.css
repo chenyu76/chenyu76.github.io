@@ -352,6 +352,11 @@ p {
     padding: 20px;
   }
 
+  #top-buttons-wrapper {
+    width: 72px;
+    line-height: 2.5em;
+  }
+
   /* 隐藏 PC 端侧边栏 */
   .sidebar {
     display: none !important;
