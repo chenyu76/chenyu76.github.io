@@ -97,22 +97,27 @@
 </ul>
 <h3 id="h3-u8fd9u4e9bu540du8bcdu662fu4ec0u4e48">这些名词是什么</h3><h4 id="h4-u6811u8393u6d3e">树莓派</h4><p>简单来说，它就是一台只有信用卡大小的迷你电脑。它的功耗不高，适合 24 小时守在宿舍里，帮我们转发网络信号。</p>
 <h4 id="h4-ups">UPS</h4><p>由于我们的宿舍区24:00至次日6:00断电，断电时我们的服务自然无法继续，
-如果需要在期间保持client持续运行，我们就需要给它加个电池让它可以一直跑，这就是本场景中UPS的主要作用。</p>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>220V AC</mtext></mstyle></menclose><mo><mover><mo><mo>⟶</mo></mo><mtext>AC</mtext></mover></mo><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>UPS</mtext></mstyle></menclose><mo><mover><mo><mo>⟶</mo></mo><mtext>DC</mtext></mover></mo><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>Client</mtext></mstyle></menclose></mrow><annotation encoding="application/x-tex">\fbox{220V AC}
-\stackrel{\text{AC}}{\longrightarrow}
+如果需要在期间保持client持续运行，我们就需要给它加个电池让它可以一直跑，这就是本场景中UPS（<strong>U</strong>ninterruptible <strong>P</strong>ower <strong>S</strong>upply，不间断电源）的主要作用。
+$$
+\begin{CD}
+\fbox{220V AC}
+@&gt;\text{AC}&gt;&gt;
 \fbox{UPS}
-\stackrel{\text{DC}}{\longrightarrow}
-\fbox{Client}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.6293em;vertical-align:-0.34em;"></span><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0233em;"><span style="top:-3.3633em;"><span class="pstrut" style="height:3.3633em;"></span><span class="boxpad"><span class="mord"><span class="mord">220V AC</span></span></span></span><span style="top:-3.0233em;"><span class="pstrut" style="height:3.3633em;"></span><span class="stretchy fbox" style="height:1.3633em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2893em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">⟶</span></span></span><span style="top:-3.711em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">AC</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.011em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.6293em;vertical-align:-0.34em;"></span><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0233em;"><span style="top:-3.3633em;"><span class="pstrut" style="height:3.3633em;"></span><span class="boxpad"><span class="mord"><span class="mord">UPS</span></span></span></span><span style="top:-3.0233em;"><span class="pstrut" style="height:3.3633em;"></span><span class="stretchy fbox" style="height:1.3633em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2893em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">⟶</span></span></span><span style="top:-3.711em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">DC</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.011em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.3744em;vertical-align:-0.34em;"></span><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0344em;"><span style="top:-3.3744em;"><span class="pstrut" style="height:3.3744em;"></span><span class="boxpad"><span class="mord"><span class="mord">Client</span></span></span></span><span style="top:-3.0344em;"><span class="pstrut" style="height:3.3744em;"></span><span class="stretchy fbox" style="height:1.3744em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span></span></span></span></span>
-<p>内置电池的UPS可以直接给树莓派供电，在宿舍区断电时自动切换到电池供电，保证设备不掉线。
-注意宿舍区每天断电六小时，如果树莓派的功耗按 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>20</mn><mtext>W</mtext><mo stretchy="false">(</mo><mn>5</mn><mtext>V </mtext><mn>4</mn><mtext>A</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">20\text{W}(5\text{V}\ 4\text{A})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">20</span><span class="mord text"><span class="mord">W</span></span><span class="mopen">(</span><span class="mord">5</span><span class="mord text"><span class="mord">V</span></span><span class="mspace"> </span><span class="mord">4</span><span class="mord text"><span class="mord">A</span></span><span class="mclose">)</span></span></span></span> 计算，我们至少需要</p>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mrow><mn>20</mn><mtext>W</mtext><mo>×</mo><mn>6</mn><mtext>h</mtext></mrow><mrow><mn>3.7</mn><mtext>V</mtext></mrow></mfrac><mo>×</mo><mn>1000</mn><mtext>mA</mtext><mi mathvariant="normal">/</mi><mtext>A</mtext><mo>≈</mo><mn>32432</mn><mtext>mAh</mtext></mrow><annotation encoding="application/x-tex">\frac{20 \text{W} \times 6 \text{h} }{3.7\text{V}} \times 1000\text{mA}/\text{A}
-\approx 32432\text{mAh}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.0574em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3.7</span><span class="mord text"><span class="mord">V</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">20</span><span class="mord text"><span class="mord">W</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">6</span><span class="mord text"><span class="mord">h</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1000</span><span class="mord text"><span class="mord">mA</span></span><span class="mord">/</span><span class="mord text"><span class="mord">A</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">32432</span><span class="mord text"><span class="mord">mAh</span></span></span></span></span></span>
+@&gt;\text{DC}&gt;&gt;
+\fbox{Client}
+\end{CD}
+$$</p>
+<p>内置电池的UPS可以在直接给树莓派供电的同时，在宿舍区断电时自动切换到电池供电，保证设备不掉线。注意宿舍区每天断电六小时，如果树莓派的功耗按 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>20</mn><mtext>W</mtext><mo stretchy="false">(</mo><mn>5</mn><mtext>V </mtext><mn>4</mn><mtext>A</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">20\text{W}(5\text{V}\ 4\text{A})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">20</span><span class="mord text"><span class="mord">W</span></span><span class="mopen">(</span><span class="mord">5</span><span class="mord text"><span class="mord">V</span></span><span class="mspace"> </span><span class="mord">4</span><span class="mord text"><span class="mord">A</span></span><span class="mclose">)</span></span></span></span> 计算，我们至少需要
+$$
+\frac{20 \text{W} \times 6 \text{h} }{3.7\text{V}} \times 1000\text{mA}/\text{A}
+\approx 32432\text{mAh}
+$$</p>
 <p>的锂电池容量（以 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3.7</mn><mtext>V</mtext></mrow><annotation encoding="application/x-tex">3.7\text V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">3.7</span><span class="mord text"><span class="mord">V</span></span></span></span></span> 计算）。</p>
 <h4 id="h4-u53cdu5411u4ee3u7406">反向代理</h4><p><a href="https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86">维基百科</a>上是这样说的：</p>
 <blockquote>
 <p>反向代理（Reverse proxy）在电脑网络中是代理服务器的一种。服务器根据客户端的请求，从其关系的一组或多组后端服务器（如Web服务器）上获取资源，然后再将这些资源返回给客户端，客户端只会得知反向代理的IP地址，而不知道在代理服务器后面的服务器集群的存在。</p>
 </blockquote>
-<p>在我们的场景里，简单来说，现在你（user）想访问校内的网络资源，但是校内的网络资源不直接对外开放，所以我们可以借用client，所有校内的网络资源都通过client访问，并将获取的信息都转发给你。当然，由于很多时候user和client之间并没有直接的网络连接，所以需要server作为中转，client先将内容发送至server，server再将内容传回user。</p>
+<p>在我们的场景里，简单来说，现在你（user）想访问校内的网络资源，但是校内的网络资源不直接对外开放，所以我们可以借用client，所有校内的网络资源都通过client访问，并将获取的信息都转发给你。当然，由于很多时候user和client之间并没有直接的网络连接，所以需要server作为中转，client先将内容发送至server，然后server再将内容传回user。</p>
 <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mover><mover><mrow><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>校内服务器</mtext></mstyle></menclose><mo>⟺</mo><munder><munder><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>Client</mtext></mstyle></menclose><mo stretchy="true">⏟</mo></munder><mtext>可访问公网</mtext></munder></mrow><mo stretchy="true">⏞</mo></mover><mtext>校园内部网</mtext></mover><mo>⟺</mo><munder><munder><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>Server</mtext></mstyle></menclose><mo stretchy="true">⏟</mo></munder><mtext>位于公网</mtext></munder><mo>⟺</mo><munder><munder><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>User</mtext></mstyle></menclose><mo stretchy="true">⏟</mo></munder><mtext>可访问公网</mtext></munder></mrow><annotation encoding="application/x-tex">\overbrace{
 \fbox{校内服务器}
 \Longleftrightarrow
@@ -176,7 +181,20 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <li><code>frpc</code>（frp <strong>C</strong>lient，客户端）运行在校园网内你的计算机（树莓派）上。</li>
 </ol>
 <p>两者配合，就能打通一条从外网到内网的隧道。</p>
-<h4 id="h4-wireguard">WireGuard</h4><p>WireGuard 是一个非常简单、快速、现代化的虚拟专用网协议。在我们的场景中，我们可以用 WireGuard 把校园网内的设备和树莓派连接在同一个虚拟局域网里，这样你就可以像在宿舍里一样直接访问校园网资源了。</p>
+<h4 id="h4-wireguard">WireGuard</h4><p>WireGuard 是一个非常简单、快速、现代化的虚拟专用网协议。在我们的场景中，我们可以用 WireGuard 把user设备和client设备连接在同一个虚拟局域网里，这样你就可以像在宿舍里一样直接访问校园网资源了。</p>
+<p>配置好后的网络结构大概会是这个样子：</p>
+<pre><code>┌────────────────────────────────────────────────────┐
+│ WAN                                                │
+│┌────────────────────────┐                          │
+││ School LAN             │   ┌────────┐             │
+││┌──────────┐  ┌────────┐│   │ Server │   ┌────────┐│
+│││ School   │  │        └┴───┴────────┴───┘┌──────┐││
+│││ Internal │  │ Client                    │ User │││
+│││ Computer │  │        ┌┬───┬────────┬───┐└──────┘││
+││└──────────┘  └────────┘│   └────────┘   └────────┘│
+│└────────────────────────┘                          │
+└────────────────────────────────────────────────────┘
+</code></pre>
 <h2 id="h2-u6211u4eecu8981u600eu4e48u505a">我们要怎么做</h2><p>需要安装并配置的软件一览：</p>
 <table>
 <thead>
@@ -231,27 +249,69 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <h4 id="h4-2-u542fu52a8u5ba2u6237u7aef">2. 启动客户端</h4><p>使用以下命令</p>
 <pre><code class="language-bash">./frpc -c ./frpc.toml
 </code></pre>
-<h3 id="h3-u5b89u88c5u5e76u914du7f6ewireguard">安装并配置WireGuard</h3><p>你会注意到上面的frp配置都只使用了一个端口，我们怎么通过一个端口访问校园网内的所有服务呢？这就需要使用WireGuard创建虚拟专用网。</p>
-<p>详细内容请直接参照<a href="https://www.wireguard.com/quickstart/">官方说明</a>，如有出入，请以官方说明为准。</p>
-<h4 id="h4-1-u5728clientu4e0au5b89u88c5-wireguard">1. 在client上安装 WireGuard</h4><pre><code class="language-bash"><span class="hljs-built_in">sudo</span> apt update
+<h3 id="h3-u5b89u88c5u5e76u914du7f6e-wireguard-u5b9eu73b0u5c40u57dfu7f51u5168u8bbfu95ee">安装并配置 WireGuard：实现局域网全访问</h3><p>当你通过 <code>frp</code> 穿透了 WireGuard 的 UDP 端口后，你不仅可以连接到这台服务器本身，还可以通过它作为跳板，访问其所在的整个校园网/局域网资源。</p>
+<h4 id="h4-1-u5b89u88c5-wireguard-client-u7aef">1. 安装 WireGuard (Client 端)</h4><p>在内网服务器（下称 Client）上安装：</p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> apt update
 <span class="hljs-built_in">sudo</span> apt install wireguard
 </code></pre>
-<h4 id="h4-2-u751fu6210u5bc6u94a5u5bf9">2. 生成密钥对</h4><pre><code class="language-bash">wg genkey | <span class="hljs-built_in">tee</span> privatekey | wg pubkey &gt; publickey
+<h4 id="h4-2-u5f00u542fu5185u6838u8f6cu53d1">2. 开启内核转发</h4><p>这是实现局域网访问的关键。你需要让 Linux 内核允许数据包在不同网卡间转发。</p>
+<pre><code class="language-bash"><span class="hljs-comment"># 临时生效</span>
+<span class="hljs-built_in">sudo</span> sysctl -w net.ipv4.ip_forward=1
+
+<span class="hljs-comment"># 永久生效：修改 /etc/sysctl.conf</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;net.ipv4.ip_forward=1&quot;</span> | <span class="hljs-built_in">sudo</span> <span class="hljs-built_in">tee</span> -a /etc/sysctl.conf
+<span class="hljs-built_in">sudo</span> sysctl -p
 </code></pre>
-<h4 id="h4-3-u4feeu6539u914du7f6eu6587u4ef6">3. 修改配置文件</h4><p>位于 <code>/etc/wireguard/wg0.conf</code></p>
-<p>示例：</p>
+<h4 id="h4-3-u751fu6210u5bc6u94a5u5bf9">3. 生成密钥对</h4><p>在 Client 和 User 端各执行一次，并记录下各自的公钥和私钥。</p>
+<pre><code class="language-bash">wg genkey | <span class="hljs-built_in">tee</span> privatekey | wg pubkey &gt; publickey
+</code></pre>
+<h4 id="h4-4-u914du7f6e-client-u7aef-u5185u7f51u670du52a1u5668">4. 配置 Client 端 (内网服务器)</h4><p>编辑 <code>/etc/wireguard/wg0.conf</code>。为了让 User 能访问局域网，我们需要在接口启动时添加 <code>iptables</code> 规则来进行 NAT 伪装。</p>
 <pre><code class="language-ini"><span class="hljs-section">[Interface]</span>
 <span class="hljs-attr">Address</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.1</span>/<span class="hljs-number">24</span>
-<span class="hljs-attr">PrivateKey</span> = &lt;树莓派的私钥&gt;
 <span class="hljs-attr">ListenPort</span> = <span class="hljs-number">51820</span>
+<span class="hljs-attr">PrivateKey</span> = &lt;Client的私钥&gt;
+
+<span class="hljs-comment"># 核心配置：流量转发与伪装</span>
+<span class="hljs-comment"># 注意：将 eth0 替换为你实际的网卡名称（通过 ip addr 查看）</span>
+<span class="hljs-attr">PostUp</span> = iptables -A FORWARD -i wg0 -j ACCEPT<span class="hljs-comment">; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE</span>
+<span class="hljs-attr">PostDown</span> = iptables -D FORWARD -i wg0 -j ACCEPT<span class="hljs-comment">; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE</span>
 
 <span class="hljs-section">[Peer]</span>
-<span class="hljs-attr">PublicKey</span> = &lt;你电脑的公钥&gt;
+<span class="hljs-attr">PublicKey</span> = &lt;User的公钥&gt;
 <span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.2</span>/<span class="hljs-number">32</span>
 </code></pre>
-<h4 id="h4-4-u5728u7528u6237u7535u8111useru4e0au4e5fu5b89u88c5-wireguard">4. 在用户电脑user上也安装 WireGuard</h4><p>在<a href="https://www.wireguard.com/install/">下载页</a>下载对应客户端
-并配置相应的对端信息。</p>
-<p>配置好并启动后，user和client和server就在同一个虚拟局域网里啦。</p>
+<div class="markdown-alert markdown-alert-note">
+<p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>如果不加 <code>PostUp</code> 里的 iptables 规则，局域网内的其他设备收到你的请求后，不知道要把回包发给 <code>10.0.0.2</code>。通过 NAT 伪装，所有从 User 发出的请求在进入局域网时，都会被伪装成 Client 的本地 IP。</p>
+</div>
+<div class="markdown-alert markdown-alert-important">
+<p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p>请务必在 Client 执行 <code>ip addr</code> 查看主网卡名称，如果是 <code>ens33</code> 或 <code>eno1</code>，请将配置中的 <code>eth0</code> 相应替换。</p>
+</div>
+<h4 id="h4-5-u914du7f6e-user-u7aef-u7528u6237u7535u8111">5. 配置 User 端 (用户电脑)</h4><p>在 User 的 WireGuard 客户端中新建配置。关键点在于 <code>AllowedIPs</code> 的设置。</p>
+<pre><code class="language-ini"><span class="hljs-section">[Interface]</span>
+<span class="hljs-attr">PrivateKey</span> = &lt;User的私钥&gt;
+<span class="hljs-attr">Address</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.2</span>/<span class="hljs-number">24</span>
+<span class="hljs-attr">DNS</span> = <span class="hljs-number">114.114</span>.<span class="hljs-number">114.114</span>
+
+<span class="hljs-section">[Peer]</span>
+<span class="hljs-attr">PublicKey</span> = &lt;Client的公钥&gt;
+<span class="hljs-comment"># 重点：这里不仅要写 WG 网段，还要包含你想访问的局域网网段</span>
+<span class="hljs-comment"># 假设校园网网段是 172.16.0.0/12</span>
+<span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">24</span>, <span class="hljs-number">172.16</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">12</span>
+<span class="hljs-comment"># 填写 frp 服务器的公网 IP 和映射后的 UDP 端口</span>
+<span class="hljs-attr">Endpoint</span> = &lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;
+<span class="hljs-comment"># 保持连接，防止因长时间无流量导致穿透失效</span>
+<span class="hljs-attr">PersistentKeepalive</span> = <span class="hljs-number">25</span>
+</code></pre>
+<div class="markdown-alert markdown-alert-note">
+<p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>在 User 端配置中，<code>AllowedIPs</code> 决定了哪些流量会走 WireGuard 隧道。如果你希望访问校园网，<strong>必须</strong>把校园网的网段（如 <code>172.16.0.0/12</code> 或 <code>10.0.0.0/8</code>）加进去。</p>
+</div>
+<h4 id="h4-u6d4bu8bd5">测试</h4><ul>
+<li>配置完成后，在 Client 执行 <code>sudo wg-quick up wg0</code> 启动服务。</li>
+<li>在 User 端点击“连接”，尝试 <code>ping 10.0.0.1</code>，如果通了，再尝试 ping 校园网内的一台私有 IP 设备。</li>
+</ul>
 <h3 id="h3-u914du7f6eu5404u4e2au670du52a1u7684u81eau542fu52a8">配置各个服务的自启动</h3><p>我们需要配置frps, frpc, WireGuard三个服务的自动启动，让他们在开机或意外退出后可以自动重新启动。</p>
 <p>下面以frpc为例说明如何配置，其它两个软件也类似。</p>
 <p>在 Linux 系统里，<a href="https://en.wikipedia.org/wiki/Systemd"><code>systemd</code></a> 就像是一个大管家，我们可以写一张“任务清单”交给它，让它负责 <code>frpc</code> 的日常维护。</p>
@@ -290,7 +350,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <h4 id="h4-4-u68c0u67e5u5b83u6709u6ca1u6709u5728u5077u61d2">4. 检查它有没有在偷懒</h4><p>执行下面的命令查看状态：</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> systemctl status frpc
 </code></pre>
-<p>如果你看到一片绿色的 <strong><code>active (running)</code></strong>，那就说明我们的 <code>frpc</code> 已经成功穿透校园网，开始为你工作。</p>
+<p>如果你看到一片绿色的 <span style="color:#00FF00;"><code>active (running)</code></span>，那就说明我们的 <code>frpc</code> 已经成功穿透校园网，开始为你工作。</p>
 <h2 id="h2-u9700u8981u6ce8u610fu7684u4e8bu9879">需要注意的事项</h2><h3 id="h3-ups-u7684u7535u6c60u5bb9u91cf">UPS 的电池容量</h3><p>树莓派低功耗待机不需要20W的功耗，不一定需要这么大电池容量，但具体功耗我也没测试过。</p>
 <h3 id="h3-u767bu9646u6821u56edu7f51">登陆校园网</h3><p>如果Client无法连接校园网，那这套方案是完全不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的<a href="https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetwork.py">这个仓库</a>里就有这样一个脚本，可以用于登陆宿舍区校园网，但记得配置一个定时连接的服务。</p>
 <section class="footnotes" data-footnotes>
@@ -347,12 +407,14 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <li><a href="#h4-1-u7f16u5199u914du7f6eu6587u4ef6">1. 编写配置文件</a></li>
 <li><a href="#h4-2-u542fu52a8u5ba2u6237u7aef">2. 启动客户端</a></li>
 </ul>
-<li><a href="#h3-u5b89u88c5u5e76u914du7f6ewireguard">安装并配置WireGuard</a></li>
+<li><a href="#h3-u5b89u88c5u5e76u914du7f6e-wireguard-u5b9eu73b0u5c40u57dfu7f51u5168u8bbfu95ee">安装并配置 WireGuard：实现局域网全访问</a></li>
 <ul>
-<li><a href="#h4-1-u5728clientu4e0au5b89u88c5-wireguard">1. 在client上安装 WireGuard</a></li>
-<li><a href="#h4-2-u751fu6210u5bc6u94a5u5bf9">2. 生成密钥对</a></li>
-<li><a href="#h4-3-u4feeu6539u914du7f6eu6587u4ef6">3. 修改配置文件</a></li>
-<li><a href="#h4-4-u5728u7528u6237u7535u8111useru4e0au4e5fu5b89u88c5-wireguard">4. 在用户电脑user上也安装 WireGuard</a></li>
+<li><a href="#h4-1-u5b89u88c5-wireguard-client-u7aef">1. 安装 WireGuard (Client 端)</a></li>
+<li><a href="#h4-2-u5f00u542fu5185u6838u8f6cu53d1">2. 开启内核转发</a></li>
+<li><a href="#h4-3-u751fu6210u5bc6u94a5u5bf9">3. 生成密钥对</a></li>
+<li><a href="#h4-4-u914du7f6e-client-u7aef-u5185u7f51u670du52a1u5668">4. 配置 Client 端 (内网服务器)</a></li>
+<li><a href="#h4-5-u914du7f6e-user-u7aef-u7528u6237u7535u8111">5. 配置 User 端 (用户电脑)</a></li>
+<li><a href="#h4-u6d4bu8bd5">测试</a></li>
 </ul>
 <li><a href="#h3-u914du7f6eu5404u4e2au670du52a1u7684u81eau542fu52a8">配置各个服务的自启动</a></li>
 <ul>
