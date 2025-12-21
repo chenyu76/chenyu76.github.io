@@ -54,26 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
-
-  // 夜间模式适配，还没做好
-  let nightModeControl = () => {
-    if (typeof isNight !== 'undefined' && isNight) {
-      let div = document.getElementById("top-buttons-wrapper");
-      if (div) {
-        let children = div.querySelectorAll("*");
-        children.forEach((element) => {
-          let img = element.querySelector("img");
-          if (img)
-            img.style.filter = "invert(1)";
-        });
-      }
-      let hdiv = document.getElementById("heading");
-      if (hdiv)
-        hdiv.style.color = "white";
-    }
-  };
-  nightModeControl();
-  setInterval(nightModeControl, 1001);
 });
 
 // 滚动监听：

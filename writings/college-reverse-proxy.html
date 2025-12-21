@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>宝宝也能上手的校园网穿透教程</title>
+
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+
+    <link rel="stylesheet" href="/styles-code.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous">
+    
+  </head>
+
+  <body>
+    <iframe
+      id="iframe-background"
+      src="/img/pixelart/index.html"
+      title="background"
+    ></iframe>
+
+    <div id="spacer"></div>
+
+    <div id="anime-spacer" class="shrinked"></div>
+
+    <div id="content-wrapper-bg">
+      <div id="main-grid-container">
+        <div id="left-sidebar" class="sidebar">
+          <div class="sidebar-card">
+            <div class="vertical-buttons">
+              <a href="/toc.html" title="文档索引"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon"
+              /></a>
+              <a href="/index.html" title="返回主页"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon"
+              /></a>
+              <a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon"
+              /></a>
+              <a href="/About.html" title="关于"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+              <button
+                onclick="scrollToTop()"
+                title="滚动到顶部"
+                class="scroll-top-btn"
+              >
+                <img
+                  src="/img/icon/arrow-upward.svg"
+                  alt="Return Top"
+                  class="icon"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div id="title-container">
+            <div id="heading"><h3>writings</h3><h1>宝宝也能上手的校园网穿透教程</h1></div>
+            <div id="top-buttons-wrapper" class="top-buttons">
+              <a href="/toc.html" title="文档索引" class="fade-in"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
+              ><a href="/index.html" title="返回主页" class="fade-in"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon" /></a
+              ><a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                class="fade-in"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon" /></a
+              ><a href="/About.html" title="关于" class="fade-in"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+            </div>
+          </div>
+
+          <div id="content-wrapper">
+            <div id="content"><blockquote>
+<p>给ywk宝宝写的教程</p>
+</blockquote>
+<h2 id="h2-u6211u4eecu8981u505au4ec0u4e48">我们要做什么</h2><p>我们将在校园网内计算机上使用<a href="https://github.com/fatedier/frp">frp</a>配置<a href="https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86">反向代理</a>并安装<a href="https://www.wireguard.com/">WireGuard<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow></mrow><mtext>®</mtext></msup></mrow><annotation encoding="application/x-tex">^{\text{®}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9852em;"></span><span class="mord"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9852em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord accent mtight"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8889em;"><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span class="mord mtight"><span class="mord">R</span></span></span><span style="top:-2.8944em;"><span class="pstrut" style="height:2.7em;"></span><span class="accent-body accent-full" style="left:0em;top:.2em;"><span class="mord mtight">◯</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></a>实现访问校内的网络资源。</p>
+<h3 id="h3-u6211u4eecu9700u8981u4ec0u4e48">我们需要什么</h3><ul>
+<li>一台在校园网内环境运行，并可以连接公网的计算机，比如<a href="https://www.raspberrypi.com/">树莓派</a>，本文会将其称为client。</li>
+<li>可选：一台在公网上运行的服务器，本文会将其称为server。<ul>
+<li>如果没有，可以使用例如<a href="https://www.natfrp.com/">SAKURA FRP</a><sup><a id="footnote-ref-1" href="#footnote-1" data-footnote-ref aria-describedby="footnote-label">1</a></sup>的网络服务商替代。</li>
+</ul>
+</li>
+<li>可选：一个用于给client供电的<a href="https://zh.wikipedia.org/zh-hans/%E4%B8%8D%E9%97%B4%E6%96%AD%E7%94%B5%E6%BA%90">UPS</a>。<ul>
+<li>如果没有，只是会在学校断电时用不了服务。</li>
+</ul>
+</li>
+</ul>
+<h3 id="h3-u8fd9u4e9bu540du8bcdu662fu4ec0u4e48">这些名词是什么</h3><h4 id="h4-u6811u8393u6d3e">树莓派</h4><p>简单来说，它就是一台只有信用卡大小的迷你电脑。它的功耗不高，适合 24 小时守在宿舍里，帮我们转发网络信号。</p>
+<h4 id="h4-ups">UPS</h4><p>由于我们的宿舍区24:00至次日6:00断电，断电时我们的服务自然无法继续，
+如果需要在期间保持client持续运行，我们就需要给它加个电池让它可以一直跑，这就是本场景中UPS的主要作用。</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>220V AC</mtext></mstyle></menclose><mo><mover><mo><mo>⟶</mo></mo><mtext>AC</mtext></mover></mo><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>UPS</mtext></mstyle></menclose><mo><mover><mo><mo>⟶</mo></mo><mtext>DC</mtext></mover></mo><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>Client</mtext></mstyle></menclose></mrow><annotation encoding="application/x-tex">\fbox{220V AC}
+\stackrel{\text{AC}}{\longrightarrow}
+\fbox{UPS}
+\stackrel{\text{DC}}{\longrightarrow}
+\fbox{Client}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.6293em;vertical-align:-0.34em;"></span><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0233em;"><span style="top:-3.3633em;"><span class="pstrut" style="height:3.3633em;"></span><span class="boxpad"><span class="mord"><span class="mord">220V AC</span></span></span></span><span style="top:-3.0233em;"><span class="pstrut" style="height:3.3633em;"></span><span class="stretchy fbox" style="height:1.3633em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2893em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">⟶</span></span></span><span style="top:-3.711em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">AC</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.011em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.6293em;vertical-align:-0.34em;"></span><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0233em;"><span style="top:-3.3633em;"><span class="pstrut" style="height:3.3633em;"></span><span class="boxpad"><span class="mord"><span class="mord">UPS</span></span></span></span><span style="top:-3.0233em;"><span class="pstrut" style="height:3.3633em;"></span><span class="stretchy fbox" style="height:1.3633em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2893em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">⟶</span></span></span><span style="top:-3.711em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">DC</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.011em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.3744em;vertical-align:-0.34em;"></span><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0344em;"><span style="top:-3.3744em;"><span class="pstrut" style="height:3.3744em;"></span><span class="boxpad"><span class="mord"><span class="mord">Client</span></span></span></span><span style="top:-3.0344em;"><span class="pstrut" style="height:3.3744em;"></span><span class="stretchy fbox" style="height:1.3744em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span></span></span></span></span>
+<p>内置电池的UPS可以直接给树莓派供电，在宿舍区断电时自动切换到电池供电，保证设备不掉线。
+注意宿舍区每天断电六小时，如果树莓派的功耗按 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>20</mn><mtext>W</mtext><mo stretchy="false">(</mo><mn>5</mn><mtext>V </mtext><mn>4</mn><mtext>A</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">20\text{W}(5\text{V}\ 4\text{A})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">20</span><span class="mord text"><span class="mord">W</span></span><span class="mopen">(</span><span class="mord">5</span><span class="mord text"><span class="mord">V</span></span><span class="mspace"> </span><span class="mord">4</span><span class="mord text"><span class="mord">A</span></span><span class="mclose">)</span></span></span></span> 计算，我们至少需要</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mrow><mn>20</mn><mtext>W</mtext><mo>×</mo><mn>6</mn><mtext>h</mtext></mrow><mrow><mn>3.7</mn><mtext>V</mtext></mrow></mfrac><mo>×</mo><mn>1000</mn><mtext>mA</mtext><mi mathvariant="normal">/</mi><mtext>A</mtext><mo>≈</mo><mn>32432</mn><mtext>mAh</mtext></mrow><annotation encoding="application/x-tex">\frac{20 \text{W} \times 6 \text{h} }{3.7\text{V}} \times 1000\text{mA}/\text{A}
+\approx 32432\text{mAh}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.0574em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3.7</span><span class="mord text"><span class="mord">V</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">20</span><span class="mord text"><span class="mord">W</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">6</span><span class="mord text"><span class="mord">h</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1000</span><span class="mord text"><span class="mord">mA</span></span><span class="mord">/</span><span class="mord text"><span class="mord">A</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">32432</span><span class="mord text"><span class="mord">mAh</span></span></span></span></span></span>
+<p>的锂电池容量（以 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3.7</mn><mtext>V</mtext></mrow><annotation encoding="application/x-tex">3.7\text V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">3.7</span><span class="mord text"><span class="mord">V</span></span></span></span></span> 计算）。</p>
+<h4 id="h4-u53cdu5411u4ee3u7406">反向代理</h4><p><a href="https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86">维基百科</a>上是这样说的：</p>
+<blockquote>
+<p>反向代理（Reverse proxy）在电脑网络中是代理服务器的一种。服务器根据客户端的请求，从其关系的一组或多组后端服务器（如Web服务器）上获取资源，然后再将这些资源返回给客户端，客户端只会得知反向代理的IP地址，而不知道在代理服务器后面的服务器集群的存在。</p>
+</blockquote>
+<p>在我们的场景里，简单来说，现在你（user）想访问校内的网络资源，但是校内的网络资源不直接对外开放，所以我们可以借用client，所有校内的网络资源都通过client访问，并将获取的信息都转发给你。当然，由于很多时候user和client之间并没有直接的网络连接，所以需要server作为中转，client先将内容发送至server，server再将内容传回user。</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mstyle mathcolor="#cc0000"><mtext>\overbracket</mtext></mstyle><msup><mrow><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>校内服务器</mtext></mstyle></menclose><mo>⟺</mo><mstyle mathcolor="#cc0000"><mtext>\underbracket</mtext></mstyle><msub><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>Client</mtext></mstyle></menclose><mtext>可访问公网</mtext></msub></mrow><mtext>校园内部网</mtext></msup><mo>⟺</mo><mstyle mathcolor="#cc0000"><mtext>\underbracket</mtext></mstyle><msub><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>Server</mtext></mstyle></menclose><mtext>位于公网</mtext></msub><mo>⟺</mo><mstyle mathcolor="#cc0000"><mtext>\underbracket</mtext></mstyle><msub><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>User</mtext></mstyle></menclose><mtext>可访问公网</mtext></msub></mrow><annotation encoding="application/x-tex">\overbracket{
+\fbox{校内服务器}
+\Longleftrightarrow
+\underbracket{
+\fbox{Client}
+}_{可访问公网}
+}^{\text{校园内部网}}
+\Longleftrightarrow
+\underbracket{
+\fbox{Server}
+}_{\text{位于公网}}
+\Longleftrightarrow
+\underbracket{
+\fbox{User}
+}_{\text{可访问公网}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.6554em;vertical-align:-0.3897em;"></span><span class="mord text" style="color:#cc0000;"><span class="mord" style="color:#cc0000;">\overbracket</span></span><span class="mord"><span class="mord"><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0233em;"><span style="top:-3.3633em;"><span class="pstrut" style="height:3.3633em;"></span><span class="boxpad"><span class="mord"><span class="mord cjk_fallback">校内服务器</span></span></span></span><span style="top:-3.0233em;"><span class="pstrut" style="height:3.3633em;"></span><span class="stretchy fbox" style="height:1.3633em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⟺</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord text" style="color:#cc0000;"><span class="mord" style="color:#cc0000;">\underbracket</span></span><span class="mord"><span class="mord"><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0344em;"><span style="top:-3.3744em;"><span class="pstrut" style="height:3.3744em;"></span><span class="boxpad"><span class="mord"><span class="mord">Client</span></span></span></span><span style="top:-3.0344em;"><span class="pstrut" style="height:3.3744em;"></span><span class="stretchy fbox" style="height:1.3744em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.0886em;"><span style="top:-2.3103em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">可访问公网</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3897em;"><span></span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.2657em;"><span style="top:-3.4873em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord cjk_fallback mtight">校园内部网</span></span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⟺</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.413em;vertical-align:-0.3897em;"></span><span class="mord text" style="color:#cc0000;"><span class="mord" style="color:#cc0000;">\underbracket</span></span><span class="mord"><span class="mord"><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0233em;"><span style="top:-3.3633em;"><span class="pstrut" style="height:3.3633em;"></span><span class="boxpad"><span class="mord"><span class="mord">Server</span></span></span></span><span style="top:-3.0233em;"><span class="pstrut" style="height:3.3633em;"></span><span class="stretchy fbox" style="height:1.3633em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.0886em;"><span style="top:-2.3103em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord cjk_fallback mtight">位于公网</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3897em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⟺</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.413em;vertical-align:-0.3897em;"></span><span class="mord text" style="color:#cc0000;"><span class="mord" style="color:#cc0000;">\underbracket</span></span><span class="mord"><span class="mord"><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0233em;"><span style="top:-3.3633em;"><span class="pstrut" style="height:3.3633em;"></span><span class="boxpad"><span class="mord"><span class="mord">User</span></span></span></span><span style="top:-3.0233em;"><span class="pstrut" style="height:3.3633em;"></span><span class="stretchy fbox" style="height:1.3633em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.0886em;"><span style="top:-2.3103em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord cjk_fallback mtight">可访问公网</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3897em;"><span></span></span></span></span></span></span></span></span></span></span>
+<h4 id="h4-frp">frp</h4><p><a href="https://github.com/fatedier/frp">frp的GitHub仓库</a></p>
+<p>在仓库中，<a href="https://github.com/fatedier/">fatedier</a>是这样描述frp的：</p>
+<blockquote>
+<p>frp 是一个专注于内网穿透的高性能的反向代理应用，支持 TCP、UDP、HTTP、HTTPS 等多种协议，且支持 P2P 通信。可以将内网服务以安全、便捷的方式通过具有公网 IP 节点的中转暴露到公网。</p>
+</blockquote>
+<p>总而言之，他就是我们实现反向代理的软件。</p>
+<p>frp分为两部分：</p>
+<ol>
+<li><code>frps</code>（frp <strong>S</strong>erver，服务端）运行在公网服务器上，</li>
+<li><code>frpc</code>（frp <strong>C</strong>lient，客户端）运行在校园网内你的计算机（树莓派）上。</li>
+</ol>
+<p>两者配合，就能打通一条从外网到内网的隧道。</p>
+<h4 id="h4-wireguard">WireGuard</h4><p>WireGuard 是一个非常简单、快速、现代化的虚拟专用网协议。在我们的场景中，我们可以用 WireGuard 把校园网内的设备和树莓派连接在同一个虚拟局域网里，这样你就可以像在宿舍里一样直接访问校园网资源了。</p>
+<h2 id="h2-u6211u4eecu8981u600eu4e48u505a">我们要怎么做</h2><p>需要安装并配置的软件一览：</p>
+<table>
+<thead>
+<tr>
+<th>设备</th>
+<th>软件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>frp客户端， WireGuard（作为服务端）</td>
+</tr>
+<tr>
+<td>Server</td>
+<td>frp服务端</td>
+</tr>
+<tr>
+<td>User</td>
+<td>WireGuard（作为客户端）</td>
+</tr>
+</tbody></table>
+<h3 id="h3-u914du7f6eserveru4e0au7684frps">配置server上的frps</h3><div class="markdown-alert markdown-alert-note">
+<p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>如果没有，使用例如<a href="https://www.natfrp.com/">SAKURA FRP</a>的网络服务商替代时，可以直接跳过这一步，并直接参照<a href="https://doc.natfrp.com/app/http.html">它们的教程</a>配置。</p>
+</div>
+<p>我们先从公网服务器（server）开始，因为它要负责在外面“接应”校内的 client。</p>
+<h4 id="h4-1-u4e0bu8f7d-frp">1. 下载 frp</h4><p>在server上下载frps对应架构的压缩包并解压。</p>
+<h4 id="h4-2-u7f16u5199u914du7f6eu6587u4ef6">2. 编写配置文件</h4><p>新建一个名为 <code>frps.toml</code> 的文件，写入以下内容：</p>
+<pre><code class="language-toml"><span class="hljs-attr">bindPort</span> = <span class="hljs-number">7000</span>           <span class="hljs-comment"># frp 服务端监听的端口</span>
+<span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;你的加密口令&quot;</span>  <span class="hljs-comment"># 只有拿着正确密码的 client 才能连接</span>
+</code></pre>
+<h4 id="h4-3-u542fu52a8u670du52a1u7aef">3. 启动服务端</h4><pre><code class="language-bash">./frps -c ./frps.toml
+</code></pre>
+<h3 id="h3-u914du7f6eclientu4e0au7684frpc">配置client上的frpc</h3><p>现在回到宿舍里的client，我们要告诉它如何找到外面的服务器。</p>
+<div class="markdown-alert markdown-alert-note">
+<p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>如果使用<a href="https://www.natfrp.com/">SAKURA FRP</a>，他们fork并修改了frpc，使其支持通过命令行的特别参数直接启动而不用编写配置文件，你可以在<a href="https://www.natfrp.com/tunnel/download">这里</a>下载并参照他们的教程运行。</p>
+</div>
+<h4 id="h4-1-u7f16u5199u914du7f6eu6587u4ef6">1. 编写配置文件</h4><p>新建 <code>frpc.toml</code>，这是实现穿透的关键：</p>
+<pre><code class="language-toml"><span class="hljs-attr">serverAddr</span> = <span class="hljs-string">&quot;你的服务器公网IP&quot;</span>
+<span class="hljs-attr">serverPort</span> = <span class="hljs-number">7000</span>
+<span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;你的加密口令&quot;</span>
+
+<span class="hljs-section">[[proxies]]</span>
+<span class="hljs-attr">name</span> = <span class="hljs-string">&quot;wireguard-tunnel&quot;</span>
+<span class="hljs-attr">type</span> = <span class="hljs-string">&quot;udp&quot;</span>              <span class="hljs-comment"># WireGuard 使用的是 UDP 协议</span>
+<span class="hljs-attr">localIP</span> = <span class="hljs-string">&quot;127.0.0.1&quot;</span>
+<span class="hljs-attr">localPort</span> = <span class="hljs-number">51820</span>         <span class="hljs-comment"># 树莓派上 WireGuard 的默认端口</span>
+<span class="hljs-attr">remotePort</span> = <span class="hljs-number">51820</span>        <span class="hljs-comment"># 映射到服务器上的端口</span>
+</code></pre>
+<p>这样配置后，外网用户可以通过 <code>server_ip:7000</code> 连接到 client 的服务。</p>
+<h4 id="h4-2-u542fu52a8u5ba2u6237u7aef">2. 启动客户端</h4><p>使用以下命令</p>
+<pre><code class="language-bash">./frpc -c ./frpc.toml
+</code></pre>
+<h3 id="h3-u5b89u88c5u5e76u914du7f6ewireguard">安装并配置WireGuard</h3><p>你会注意到上面的frp配置都只使用了一个端口，我们怎么通过一个端口访问校园网内的所有服务呢？这就需要使用WireGuard创建虚拟专用网。</p>
+<p>详细内容请直接参照<a href="https://www.wireguard.com/quickstart/">官方说明</a>，如有出入，请以官方说明为准。</p>
+<h4 id="h4-1-u5728clientu4e0au5b89u88c5-wireguard">1. 在client上安装 WireGuard</h4><pre><code class="language-bash"><span class="hljs-built_in">sudo</span> apt update
+<span class="hljs-built_in">sudo</span> apt install wireguard
+</code></pre>
+<h4 id="h4-2-u751fu6210u5bc6u94a5u5bf9">2. 生成密钥对</h4><pre><code class="language-bash">wg genkey | <span class="hljs-built_in">tee</span> privatekey | wg pubkey &gt; publickey
+</code></pre>
+<h4 id="h4-3-u4feeu6539u914du7f6eu6587u4ef6">3. 修改配置文件</h4><p>位于 <code>/etc/wireguard/wg0.conf</code></p>
+<p>示例：</p>
+<pre><code class="language-ini"><span class="hljs-section">[Interface]</span>
+<span class="hljs-attr">Address</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.1</span>/<span class="hljs-number">24</span>
+<span class="hljs-attr">PrivateKey</span> = &lt;树莓派的私钥&gt;
+<span class="hljs-attr">ListenPort</span> = <span class="hljs-number">51820</span>
+
+<span class="hljs-section">[Peer]</span>
+<span class="hljs-attr">PublicKey</span> = &lt;你电脑的公钥&gt;
+<span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.2</span>/<span class="hljs-number">32</span>
+</code></pre>
+<h4 id="h4-4-u5728u7528u6237u7535u8111useru4e0au4e5fu5b89u88c5-wireguard">4. 在用户电脑user上也安装 WireGuard</h4><p>在<a href="https://www.wireguard.com/install/">下载页</a>下载对应客户端
+并配置相应的对端信息。</p>
+<p>配置好并启动后，user和client和server就在同一个虚拟局域网里啦。</p>
+<h3 id="h3-u914du7f6eu5404u4e2au670du52a1u7684u81eau542fu52a8">配置各个服务的自启动</h3><p>我们需要配置frps, frpc, WireGuard三个服务的自动启动，让他们在开机或意外退出后可以自动重新启动。</p>
+<p>下面以frpc为例说明如何配置，其它两个软件也类似。</p>
+<p>在 Linux 系统里，<a href="https://en.wikipedia.org/wiki/Systemd"><code>systemd</code></a> 就像是一个大管家，我们可以写一张“任务清单”交给它，让它负责 <code>frpc</code> 的日常维护。</p>
+<h4 id="h4-1-u521bu5efau4efbu52a1u6e05u5355-service-u6587u4ef6">1. 创建任务清单（Service 文件）</h4><p>我们需要在系统中新建一个服务文件。请在终端输入：</p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> nano /etc/systemd/system/frpc.service
+</code></pre>
+<p>以创建<code>/etc/systemd/system/frpc.service</code>文件并编辑。</p>
+<h4 id="h4-2-u544au8bc9systemdu8be5u505au4ec0u4e48">2. 告诉systemd该做什么</h4><p>在打开的空白编辑器里，粘贴下面这段内容：</p>
+<pre><code class="language-ini"><span class="hljs-section">[Unit]</span>
+<span class="hljs-attr">Description</span>=frp client for campus network  <span class="hljs-comment"># 任务描述</span>
+<span class="hljs-attr">After</span>=network.target                     <span class="hljs-comment"># 等网络连接好了再启动</span>
+
+<span class="hljs-section">[Service]</span>
+<span class="hljs-attr">Type</span>=simple
+<span class="hljs-comment"># 注意：下面这两行要把路径改成你存放 frpc 和 frpc.toml 的真实路径！</span>
+<span class="hljs-attr">ExecStart</span>=/path/to/your/frpc -c /path/to/your/frpc.toml
+<span class="hljs-attr">Restart</span>=<span class="hljs-literal">on</span>-failure                       <span class="hljs-comment"># 如果程序崩了，管家会自动把它扶起来</span>
+<span class="hljs-attr">RestartSec</span>=<span class="hljs-number">5</span>s                            <span class="hljs-comment"># 崩了之后等 5 秒再试</span>
+
+<span class="hljs-section">[Install]</span>
+<span class="hljs-attr">WantedBy</span>=multi-user.target               <span class="hljs-comment"># 设定为多用户模式下启动</span>
+</code></pre>
+<div class="markdown-alert markdown-alert-important">
+<p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p>要把 <code>ExecStart</code> 里的 <code>/path/to/your/</code> 换成你实际的文件夹路径（比如 <code>/home/pi/frp/</code>）！</p>
+</div>
+<h4 id="h4-3-u8ba9u6e05u5355u6b63u5f0fu751fu6548">3. 让清单正式生效</h4><p>写好后，按 <code>Ctrl + O</code> 保存，再按 <code>Ctrl + X</code> 退出。然后执行下面这几条命令：</p>
+<ol>
+<li><strong>刷新清单</strong>：
+<code>sudo systemctl daemon-reload</code></li>
+<li><strong>设置开机自动启动</strong>：
+<code>sudo systemctl enable frpc</code></li>
+<li><strong>现在立刻帮我启动</strong>：
+<code>sudo systemctl start frpc</code></li>
+</ol>
+<h4 id="h4-4-u68c0u67e5u5b83u6709u6ca1u6709u5728u5077u61d2">4. 检查它有没有在偷懒</h4><p>执行下面的命令查看状态：</p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> systemctl status frpc
+</code></pre>
+<p>如果你看到一片绿色的 <strong><code>active (running)</code></strong>，那就说明我们的 <code>frpc</code> 已经成功穿透校园网，开始为你工作。</p>
+<section class="footnotes" data-footnotes>
+<h2 id="footnote-label" class="sr-only">Footnotes</h2>
+<ol>
+<li id="footnote-1">
+<p>我没有收他们的广告费。但是他们家甚至是免费的，我都不知道他们怎么赚钱 <a href="#footnote-ref-1" data-footnote-backref aria-label="Back to reference 1">↩</a></p>
+</li>
+</ol>
+</section>
+</div>
+            <div id="footnote">2025/12/21</div>
+          </div>
+        </div>
+
+        <div class="bottom-button mobile-only">
+          <button onclick="scrollToTop()" title="滚动到顶部">
+            <img
+              src="/img/icon/arrow-upward.svg"
+              alt="Return Top"
+              class="icon"
+            />
+          </button>
+        </div>
+
+        <div id="right-sidebar" class="sidebar">
+          <div id="toc-card" class="sidebar-card">
+            <div class="toc-header">目录</div>
+            <div id="toc-content"><div class="toc">
+<ul>
+<ul>
+<li><a href="#h2-u6211u4eecu8981u505au4ec0u4e48">我们要做什么</a></li>
+<ul>
+<li><a href="#h3-u6211u4eecu9700u8981u4ec0u4e48">我们需要什么</a></li>
+<li><a href="#h3-u8fd9u4e9bu540du8bcdu662fu4ec0u4e48">这些名词是什么</a></li>
+<ul>
+<li><a href="#h4-u6811u8393u6d3e">树莓派</a></li>
+<li><a href="#h4-ups">UPS</a></li>
+<li><a href="#h4-u53cdu5411u4ee3u7406">反向代理</a></li>
+<li><a href="#h4-frp">frp</a></li>
+<li><a href="#h4-wireguard">WireGuard</a></li>
+</ul>
+</ul>
+<li><a href="#h2-u6211u4eecu8981u600eu4e48u505a">我们要怎么做</a></li>
+<ul>
+<li><a href="#h3-u914du7f6eserveru4e0au7684frps">配置server上的frps</a></li>
+<ul>
+<li><a href="#h4-1-u4e0bu8f7d-frp">1. 下载 frp</a></li>
+<li><a href="#h4-2-u7f16u5199u914du7f6eu6587u4ef6">2. 编写配置文件</a></li>
+<li><a href="#h4-3-u542fu52a8u670du52a1u7aef">3. 启动服务端</a></li>
+</ul>
+<li><a href="#h3-u914du7f6eclientu4e0au7684frpc">配置client上的frpc</a></li>
+<ul>
+<li><a href="#h4-1-u7f16u5199u914du7f6eu6587u4ef6">1. 编写配置文件</a></li>
+<li><a href="#h4-2-u542fu52a8u5ba2u6237u7aef">2. 启动客户端</a></li>
+</ul>
+<li><a href="#h3-u5b89u88c5u5e76u914du7f6ewireguard">安装并配置WireGuard</a></li>
+<ul>
+<li><a href="#h4-1-u5728clientu4e0au5b89u88c5-wireguard">1. 在client上安装 WireGuard</a></li>
+<li><a href="#h4-2-u751fu6210u5bc6u94a5u5bf9">2. 生成密钥对</a></li>
+<li><a href="#h4-3-u4feeu6539u914du7f6eu6587u4ef6">3. 修改配置文件</a></li>
+<li><a href="#h4-4-u5728u7528u6237u7535u8111useru4e0au4e5fu5b89u88c5-wireguard">4. 在用户电脑user上也安装 WireGuard</a></li>
+</ul>
+<li><a href="#h3-u914du7f6eu5404u4e2au670du52a1u7684u81eau542fu52a8">配置各个服务的自启动</a></li>
+<ul>
+<li><a href="#h4-1-u521bu5efau4efbu52a1u6e05u5355-service-u6587u4ef6">1. 创建任务清单（Service 文件）</a></li>
+<li><a href="#h4-2-u544au8bc9systemdu8be5u505au4ec0u4e48">2. 告诉systemd该做什么</a></li>
+<li><a href="#h4-3-u8ba9u6e05u5355u6b63u5f0fu751fu6548">3. 让清单正式生效</a></li>
+<li><a href="#h4-4-u68c0u67e5u5b83u6709u6ca1u6709u5728u5077u61d2">4. 检查它有没有在偷懒</a></li>
+</ul>
+</ul>
+</ul>
+</ul>
+</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/script.js"></script>
+
+    <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+      <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
+    </button>
+
+    <div id="toc-mobile-wrapper">
+      <div class="toc-header-mobile">
+        <span>目录</span>
+        <button onclick="toggleToc()" class="toc-close-btn">×</button>
+      </div>
+      <div id="toc-content-mobile"></div>
+    </div>
+
+    
+<script>
+document.querySelectorAll('pre').forEach(pre => {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = '📋';
+  
+  // 添加到DOM
+  pre.prepend(btn);
+
+  // 绑定点击事件
+  btn.addEventListener('click', async () => {
+    try {
+      const code = pre.querySelector('code').innerText;
+      await navigator.clipboard.writeText(code);
+      
+      btn.textContent = ' ✓ ';
+      setTimeout(() => btn.textContent = '📋', 1500);
+    } catch (err) {
+      btn.textContent = 'FAIL！';
+      btn.style.color = '#dc3545';
+    }
+  });
+});
+</script>
+
+  </body>
+</html>
