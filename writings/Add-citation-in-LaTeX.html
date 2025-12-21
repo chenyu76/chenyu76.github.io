@@ -102,18 +102,18 @@
 可以添加更多条目，
 只有在正文中使用\cite命令的条目
 才会出现在最后编译好的文档中
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>每个@开头是一个条目，条目内部填入作者、标题等信息；这个示例中第一个条目中book是文档类型， 此外还有article, inproceedings, misc等；<code>latexguide</code>是引用时使用的名称，可以在之后使用类似的格式添加更多内容。推荐直接在<a href="https://scholar.google.com/">Google Scholar</a>或其他文献网站上复制，不要手写；也可以让ai生成，但注意核对信息。</p>
 <p><img src="./assets/google_scholar.png" alt="Google Scholar 示例"></p>
 <h2 id="h2-u5f15u7528u53c2u8003u6587u732e">引用参考文献</h2><p>在 LaTeX 文件中，使用 <code>\cite{}</code> 命令引用参考文献。例如：</p>
 <pre><code class="language-latex">This is a reference to the LaTeX guide <span class="hljs-keyword">\cite</span>{latexguide}.
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>这里的<code>latexguide</code>是上面的例子中定义的名称。</p>
 <h2 id="h2-u63d2u5165u53c2u8003u6587u732eu5217u8868">插入参考文献列表</h2><p>在文档任意位置插入使用的参考文献列表。只有使用了<code>\cite{}</code>命令插入的文献才会出现。</p>
 <p>使用 <code>\bibliographystyle{}</code> 命令指定参考文献的格式，并使用 <code>\bibliography{}</code> 命令指定 <code>.bib</code> 文件的路径。在编译好的文档中，参考文献列表会出现在<code>\bibliography{}</code>命令调用处。</p>
 <pre><code class="language-latex"><span class="hljs-keyword">\bibliographystyle</span>{plain}  <span class="hljs-comment">% 参考文献的样式</span>
 <span class="hljs-keyword">\bibliography</span>{references.bib}  <span class="hljs-comment">% 引用.bib文件</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-tips">Tips</h3><ol>
 <li>如果在beamer中使用，可以添加 allowframebreaks 参数使文献列表自动换页</li>
 </ol>
@@ -121,15 +121,15 @@
 	<span class="hljs-keyword">\bibliographystyle</span>{plain}
 	<span class="hljs-keyword">\bibliography</span>{references}
 <span class="hljs-keyword">\end</span>{frame}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>文献列表编号（而不是图标）</p>
 <pre><code>\setbeamertemplate{bibliography item}{\insertbiblabel}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <ol start="2">
 <li>可以通过使用<code>hyperref</code>宏包使引用标签可点击</li>
 </ol>
 <pre><code class="language-latex"><span class="hljs-keyword">\usepackage</span>{hyperref}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-u5b8cu6574u793au4f8b">完整示例</h2><pre><code class="language-latex"><span class="hljs-keyword">\documentclass</span>{article}
 
 <span class="hljs-keyword">\begin</span>{document}
@@ -140,7 +140,7 @@ This is a reference to the LaTeX guide <span class="hljs-keyword">\cite</span>{l
 <span class="hljs-keyword">\bibliography</span>{references.bib}  <span class="hljs-comment">% 引用.bib文件</span>
 
 <span class="hljs-keyword">\end</span>{document}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>你可以在<a href="./Add-citation-in-LaTeX.zip">这里</a>下载这个示例。</p>
 <h2 id="h2-u7f16u8bd1u6d41u7a0b">编译流程</h2><p>在 LaTeX 中正确处理参考文献需要多次编译。如果你使用overleaf等在线平台，他们应该会自动帮你处理好编译流程，不用操心，否则：</p>
 <h3 id="h3-u5982u679cu6ca1u6709u7f16u8bd1u8fc7">如果没有编译过：</h3><p>(如果使用XeLaTeX)</p>
@@ -154,15 +154,15 @@ This is a reference to the LaTeX guide <span class="hljs-keyword">\cite</span>{l
 bibtex yourfile.aux
 xelatex yourfile.tex
 xelatex yourfile.tex
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-u5982u679cu7f16u8bd1u8fc7u4e86">如果编译过了</h3><p>只需要在参考文献有更新时运行</p>
 <pre><code class="language-bash">bibtex yourfile.aux
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>即可</p>
 <h2 id="h2-u53c2u8003u6587u732eu6837u5f0f">参考文献样式</h2><p> LaTeX 支持多种参考文献样式（如 <code>plain</code>, <code>unsrt</code>, <code>alpha</code>, <code>ieeetr</code> 等）：</p>
 <p>在完整示例中修改</p>
 <pre><code>\bibliographystyle{plain}  % 修改这里的plain
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>可以根据需要选择不同的样式。</p>
 </div>
             <div id="footnote">2025/02/20</div>
@@ -222,28 +222,17 @@ xelatex yourfile.tex
 
     
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 
   </body>

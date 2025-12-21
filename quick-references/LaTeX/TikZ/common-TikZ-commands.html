@@ -81,7 +81,7 @@
             <div id="content"><h2 id="h2-u96f6u7ef4u5f62u72b6">零维形状</h2><pre><code class="language-LaTeX"><span class="hljs-comment">% 绘制一个点，位置为 (2, 3)</span>
 <span class="hljs-keyword">\node</span> at (2, 3) [circle, fill=black, inner sep=1pt] {}; 
 <span class="hljs-keyword">\fill</span> (2, 3) circle (2pt);
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-u4e00u7ef4u5f62u72b6">一维形状</h2><pre><code class="language-LaTeX"><span class="hljs-comment">% 画一条从 (0,0) 到 (3,3) 的直线</span>
 <span class="hljs-keyword">\draw</span> (0, 0) -- (3, 3);
 <span class="hljs-comment">% 画一个从 (0,0) 到 (3,0) 的箭头</span>
@@ -90,7 +90,7 @@
 <span class="hljs-keyword">\draw</span>[&lt;-&gt;] (0, 0) -- (3, 0);
 <span class="hljs-comment">% 画一条贝塞尔曲线</span>
 <span class="hljs-keyword">\draw</span> (0, 0) .. controls (2, 2) and (4, 2) .. (6, 0);
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><svg
    version="1.1"
    id="svg1"
@@ -114,7 +114,7 @@
 <span class="hljs-keyword">\draw</span> (0, 0) arc[start angle=0, end angle=90, radius=2cm];
 <span class="hljs-comment">% 画一个红色的、弯曲的、带一个X的 ⇒ ，需要 \usetikzlibrary{arrows.meta}</span>
 <span class="hljs-keyword">\draw</span>[-Implies, double, double distance = 0.5ex, red, out=30] (2em,1em) to [pos=0.5] node {<span class="hljs-keyword">\color</span>{red} <span class="hljs-keyword">\huge</span> <span class="hljs-built_in">$</span><span class="hljs-keyword">\times</span><span class="hljs-built_in">$</span>} (12em, 0em); 
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><svg
    version="1.1"
    id="svg1"
@@ -161,13 +161,13 @@
 <span class="hljs-keyword">\node</span> at (0, 0) {Hello, TikZ!};
 <span class="hljs-comment">% 画一个填充为红色的圆</span>
 <span class="hljs-keyword">\draw</span>[fill=red] (0, 0) circle (2cm);
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-node-u5b9au4f4d">node 定位</h2><pre><code class="language-LaTeX"><span class="hljs-keyword">\node</span>[anchor=north] (A) at (0, 0) {Node A};  <span class="hljs-comment">% Node A 的顶部对齐 (0,0)</span>
 <span class="hljs-keyword">\node</span>[anchor=south] at (A.north) {Node B};   <span class="hljs-comment">% Node B 的顶部对齐 Node A 的顶部</span>
 <span class="hljs-keyword">\node</span>[below=1cm of A] {Node C};  <span class="hljs-comment">% Node C 放在 Node A 下方 1cm</span>
 <span class="hljs-keyword">\node</span> at (0, 0) {Node D};
 <span class="hljs-keyword">\node</span>[below left] at (0,0) {<span class="hljs-built_in">$</span>O<span class="hljs-built_in">$</span>};
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-1-anchor">1. `anchor`</h3><ul>
 <li><strong>作用</strong>：控制节点的对齐方式，定义节点的<strong>固定部分</strong>。</li>
 <li><strong>常见选项</strong>：<code>north</code>、<code>south</code>、<code>east</code>、<code>west</code>、<code>center</code> 等。</li>
@@ -196,12 +196,12 @@
     ...
 <span class="hljs-keyword">\end</span>{tikzpicture}
 }
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-u5168u5c40u7ebfu6bb5u7c97u7ec6-u989cu8272">全局线段粗细、颜色</h2><pre><code class="language-LaTeX"><span class="hljs-keyword">\begin</span>{tikzpicture}[line width=1mm, draw=red]  
     <span class="hljs-comment">% 设置全局线条粗细为 1mm, 红色</span>
     ...
 <span class="hljs-keyword">\end</span>{tikzpicture}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 </div>
             <div id="footnote"></div>
           </div>
@@ -257,28 +257,17 @@
 
     
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 
   </body>

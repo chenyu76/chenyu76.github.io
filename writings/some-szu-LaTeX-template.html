@@ -9,8 +9,8 @@
     <link rel="icon" href="/favicon.png" type="image/png" />
 
     <link rel="stylesheet" href="/styles-code.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css" integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
-    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css" integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+        
   </head>
 
   <body>
@@ -123,7 +123,7 @@
 <h1 id="h1-u5404u4e2au6a21u677fu4f7fu7528u8bf4u660e">各个模板使用说明</h1><h2 id="h2-u5927u5b66u7269u7406u5b9eu9a8cu62a5u544a">大学物理实验报告</h2><p>本仓库模板和<a href="https://github.com/jinqKing/SZU-Physics-Experiment-Report-LaTeX-Module">jinqKing的这个仓库的</a>是同源的（但是他抢先一步上传到了GitHub），但根据我两需求不同所以有了两branch。图省事所以本说明有些内容直接从jinqKing那里复制修改来。</p>
 <p>文档包括<code>大物实验报告模板.tex</code>和<code>phyreport.cls</code></p>
 <h3 id="h3-u5efau8baeu6d41u7a0b">建议流程：</h3><p>文档结构：</p>
-<pre><code>.
+<pre class="ascii-table" lang="en"><code>.
 ├──── ReadMe.md
 ├──── phyreport.cls
 ├──── 空白
@@ -164,13 +164,13 @@
 <span class="hljs-keyword">\NewDocumentCommand</span><span class="hljs-keyword">\phyExpCover</span>{}{
    ...
 }
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>语句内，每行文字使用了一个或多个TikZ语句绘制，表格使用TikZ线条绘制。</p>
 <p>TikZ绘制文字语句介绍：</p>
 <pre><code class="language-latex"><span class="hljs-comment">%这是一行示例语句</span>
 <span class="hljs-keyword">\node</span>[right] at (1.8,-9.8) <span class="hljs-comment">% TiKZ语句以 ; 作为语句结束，换行不会中断</span>
 {<span class="hljs-keyword">\textbf</span>{学　　院：}<span class="hljs-keyword">\rule</span>[-5pt]{8.7cm}{1pt}}; <span class="hljs-comment">% &lt;-这个 ; 是必需的</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>在上面这行示例语句中， </p>
 <ul>
 <li><code>\node[] {}</code>：表示绘制一个节点，<code>{ }</code>内为节点内容，基本可以放任何东西</li>
@@ -180,12 +180,12 @@
 <pre><code>↑ y
 │
 └───→ x
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <ul>
 <li><code>\rule[-5pt]{8.7cm}{1pt}</code> 是一条下划线，<code>[-5pt]</code>是y方向上偏移长度5pt，<code>{8.7cm}</code>是线段长度，<code>{1pt}</code>是线段宽度。</li>
 </ul>
 <p>Tips: 你不用在意将线段细致长度，设置得过长不会有大问题，因为在封面语句定义中大概在位置*处有一个白色矩形，会将多余的线条遮挡住。</p>
-<pre><code>┌───────────────┐
+<pre class="ascii-table" lang="en"><code>┌───────────────┐
 │               │
 │     cover     │
 │           ┌───┤
@@ -202,14 +202,14 @@
 <pre><code class="language-latex"><span class="hljs-keyword">\newcommand</span>{<span class="hljs-keyword">\expName</span>}[1]{<span class="hljs-keyword">\newcommand</span>{<span class="hljs-keyword">\phyExpName</span>}{<span class="hljs-params">#1</span>}}
     ...
 <span class="hljs-keyword">\node</span>[above] at (8.5,-7.9) {<span class="hljs-keyword">\textbf</span>{<span class="hljs-keyword">\phyExpName</span>}};
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-u5176u5b83">其它</h3><ul>
 <li>插入一页预习报告：<ul>
 <li>文档类定义了<code>\includeFullPageGraphicsBeta</code>函数，可以调用它来插入（注意：插入的图片可能需要第二次编译后才能显示）</li>
 </ul>
 </li>
 <li>同一目录操作:<pre><code class="language-latex">  <span class="hljs-keyword">\documentclass</span>[a4paper]{../phyreport}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
   <code>../</code> 代表上一级目录，可以直接在<code>实验</code>文件夹中使用上一级<code>样版</code>中<code>phyreport.cls</code> 文件。如果不习惯,可以将 <code>phyreport.cls</code> 文件相应 .tex 同文件夹下删掉 <code>../</code>。</li>
 <li>默认载入包：尽量覆盖一般使用，但比如处理多图并排时不够，细节自行查看<code>\RequirePackage</code> 部分。</li>
 <li>本模板为学习交流使用，不保证完全符合实验报告要求。</li>
@@ -248,7 +248,7 @@
 <li>在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>LaTeX</mtext></mrow><annotation encoding="application/x-tex">\LaTeX</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8988em;vertical-align:-0.2155em;"></span><span class="mord text"><span class="mord textrm">L</span><span class="mspace" style="margin-right:-0.36em;"></span><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6833em;"><span style="top:-2.905em;"><span class="pstrut" style="height:2.7em;"></span><span class="mord"><span class="mord textrm mtight sizing reset-size6 size3">A</span></span></span></span></span></span><span class="mspace" style="margin-right:-0.15em;"></span><span class="mord text"><span class="mord textrm">T</span><span class="mspace" style="margin-right:-0.1667em;"></span><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4678em;"><span style="top:-2.7845em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord textrm">E</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2155em;"><span></span></span></span></span><span class="mspace" style="margin-right:-0.125em;"></span><span class="mord textrm">X</span></span></span></span></span></span>文档的导言区插入</li>
 </ol>
 <pre><code class="language-LaTeX"><span class="hljs-keyword">\geometry</span>{paperwidth=6.268in, paperheight=9.693in, margin=0.1in}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>将边距设为几乎为0，重新编译得到一个无边距的pdf文件。
 （注：a4纸的尺寸为8.268 x 11.693 inch）</p>
 <ol start="2">
@@ -338,28 +338,17 @@
 
     
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 
   </body>

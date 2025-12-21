@@ -79,7 +79,7 @@
 
           <div id="content-wrapper">
             <div id="content"><h2 id="h2-u590du6742u7684u7badu5934">复杂的箭头</h2><pre><code class="language-latex"><span class="hljs-keyword">\draw</span>[-Implies, double, double distance = 0.5ex, red, out=30] (2em,1em) to [pos=0.5] node {<span class="hljs-keyword">\color</span>{red} <span class="hljs-keyword">\huge</span> <span class="hljs-built_in">$</span><span class="hljs-keyword">\times</span><span class="hljs-built_in">$</span>} (12em, 0em); 
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><svg
    version="1.1"
    id="svg1"
@@ -136,7 +136,7 @@
 <span class="hljs-keyword">\end</span>{tikzpicture}
 
 <span class="hljs-keyword">\end</span>{document}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><svg
    version="1.1"
    id="svg1"
@@ -266,7 +266,7 @@
 <span class="hljs-keyword">\node</span> at (2cm,-9.4) {General Lebesgue<span class="hljs-keyword">\\</span>Dominated<span class="hljs-keyword">\\</span>Convergence<span class="hljs-keyword">\\</span>Theorem}; 
 <span class="hljs-keyword">\end</span>{tikzpicture}
 <span class="hljs-keyword">\end</span>{document}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><svg
    version="1.1"
    id="svg1"
@@ -471,7 +471,7 @@
     <span class="hljs-keyword">\node</span>[fill=white, inner sep=1pt] at (0.5,0.5) {<span class="hljs-built_in">$</span>d<span class="hljs-built_in">_</span>{12}<span class="hljs-built_in">$</span>};
 <span class="hljs-keyword">\end</span>{tikzpicture}
 <span class="hljs-keyword">\end</span>{document}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><svg
    version="1.1"
    id="svg1"
@@ -654,7 +654,7 @@
 		<span class="hljs-keyword">\draw</span>[blue] (1/2, -2) -- (1/2, 2) node[right] {<span class="hljs-built_in">$</span>m<span class="hljs-built_in">_</span>4<span class="hljs-built_in">$</span>};
 	<span class="hljs-keyword">\end</span>{scope}
 <span class="hljs-keyword">\end</span>{tikzpicture}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><svg
    version="1.1"
    id="svg1"
@@ -985,7 +985,7 @@
 		<span class="hljs-keyword">\end</span>{axis}
 	<span class="hljs-keyword">\end</span>{scope}
 <span class="hljs-keyword">\end</span>{tikzpicture}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><svg
    version="1.1"
    id="svg1"
@@ -1321,7 +1321,7 @@
 		<span class="hljs-keyword">\fill</span>[red]  (0,-1) circle (<span class="hljs-keyword">\radius</span>) node[right, red] {<span class="hljs-built_in">$</span>f<span class="hljs-built_in">_</span>{-1}(1)<span class="hljs-built_in">$</span>};
 	<span class="hljs-keyword">\end</span>{scope}
 <span class="hljs-keyword">\end</span>{tikzpicture}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><svg
    version="1.1"
    id="svg1"
@@ -1528,7 +1528,7 @@
     <span class="hljs-keyword">\end</span>{tikzpicture}
 <span class="hljs-keyword">\end</span>{center}
 <span class="hljs-keyword">\end</span>{document}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><svg
    width="199.85901pt"
    height="237.98511pt"
@@ -1829,7 +1829,7 @@
     <span class="hljs-keyword">\draw</span>[arr<span class="hljs-built_in">_</span>sty] (b) -- (d);
 <span class="hljs-keyword">\end</span>{tikzpicture}
 <span class="hljs-keyword">\end</span>{document}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><svg
    version="1.1"
    id="svg1"
@@ -1993,28 +1993,17 @@
 
     
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 
   </body>

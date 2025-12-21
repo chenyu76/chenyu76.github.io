@@ -84,18 +84,18 @@
 paccache -r
 <span class="hljs-comment"># 仅包含最近的1个版本</span>
 paccache -rk1
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-u4f7fu7528-pacman">使用 pacman</h2><pre><code class="language-bash"><span class="hljs-comment"># 清理未安装软件包</span>
 pacman -Sc
 <span class="hljs-comment"># 清理缓存中所有内容</span>
 pacman -Scc
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-u4f7fu7528yay">使用yay</h2><p>yay的缓存在<code>~/.cache/yay</code>，清理方法类似pacman：</p>
 <pre><code class="language-bash"><span class="hljs-comment"># 清理未安装软件包</span>
 yay -Sc
 <span class="hljs-comment"># 清理缓存中所有内容</span>
 yay -Scc
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>See also:</p>
 <p><a href="https://wiki.archlinux.org/title/Pacman">pacman - ArchWiki</a></p>
 </div>
@@ -146,28 +146,17 @@ yay -Scc
 
     
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 
   </body>

@@ -84,7 +84,7 @@
 <span class="hljs-comment">// x = 6;       // 错误，不能修改不可变变量</span>
 <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">y</span> = <span class="hljs-number">10</span>; <span class="hljs-comment">// 可变</span>
 y = <span class="hljs-number">20</span>;         <span class="hljs-comment">// 可以修改</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <ul>
 <li>尽量使用不可变变量（<code>let</code> 不加 <code>mut</code>）。</li>
 <li>需要修改数据时，考虑返回新数据而不是原地修改。</li>
@@ -97,12 +97,12 @@ y = <span class="hljs-number">20</span>;         <span class="hljs-comment">// �
 
 <span class="hljs-keyword">let</span> <span class="hljs-variable">square</span> = |x| x * x;
 <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, <span class="hljs-title function_ invoke__">apply_twice</span>(square, <span class="hljs-number">3</span>)); <span class="hljs-comment">// 输出 81 (3^2^2)</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-3-u95edu5305-closures">3. **闭包（Closures）**</h2><p>闭包（匿名函数）可以捕获环境变量，是函数式编程的重要工具。</p>
 <pre><code class="language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">factor</span> = <span class="hljs-number">2</span>;
 <span class="hljs-keyword">let</span> <span class="hljs-variable">multiply</span> = |x| x * factor; <span class="hljs-comment">// 捕获外部的 factor</span>
 <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, <span class="hljs-title function_ invoke__">multiply</span>(<span class="hljs-number">5</span>));   <span class="hljs-comment">// 输出 10</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><strong>闭包类型</strong>：</p>
 <ul>
 <li><code>Fn</code>：不可变借用（<code>&amp;T</code>）。</li>
@@ -119,7 +119,7 @@ y = <span class="hljs-number">20</span>;         <span class="hljs-comment">// �
     .<span class="hljs-title function_ invoke__">sum</span>();                   <span class="hljs-comment">// 求和</span>
 
 <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, sum); <span class="hljs-comment">// 输出 2*2 + 4*4 = 20</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><strong>常用迭代器方法</strong>：</p>
 <table>
 <thead>
@@ -164,7 +164,7 @@ y = <span class="hljs-number">20</span>;         <span class="hljs-comment">// �
 }
 
 <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, <span class="hljs-title function_ invoke__">factorial</span>(<span class="hljs-number">5</span>)); <span class="hljs-comment">// 输出 120</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><code>if let</code> 表达式是 <code>match</code> 的一个语法糖，用于只关心一个特定模式的匹配。</p>
 <p>它允许你简洁地检查一个值是否匹配某个模式，如果匹配则执行相应的代码。</p>
 <pre><code class="language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">process_option</span>(option: <span class="hljs-type">Option</span>&lt;<span class="hljs-type">i32</span>&gt;) {
@@ -174,7 +174,7 @@ y = <span class="hljs-number">20</span>;         <span class="hljs-comment">// �
         <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;No value&quot;</span>);
     }
 }
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-6-option-u548c-result-u7684u94feu5f0fu5904u7406">6. **Option 和 Result 的链式处理**</h2><p>Rust 的 <code>Option</code> 和 <code>Result</code> 支持函数式风格的组合操作：</p>
 <pre><code class="language-rust"><span class="hljs-comment">// Option 的链式处理</span>
 <span class="hljs-keyword">let</span> <span class="hljs-variable">result</span> = <span class="hljs-title function_ invoke__">Some</span>(<span class="hljs-number">5</span>)
@@ -187,7 +187,7 @@ y = <span class="hljs-number">20</span>;         <span class="hljs-comment">// �
     .parse::&lt;<span class="hljs-type">i32</span>&gt;()
     .<span class="hljs-title function_ invoke__">map</span>(|x| x * <span class="hljs-number">2</span>)
     .<span class="hljs-title function_ invoke__">map_err</span>(|e| <span class="hljs-built_in">format!</span>(<span class="hljs-string">&quot;Parse failed: {}&quot;</span>, e));
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-7-u9012u5f52-recursion">7. **递归（Recursion）**</h2><p>函数式编程常用递归替代循环，但 Rust 默认不优化递归（注意可能会栈溢出）</p>
 <pre><code class="language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">sum_list</span>(list: &amp;[<span class="hljs-type">i32</span>]) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">i32</span> {
     <span class="hljs-keyword">match</span> list {
@@ -197,7 +197,7 @@ y = <span class="hljs-number">20</span>;         <span class="hljs-comment">// �
 }
 
 <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, <span class="hljs-title function_ invoke__">sum_list</span>(&amp;[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])); <span class="hljs-comment">// 输出 6</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-8-u7eafu51fdu6570-pure-functions">8. **纯函数（Pure Functions）**</h2><p>纯函数（无副作用、输出仅依赖输入）在 Rust 中可通过以下方式实现：</p>
 <ul>
 <li>避免修改外部状态。</li>
@@ -213,12 +213,12 @@ y = <span class="hljs-number">20</span>;         <span class="hljs-comment">// �
 <span class="hljs-keyword">let</span> <span class="hljs-variable">square</span> = |x| x * x;
 <span class="hljs-keyword">let</span> <span class="hljs-variable">add_then_square</span> = <span class="hljs-title function_ invoke__">compose</span>(square, add_one);
 <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, <span class="hljs-title function_ invoke__">add_then_square</span>(<span class="hljs-number">2</span>)); <span class="hljs-comment">// (2+1)^2 = 9</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-10-u4e0du53efu53d8u6570u636eu7ed3u6784">10. **不可变数据结构**</h2><p>使用 <code>Arc</code>、<code>Rc</code> 或第三方库（如 <code>im</code>）实现持久化数据结构（Persistent Data Structures），避免拷贝开销。</p>
 <pre><code class="language-rust"><span class="hljs-keyword">use</span> std::sync::Arc;
 <span class="hljs-keyword">let</span> <span class="hljs-variable">vec1</span> = Arc::<span class="hljs-title function_ invoke__">new</span>(<span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]);
 <span class="hljs-keyword">let</span> <span class="hljs-variable">vec2</span> = Arc::<span class="hljs-title function_ invoke__">clone</span>(&amp;vec1); <span class="hljs-comment">// 共享数据</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 </div>
             <div id="footnote"></div>
           </div>
@@ -274,28 +274,17 @@ y = <span class="hljs-number">20</span>;         <span class="hljs-comment">// �
 
     
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 
   </body>

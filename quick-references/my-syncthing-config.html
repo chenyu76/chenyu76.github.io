@@ -87,14 +87,14 @@
 
 <span class="hljs-comment"># 2. 安装 Syncthing Tray</span>
 yay -S syncthingtray-qt6
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-u542fu52a8u6838u5fc3u670du52a1">启动核心服务</h2><p>使用 <code>systemd --user</code> 模式，这样不需要 root 权限，且配置文件位于 Home 目录下，方便迁移。</p>
 <pre><code class="language-bash"><span class="hljs-comment"># 启动并设置开机自启</span>
 systemctl --user <span class="hljs-built_in">enable</span> --now syncthing.service
 
 <span class="hljs-comment"># 检查状态 (应为 Active)</span>
 systemctl --user status syncthing.service
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <div class="markdown-alert markdown-alert-note">
 <p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
 <p>此时可以通过浏览器访问 <code>http://127.0.0.1:8384</code> 进入管理界面。</p>
@@ -160,10 +160,10 @@ POWER_SUPPLY_PATH=<span class="hljs-string">&quot;/sys/class/power_supply/<span 
 
     <span class="hljs-built_in">sleep</span> <span class="hljs-variable">$CHECK_INTERVAL</span>
 <span class="hljs-keyword">done</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>给这个脚本赋予执行权限：</p>
 <pre><code class="language-bash"><span class="hljs-built_in">chmod</span> +x ~/.Executable/syncthing_power_monitor.sh
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-u521bu5efa-systemd-unit">创建 Systemd Unit</h3><p>路径：<code>~/.config/systemd/user/syncthing-power-monitor.service</code></p>
 <div class="markdown-alert markdown-alert-warning">
 <p class="markdown-alert-title"><svg class="octicon octicon-alert mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p>
@@ -182,10 +182,10 @@ POWER_SUPPLY_PATH=<span class="hljs-string">&quot;/sys/class/power_supply/<span 
 
 <span class="hljs-section">[Install]</span>
 <span class="hljs-attr">WantedBy</span>=default.target
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-u6fc0u6d3bu76d1u63a7">激活监控</h3><pre><code class="language-bash">systemctl --user daemon-reload
 systemctl --user <span class="hljs-built_in">enable</span> --now syncthing-power-monitor.service
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 </div>
             <div id="footnote">2025/12/03</div>
           </div>
@@ -240,28 +240,17 @@ systemctl --user <span class="hljs-built_in">enable</span> --now syncthing-power
 
     
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 
   </body>

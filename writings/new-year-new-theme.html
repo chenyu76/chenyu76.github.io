@@ -9,8 +9,8 @@
     <link rel="icon" href="/favicon.png" type="image/png" />
 
     <link rel="stylesheet" href="/styles-code.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css" integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
-    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css" integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+        
   </head>
 
   <body>
@@ -296,7 +296,7 @@ h \cdot \left(2 - \dfrac{v(t - t_0) - x}{w}\right) &amp; \text{if } w \leq v(t -
   <span class="hljs-built_in">AxesLabel</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-punctuation">{</span><span class="hljs-string">&quot;x&quot;</span><span class="hljs-operator">,</span> <span class="hljs-string">&quot;t&quot;</span><span class="hljs-operator">,</span> <span class="hljs-string">&quot;f(x, t)&quot;</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> 
   <span class="hljs-built_in">ColorFunction</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-string">&quot;TemperatureMap&quot;</span><span class="hljs-operator">,</span> 
   <span class="hljs-built_in">PlotPoints</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-number">100</span><span class="hljs-punctuation">]</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>吹到草上时给草一个受力，若我们不考虑草的质量，力直接通过<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><mi>m</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">F=ma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ma</span></span></span></span>当加速度用，而速度<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mo>∫</mo><mi>a</mi><mi mathvariant="normal">d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">v=\int a \mathrm{d} t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1111em;vertical-align:-0.3061em;"></span><span class="mop op-symbol small-op" style="margin-right:0.19445em;position:relative;top:-0.0006em;">∫</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">a</span><span class="mord mathrm">d</span><span class="mord mathnormal">t</span></span></span></span>，草受风而弯曲的位移<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>=</mo><mo>∫</mo><mi>v</mi><mi mathvariant="normal">d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">s=\int v \mathrm{d} t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1111em;vertical-align:-0.3061em;"></span><span class="mop op-symbol small-op" style="margin-right:0.19445em;position:relative;top:-0.0006em;">∫</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathrm">d</span><span class="mord mathnormal">t</span></span></span></span>。我寻思着草越弯受到的自身的恢复力越大，就当它是线性的，然后做个数值近似，就能写出这样随便的代码：</p>
 <pre><code class="language-javascript"><span class="hljs-keyword">let</span> total_wind_force = <span class="hljs-number">0</span>;
 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> wind <span class="hljs-keyword">of</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">winds</span>) {
@@ -306,7 +306,7 @@ d.<span class="hljs-property">bentSpeed</span> += total_wind_force * deltaT;
 d.<span class="hljs-property">bentSpeed</span> -= d.<span class="hljs-property">bent</span> * deltaT;
 d.<span class="hljs-property">bentSpeed</span> *= <span class="hljs-number">0.999</span>;
 d.<span class="hljs-property">bent</span> += d.<span class="hljs-property">bentSpeed</span> * deltaT;
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>草受力时会发生弯曲，所以代码中计算草的真实长度了。</p>
 <h3 id="h3-u8349u7684u957fu5ea6u7684u8ba1u7b97">草的长度的计算</h3><p>前面说到，草是一个抛物线<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">y=ax^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord mathnormal">a</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>，然而之前的草的长度代码实现只能保证值越大，草越长，没有考虑弯曲程度<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span>，为了让风吹动时草摆动时总的长度不会变，我们现在需要计算抛物线的长度。记<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">y=ax^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord mathnormal">a</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mi>l</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0,l]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mclose">]</span></span></span></span>区间内弧长为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span></span></span></span>，有</p>
 <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mtable rowspacing="0.25em" columnalign="right left" columnspacing="0em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="true"><mi>L</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow><mrow></mrow><mo>=</mo><msubsup><mo>∫</mo><mn>0</mn><mi>l</mi></msubsup><msqrt><mrow><mn>1</mn><mo>+</mo><msup><mrow><mo fence="true">(</mo><mfrac><mrow><mi mathvariant="normal">d</mi><mi>y</mi></mrow><mrow><mi mathvariant="normal">d</mi><mi>x</mi></mrow></mfrac><mo fence="true">)</mo></mrow><mn>2</mn></msup></mrow></msqrt><mi mathvariant="normal">d</mi><mi>x</mi></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow><mrow></mrow><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mrow><mo fence="true">(</mo><mn>2</mn><mi>l</mi><msqrt><mrow><mn>4</mn><mi>a</mi><msup><mi>l</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></mrow></msqrt><mo>+</mo><mfrac><mrow><msup><mrow><mi>sinh</mi><mo>⁡</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mrow><mo fence="true">(</mo><mn>2</mn><msqrt><mi>a</mi></msqrt><mi>l</mi><mo fence="true">)</mo></mrow></mrow><msqrt><mi>a</mi></msqrt></mfrac><mo fence="true">)</mo></mrow></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow><mrow></mrow><mo>≈</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mn>2</mn><mi>l</mi><msqrt><mrow><mn>4</mn><mi>a</mi><msup><mi>l</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></mrow></msqrt><mi mathvariant="normal">.</mi></mrow></mstyle></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
@@ -393,7 +393,7 @@ s76,-153,76,-153s77,-151,77,-151c0.7,0.7,35.7,202,105,604c67.3,400.7,102,602.7,1
 <span class="hljs-keyword">return</span> (<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sqrt</span>((<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sqrt</span>(<span class="hljs-number">1</span> + <span class="hljs-number">64</span> * a * L * L) - <span class="hljs-number">1</span>) / (<span class="hljs-number">8</span> * a))) / <span class="hljs-number">2</span> +
        (L / <span class="hljs-number">3</span>);
 }
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-u51cfu5c11u8ba1u7b97u91cf">减少计算量</h3><p>时时刻刻动态绘制动画很浪费CPU，总得做一些优化。</p>
 <ul>
 <li>每一棵草的所有可能的动态帧都先提前绘制好，需要时直接在内存里面取<ul>
@@ -476,28 +476,17 @@ s76,-153,76,-153s77,-151,77,-151c0.7,0.7,35.7,202,105,604c67.3,400.7,102,602.7,1
 
     
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 
   </body>

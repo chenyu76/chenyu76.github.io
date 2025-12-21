@@ -9,8 +9,8 @@
     <link rel="icon" href="/favicon.png" type="image/png" />
 
     <link rel="stylesheet" href="/styles-code.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css" integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
-    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css" integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+        
   </head>
 
   <body>
@@ -183,7 +183,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <p>两者配合，就能打通一条从外网到内网的隧道。</p>
 <h4 id="h4-wireguard">WireGuard</h4><p>WireGuard 是一个非常简单、快速、现代化的虚拟专用网协议。在我们的场景中，我们可以用 WireGuard 把user设备和client设备连接在同一个虚拟局域网里，这样你就可以像在宿舍里一样直接访问校园网资源了。</p>
 <p>配置好后的网络结构大概会是这个样子：</p>
-<pre><code>┌────────────────────────────────────────────────────┐
+<pre class="ascii-table" lang="en"><code>┌────────────────────────────────────────────────────┐
 │ WAN                                                │
 │┌────────────────────────┐                          │
 ││ School LAN             │   ┌────────┐             │
@@ -225,9 +225,9 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <h4 id="h4-2-u7f16u5199u914du7f6eu6587u4ef6">2. 编写配置文件</h4><p>新建一个名为 <code>frps.toml</code> 的文件，写入以下内容：</p>
 <pre><code class="language-toml"><span class="hljs-attr">bindPort</span> = <span class="hljs-number">7000</span>           <span class="hljs-comment"># frp 服务端监听的端口</span>
 <span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;你的加密口令&quot;</span>  <span class="hljs-comment"># 只有拿着正确密码的 client 才能连接</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h4 id="h4-3-u542fu52a8u670du52a1u7aef">3. 启动服务端</h4><pre><code class="language-bash">./frps -c ./frps.toml
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-u914du7f6eclientu4e0au7684frpc">配置client上的frpc</h3><p>现在回到宿舍里的client，我们要告诉它如何找到外面的服务器。</p>
 <div class="markdown-alert markdown-alert-note">
 <p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
@@ -244,16 +244,16 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <span class="hljs-attr">localIP</span> = <span class="hljs-string">&quot;127.0.0.1&quot;</span>
 <span class="hljs-attr">localPort</span> = <span class="hljs-number">51820</span>         <span class="hljs-comment"># 树莓派上 WireGuard 的默认端口</span>
 <span class="hljs-attr">remotePort</span> = <span class="hljs-number">51820</span>        <span class="hljs-comment"># 映射到服务器上的端口</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>这样配置后，外网用户可以通过 <code>server_ip:7000</code> 连接到 client 的服务。</p>
 <h4 id="h4-2-u542fu52a8u5ba2u6237u7aef">2. 启动客户端</h4><p>使用以下命令</p>
 <pre><code class="language-bash">./frpc -c ./frpc.toml
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-u5b89u88c5u5e76u914du7f6e-wireguard-u5b9eu73b0u5c40u57dfu7f51u5168u8bbfu95ee">安装并配置 WireGuard：实现局域网全访问</h3><p>当你通过 <code>frp</code> 穿透了 WireGuard 的 UDP 端口后，你不仅可以连接到这台服务器本身，还可以通过它作为跳板，访问其所在的整个校园网/局域网资源。</p>
 <h4 id="h4-1-u5b89u88c5-wireguard-client-u7aef">1. 安装 WireGuard (Client 端)</h4><p>在内网服务器（下称 Client）上安装：</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> apt update
 <span class="hljs-built_in">sudo</span> apt install wireguard
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h4 id="h4-2-u5f00u542fu5185u6838u8f6cu53d1">2. 开启内核转发</h4><p>这是实现局域网访问的关键。你需要让 Linux 内核允许数据包在不同网卡间转发。</p>
 <pre><code class="language-bash"><span class="hljs-comment"># 临时生效</span>
 <span class="hljs-built_in">sudo</span> sysctl -w net.ipv4.ip_forward=1
@@ -261,10 +261,10 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <span class="hljs-comment"># 永久生效：修改 /etc/sysctl.conf</span>
 <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;net.ipv4.ip_forward=1&quot;</span> | <span class="hljs-built_in">sudo</span> <span class="hljs-built_in">tee</span> -a /etc/sysctl.conf
 <span class="hljs-built_in">sudo</span> sysctl -p
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h4 id="h4-3-u751fu6210u5bc6u94a5u5bf9">3. 生成密钥对</h4><p>在 Client 和 User 端各执行一次，并记录下各自的公钥和私钥。</p>
 <pre><code class="language-bash">wg genkey | <span class="hljs-built_in">tee</span> privatekey | wg pubkey &gt; publickey
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h4 id="h4-4-u914du7f6e-client-u7aef-u5185u7f51u670du52a1u5668">4. 配置 Client 端 (内网服务器)</h4><p>编辑 <code>/etc/wireguard/wg0.conf</code>。为了让 User 能访问局域网，我们需要在接口启动时添加 <code>iptables</code> 规则来进行 NAT 伪装。</p>
 <pre><code class="language-ini"><span class="hljs-section">[Interface]</span>
 <span class="hljs-attr">Address</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.1</span>/<span class="hljs-number">24</span>
@@ -279,7 +279,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <span class="hljs-section">[Peer]</span>
 <span class="hljs-attr">PublicKey</span> = &lt;User的公钥&gt;
 <span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.2</span>/<span class="hljs-number">32</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <div class="markdown-alert markdown-alert-note">
 <p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
 <p>如果不加 <code>PostUp</code> 里的 iptables 规则，局域网内的其他设备收到你的请求后，不知道要把回包发给 <code>10.0.0.2</code>。通过 NAT 伪装，所有从 User 发出的请求在进入局域网时，都会被伪装成 Client 的本地 IP。</p>
@@ -303,7 +303,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <span class="hljs-attr">Endpoint</span> = &lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;
 <span class="hljs-comment"># 保持连接，防止因长时间无流量导致穿透失效</span>
 <span class="hljs-attr">PersistentKeepalive</span> = <span class="hljs-number">25</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <div class="markdown-alert markdown-alert-note">
 <p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
 <p>在 User 端配置中，<code>AllowedIPs</code> 决定了哪些流量会走 WireGuard 隧道。如果你希望访问校园网，<strong>必须</strong>把校园网的网段（如 <code>172.16.0.0/12</code> 或 <code>10.0.0.0/8</code>）加进去。</p>
@@ -317,7 +317,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <p>在 Linux 系统里，<a href="https://en.wikipedia.org/wiki/Systemd"><code>systemd</code></a> 就像是一个大管家，我们可以写一张“任务清单”交给它，让它负责 <code>frpc</code> 的日常维护。</p>
 <h4 id="h4-1-u521bu5efau4efbu52a1u6e05u5355-service-u6587u4ef6">1. 创建任务清单（Service 文件）</h4><p>我们需要在系统中新建一个服务文件。请在终端输入：</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> nano /etc/systemd/system/frpc.service
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>以创建<code>/etc/systemd/system/frpc.service</code>文件并编辑。</p>
 <h4 id="h4-2-u544au8bc9systemdu8be5u505au4ec0u4e48">2. 告诉systemd该做什么</h4><p>在打开的空白编辑器里，粘贴下面这段内容：</p>
 <pre><code class="language-ini"><span class="hljs-section">[Unit]</span>
@@ -333,7 +333,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 
 <span class="hljs-section">[Install]</span>
 <span class="hljs-attr">WantedBy</span>=multi-user.target               <span class="hljs-comment"># 设定为多用户模式下启动</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <div class="markdown-alert markdown-alert-important">
 <p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
 <p>要把 <code>ExecStart</code> 里的 <code>/path/to/your/</code> 换成你实际的文件夹路径（比如 <code>/home/pi/frp/</code>）！</p>
@@ -349,7 +349,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 </ol>
 <h4 id="h4-4-u68c0u67e5u5b83u6709u6ca1u6709u5728u5077u61d2">4. 检查它有没有在偷懒</h4><p>执行下面的命令查看状态：</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> systemctl status frpc
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>如果你看到一片绿色的 <span style="color:#00FF00;"><code>active (running)</code></span>，那就说明我们的 <code>frpc</code> 已经成功穿透校园网，开始为你工作。</p>
 <h2 id="h2-u9700u8981u6ce8u610fu7684u4e8bu9879">需要注意的事项</h2><h3 id="h3-ups-u7684u7535u6c60u5bb9u91cf">UPS 的电池容量</h3><p>树莓派低功耗待机不需要20W的功耗，不一定需要这么大电池容量，但具体功耗我也没测试过。</p>
 <h3 id="h3-u767bu9646u6821u56edu7f51">登陆校园网</h3><p>如果Client无法连接校园网，那这套方案是完全不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的<a href="https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetwork.py">这个仓库</a>里就有这样一个脚本，可以用于登陆宿舍区校园网，但记得配置一个定时连接的服务。</p>
@@ -453,28 +453,17 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 
     
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 
   </body>

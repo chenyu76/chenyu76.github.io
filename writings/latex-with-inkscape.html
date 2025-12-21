@@ -88,23 +88,23 @@
 
 <h2 id="h2-3-u5728latexu63d2u5165u7ed8u5236u597du7684u6587u4ef6">3. 在LaTeX插入绘制好的文件</h2><p>Inkscape会在你选择的路径下生成一个与pdf名称相同的<code>.pdf_tex</code>文件，将这个文件和pdf一起移动到你的LaTeX代码能访问到地方，然后使用</p>
 <pre><code class="language-latex"><span class="hljs-keyword">\input</span>{&lt;filename&gt;.pdf<span class="hljs-built_in">_</span>tex}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>插入绘制好的图片。（如有需要，你也可以在外围套上figure环境并附上<code>\caption</code>）</p>
 <h3 id="h3-u5bfcu51fau6548u679cu4e00u4f8b">导出效果一例</h3><img src="./assets/inkscape_output.svg" style="width: 50%;" />
 
 <h2 id="h2-u6ce8u610fu4e8bu9879">注意事项</h2><h3 id="h3-u5b8fu5305u8981u6c42">宏包要求</h3><p>导言区需要包含以下两个宏包：</p>
 <pre><code class="language-latex"><span class="hljs-keyword">\usepackage</span>{xcolor}
 <span class="hljs-keyword">\usepackage</span>{graphicx}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-u8defu5f84u8981u6c42">路径要求</h3><p>如果<code>.pdf</code>和<code>.pdf_tex</code>文件不与编译使用的<code>.tex</code>在同一目录下，需要包含以下宏包：</p>
 <pre><code class="language-latex"><span class="hljs-keyword">\usepackage</span>{import}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>并使用</p>
 <pre><code class="language-latex"><span class="hljs-keyword">\import</span>{&lt;path to file&gt;}{&lt;filename&gt;.pdf<span class="hljs-built_in">_</span>tex}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>而不是</p>
 <pre><code class="language-latex"><span class="hljs-keyword">\input</span>{&lt;filename&gt;.pdf<span class="hljs-built_in">_</span>tex}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>插入图片。</p>
 <h3 id="h3-u7f29u653eu56feu7247">缩放图片</h3><p>默认情况下，插入的图片大小与inkscape中定义的文档属性大小相同：</p>
 <img src="./assets/inkscape_prop.png" style="zoom: 67%;" />
@@ -112,10 +112,10 @@
 <p>如果需要缩放图片，使用</p>
 <pre><code class="language-latex"><span class="hljs-keyword">\def</span><span class="hljs-keyword">\svgwidth</span>{&lt;desired width&gt;}
 <span class="hljs-keyword">\input</span>{&lt;filename&gt;.pdf<span class="hljs-built_in">_</span>tex}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>注意，图片中的文本大小不会随绘图元素的缩放而缩放。如果你不希望如此，使用</p>
 <pre><code class="language-latex"><span class="hljs-keyword">\resizebox</span>{&lt;desired width&gt;}{!}{<span class="hljs-keyword">\input</span>{&lt;filename&gt;.pdf<span class="hljs-built_in">_</span>tex}}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>代替。</p>
 <h3 id="h3-u4f7fu7528figureu73afu5883">使用figure环境</h3><p>也可以嵌套figure环境，给图片添加caption、居中</p>
 <pre><code class="language-latex"><span class="hljs-keyword">\begin</span>{figure}[htbp]
@@ -124,9 +124,9 @@
 	<span class="hljs-keyword">\end</span>{center}
 	<span class="hljs-keyword">\caption</span>{带有caption的图片}
 <span class="hljs-keyword">\end</span>{figure}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-u5b8cu6574u793au4f8b">完整示例</h2><p>本示例项目有如下文件树结构：</p>
-<pre><code>./
+<pre class="ascii-table" lang="en"><code>./
 ├── example.tex
 ├── fig2.pdf
 ├── fig2.pdf_tex
@@ -168,7 +168,7 @@ figure环境:
 <span class="hljs-keyword">\end</span>{figure}
 
 <span class="hljs-keyword">\end</span>{document}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>你可以在<a href="./latex-with-inkscape.zip">这里</a>下载一份副本</p>
 <hr>
 <p>For more information, please see info/svg-inkscape on <a href="https://ctan.org/tex-archive/info/svg-inkscape?lang=en">CTAN</a>:</p>
@@ -231,28 +231,17 @@ figure环境:
 
     
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 
   </body>

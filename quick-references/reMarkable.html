@@ -81,18 +81,18 @@
             <div id="content"><h2 id="h2-u4e2du6587u5b57u4f53">中文字体</h2><p>似乎下面的内容多余了，<a href="https://remarkable.jms1.info/info/fonts.html">参考</a>，只需要把字体放在<code>/home/root/.local/share/fonts/</code></p>
 <p>Any time you add, remove, or update font files, you need to rebuild the font cache files.</p>
 <pre><code class="language-bash">fc-cache -fv
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <hr>
 <p>字体已经放在了<code>/usr/share/font/ttf</code>中，所以只需要使用SSH连接上再软连接上字体即可</p>
 <pre><code class="language-bash">ssh root@10.11.99.1
 <span class="hljs-comment"># In Remarkable</span>
 <span class="hljs-built_in">ln</span> -s /home/root/fonts /usr/share/fonts/ttf
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>更新后可能会报</p>
 <pre><code>@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>需要把</p>
 <p><code>~/.ssh/known_hosts</code> 下的10.11.99.1 的信任删除</p>
 <p>root 密码在 Settings &gt; Help  &gt; Copyrights and licenses 中</p>
@@ -103,10 +103,10 @@
 /usr/share/remarkable/sleep.png
 <span class="hljs-comment"># power off</span>
 /usr/share/remarkable/poweroff.png
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>使用scp复制过去</p>
 <pre><code>scp &#x27;./suspended.png&#x27; root@10.11.99.1:/usr/share/remarkable/suspended.png
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-u53efu80fdu6709u7528u7684u94feu63a5">可能有用的链接</h2><p><a href="https://remarkable.guide">reMarkable Guide</a></p>
 <p><a href="https://remarkable.guide/guide/software/toltec.html#toltec-reenable">Reenable Toltec After A System Upgrade</a></p>
 <p><a href="https://toltec-dev.org/">Toltec</a></p>
@@ -126,10 +126,10 @@ Configuring oxide-utils.
 
 Run the following command(s) to use remux as your launcher
 launcherctl switch-launcher --start remux
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-u5c4fu5e55u5c3au5bf8">屏幕尺寸</h2><pre><code>1404x1872     pixels
 157.2x209.6   mm
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-u4f20u8f93u5927u4e8e100mu7684u6587u4ef6">传输大于100M的文件</h2><p>使用脚本<code>pdf2remarkable.sh</code>，来自<a href="https://github.com/adaerr/reMarkableScripts/blob/master/pdf2remarkable.sh">adaerr</a></p>
 <p>说明见<a href="https://www.informaticar.net/how-to-transfer-files-to-remarkable-paper-pro-without-cloud/">这里</a></p>
 <h2 id="h2-u5173u4e8eusb-connection">关于USB connection</h2><p>主流浏览器似乎会默认阻止不安全的http连接，所以我只能用<a href="https://wiki.gnome.org/Apps/Eolie">Eolie</a>连上</p>
@@ -187,28 +187,17 @@ launcherctl switch-launcher --start remux
 
     
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 
   </body>

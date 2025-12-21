@@ -112,44 +112,56 @@ export function generateHtmlFile(
     extraBodyContent = "", // <body> 结尾额外内容
     tocContent = "",       // 目录内容
 ) {
-  // 检查生成的 HTML 中是否存在代码块（标记通常为 <pre><code ...>）
-  // 仅当存在代码块时引入 Highlight.js 样式
+  // 处理代码块，注入复制按钮或识别为 ASCII 表格
+  const tableCharRegex = /[┌┐└┘─│]/g;
+  //  检查是否存在代码块
   if (/<pre><code\b/.test(htmlContent)) {
+    htmlContent = htmlContent.replace(
+        /<pre>([\s\S]*?<code[^>]*>([\s\S]*?)<\/code>[\s\S]*?)<\/pre>/g,
+        (_match, fullContent, codeInnerHtml) => {
+          // 统计制表符出现的次数
+          const matches = codeInnerHtml.match(tableCharRegex);
+          const count = matches ? matches.length : 0;
+
+          if (count >= 10) {
+            // 情况 A: 认为是制表/示意图
+            // 1. 添加类名 ascii-table 以便通过 CSS 控制样式
+            // 2. 这种块不需要复制按钮
+            return `<pre class="ascii-table" lang="en">${fullContent}</pre>`;
+          } else {
+            // 情况 B: 普通代码块
+            // 注入复制按钮
+            return `<pre>${
+                fullContent}<button class="copy-btn" title="Copy">📋</button></pre>`;
+          }
+        });
+
     headContent += `<link rel="stylesheet" href="/styles-code.css">`;
-    // 给代码块添加复制按钮
+
+    // 客户端脚本（仅针对有 copy-btn 的块）
     extraBodyContent += `
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 `;
   }
+
   // 检查是否存在公式，marked-katex-extension 渲染后的公式标签中包含 "katex" 类
   // 仅当存在数学公式时引入 KaTeX 样式
   if (/class="katex"/.test(htmlContent)) {
     headContent += `
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css" integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
-    `;
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css" integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+        `;
   }
 
   // 创建替换映射
@@ -163,12 +175,9 @@ document.querySelectorAll('pre').forEach(pre => {
     "TOC_PLACEHOLDER" : tocContent
   };
 
-  // 动态生成正则表达式：/TITLE_PLACEHOLDER|HEAD_PLACEHOLDER|.../g
   const regex = new RegExp(Object.keys(replacements).join("|"), "g");
-
-  // 只执行一次 replace
-  const fullHtml = templateHTML.replace(
-      regex, (matched) => { return replacements[matched]; });
+  const fullHtml =
+      templateHTML.replace(regex, (matched) => replacements[matched]);
 
   fs.writeFileSync(outputPath, fullHtml, "utf8");
   console.log(`  -> ${outputPath}`);

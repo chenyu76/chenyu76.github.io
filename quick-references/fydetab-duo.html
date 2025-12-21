@@ -85,17 +85,17 @@
 <h3 id="h3-u6362u6e90">换源</h3><p><a href="https://mirrors.tuna.tsinghua.edu.cn/help/archlinuxarm/">清华大学开源软件镜像站  Arch Linux ARM 软件仓库</a></p>
 <h3 id="h3-u8f93u5165u6cd5">输入法</h3><p>gnome使用<a href="https://wiki.archlinux.org/title/IBus">iBus</a></p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> pacman -S ibus-rime
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>重启后去系统设置里配置键盘即可。</p>
 <h3 id="h3-yay">YAY</h3><p>See <a href="https://wiki.archlinuxcn.org/zh-cn/Yay">arch wiki yay</a></p>
 <h3 id="h3-u4e2du6587u5b57u4f53">中文字体</h3><p>刚安装好时缺字体，从<a href="https://arch.icekylin.online/guide/rookie/desktop-env-and-app.html">这里</a>抄一份字体清单。</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> pacman -S --needed adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-u8f6fu4ef6u5305">软件包</h3><pre><code class="language-bash"> <span class="hljs-built_in">sudo</span> pacman -S --needed git firefox syncthing nvim vim neovim-qt wl-clipboard inkscape gimp fish ibus ibus-rime eog evince texlive texlive-lang
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-gnome-u63d2u4ef6">Gnome 插件</h3><p>安装</p>
 <pre><code class="language-bash">pacman -S gnome-browser-connector
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>在Firefox打开<a href="https://extensions.gnome.org/">Gnome Extensions</a>，安装对应firefox插件。</p>
 <ul>
 <li>Screen Rotate</li>
@@ -111,7 +111,7 @@
 </ol>
 <p>这个软件包自带给树莓派的授权，所以其他linux机器会导致鉴权失败无法启动，因此需要手动把Licensing文件夹删除。其位于</p>
 <pre><code>/opt/Wolfram/WolframEngine/{version}/Configuration/
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>下。然后自行激活。(可以参考 <a href="https://tiebamma.github.io/InstallTutorial/">https://tiebamma.github.io/InstallTutorial/</a> )</p>
 <p>然后一个方便的desktop文件自然是极好的：</p>
 <pre><code class="language-bash">[Desktop Entry]
@@ -126,7 +126,7 @@ Categories=Education;Science;Math;
 Keywords=mathematica;math;wolfram;calculation;
 MimeType=application/mathematica;application/x-mathematica;
 StartupNotify=<span class="hljs-literal">true</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>命名为<code>Mathematica.desktop</code>然后放到<code>/usr/share/applications</code>中。</p>
 <h2 id="h2-fyde-os">Fyde OS</h2><h3 id="h3-android-u5b50u7cfbu7edf">Android 子系统</h3><p>似乎在<a href="chrome://flags"><code>chrome://flags</code></a>里打开<code>Enable custom ARCVM memory size</code>可以优化某些占内存软件的体验</p>
 <ul>
@@ -144,13 +144,13 @@ StartupNotify=<span class="hljs-literal">true</span>
 <h5 id="h5-u4e2du6587u8f93u5165u6cd5-fcitx5">中文输入法 Fcitx5</h5><p><a href="https://wiki.archlinux.org/title/Fcitx">Arch Wiki</a></p>
 <p>似乎需要在<code>~/.sommelierrc</code>内设置</p>
 <pre><code>/usr/bin/fcitx-autostart
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>但我的<code>/usr/bin</code>下没看到<code>fcitx-autostart</code></p>
 <p>自动启动，并配置环境变量</p>
 <pre><code>GTK_IM_MODULE=fcitx
 QT_IM_MODULE=fcitx
 XMODIFIERS=@im=fcitx
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>安装好后可能没法通过快捷键开启，但可以通过<code>fcitx-remote</code>临时测试，再编辑配置文件设置好键位</p>
 <p>GTK应用用不了输入法？为什么呢</p>
 </div>
@@ -222,28 +222,17 @@ XMODIFIERS=@im=fcitx
 
     
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 
   </body>

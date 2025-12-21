@@ -94,10 +94,10 @@
       <span class="hljs-string">&quot;I&quot;</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-string">&quot;(1i)&quot;</span><span class="hljs-operator">,</span> <span class="hljs-string">&quot;*&quot;</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-string">&quot;.*&quot;</span><span class="hljs-operator">,</span> <span class="hljs-string">&quot;^&quot;</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-string">&quot;.^&quot;</span><span class="hljs-operator">,</span> <span class="hljs-string">&quot;/&quot;</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-string">&quot;./&quot;</span><span class="hljs-operator">,</span> 
       <span class="hljs-string">&quot;[&quot;</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-string">&quot;(&quot;</span><span class="hljs-operator">,</span> <span class="hljs-string">&quot;]&quot;</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-string">&quot;)&quot;</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">]</span> <span class="hljs-operator">&lt;&gt;</span> <span class="hljs-string">&quot;);&quot;</span><span class="hljs-operator">,</span> <span class="hljs-string">&quot;Text&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-operator">;</span>
 <span class="hljs-comment">(* ToMATLAB[ &lt;Function Symbol&gt; , &lt;MATLAB function name string&gt; ] *)</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>例如你的函数叫<code>v1[x,t]</code>,想导出成<code>v1.m</code>：</p>
 <pre><code>ToMATLAB[ v1[x,t] , &quot;v1&quot; ]
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>记得给参数赋值！</p>
 <h2 id="h2-u5728-matlab-u91ccu9762u753bu56fe">在 Matlab 里面画图</h2><p>在与你导出的函数文件的同一目录下，创建任意合法名称的matlab脚本，包含以下内容，根据自己需求修改</p>
 <pre><code class="language-matlab"><span class="hljs-comment">% 调用函数</span>
@@ -176,7 +176,7 @@ t = lrt:((urt - lrt)/stps):urt;
     toc
 <span class="hljs-keyword">end</span>
 <span class="hljs-keyword">end</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 </div>
             <div id="footnote">2025/03/03</div>
           </div>
@@ -217,28 +217,17 @@ t = lrt:((urt - lrt)/stps):urt;
 
     
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 
   </body>

@@ -82,11 +82,11 @@
  <span class="hljs-built_in">Blend</span><span class="hljs-punctuation">[</span><span class="hljs-punctuation">{</span><span class="hljs-punctuation">{</span><span class="hljs-number">0</span><span class="hljs-operator">,</span> <span class="hljs-built_in">RGBColor</span><span class="hljs-punctuation">[</span><span class="hljs-number">0</span><span class="hljs-operator">,</span> <span class="hljs-number">0</span><span class="hljs-operator">,</span> <span class="hljs-number">9</span><span class="hljs-operator">/</span><span class="hljs-number">16</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> <span class="hljs-punctuation">{</span><span class="hljs-number">1</span><span class="hljs-operator">/</span><span class="hljs-number">9</span><span class="hljs-operator">,</span> <span class="hljs-built_in">Blue</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> <span class="hljs-punctuation">{</span><span class="hljs-number">23</span><span class="hljs-operator">/</span><span class="hljs-number">63</span><span class="hljs-operator">,</span> <span class="hljs-built_in">Cyan</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> <span class="hljs-punctuation">{</span><span class="hljs-number">13</span><span class="hljs-operator">/</span><span class="hljs-number">21</span><span class="hljs-operator">,</span>
       <span class="hljs-built_in">Yellow</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> <span class="hljs-punctuation">{</span><span class="hljs-number">47</span><span class="hljs-operator">/</span><span class="hljs-number">63</span><span class="hljs-operator">,</span> <span class="hljs-built_in">Orange</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> <span class="hljs-punctuation">{</span><span class="hljs-number">55</span><span class="hljs-operator">/</span><span class="hljs-number">63</span><span class="hljs-operator">,</span> <span class="hljs-built_in">Red</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> <span class="hljs-punctuation">{</span><span class="hljs-number">1</span><span class="hljs-operator">,</span> 
      <span class="hljs-built_in">RGBColor</span><span class="hljs-punctuation">[</span><span class="hljs-number">1</span><span class="hljs-operator">/</span><span class="hljs-number">2</span><span class="hljs-operator">,</span> <span class="hljs-number">0</span><span class="hljs-operator">,</span> <span class="hljs-number">0</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> <span class="hljs-variable">u</span><span class="hljs-punctuation">]</span> <span class="hljs-operator">/;</span> <span class="hljs-number">0</span> <span class="hljs-operator">&lt;=</span> <span class="hljs-variable">u</span> <span class="hljs-operator">&lt;=</span> <span class="hljs-number">1</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-usage-example">Usage example:</h2><pre><code class="language-Mathematica"><span class="hljs-built_in">Plot3D</span><span class="hljs-punctuation">[</span><span class="hljs-built_in">Abs</span><span class="hljs-punctuation">[</span><span class="hljs-variable">u1</span><span class="hljs-punctuation">[</span><span class="hljs-variable">x</span><span class="hljs-operator">,</span><span class="hljs-variable">t</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">]</span><span class="hljs-operator">,</span> <span class="hljs-punctuation">{</span><span class="hljs-variable">x</span><span class="hljs-operator">,</span> <span class="hljs-operator">-</span><span class="hljs-number">5</span><span class="hljs-operator">,</span> <span class="hljs-number">5</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> <span class="hljs-punctuation">{</span><span class="hljs-variable">t</span><span class="hljs-operator">,</span> <span class="hljs-operator">-</span><span class="hljs-number">3</span><span class="hljs-operator">,</span> <span class="hljs-number">3</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> <span class="hljs-built_in">PlotRange</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-built_in">All</span><span class="hljs-operator">,</span> 
  <span class="hljs-built_in">PlotPoints</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-number">100</span><span class="hljs-operator">,</span> <span class="hljs-built_in">AxesLabel</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-punctuation">{</span><span class="hljs-string">&quot;x&quot;</span><span class="hljs-operator">,</span> <span class="hljs-string">&quot;t&quot;</span><span class="hljs-operator">,</span> <span class="hljs-string">&quot;|u1|&quot;</span><span class="hljs-punctuation">}</span><span class="hljs-operator">,</span> 
  <span class="hljs-built_in">ColorFunction</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-variable">jet</span><span class="hljs-operator">,</span> <span class="hljs-built_in">Mesh</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-built_in">None</span><span class="hljs-punctuation">]</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 </div>
             <div id="footnote"></div>
           </div>
@@ -127,28 +127,17 @@
 
     
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 
   </body>

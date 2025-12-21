@@ -81,7 +81,7 @@
             <div id="content"><h2 id="h2-u57fau672cu8bbeu7f6e">基本设置</h2><pre><code class="language-latex"><span class="hljs-keyword">\usepackage</span>{booktabs}   <span class="hljs-comment">% 三线表</span>
 <span class="hljs-keyword">\usepackage</span>{multirow}   <span class="hljs-comment">% 合并多行</span>
 <span class="hljs-keyword">\usepackage</span>{makecell}   <span class="hljs-comment">% 单元格内换行</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-u57fau7840u8868u683cu52a0u8fb9u6846">基础表格加边框</h2><pre><code class="language-latex"><span class="hljs-keyword">\begin</span>{tabular}{|l|c|r|}
   <span class="hljs-keyword">\hline</span>
   Header1 <span class="hljs-built_in">&amp;</span> Header2 <span class="hljs-built_in">&amp;</span> Header3 <span class="hljs-keyword">\\</span>
@@ -91,7 +91,7 @@
   Text    <span class="hljs-built_in">&amp;</span> 42      <span class="hljs-built_in">&amp;</span> Text    <span class="hljs-keyword">\\</span>
   <span class="hljs-keyword">\hline</span>
 <span class="hljs-keyword">\end</span>{tabular}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><strong>说明</strong>：<code>|</code> 定义列边框，<code>\hline</code> 添加水平线，<code>\hline\hline</code> 创建双横线</p>
 <hr>
 <h2 id="h2-booktabs-u4e09u7ebfu8868">`booktabs` 三线表</h2><pre><code class="language-latex"><span class="hljs-keyword">\begin</span>{tabular}{llr}
@@ -102,7 +102,7 @@
   Bread  <span class="hljs-built_in">&amp;</span> Bakery <span class="hljs-built_in">&amp;</span> 3.20 <span class="hljs-keyword">\\</span>
   <span class="hljs-keyword">\bottomrule</span>
 <span class="hljs-keyword">\end</span>{tabular}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><strong>特点</strong>：</p>
 <ul>
 <li><code>\toprule</code>/<code>\midrule</code>/<code>\bottomrule</code> 创建专业间距</li>
@@ -117,7 +117,7 @@
   <span class="hljs-keyword">\midrule</span>
   ...
 <span class="hljs-keyword">\end</span>{tabular}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><strong>参数解析</strong>：</p>
 <ul>
 <li><code>(r{长度})</code> / <code>(l{长度})</code>：在横线右/左侧添加指定长度的空白</li>
@@ -137,7 +137,7 @@
   <span class="hljs-keyword">\shortstack</span>{Alternative <span class="hljs-keyword">\\</span> method} <span class="hljs-built_in">&amp;</span> 内容 <span class="hljs-keyword">\\</span>
   <span class="hljs-keyword">\hline</span>
 <span class="hljs-keyword">\end</span>{tabular}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <hr>
 <h2 id="h2-u5408u5e76u5355u5143u683c">合并单元格</h2><h3 id="h3-u6a2au5411u5408u5e76-multicolumn">横向合并 (multicolumn)</h3><pre><code class="language-latex"><span class="hljs-keyword">\begin</span>{tabular}{|l|l|l|}
   <span class="hljs-keyword">\hline</span>
@@ -146,14 +146,14 @@
   Col1 <span class="hljs-built_in">&amp;</span> Col2 <span class="hljs-built_in">&amp;</span> Col3 <span class="hljs-keyword">\\</span>
   <span class="hljs-keyword">\hline</span>
 <span class="hljs-keyword">\end</span>{tabular}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-u7eb5u5411u5408u5e76-multirow">纵向合并 (multirow)</h3><pre><code class="language-latex"><span class="hljs-keyword">\begin</span>{tabular}{|l|l|}
   <span class="hljs-keyword">\hline</span>
   <span class="hljs-keyword">\multirow</span>{2}{*}{合并2行} <span class="hljs-built_in">&amp;</span> 行1-列2 <span class="hljs-keyword">\\</span>
                           <span class="hljs-built_in">&amp;</span> 行2-列2 <span class="hljs-keyword">\\</span>
   <span class="hljs-keyword">\hline</span>
 <span class="hljs-keyword">\end</span>{tabular}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-u7ec4u5408u5408u5e76">组合合并</h3><pre><code class="language-latex"><span class="hljs-keyword">\begin</span>{tabular}{|c|c|c|}
   <span class="hljs-keyword">\hline</span>
   <span class="hljs-keyword">\multirow</span>{2}{*}{合并2行} <span class="hljs-built_in">&amp;</span> <span class="hljs-keyword">\multicolumn</span>{2}{c|}{合并2列} <span class="hljs-keyword">\\</span>
@@ -162,7 +162,7 @@
   Data1 <span class="hljs-built_in">&amp;</span> Data2 <span class="hljs-built_in">&amp;</span> Data3 <span class="hljs-keyword">\\</span>
   <span class="hljs-keyword">\hline</span>
 <span class="hljs-keyword">\end</span>{tabular}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-u6700u4f73u5b9eu8df5">最佳实践</h2><ol>
 <li>使用 <code>\addlinespace</code> 代替 <code>\hline</code> 增加行间距</li>
 <li>复杂表格推荐 <code>tabularx</code> 自动调整列宽</li>
@@ -206,7 +206,7 @@
     ...
   <span class="hljs-keyword">\end</span>{tabular}
 <span class="hljs-keyword">\end</span>{table}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><strong>核心功能</strong>：</p>
 <ul>
 <li>浮动体环境，LaTeX 自动优化表格位置（<code>[htbp]</code>参数控制优先级）<ul>
@@ -222,7 +222,7 @@
   自动换行长文本 <span class="hljs-built_in">&amp;</span> 常规内容 <span class="hljs-built_in">&amp;</span> 居中对齐列 <span class="hljs-keyword">\\</span>
   This column will wrap text automatically <span class="hljs-built_in">&amp;</span> Short text <span class="hljs-built_in">&amp;</span> Centered data <span class="hljs-keyword">\\</span>
 <span class="hljs-keyword">\end</span>{tabularx}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><strong>核心特性</strong>：</p>
 <ul>
 <li>必须指定表格总宽度（如 <code>\textwidth</code>）</li>
@@ -234,18 +234,18 @@
 <span class="hljs-keyword">\begin</span>{tabular}{ccc}
   ...
 <span class="hljs-keyword">\end</span>{tabular}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-u65b9u6cd52-makecell-u5b8fu5305">方法2：`makecell` 宏包</h3><pre><code class="language-latex"><span class="hljs-keyword">\usepackage</span>{makecell}
 <span class="hljs-keyword">\setcellgapes</span>{4pt}   <span class="hljs-comment">% 设置单元格间距</span>
 <span class="hljs-keyword">\makegapedcells</span>      <span class="hljs-comment">% 应用间距设置</span>
 <span class="hljs-keyword">\begin</span>{tabular}{ccc}
   ...
 <span class="hljs-keyword">\end</span>{tabular}
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-u65b9u6cd53-setspace-u5b8fu5305-u5f71u54cdu6574u4e2au6587u6863">方法3：`setspace` 宏包（影响整个文档）</h3><pre><code class="language-latex"><span class="hljs-keyword">\usepackage</span>{setspace}
 <span class="hljs-keyword">\onehalfspacing</span>      <span class="hljs-comment">% 1.5倍行距</span>
 <span class="hljs-keyword">\doublespacing</span>       <span class="hljs-comment">% 2倍行距</span>
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 </div>
             <div id="footnote"></div>
           </div>
@@ -314,28 +314,17 @@
 
     
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 
   </body>

@@ -105,7 +105,7 @@ SSID=<span class="hljs-string">&quot;your_target_SSID&quot;</span> <span class="
 <span class="hljs-keyword">fi</span>
 
 <span class="hljs-built_in">exit</span> 0
-</code></pre>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <ol>
 <li>使用以下命令为脚本添加执行权限：<ul>
 <li><code>sudo chmod +x /etc/NetworkManager/dispatcher.d/avahi-ssid-control.sh</code></li>
@@ -167,28 +167,17 @@ SSID=<span class="hljs-string">&quot;your_target_SSID&quot;</span> <span class="
 
     
 <script>
-document.querySelectorAll('pre').forEach(pre => {
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '📋';
-  
-  // 添加到DOM
-  pre.prepend(btn);
-
-  // 绑定点击事件
-  btn.addEventListener('click', async () => {
-    try {
-      const code = pre.querySelector('code').innerText;
-      await navigator.clipboard.writeText(code);
-      
-      btn.textContent = ' ✓ ';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    } catch (err) {
-      btn.textContent = 'FAIL！';
-      btn.style.color = '#dc3545';
-    }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.textContent = ' ✓ ';
+        setTimeout(() => btn.textContent = '📋', 1500);
+      } catch (err) { console.error(err); }
+    });
   });
-});
 </script>
 
   </body>
