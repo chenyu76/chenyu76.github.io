@@ -45,6 +45,7 @@ generateHtmlFile(
     "",
     `<h1>主页</h1>`,
     `${convertMarkdown(path.join(rootPath, "README.md")).html}<br> 
+${convertMarkdown(path.join(rootPath, "test-pages", "equationtest.md")).html}
 <br><hr><h2>小工具</h2>
 ${convertMarkdown(path.join(rootPath, "program", "readme.md")).html}
 ${convertMarkdown(path.join(rootPath, "excerpts", "nightfall.md")).html}
