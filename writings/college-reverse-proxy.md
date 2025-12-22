@@ -37,11 +37,11 @@ $$
 \end{CD}
 $$
 
-内置电池的UPS可以在直接给树莓派供电的同时，在宿舍区断电时自动切换到电池供电，保证设备不掉线。注意宿舍区每天断电六小时，如果树莓派的功耗按 $20\text{W}(5\text{V}\ 4\text{A})$ 计算，我们至少需要
+内置电池的UPS可以在直接给树莓派供电的同时，在宿舍区断电时自动切换到电池供电，保证设备不掉线。注意宿舍区每天断电六小时，如果树莓派的功耗按 $15\text{W}(5\text{V}\ 3\text{A})$ 计算，我们至少需要
 
 $$
-\frac{20 \text{W} \times 6 \text{h} }{3.7\text{V}} \times 1000\text{mA}/\text{A}
-\approx 32432\text{mAh}
+\frac{15 \text{W} \times 6 \text{h} }{3.7\text{V}} \times 1000\text{mA}/\text{A}
+\approx 24324\text{mAh}
 $$
 
 的锂电池容量（以 $3.7\text V$ 计算）。
@@ -193,20 +193,26 @@ remotePort = 51820        # 映射到服务器上的端口
 ```bash
 sudo apt update
 sudo apt install wireguard
-
 ```
 
 #### 2. 开启内核转发
 
 这是实现局域网访问的关键。你需要让 Linux 内核允许数据包在不同网卡间转发。
 
+可以通过命令在临时修改，测试配置：
 ```bash
-# 临时生效
 sudo sysctl -w net.ipv4.ip_forward=1
+```
 
-# 永久生效：修改 /etc/sysctl.conf
+如果想重启后仍生效，需要设置配置文件。如果`/etc/sysctl.conf`存在，可以将`net.ipv4.ip_forward=1`添加到文件中：
+```bash
 echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
+```
+
+不同发行版可能具有不同配置，`/etc/sysctl.conf`可能不存在，这时也可以考虑将配置添加到`/etc/sysctl.d`文件夹中的一个新的文件中，如
+```bash
+sudo echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/9999-ip-forward.conf
 ```
 
 #### 3. 生成密钥对
@@ -214,7 +220,6 @@ sudo sysctl -p
 在 Client 和 User 端各执行一次，并记录下各自的公钥和私钥。
 ```bash
 wg genkey | tee privatekey | wg pubkey > publickey
-
 ```
 
 #### 4. 配置 Client 端 (内网服务器)
@@ -227,8 +232,6 @@ Address = 10.0.0.1/24
 ListenPort = 51820
 PrivateKey = <Client的私钥>
 
-# 核心配置：流量转发与伪装
-# 注意：将 eth0 替换为你实际的网卡名称（通过 ip addr 查看）
 PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 
@@ -243,6 +246,9 @@ AllowedIPs = 10.0.0.2/32
 > [!IMPORTANT]
 > 请务必在 Client 执行 `ip addr` 查看主网卡名称，如果是 `ens33` 或 `eno1`，请将配置中的 `eth0` 相应替换。
 
+> [!IMPORTANT]
+> 请务必修改配置文件其中的`<Client的私钥>`和`<User的公钥>`为实际密钥。
+
 #### 5. 配置 User 端 (用户电脑)
 
 在 User 的 WireGuard 客户端中新建配置。关键点在于 `AllowedIPs` 的设置。
@@ -255,32 +261,41 @@ DNS = 114.114.114.114
 
 [Peer]
 PublicKey = <Client的公钥>
-# 重点：这里不仅要写 WG 网段，还要包含你想访问的局域网网段
-# 假设校园网网段是 172.16.0.0/12
-AllowedIPs = 10.0.0.0/24, 172.16.0.0/12
-# 填写 frp 服务器的公网 IP 和映射后的 UDP 端口
+AllowedIPs = 10.0.0.0/24, 172.16.0.0/12, <你需要访问的IP>
 Endpoint = <frp服务器公网IP>:<frp映射后的UDP端口>
 # 保持连接，防止因长时间无流量导致穿透失效
 PersistentKeepalive = 25
 ```
 
 > [!NOTE]
-> 在 User 端配置中，`AllowedIPs` 决定了哪些流量会走 WireGuard 隧道。如果你希望访问校园网，**必须**把校园网的网段（如 `172.16.0.0/12` 或 `10.0.0.0/8`）加进去。
+> 在 User 端配置中，`AllowedIPs` 决定了哪些流量会走 WireGuard 隧道。如果你希望访问校园网，必须把校园网的网段（如 `172.16.0.0/12` 或 `10.0.0.0/8`）加进去。
 
-#### 测试
+> [!TIP]
+> 如果不确定有哪些IP需要访问，可以将`0.0.0.0/0`（全部IP）添加到`AllowedIPs`，但注意此时你的所有网络流量都会被路由
 
-- 配置完成后，在 Client 执行 `sudo wg-quick up wg0` 启动服务。
-- 在 User 端点击“连接”，尝试 `ping 10.0.0.1`，如果通了，再尝试 ping 校园网内的一台私有 IP 设备。
+> [!IMPORTANT]
+> 请务必修改配置文件其中的`<Client的私钥>`和`<User的公钥>`为实际密钥；修改`<frp服务器公网IP>:<frp映射后的UDP端口>`为实际地址和端口
+
+
+#### 6. 启动WireGuard
+
+配置完成后，在 Client 执行 
+```bash
+sudo wg-quick up wg0
+```
+启动WireGuard服务。
+
+在 User 端点击“连接”，测试是否能连接上。
 
 ### 配置各个服务的自启动
 
 我们需要配置frps, frpc, WireGuard三个服务的自动启动，让他们在开机或意外退出后可以自动重新启动。
 
-下面以frpc为例说明如何配置，其它两个软件也类似。
+下面以frpc为例说明如何配置，其他服务是类似的。
 
 在 Linux 系统里，[`systemd`](https://en.wikipedia.org/wiki/Systemd) 就像是一个大管家，我们可以写一张“任务清单”交给它，让它负责 `frpc` 的日常维护。
 
-#### 1. 创建任务清单（Service 文件）
+#### 1. 创建Service 文件
 
 我们需要在系统中新建一个服务文件。请在终端输入：
 
@@ -296,18 +311,17 @@ sudo nano /etc/systemd/system/frpc.service
 
 ```ini
 [Unit]
-Description=frp client for campus network  # 任务描述
-After=network.target                     # 等网络连接好了再启动
+Description=frp client for campus network
+After=network.target 
 
 [Service]
 Type=simple
-# 注意：下面这两行要把路径改成你存放 frpc 和 frpc.toml 的真实路径！
 ExecStart=/path/to/your/frpc -c /path/to/your/frpc.toml
-Restart=on-failure                       # 如果程序崩了，管家会自动把它扶起来
-RestartSec=5s                            # 崩了之后等 5 秒再试
+Restart=on-failure
+RestartSec=5s
 
 [Install]
-WantedBy=multi-user.target               # 设定为多用户模式下启动
+WantedBy=multi-user.target
 ```
 
 > [!IMPORTANT]
@@ -324,7 +338,7 @@ WantedBy=multi-user.target               # 设定为多用户模式下启动
 3. **现在立刻帮我启动**：
 `sudo systemctl start frpc`
 
-#### 4. 检查它有没有在偷懒
+#### 4. 检查服务状态
 
 执行下面的命令查看状态：
 
@@ -332,16 +346,144 @@ WantedBy=multi-user.target               # 设定为多用户模式下启动
 sudo systemctl status frpc
 ```
 
-如果你看到一片绿色的 <span style="color:#00FF00;">`active (running)`</span>，那就说明我们的 `frpc` 已经成功穿透校园网，开始为你工作。
+如果你看到一片绿色的 <span style="color:#06C762;">`active (running)`</span>，那就说明我们的 `frpc` 已经成功穿透校园网，开始为你工作。
 
 ## 需要注意的事项
 
+### WireGuard 的自启动管理
+
+WireGuard的.service有些许不同，在此附上如下。
+```ini
+[Unit]
+Description=WireGuard via wg-quick(8) for %I
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/wg-quick up %i
+ExecStop=/usr/bin/wg-quick down %i
+Environment=WG_ENDPOINT_RESOLUTION_RETRIES=infinity
+
+[Install]
+WantedBy=multi-user.target
+```
+将以上内容保存为`/etc/systemd/system/wg-quick@.service`。
+
+控制方法如下：
+```bash
+# 启用服务（开机自启）
+sudo systemctl enable wg-quick@wg0
+
+# 立即启动服务
+sudo systemctl start wg-quick@wg0
+
+# 查看服务状态
+sudo systemctl status wg-quick@wg0
+
+# 查看日志
+sudo journalctl -u wg-quick@wg0 -f
+```
+
 ### UPS 的电池容量
 
-树莓派低功耗待机不需要20W的功耗，不一定需要这么大电池容量，但具体功耗我也没测试过。
+树莓派低功耗待机不需要15W的功耗，不一定需要这么大电池容量，但具体功耗我也没测试过。
 
-### 登陆校园网
+### 自动登陆校园网
 
-如果Client无法连接校园网，那这套方案是完全不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的[这个仓库](https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetwork.py)里就有这样一个脚本，可以用于登陆宿舍区校园网，但记得配置一个定时连接的服务。
+如果Client无法连接广域网，那这套方案是肯定不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的[这个仓库](https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetwork.py)里就有这样一个脚本，可以用于登陆宿舍区校园网。
+
+为了解决有时校园网需要重新登陆的问题，我们配置另一个定时脚本和对应的service。
+
+#### 1. 监控脚本
+
+我们需要写一个简单的 Shell 脚本来执行循环检测逻辑。
+
+1. 在目录下（假设是 `/home/user/scripts`）创建一个文件 `auto_login_monitor.sh`：
+2. 写入以下内容：
+
+```bash
+#!/bin/bash
+
+# --- 配置区域 ---
+# 校园网登录脚本的绝对路径
+LOGIN_SCRIPT="/home/user/scripts/login.py" 
+# 目标网址
+CHECK_URL="www.baidu.com"
+# 检查间隔（秒）
+INTERVAL=300
+
+echo "Campus network monitor started..."
+
+while true; do
+    # ping 1个包，超时时间5秒
+    ping -c 1 -W 5 $CHECK_URL > /dev/null 2>&1
+    
+    if [ $? -ne 0 ]; then
+        echo "$(date): Network is down. Attempting to login..."
+        # 执行登录脚本
+        python $LOGIN_SCRIPT
+    else
+        echo "$(date): Network is OK."
+    fi
+    
+    sleep $INTERVAL
+done
+
+```
+
+3. 执行命令赋予脚本执行权限：
+```bash
+chmod +x /home/user/scripts/auto_login_monitor.sh
+```
+
+#### 2. 创建 Systemd 服务
+
+为了让这个脚本像系统服务一样在后台运行，并随开机启动，我们需要创建一个 `.service` 文件。
+
+1. 创建服务文件：
+`sudo nano /etc/systemd/system/campus-wifi.service`
+2. 粘贴以下配置：
+
+```ini
+[Unit]
+Description=Campus Network Auto-Login Service
+After=network.target
+
+[Service]
+User=your_username
+ExecStart=/bin/bash /home/user/scripts/auto_login_monitor.sh
+Restart=always
+RestartSec=5
+WorkingDirectory=/home/user/scripts/
+
+[Install]
+WantedBy=multi-user.target
+```
+
+> [!IMPORTANT]
+> 请将 `your_username` 和 `ExecStart` 路径替换为你实际的用户名和路径。
+
+#### 3. 启动并激活服务
+
+执行以下命令让服务生效：
+
+```bash
+# 重新加载系统服务配置
+sudo systemctl daemon-reload
+# 设置开机自启
+sudo systemctl enable campus-wifi.service
+# 立即启动服务
+sudo systemctl start campus-wifi.service
+```
+
+#### 如何管理服务
+
+- **查看运行状态**：`sudo systemctl status campus-wifi.service`
+- **查看实时日志**（排查是否成功 ping 通）：`journalctl -u campus-wifi.service -f`
+- **停止服务**：`sudo systemctl stop campus-wifi.service`
+
+
 
 2025/12/21
