@@ -4,7 +4,7 @@
 
 ## 我们要做什么
 
-我们将在校园网内计算机上使用[frp](https://github.com/fatedier/frp)配置[反向代理](https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86)并安装[WireGuard$^{\text{®}}$](https://www.wireguard.com/)实现访问校内的网络资源。
+我们将在校园网内计算机上使用[frp](https://github.com/fatedier/frp)配置[反向代理](https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86)并安装[WireGuard$^{\text{®}}$](https://www.wireguard.com/)实现在校外访问校内的网络资源。
 
 ### 我们需要什么
 
@@ -153,7 +153,7 @@ WireGuard 是一个非常简单、快速、现代化的虚拟专用网协议。�
 
 
 > [!NOTE]
-> 如果使用[SAKURA FRP](https://www.natfrp.com/)，他们fork并修改了frpc，使其支持通过命令行的特别参数直接启动而不用编写配置文件，你可以在[这里](https://www.natfrp.com/tunnel/download)下载并参照他们的教程运行。
+> 如果使用[SAKURA FRP](https://www.natfrp.com/)，他们fork并修改了frpc，使其支持通过命令行的`-f`参数直接启动而不用编写配置文件，你可以在[这里](https://www.natfrp.com/tunnel/download)下载并参照他们的教程运行。
 
 #### 1. 编写配置文件
 
@@ -217,7 +217,10 @@ sudo echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/9999-ip-forward.conf
 
 #### 3. 生成密钥对
 
-在 Client 和 User 端各执行一次，并记录下各自的公钥和私钥。
+在 Client 和 User 端各执行一次，并记录下各自的公钥和私钥，我们需要在接下来的配置文件中输入它们。
+
+下面命令可以快速的完成这个步骤，它会将公钥和私钥保存为当前目录下的文件`publickey`与`privatekey`。
+
 ```bash
 wg genkey | tee privatekey | wg pubkey > publickey
 ```
@@ -271,10 +274,10 @@ PersistentKeepalive = 25
 > 在 User 端配置中，`AllowedIPs` 决定了哪些流量会走 WireGuard 隧道。如果你希望访问校园网，必须把校园网的网段（如 `172.16.0.0/12` 或 `10.0.0.0/8`）加进去。
 
 > [!TIP]
-> 如果不确定有哪些IP需要访问，可以将`0.0.0.0/0`（全部IP）添加到`AllowedIPs`，但注意此时你的所有网络流量都会被路由
+> 如果不确定有哪些IP需要访问，可以将`0.0.0.0/0`（全部IP）添加到`AllowedIPs`，但注意此时你的所有网络流量都会被路由。
 
 > [!IMPORTANT]
-> 请务必修改配置文件其中的`<Client的私钥>`和`<User的公钥>`为实际密钥；修改`<frp服务器公网IP>:<frp映射后的UDP端口>`为实际地址和端口
+> 请务必修改配置文件其中的`<Client的私钥>`和`<User的公钥>`为实际密钥；修改`<frp服务器公网IP>:<frp映射后的UDP端口>`为实际地址和端口。
 
 
 #### 6. 启动WireGuard
@@ -346,7 +349,7 @@ WantedBy=multi-user.target
 sudo systemctl status frpc
 ```
 
-如果你看到一片绿色的 <span style="color:#06C762;">`active (running)`</span>，那就说明我们的 `frpc` 已经成功穿透校园网，开始为你工作。
+如果你看到绿色的 <span style="color:#06C762;">`active (running)`</span>，那就说明我们的 `frpc` 已经成功穿透校园网，开始为你工作。
 
 ## 需要注意的事项
 
