@@ -4,7 +4,7 @@
 
 ## 我们要做什么
 
-我们将在校园网内计算机上使用[frp](https://github.com/fatedier/frp)配置[反向代理](https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86)并安装[WireGuard$^{\text{®}}$](https://www.wireguard.com/)实现访问校内的网络资源。
+我们将在校园网内计算机上使用[frp](https://github.com/fatedier/frp)配置[反向代理](https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86)并安装[WireGuard$^{\text{®}}$](https://www.wireguard.com/)实现在校外访问校内的网络资源。
 
 ### 我们需要什么
 
@@ -153,7 +153,7 @@ WireGuard 是一个非常简单、快速、现代化的虚拟专用网协议。�
 
 
 > [!NOTE]
-> 如果使用[SAKURA FRP](https://www.natfrp.com/)，他们fork并修改了frpc，使其支持通过命令行的特别参数直接启动而不用编写配置文件，你可以在[这里](https://www.natfrp.com/tunnel/download)下载并参照他们的教程运行。
+> 如果使用[SAKURA FRP](https://www.natfrp.com/)，他们fork并修改了frpc，使其支持通过命令行的`-f`参数直接启动而不用编写配置文件，你可以在[这里](https://www.natfrp.com/tunnel/download)下载并参照他们的教程运行。
 
 #### 1. 编写配置文件
 
@@ -217,7 +217,10 @@ sudo echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/9999-ip-forward.conf
 
 #### 3. 生成密钥对
 
-在 Client 和 User 端各执行一次，并记录下各自的公钥和私钥。
+在 Client 和 User 端各执行一次，并记录下各自的公钥和私钥，我们需要在接下来的配置文件中输入它们。
+
+下面命令可以快速的完成这个步骤，它会将公钥和私钥保存为当前目录下的文件`publickey`与`privatekey`。
+
 ```bash
 wg genkey | tee privatekey | wg pubkey > publickey
 ```
@@ -271,10 +274,10 @@ PersistentKeepalive = 25
 > 在 User 端配置中，`AllowedIPs` 决定了哪些流量会走 WireGuard 隧道。如果你希望访问校园网，必须把校园网的网段（如 `172.16.0.0/12` 或 `10.0.0.0/8`）加进去。
 
 > [!TIP]
-> 如果不确定有哪些IP需要访问，可以将`0.0.0.0/0`（全部IP）添加到`AllowedIPs`，但注意此时你的所有网络流量都会被路由
+> 如果不确定有哪些IP需要访问，可以将`0.0.0.0/0`（全部IP）添加到`AllowedIPs`，但注意此时你的所有网络流量都会被路由。
 
 > [!IMPORTANT]
-> 请务必修改配置文件其中的`<Client的私钥>`和`<User的公钥>`为实际密钥；修改`<frp服务器公网IP>:<frp映射后的UDP端口>`为实际地址和端口
+> 请务必修改配置文件其中的`<Client的私钥>`和`<User的公钥>`为实际密钥；修改`<frp服务器公网IP>:<frp映射后的UDP端口>`为实际地址和端口。
 
 
 #### 6. 启动WireGuard
@@ -286,6 +289,10 @@ sudo wg-quick up wg0
 启动WireGuard服务。
 
 在 User 端点击“连接”，测试是否能连接上。
+
+> [!TIP]
+>
+> 我们在Client的配置中设置了`Address = 10.0.0.1`，这意味着我们可以在连接上后通过10.0.0.1这个地址访问Client自身的网络服务，例如ssh。
 
 ### 配置各个服务的自启动
 
@@ -346,7 +353,7 @@ WantedBy=multi-user.target
 sudo systemctl status frpc
 ```
 
-如果你看到一片绿色的 <span style="color:#06C762;">`active (running)`</span>，那就说明我们的 `frpc` 已经成功穿透校园网，开始为你工作。
+如果你看到绿色的 <span style="color:#06C762;">`active (running)`</span>，那就说明我们的 `frpc` 已经成功穿透校园网，开始为你工作。
 
 ## 需要注意的事项
 
@@ -392,7 +399,7 @@ sudo journalctl -u wg-quick@wg0 -f
 
 ### 自动登陆校园网
 
-如果Client无法连接广域网，那这套方案是肯定不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的[这个仓库](https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetwork.py)里就有这样一个脚本，可以用于登陆宿舍区校园网。
+如果Client无法连接广域网，那这套方案是肯定不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的[这个仓库](https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetwork.py)里就有这样一个脚本，可以用于登陆szu宿舍区校园网。
 
 为了解决有时校园网需要重新登陆的问题，我们配置另一个定时脚本和对应的service。
 
@@ -443,8 +450,8 @@ chmod +x /home/user/scripts/auto_login_monitor.sh
 为了让这个脚本像系统服务一样在后台运行，并随开机启动，我们需要创建一个 `.service` 文件。
 
 1. 创建服务文件：
-`sudo nano /etc/systemd/system/campus-wifi.service`
-2. 粘贴以下配置：
+`sudo nano /etc/systemd/system/auto-login.service`
+2. 使用以下配置：
 
 ```ini
 [Unit]
@@ -463,7 +470,7 @@ WantedBy=multi-user.target
 ```
 
 > [!IMPORTANT]
-> 请将 `your_username` 和 `ExecStart` 路径替换为你实际的用户名和路径。
+> 请将 `your_username`、`user` 和 `ExecStart` 路径替换为你实际的用户名和路径。
 
 #### 3. 启动并激活服务
 
@@ -473,16 +480,16 @@ WantedBy=multi-user.target
 # 重新加载系统服务配置
 sudo systemctl daemon-reload
 # 设置开机自启
-sudo systemctl enable campus-wifi.service
+sudo systemctl enable auto-login.service
 # 立即启动服务
-sudo systemctl start campus-wifi.service
+sudo systemctl start auto-login.service
 ```
 
 #### 如何管理服务
 
-- **查看运行状态**：`sudo systemctl status campus-wifi.service`
-- **查看实时日志**（排查是否成功 ping 通）：`journalctl -u campus-wifi.service -f`
-- **停止服务**：`sudo systemctl stop campus-wifi.service`
+- **查看运行状态**：`sudo systemctl status auto-login.service`
+- **查看实时日志**（排查是否成功 ping 通）：`journalctl -u auto-login.service -f`
+- **停止服务**：`sudo systemctl stop auto-login.service`
 
 
 

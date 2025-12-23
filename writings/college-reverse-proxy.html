@@ -83,7 +83,7 @@
             <div id="content"><blockquote>
 <p>给ywk宝宝写的教程</p>
 </blockquote>
-<h2 id="h2-u6211u4eecu8981u505au4ec0u4e48">我们要做什么</h2><p>我们将在校园网内计算机上使用<a href="https://github.com/fatedier/frp">frp</a>配置<a href="https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86">反向代理</a>并安装<a href="https://www.wireguard.com/">WireGuard<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow></mrow><mtext>®</mtext></msup></mrow><annotation encoding="application/x-tex">^{\text{®}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9852em;"></span><span class="mord"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9852em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord accent mtight"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8889em;"><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span class="mord mtight"><span class="mord">R</span></span></span><span style="top:-2.8944em;"><span class="pstrut" style="height:2.7em;"></span><span class="accent-body accent-full" style="left:0em;top:.2em;"><span class="mord mtight">◯</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></a>实现访问校内的网络资源。</p>
+<h2 id="h2-u6211u4eecu8981u505au4ec0u4e48">我们要做什么</h2><p>我们将在校园网内计算机上使用<a href="https://github.com/fatedier/frp">frp</a>配置<a href="https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86">反向代理</a>并安装<a href="https://www.wireguard.com/">WireGuard<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow></mrow><mtext>®</mtext></msup></mrow><annotation encoding="application/x-tex">^{\text{®}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9852em;"></span><span class="mord"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9852em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord accent mtight"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8889em;"><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span class="mord mtight"><span class="mord">R</span></span></span><span style="top:-2.8944em;"><span class="pstrut" style="height:2.7em;"></span><span class="accent-body accent-full" style="left:0em;top:.2em;"><span class="mord mtight">◯</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></a>实现在校外访问校内的网络资源。</p>
 <h3 id="h3-u6211u4eecu9700u8981u4ec0u4e48">我们需要什么</h3><ul>
 <li>一台在校园网内环境运行，并可以连接公网的计算机，比如<a href="https://www.raspberrypi.com/">树莓派</a>，本文会将其称为client。</li>
 <li>可选：一台在公网上运行的服务器，本文会将其称为server。<ul>
@@ -239,7 +239,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <h3 id="h3-u914du7f6eclientu4e0au7684frpc">配置client上的frpc</h3><p>现在回到宿舍里的client，我们要告诉它如何找到外面的服务器。</p>
 <div class="markdown-alert markdown-alert-note">
 <p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
-<p>如果使用<a href="https://www.natfrp.com/">SAKURA FRP</a>，他们fork并修改了frpc，使其支持通过命令行的特别参数直接启动而不用编写配置文件，你可以在<a href="https://www.natfrp.com/tunnel/download">这里</a>下载并参照他们的教程运行。</p>
+<p>如果使用<a href="https://www.natfrp.com/">SAKURA FRP</a>，他们fork并修改了frpc，使其支持通过命令行的<code>-f</code>参数直接启动而不用编写配置文件，你可以在<a href="https://www.natfrp.com/tunnel/download">这里</a>下载并参照他们的教程运行。</p>
 </div>
 <h4 id="h4-1-u7f16u5199u914du7f6eu6587u4ef6">1. 编写配置文件</h4><p>新建 <code>frpc.toml</code>，这是实现穿透的关键：</p>
 <pre><code class="language-toml"><span class="hljs-attr">serverAddr</span> = <span class="hljs-string">&quot;你的服务器公网IP&quot;</span>
@@ -273,7 +273,8 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <p>不同发行版可能具有不同配置，<code>/etc/sysctl.conf</code>可能不存在，这时也可以考虑将配置添加到<code>/etc/sysctl.d</code>文件夹中的一个新的文件中，如</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;net.ipv4.ip_forward=1&quot;</span> &gt; /etc/sysctl.d/9999-ip-forward.conf
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h4 id="h4-3-u751fu6210u5bc6u94a5u5bf9">3. 生成密钥对</h4><p>在 Client 和 User 端各执行一次，并记录下各自的公钥和私钥。</p>
+<h4 id="h4-3-u751fu6210u5bc6u94a5u5bf9">3. 生成密钥对</h4><p>在 Client 和 User 端各执行一次，并记录下各自的公钥和私钥，我们需要在接下来的配置文件中输入它们。</p>
+<p>下面命令可以快速的完成这个步骤，它会将公钥和私钥保存为当前目录下的文件<code>publickey</code>与<code>privatekey</code>。</p>
 <pre><code class="language-bash">wg genkey | <span class="hljs-built_in">tee</span> privatekey | wg pubkey &gt; publickey
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <h4 id="h4-4-u914du7f6e-client-u7aef-u5185u7f51u670du52a1u5668">4. 配置 Client 端 (内网服务器)</h4><p>编辑 <code>/etc/wireguard/wg0.conf</code>。为了让 User 能访问局域网，我们需要在接口启动时添加 <code>iptables</code> 规则来进行 NAT 伪装。</p>
@@ -320,17 +321,21 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 </div>
 <div class="markdown-alert markdown-alert-tip">
 <p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
-<p>如果不确定有哪些IP需要访问，可以将<code>0.0.0.0/0</code>（全部IP）添加到<code>AllowedIPs</code>，但注意此时你的所有网络流量都会被路由</p>
+<p>如果不确定有哪些IP需要访问，可以将<code>0.0.0.0/0</code>（全部IP）添加到<code>AllowedIPs</code>，但注意此时你的所有网络流量都会被路由。</p>
 </div>
 <div class="markdown-alert markdown-alert-important">
 <p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
-<p>请务必修改配置文件其中的<code>&lt;Client的私钥&gt;</code>和<code>&lt;User的公钥&gt;</code>为实际密钥；修改<code>&lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;</code>为实际地址和端口</p>
+<p>请务必修改配置文件其中的<code>&lt;Client的私钥&gt;</code>和<code>&lt;User的公钥&gt;</code>为实际密钥；修改<code>&lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;</code>为实际地址和端口。</p>
 </div>
 <h4 id="h4-6-u542fu52a8wireguard">6. 启动WireGuard</h4><p>配置完成后，在 Client 执行 </p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> wg-quick up wg0
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>启动WireGuard服务。</p>
 <p>在 User 端点击“连接”，测试是否能连接上。</p>
+<div class="markdown-alert markdown-alert-tip">
+<p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p>我们在Client的配置中设置了<code>Address = 10.0.0.1</code>，这意味着我们可以在连接上后通过10.0.0.1这个地址访问Client自身的网络服务，例如ssh。</p>
+</div>
 <h3 id="h3-u914du7f6eu5404u4e2au670du52a1u7684u81eau542fu52a8">配置各个服务的自启动</h3><p>我们需要配置frps, frpc, WireGuard三个服务的自动启动，让他们在开机或意外退出后可以自动重新启动。</p>
 <p>下面以frpc为例说明如何配置，其他服务是类似的。</p>
 <p>在 Linux 系统里，<a href="https://en.wikipedia.org/wiki/Systemd"><code>systemd</code></a> 就像是一个大管家，我们可以写一张“任务清单”交给它，让它负责 <code>frpc</code> 的日常维护。</p>
@@ -368,7 +373,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <h4 id="h4-4-u68c0u67e5u670du52a1u72b6u6001">4. 检查服务状态</h4><p>执行下面的命令查看状态：</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> systemctl status frpc
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<p>如果你看到一片绿色的 <span style="color:#06C762;"><code>active (running)</code></span>，那就说明我们的 <code>frpc</code> 已经成功穿透校园网，开始为你工作。</p>
+<p>如果你看到绿色的 <span style="color:#06C762;"><code>active (running)</code></span>，那就说明我们的 <code>frpc</code> 已经成功穿透校园网，开始为你工作。</p>
 <h2 id="h2-u9700u8981u6ce8u610fu7684u4e8bu9879">需要注意的事项</h2><h3 id="h3-wireguard-u7684u81eau542fu52a8u7ba1u7406">WireGuard 的自启动管理</h3><p>WireGuard的.service有些许不同，在此附上如下。</p>
 <pre><code class="language-ini"><span class="hljs-section">[Unit]</span>
 <span class="hljs-attr">Description</span>=WireGuard via wg-quick(<span class="hljs-number">8</span>) for %I
@@ -400,7 +405,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <span class="hljs-built_in">sudo</span> journalctl -u wg-quick@wg0 -f
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-ups-u7684u7535u6c60u5bb9u91cf">UPS 的电池容量</h3><p>树莓派低功耗待机不需要15W的功耗，不一定需要这么大电池容量，但具体功耗我也没测试过。</p>
-<h3 id="h3-u81eau52a8u767bu9646u6821u56edu7f51">自动登陆校园网</h3><p>如果Client无法连接广域网，那这套方案是肯定不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的<a href="https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetwork.py">这个仓库</a>里就有这样一个脚本，可以用于登陆宿舍区校园网。</p>
+<h3 id="h3-u81eau52a8u767bu9646u6821u56edu7f51">自动登陆校园网</h3><p>如果Client无法连接广域网，那这套方案是肯定不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的<a href="https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetwork.py">这个仓库</a>里就有这样一个脚本，可以用于登陆szu宿舍区校园网。</p>
 <p>为了解决有时校园网需要重新登陆的问题，我们配置另一个定时脚本和对应的service。</p>
 <h4 id="h4-1-u76d1u63a7u811au672c">1. 监控脚本</h4><p>我们需要写一个简单的 Shell 脚本来执行循环检测逻辑。</p>
 <ol>
@@ -442,8 +447,8 @@ INTERVAL=300
 <h4 id="h4-2-u521bu5efa-systemd-u670du52a1">2. 创建 Systemd 服务</h4><p>为了让这个脚本像系统服务一样在后台运行，并随开机启动，我们需要创建一个 <code>.service</code> 文件。</p>
 <ol>
 <li>创建服务文件：
-<code>sudo nano /etc/systemd/system/campus-wifi.service</code></li>
-<li>粘贴以下配置：</li>
+<code>sudo nano /etc/systemd/system/auto-login.service</code></li>
+<li>使用以下配置：</li>
 </ol>
 <pre><code class="language-ini"><span class="hljs-section">[Unit]</span>
 <span class="hljs-attr">Description</span>=Campus Network Auto-Login Service
@@ -461,20 +466,20 @@ INTERVAL=300
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <div class="markdown-alert markdown-alert-important">
 <p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
-<p>请将 <code>your_username</code> 和 <code>ExecStart</code> 路径替换为你实际的用户名和路径。</p>
+<p>请将 <code>your_username</code>、<code>user</code> 和 <code>ExecStart</code> 路径替换为你实际的用户名和路径。</p>
 </div>
 <h4 id="h4-3-u542fu52a8u5e76u6fc0u6d3bu670du52a1">3. 启动并激活服务</h4><p>执行以下命令让服务生效：</p>
 <pre><code class="language-bash"><span class="hljs-comment"># 重新加载系统服务配置</span>
 <span class="hljs-built_in">sudo</span> systemctl daemon-reload
 <span class="hljs-comment"># 设置开机自启</span>
-<span class="hljs-built_in">sudo</span> systemctl <span class="hljs-built_in">enable</span> campus-wifi.service
+<span class="hljs-built_in">sudo</span> systemctl <span class="hljs-built_in">enable</span> auto-login.service
 <span class="hljs-comment"># 立即启动服务</span>
-<span class="hljs-built_in">sudo</span> systemctl start campus-wifi.service
+<span class="hljs-built_in">sudo</span> systemctl start auto-login.service
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <h4 id="h4-u5982u4f55u7ba1u7406u670du52a1">如何管理服务</h4><ul>
-<li><strong>查看运行状态</strong>：<code>sudo systemctl status campus-wifi.service</code></li>
-<li><strong>查看实时日志</strong>（排查是否成功 ping 通）：<code>journalctl -u campus-wifi.service -f</code></li>
-<li><strong>停止服务</strong>：<code>sudo systemctl stop campus-wifi.service</code></li>
+<li><strong>查看运行状态</strong>：<code>sudo systemctl status auto-login.service</code></li>
+<li><strong>查看实时日志</strong>（排查是否成功 ping 通）：<code>journalctl -u auto-login.service -f</code></li>
+<li><strong>停止服务</strong>：<code>sudo systemctl stop auto-login.service</code></li>
 </ul>
 <section class="footnotes" data-footnotes>
 <h2 id="footnote-label" class="sr-only">Footnotes</h2>
