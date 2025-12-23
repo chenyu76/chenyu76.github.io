@@ -290,6 +290,10 @@ sudo wg-quick up wg0
 
 在 User 端点击“连接”，测试是否能连接上。
 
+> [!TIP]
+>
+> 我们在Client的配置中设置了`Address = 10.0.0.1`，这意味着我们可以在连接上后通过10.0.0.1这个地址访问Client自身的网络服务，例如ssh。
+
 ### 配置各个服务的自启动
 
 我们需要配置frps, frpc, WireGuard三个服务的自动启动，让他们在开机或意外退出后可以自动重新启动。
@@ -395,7 +399,7 @@ sudo journalctl -u wg-quick@wg0 -f
 
 ### 自动登陆校园网
 
-如果Client无法连接广域网，那这套方案是肯定不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的[这个仓库](https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetwork.py)里就有这样一个脚本，可以用于登陆宿舍区校园网。
+如果Client无法连接广域网，那这套方案是肯定不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的[这个仓库](https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetwork.py)里就有这样一个脚本，可以用于登陆szu宿舍区校园网。
 
 为了解决有时校园网需要重新登陆的问题，我们配置另一个定时脚本和对应的service。
 
@@ -446,8 +450,8 @@ chmod +x /home/user/scripts/auto_login_monitor.sh
 为了让这个脚本像系统服务一样在后台运行，并随开机启动，我们需要创建一个 `.service` 文件。
 
 1. 创建服务文件：
-`sudo nano /etc/systemd/system/campus-wifi.service`
-2. 粘贴以下配置：
+`sudo nano /etc/systemd/system/auto-login.service`
+2. 使用以下配置：
 
 ```ini
 [Unit]
@@ -466,7 +470,7 @@ WantedBy=multi-user.target
 ```
 
 > [!IMPORTANT]
-> 请将 `your_username` 和 `ExecStart` 路径替换为你实际的用户名和路径。
+> 请将 `your_username`、`user` 和 `ExecStart` 路径替换为你实际的用户名和路径。
 
 #### 3. 启动并激活服务
 
@@ -476,16 +480,16 @@ WantedBy=multi-user.target
 # 重新加载系统服务配置
 sudo systemctl daemon-reload
 # 设置开机自启
-sudo systemctl enable campus-wifi.service
+sudo systemctl enable auto-login.service
 # 立即启动服务
-sudo systemctl start campus-wifi.service
+sudo systemctl start auto-login.service
 ```
 
 #### 如何管理服务
 
-- **查看运行状态**：`sudo systemctl status campus-wifi.service`
-- **查看实时日志**（排查是否成功 ping 通）：`journalctl -u campus-wifi.service -f`
-- **停止服务**：`sudo systemctl stop campus-wifi.service`
+- **查看运行状态**：`sudo systemctl status auto-login.service`
+- **查看实时日志**（排查是否成功 ping 通）：`journalctl -u auto-login.service -f`
+- **停止服务**：`sudo systemctl stop auto-login.service`
 
 
 
