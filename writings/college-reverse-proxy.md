@@ -37,7 +37,7 @@ $$
 \end{CD}
 $$
 
-内置电池的UPS可以在直接给树莓派供电的同时，在宿舍区断电时自动切换到电池供电，保证设备不掉线。注意宿舍区每天断电六小时，如果树莓派的功耗按 $15\text{W}(5\text{V}\ 3\text{A})$ 计算，我们至少需要
+内置电池的UPS可以在直接给client树莓派供电的同时，在宿舍区断电时自动切换到电池供电，保证设备不掉线。注意宿舍区每天断电六小时，如果树莓派的功耗按 $15\text{W}(5\text{V}\ 3\text{A})$ 计算，我们至少需要
 
 $$
 \frac{15 \text{W} \times 6 \text{h} }{3.7\text{V}} \times 1000\text{mA}/\text{A}
@@ -396,6 +396,139 @@ sudo journalctl -u wg-quick@wg0 -f
 ### UPS 的电池容量
 
 树莓派低功耗待机不需要15W的功耗，不一定需要这么大电池容量，但具体功耗我也没测试过。
+
+### 在每日断电前自动关机
+
+如果不配备UPS，并且不想Client树莓派在宿舍断电时直接掉电的话，我们就需要在将要掉电前将树莓派关机。但是手动关机显然不太现实，可以编写脚本实现这点。
+
+学校的断电规则比较规律：在每天二十四点出头时，如果第二天要上课，就会断电直到早上六点。完全根据调休执行，但问题是调休规则并不规律。幸运的是，有[好心人](https://timor.tech)提供了一个联网API，我可以每天查询明天是否放假，从而决定是否关机。
+
+#### 1. 不放假就关机的脚本
+
+编写python脚本如下：
+
+```python
+import datetime
+import os
+import time
+
+import requests
+
+LOG_FILE = __file__ + ".log"
+
+
+def log(message):
+    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    t_msg = f"[{now}] {message}"
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(t_msg + "\n")
+    print(t_msg)
+
+
+def get_tomorrow_status():
+    tomorrow_str = (datetime.date.today() + datetime.timedelta(days=1)).strftime(
+        "%Y-%m-%d"
+    )
+    url = f"https://timor.tech/api/holiday/info/{tomorrow_str}"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    }
+
+    try:
+        response = requests.get(url, headers=headers, timeout=15)
+
+        # 如果返回状态码不是 200，说明 API 服务出问题了
+        if response.status_code != 200:
+            log(f"API 服务器返回错误码: {response.status_code}")
+            return None
+
+        # 检查返回内容是否为空
+        if not response.text.strip():
+            log("API 返回内容为空")
+            return None
+
+        data = response.json()
+        if data.get("code") == 0:
+            type_code = data.get("type", {}).get("type")
+            return type_code in [0, 3]
+        else:
+            log(f"API 逻辑报错: {data.get('msg')}")
+
+    except requests.exceptions.JSONDecodeError:
+        log("API 返回了非 JSON 格式的内容（可能是 HTML 错误页）")
+    except Exception as e:
+        log(f"请求发生异常: {e}")
+
+    return None
+
+
+def shutdown():
+    # 延迟1分钟关机
+    os.system('sudo shutdown +1 "明天是工作日，关机"')
+
+
+def main():
+    # 第一次尝试
+    log("开始检查明天是否是假期...")
+    is_workday = get_tomorrow_status()
+
+    if is_workday is None:
+        log("第一次检查失败，10分钟后进行最终尝试...")
+        time.sleep(600)  # 等待 600 秒
+
+        log("开始第二次检查...")
+        is_workday = get_tomorrow_status()
+
+        if is_workday is None:
+            log("第二次检查依然失败。直接关机。")
+            is_workday = True  # 强制判定为工作日，触发关机
+
+    if is_workday:
+        log("明天是工作日，准备关机...")
+        shutdown()
+    else:
+        log("明天是假期，今晚不关机。")
+
+
+if __name__ == "__main__":
+    main()
+
+```
+
+这个脚本会在执行后联网检查明天放不放假，如果不放假就关机，放假则不做任何事。为了防止刚好网络掉线情况，如果第一次检查失败，脚本会在十分钟后检查第二次。
+
+#### 2. 每天运行关机检查
+
+接着，我们配置每天晚上23:40通过crontab自动运行这个脚本。通过命令
+
+```bash
+crontab -e
+```
+
+编辑Cron 定时任务。在文件末尾添加一行：
+
+```bash
+40 23 * * * /usr/bin/python3 /home/username/scripts/holiday_shutdown.py
+```
+
+> [!IMPORTANT]
+>
+> 请确保 `python3` 和 `脚本` 的路径都是绝对路径。
+
+#### 3. 给`shutdown`设置免密
+
+由于关机命令 `shutdown` 需要 root 权限，而定时任务自动运行时无法手动输入密码，我们需要为 `shutdown` 命令设置免密。
+
+1. 在终端输入：`sudo visudo`
+2. 在文件末尾添加以下内容（将 `username` 替换为你的实际用户名）：
+
+```bash
+username ALL=(ALL) NOPASSWD: /usr/sbin/shutdown
+```
+
+> [!TIP]
+>
+> 树莓派似乎本身就不用输密码，可以跳过这一步。
 
 ### 自动登陆校园网
 
