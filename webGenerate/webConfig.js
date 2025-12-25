@@ -21,20 +21,24 @@ export const gitRepositories = {
  * date:
  * 日期，格式YYYYMMDD 或 YYYYMM 或 YYYY 或
  * 字符串（这会移交给JavaScript的Date对象处理）
+ * TODO:
+ * 最好能直接从markdown文件中读出来，因为我在markdown中保持在最后一行写日期的惯例。
  *
  * title:
  * 标题（可选，若不填，尝试从对应的markdown文件的第一行寻找标题）
  *
  * info:
  * html格式的介绍
- * （可选，若不填，我希望能从生成的html文件里找到第一个<p>填进去，但目前还没实现）
+ * （可选，若不填，
+ * TODO:
+ * 我希望能从生成的html文件里找到第一个<p>填进去，但目前还没实现）
  */
 export const recommend = [
   {
     date : 20251221,
     link : "writings/college-reverse-proxy.html",
     info :
-        "我们将在校园网内计算机上使用frp配置反向代理并安装WireGuard实现访问校内的网络资源。"
+        "我们将在校园网内计算机上使用frp配置反向代理并安装WireGuard实现在校外访问校内的网络资源。以及一些相关的注意事项。"
   },
   {
     date : 20251207,
