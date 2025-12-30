@@ -248,10 +248,13 @@ function createPixelMatrix(startX, startY, matrix) {
   return canvas;
 }
 
-function randomNormal(mean = 0, stdDev = 1) {
+function randomNormal(mean = 0, stdDev = 1, avoidOutliers = true) {
   let u1 = Math.random();
   let u2 = Math.random();
   let z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+  if (avoidOutliers && Math.abs(z0) > 3) {
+    return randomNormal(mean, stdDev);
+  }
   return z0 * stdDev + mean;
 }
 
