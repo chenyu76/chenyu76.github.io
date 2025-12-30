@@ -29,10 +29,13 @@ class SeededRandom {
   }
 
   // 生成一个符合正态分布的随机数，使用 Box-Muller 变换
-  normal(mean = 0, stdDev = 1) {
+  normal(mean = 0, stdDev = 1, avoidOutliers = true) {
     let u1 = this.uniform();
     let u2 = this.uniform();
     let z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+    if (avoidOutliers && Math.abs(z0) > 3) {
+      return this.normal(mean, stdDev, true);
+    }
     return z0 * stdDev + mean;
   }
 
