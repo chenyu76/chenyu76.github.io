@@ -99,31 +99,34 @@
 }
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>让我们逐字段介绍一下这个格式：</p>
-<pre class="ascii-table" lang="en"><code>   文档类型 (Entry Type)
-   固定语法: book, article...
-   │
-   │      引用标签 (Citation Key)
-   │      自定义ID: 在正文中引用
-   │      │
- ┌─┴──┐ ┌─┴──────────┐
-@│book│{│ latexguide │,
- └────┘ └────────────┘
-     字段名 (Field Name)
-     固定关键字: author, title...
-     │
-     │             字段内容 (Field Value)
-     │             具体的文献信息
-   ┌─┴────┐      ┌─┴─────────────┐
-   │author│   = {│Leslie Lamport │}, ◄────── 注意：字段结束必须加英文逗号
-   └──────┘      └───────────────┘
-    title     = {LaTeX: A Document Preparation System},
-    publisher = {Addiso.-Wesley},
-    year      = {2077},
-    edition   = {2nd}
-    ...
-       ◄────── 可以添加更多字段
-    ...
- }
+<pre class="ascii-table" lang="en"><code> @标志一个条目的开始
+ │                                                          
+ │   文档类型                                     
+ │   固定语法: book, article...                                 
+ │   │                                                      
+ │   │      引用标签                             
+ │   │      自定义ID: 在正文中引用                                   
+ │   │      │                                               
+┌┴┐┌─┴──┐ ┌─┴──────────┐                                    
+│@││book│{│ latexguide │,                                   
+└─┘└────┘ └────────────┘                                    
+     字段名 (Field Name)                                       
+     固定关键字: author, title...                                
+     │                                                      
+     │             字段内容                       
+     │             具体的文献信息                                  
+   ┌─┴────┐      ┌─┴──────────────┐                         
+   │author│   = {│ Leslie Lamport │}, ◄────── 注意：字段结束必须加英文逗号
+   └──────┘      └────────────────┘                         
+    title     = {LaTeX: A Document Preparation System},     
+    publisher = {Addiso.-Wesley},                           
+    year      = {2077},                                     
+    edition   = {2nd}                                       
+    ...                                                     
+       ◄────── 可以添加更多字段，
+               字段的顺序不影响编译的效果
+    ...                                                     
+ }                                                          
 </code></pre>
 <p>例如，我们在与<code>.tex</code>文件相同的目录下创建一个 <code>references.bib</code> 文件，包含两个条目的示例内容如下：</p>
 <pre><code class="language-bibtex">@book{latexguide,
@@ -141,7 +144,7 @@
 }
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>可以在一个文件中添加任意多的条目，默认情况下，只有在正文中使用<code>\cite</code>命令引用的条目，才会出现在最后编译好的文档中。</p>
-<p>每个<code>@</code>开头是一个条目，条目内部填入作者、标题等信息；这个示例中第一个条目中book是文档类型， 此外还有article, inproceedings, misc等，如它们的名称所暗示的，它们分别代表书籍、文章等格式；<code>latexguide</code>是引用时使用的名称，可以在之后使用类似的格式添加更多内容。对于正经期刊上发表的论文，其对应的bib条目一般可以直接在<a href="https://scholar.google.com/">Google Scholar</a>或其他文献网站上复制获得，不推荐手写；或者你非常懒得话，也可以让ai生成，但务必注意核对信息。</p>
+<p>每个<code>@</code>开头是一个条目，条目内部填入作者、标题等信息；这个示例中第一个条目中book是文档类型， 此外还有article, inproceedings, misc等，如它们的名称所暗示的，它们分别代表书籍、文章等格式；<code>latexguide</code>是引用时使用的名称，可以在之后使用类似的格式添加更多内容。对于正经期刊上发表的论文，其对应的bib条目一般可以直接在<a href="https://scholar.google.com/">Google Scholar</a>或其他文献网站上复制获得，不推荐手写；或者你非常懒的话，也可以让AI生成，但务必注意核对信息。</p>
 <p><img src="./assets/google_scholar.png" alt="Google Scholar 示例"></p>
 <h2 id="h2-2-u5f15u7528u53c2u8003u6587u732e">2. 引用参考文献</h2><p>在LaTeX文件中，使用 <code>\cite{}</code> 命令引用参考文献。例如：</p>
 <pre><code class="language-latex">This is a reference to the LaTeX guide <span class="hljs-keyword">\cite</span>{latexguide}.
@@ -187,25 +190,25 @@
 </tr>
 </tbody></table>
 <h3 id="h3-tips">Tips</h3><ol>
-<li>如果在beamer中使用，可以添加 allowframebreaks 参数使文献列表自动换页</li>
+<li>如果在beamer中使用，可以添加 allowframebreaks 参数使文献列表自动换页。</li>
 </ol>
 <pre><code class="language-latex"><span class="hljs-keyword">\begin</span>{frame}[allowframebreaks]{References}
 	<span class="hljs-keyword">\bibliographystyle</span>{plain}
 	<span class="hljs-keyword">\bibliography</span>{references}
 <span class="hljs-keyword">\end</span>{frame}
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<p>文献列表编号（而不是图标）</p>
+<p>beamer默认使用图标而不是<code>[1], [2]</code>样式的编号，可以使用下面命令给文献列表编号。</p>
 <pre><code>\setbeamertemplate{bibliography item}{\insertbiblabel}
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <ol start="2">
-<li>可以通过使用<code>hyperref</code>宏包使引用标签可点击</li>
+<li>可以通过使用<code>hyperref</code>宏包使引用标签可点击。</li>
 </ol>
 <pre><code class="language-latex"><span class="hljs-keyword">\usepackage</span>{hyperref}
 <span class="hljs-comment">% 可以使用`[hidelinks]`选项隐藏pdf中的红色框框</span>
 <span class="hljs-comment">%\usepackage[hidelinks]{hyperref}</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <ol start="3">
-<li>多个作者怎么写？<ul>
+<li>多个作者怎么写不要用逗号分隔。<ul>
 <li>不要用逗号分隔作者！必须用 <code>and</code> 连接。</li>
 <li>错误：<code>author = {San Zhang, Si Li}</code></li>
 <li>正确：<code>author = {San Zhang and Si Li}</code> (BibTeX 会自动处理成 &quot;S. Zhang, S. Li&quot; 等格式)。</li>
