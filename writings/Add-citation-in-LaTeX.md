@@ -31,31 +31,34 @@
 让我们逐字段介绍一下这个格式：
 
 ```
-   文档类型 (Entry Type)
-   固定语法: book, article...
-   │
-   │      引用标签 (Citation Key)
-   │      自定义ID: 在正文中引用
-   │      │
- ┌─┴──┐ ┌─┴──────────┐
-@│book│{│ latexguide │,
- └────┘ └────────────┘
-     字段名 (Field Name)
-     固定关键字: author, title...
-     │
-     │             字段内容 (Field Value)
-     │             具体的文献信息
-   ┌─┴────┐      ┌─┴─────────────┐
-   │author│   = {│Leslie Lamport │}, ◄────── 注意：字段结束必须加英文逗号
-   └──────┘      └───────────────┘
-    title     = {LaTeX: A Document Preparation System},
-    publisher = {Addiso.-Wesley},
-    year      = {2077},
-    edition   = {2nd}
-    ...
-       ◄────── 可以添加更多字段
-    ...
- }
+ @标志一个条目的开始
+ │                                                          
+ │   文档类型                                     
+ │   固定语法: book, article...                                 
+ │   │                                                      
+ │   │      引用标签                             
+ │   │      自定义ID: 在正文中引用                                   
+ │   │      │                                               
+┌┴┐┌─┴──┐ ┌─┴──────────┐                                    
+│@││book│{│ latexguide │,                                   
+└─┘└────┘ └────────────┘                                    
+     字段名 (Field Name)                                       
+     固定关键字: author, title...                                
+     │                                                      
+     │             字段内容                       
+     │             具体的文献信息                                  
+   ┌─┴────┐      ┌─┴──────────────┐                         
+   │author│   = {│ Leslie Lamport │}, ◄────── 注意：字段结束必须加英文逗号
+   └──────┘      └────────────────┘                         
+    title     = {LaTeX: A Document Preparation System},     
+    publisher = {Addiso.-Wesley},                           
+    year      = {2077},                                     
+    edition   = {2nd}                                       
+    ...                                                     
+       ◄────── 可以添加更多字段，
+               字段的顺序不影响编译的效果
+    ...                                                     
+ }                                                          
 ```
 
 例如，我们在与`.tex`文件相同的目录下创建一个 `references.bib` 文件，包含两个条目的示例内容如下：
@@ -78,7 +81,7 @@
 
 可以在一个文件中添加任意多的条目，默认情况下，只有在正文中使用`\cite`命令引用的条目，才会出现在最后编译好的文档中。
 
-每个`@`开头是一个条目，条目内部填入作者、标题等信息；这个示例中第一个条目中book是文档类型， 此外还有article, inproceedings, misc等，如它们的名称所暗示的，它们分别代表书籍、文章等格式；`latexguide`是引用时使用的名称，可以在之后使用类似的格式添加更多内容。对于正经期刊上发表的论文，其对应的bib条目一般可以直接在[Google Scholar](https://scholar.google.com/)或其他文献网站上复制获得，不推荐手写；或者你非常懒得话，也可以让ai生成，但务必注意核对信息。
+每个`@`开头是一个条目，条目内部填入作者、标题等信息；这个示例中第一个条目中book是文档类型， 此外还有article, inproceedings, misc等，如它们的名称所暗示的，它们分别代表书籍、文章等格式；`latexguide`是引用时使用的名称，可以在之后使用类似的格式添加更多内容。对于正经期刊上发表的论文，其对应的bib条目一般可以直接在[Google Scholar](https://scholar.google.com/)或其他文献网站上复制获得，不推荐手写；或者你非常懒的话，也可以让AI生成，但务必注意核对信息。
 
 ![Google Scholar 示例](./assets/google_scholar.png)
 
@@ -119,7 +122,7 @@ This is a reference to the LaTeX guide \cite{latexguide}.
 
 ### Tips
 
-1. 如果在beamer中使用，可以添加 allowframebreaks 参数使文献列表自动换页
+1. 如果在beamer中使用，可以添加 allowframebreaks 参数使文献列表自动换页。
 
 ```latex
 \begin{frame}[allowframebreaks]{References}
@@ -128,13 +131,13 @@ This is a reference to the LaTeX guide \cite{latexguide}.
 \end{frame}
 ```
 
-文献列表编号（而不是图标）
+beamer默认使用图标而不是`[1], [2]`样式的编号，可以使用下面命令给文献列表编号。
 
 ```
 \setbeamertemplate{bibliography item}{\insertbiblabel}
 ```
 
-2. 可以通过使用`hyperref`宏包使引用标签可点击
+2. 可以通过使用`hyperref`宏包使引用标签可点击。
 
 ```latex
 \usepackage{hyperref}
@@ -142,7 +145,7 @@ This is a reference to the LaTeX guide \cite{latexguide}.
 %\usepackage[hidelinks]{hyperref}
 ```
 
-3. 多个作者怎么写？
+3. 多个作者怎么写不要用逗号分隔。
    - 不要用逗号分隔作者！必须用 `and` 连接。
    - 错误：`author = {San Zhang, Si Li}`
    - 正确：`author = {San Zhang and Si Li}` (BibTeX 会自动处理成 "S. Zhang, S. Li" 等格式)。
