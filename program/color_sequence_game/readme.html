@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Sequence Game</title>
+
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+
+    
+  </head>
+
+  <body>
+    <iframe
+      id="iframe-background"
+      src="/img/pixelart/index.html"
+      title="background"
+    ></iframe>
+
+    <div id="spacer"></div>
+
+    <div id="anime-spacer" class="shrinked"></div>
+
+    <div id="content-wrapper-bg">
+      <div id="main-grid-container">
+        <div id="left-sidebar" class="sidebar">
+          <div class="sidebar-card">
+            <div class="vertical-buttons">
+              <a href="/toc.html" title="文档索引"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon"
+              /></a>
+              <a href="/index.html" title="返回主页"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon"
+              /></a>
+              <a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon"
+              /></a>
+              <a href="/About.html" title="关于"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+              <button
+                onclick="scrollToTop()"
+                title="滚动到顶部"
+                class="scroll-top-btn"
+              >
+                <img
+                  src="/img/icon/arrow-upward.svg"
+                  alt="Return Top"
+                  class="icon"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div id="title-container">
+            <div id="heading"><h3>/程序/color_sequence_game/</h3><h1>Color Sequence Game</h1></div>
+            <div id="top-buttons-wrapper" class="top-buttons">
+              <a href="/toc.html" title="文档索引" class="fade-in"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
+              ><a href="/index.html" title="返回主页" class="fade-in"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon" /></a
+              ><a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                class="fade-in"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon" /></a
+              ><a href="/About.html" title="关于" class="fade-in"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+            </div>
+          </div>
+
+          <div id="content-wrapper">
+            <div id="content"><p>A logic-based puzzle game. Test your deductive reasoning by guessing the secret color sequence within the limited attempts. This version features dynamic difficulty modes, including an adversarial AI that actively tries to hide the secret based on your guesses.</p>
+<h2 id="h2-play-now">Play Now</h2><p><strong><a href="https://chenyu76.github.io/program/color_sequence_game/index.html">Start Game</a></strong></p>
+<h2 id="h2-features">Features</h2><ul>
+<li><strong>Dynamic Sequence Length:</strong> Adjust the length of the secret sequence (from 2 up to 6 colors) to change the complexity.</li>
+<li><strong>3 Difficulty Modes:</strong> Ranging from a standard fixed puzzle to an &quot;Evil&quot; AI that changes the secret answer to minimize your information gain.</li>
+<li><strong>Responsive Design:</strong> Works on mobile and desktop browsers.</li>
+</ul>
+<h2 id="h2-how-to-play">How to Play</h2><ol>
+<li><strong>Objective:</strong> Guess the hidden sequence of colors.</li>
+<li><strong>Making a Guess:</strong> Fill all empty slots with colors. Note that <strong>duplicate colors are not allowed</strong> in a single row.</li>
+<li><strong>Feedback:</strong> After submitting, you will see dots representing how accurate your guess was:<ul>
+<li>Each <strong>Dot</strong> represents a color that is in the <strong>correct position</strong>.</li>
+<li>The goal is to get all dots to appear.</li>
+</ul>
+</li>
+<li><strong>Win/Loss:</strong> You win if you guess the exact sequence. You lose if you run out of attempts (99 turns).</li>
+</ol>
+<h2 id="h2-difficulty-modes">Difficulty Modes</h2><p>Click the icon in the top-left to cycle through modes:</p>
+<ol>
+<li><strong>Normal (Standard):</strong> The secret sequence is generated at the start and remains fixed. Standard logic applies.</li>
+<li><strong>Hard (Adversarial):</strong> The secret sequence is <strong>not</strong> fixed. The game eliminates possible answers based on your guess to ensure the secret remains hidden for as long as possible.</li>
+<li><strong>Expert (Min-Max):</strong> The game adjusts the secret sequence to ensure your guess yields the <strong>minimum amount of information</strong> possible (statistically).</li>
+</ol>
+<h2 id="h2-controls">Controls</h2><ul>
+<li><strong>Mouse/Touch:</strong> Click slots to select and cycle colors.</li>
+<li><strong>Arrow Keys (Left/Right):</strong> Move selection between slots.</li>
+<li><strong>Arrow Keys (Up/Down):</strong> Cycle colors in the selected slot.</li>
+<li><strong>Backspace:</strong> Clear the current slot.</li>
+<li><strong>Enter:</strong> Submit guess.</li>
+</ul>
+<h2 id="h2-acknowledgements">Acknowledgements</h2><ul>
+<li><strong>Icons:</strong> UI icons provided by <a href="https://fonts.google.com/icons">Google Fonts Icons</a>.</li>
+</ul>
+<h2 id="h2-license">License</h2><p>This project is licensed under the MIT License.</p>
+</div>
+            <div id="footnote"></div>
+          </div>
+        </div>
+
+        <div class="bottom-button mobile-only">
+          <button onclick="scrollToTop()" title="滚动到顶部">
+            <img
+              src="/img/icon/arrow-upward.svg"
+              alt="Return Top"
+              class="icon"
+            />
+          </button>
+        </div>
+
+        <div id="right-sidebar" class="sidebar">
+          <div id="toc-card" class="sidebar-card">
+            <div class="toc-header">目录</div>
+            <div id="toc-content"><div class="toc">
+<ul>
+<ul>
+<li><a href="#h2-play-now">Play Now</a></li>
+<li><a href="#h2-features">Features</a></li>
+<li><a href="#h2-how-to-play">How to Play</a></li>
+<li><a href="#h2-difficulty-modes">Difficulty Modes</a></li>
+<li><a href="#h2-controls">Controls</a></li>
+<li><a href="#h2-acknowledgements">Acknowledgements</a></li>
+<li><a href="#h2-license">License</a></li>
+</ul>
+</ul>
+</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/script.js"></script>
+
+    <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+      <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
+    </button>
+
+    <div id="toc-mobile-wrapper">
+      <div class="toc-header-mobile">
+        <span>目录</span>
+        <button onclick="toggleToc()" class="toc-close-btn">×</button>
+      </div>
+      <div id="toc-content-mobile"></div>
+    </div>
+
+    
+  </body>
+</html>

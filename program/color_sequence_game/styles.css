@@ -23,9 +23,9 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
   margin: 0;
   font-family: sans-serif;
+  height: 100vh;
   overflow: hidden;
   user-select: none;
 }
@@ -41,6 +41,7 @@ svg {
   display: flex;
   align-items: left;
   flex-direction: column;
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 #game-board {
@@ -196,4 +197,8 @@ svg {
   position: absolute;
   top: 20px;
   right: 20px;
+}
+
+.hidden {
+  display: none;
 }

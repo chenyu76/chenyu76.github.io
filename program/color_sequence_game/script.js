@@ -26,6 +26,13 @@ const resultIcon = document.getElementById("result-icon");
 const answerReveal = document.getElementById("answer-reveal");
 const inputSlotsContainer = document.getElementById("current-slots");
 const diffBtn = document.getElementById("difficulty-btn");
+const menuBtn = document.getElementById("menu-btn");
+
+function toggleMenu() {
+  let children = document.getElementsByClassName("btn-in-menu");
+  for (let i = 0; i < children.length; i++)
+    children[i].classList.toggle("hidden");
+}
 
 function cycleDifficulty() {
   difficulty = (difficulty + 1) % 3;
