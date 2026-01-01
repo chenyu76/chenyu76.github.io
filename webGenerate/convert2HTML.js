@@ -9,7 +9,7 @@ import markedKatex from "marked-katex-extension";
 import path from "path";
 
 // 引入翻译函数
-import tr from "./tr.js";
+import tr from "./toc.js";
 
 // 设置 marked 的渲染器
 const marked = new Marked(
