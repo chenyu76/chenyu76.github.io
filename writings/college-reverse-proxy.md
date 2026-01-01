@@ -549,8 +549,8 @@ username ALL=(ALL) NOPASSWD: /usr/sbin/shutdown
 # --- 配置区域 ---
 # 校园网登录脚本的绝对路径
 LOGIN_SCRIPT="/home/user/scripts/login.py" 
-# 目标网址
-CHECK_URL="www.baidu.com"
+# 目标IP
+CHECK_IP="223.5.5.5" # 阿里的 DNS
 # 检查间隔（秒）
 INTERVAL=300
 
@@ -558,7 +558,7 @@ echo "Campus network monitor started..."
 
 while true; do
     # ping 1个包，超时时间5秒
-    ping -c 1 -W 5 $CHECK_URL > /dev/null 2>&1
+    ping -c 1 -W 5 $CHECK_IP > /dev/null 2>&1
     
     if [ $? -ne 0 ]; then
         echo "$(date): Network is down. Attempting to login..."

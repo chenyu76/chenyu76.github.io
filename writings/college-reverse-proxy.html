@@ -527,8 +527,8 @@ LOG_FILE = __file__ + <span class="hljs-string">&quot;.log&quot;</span>
 <span class="hljs-comment"># --- 配置区域 ---</span>
 <span class="hljs-comment"># 校园网登录脚本的绝对路径</span>
 LOGIN_SCRIPT=<span class="hljs-string">&quot;/home/user/scripts/login.py&quot;</span> 
-<span class="hljs-comment"># 目标网址</span>
-CHECK_URL=<span class="hljs-string">&quot;www.baidu.com&quot;</span>
+<span class="hljs-comment"># 目标IP</span>
+CHECK_IP=<span class="hljs-string">&quot;223.5.5.5&quot;</span> <span class="hljs-comment"># 阿里的 DNS</span>
 <span class="hljs-comment"># 检查间隔（秒）</span>
 INTERVAL=300
 
@@ -536,7 +536,7 @@ INTERVAL=300
 
 <span class="hljs-keyword">while</span> <span class="hljs-literal">true</span>; <span class="hljs-keyword">do</span>
     <span class="hljs-comment"># ping 1个包，超时时间5秒</span>
-    ping -c 1 -W 5 <span class="hljs-variable">$CHECK_URL</span> &gt; /dev/null 2&gt;&amp;1
+    ping -c 1 -W 5 <span class="hljs-variable">$CHECK_IP</span> &gt; /dev/null 2&gt;&amp;1
     
     <span class="hljs-keyword">if</span> [ $? -ne 0 ]; <span class="hljs-keyword">then</span>
         <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-subst">$(date)</span>: Network is down. Attempting to login...&quot;</span>
