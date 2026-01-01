@@ -38,6 +38,8 @@ $$
 \int_0^\infty x^n e^{-x} \mathrm{d} x = n!
 $$
 
+需要注意行内公式开始的`$$`需要前面空一行，并且`$$`单独占一行，也许我可以在未来改一下配置不这么严格。
+
 ## footnote
 
 Here is a simple footnote[^1].
@@ -103,5 +105,19 @@ what?
 | Column1 | Column2 |
 | ------- | ------- |
 | Item1.1 | Item2.1 |
+
+```javascript
+function getAllArragement(set = [1, 2]) {
+  return set.length == 1
+    ? [set]
+    : set
+        .map((_v, idx) => [...set.slice(0, idx), ...set.slice(idx + 1)])
+        .map(getAllArragement)
+        .map((subsets, index) =>
+          subsets.map((subset, _i) => [set[index], ...subset]),
+        )
+        .flat();
+}
+```
 
 // 这是脚注
