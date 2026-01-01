@@ -170,6 +170,7 @@ function updateInputUI() {
   for (let i = 0; i < SEQUENCE_LENGTH; i++) {
     const slot = document.createElement("div");
     slot.className = "slot" + (i === activeSlotIndex ? " active" : "");
+    slot.id = `input-slot-${i}`;
     slot.onclick = () => selectSlot(i);
     inputSlotsContainer.appendChild(slot);
   }
@@ -208,6 +209,20 @@ function submitGuess() {
   // Validate: All slots must be filled
   if (currentGuess.includes(null)) {
     // Shake animation or visual feedback could go here
+    return;
+  }
+  // no allow same color more than once
+  var appearColor = [];
+  for (let i = 0; i < currentGuess.length; i++) {
+    if (appearColor.includes(currentGuess[i])) {
+      document.getElementById(`input-slot-${i}`)
+          .classList.remove("color-" + currentGuess[i]);
+      currentGuess[i] = null;
+    } else {
+      appearColor.push(currentGuess[i]);
+    }
+  }
+  if (appearColor.length < currentGuess.length) {
     return;
   }
 

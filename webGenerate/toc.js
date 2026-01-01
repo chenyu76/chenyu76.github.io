@@ -19,7 +19,7 @@ const folderBlackList = [ "node_modules", "webGenerate" ];
 const jsFolderBlackList = [ "webGenerate", "program", "img", "libs" ];
 
 // 翻译函数，将一些目录的英文翻译成中文
-function tr(str) {
+export function tr(str) {
   const dict = {
     "node_modules" : "依赖包",
     "program" : "程序",

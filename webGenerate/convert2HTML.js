@@ -8,6 +8,9 @@ import {markedHighlight} from "marked-highlight";
 import markedKatex from "marked-katex-extension";
 import path from "path";
 
+// 引入翻译函数
+import {tr} from "./toc.js";
+
 // 设置 marked 的渲染器
 const marked = new Marked(
     markedHighlight({
@@ -201,6 +204,8 @@ export function allMarkdown2Html(dir, templateHTML, rootPath = dir) {
 
         // 获取文件相对于网站根目录的路径
         const relativePath = path.dirname(path.relative(rootPath, filePath));
+        const relativePathTranslated =
+            "/" + relativePath.split(path.sep).map(tr).join("/") + "/";
         // 将文件的后缀换成 .html 的完整路径
         const htmlFilePath = path.format({
           dir : path.dirname(filePath),
@@ -211,9 +216,10 @@ export function allMarkdown2Html(dir, templateHTML, rootPath = dir) {
         const content = convertMarkdown(filePath);
         const htmlContent = content.html;
         const tocContent = generateTOC(content.toc);
-        generateHtmlFile(htmlFilePath, templateHTML, content.title, "",
-                         `<h3>${relativePath}</h3><h1>${content.title}</h1>`,
-                         htmlContent, content.footnote, "", tocContent);
+        generateHtmlFile(
+            htmlFilePath, templateHTML, content.title, "",
+            `<h3>${relativePathTranslated}</h3><h1>${content.title}</h1>`,
+            htmlContent, content.footnote, "", tocContent);
         // 记录已经有的文章的信息
         articles[path.join(
             relativePath,
