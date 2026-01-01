@@ -9,7 +9,7 @@
 export const gitRepositories = {
   "program" : [
     "draw-n-pointed-star", "color_wars", "hextris", "metronome", "tetris",
-    "turntable-web", "guitar-sight-reading-trainer-web"
+    "turntable-web", "guitar-sight-reading-trainer-web", "color_sequence_game"
   ].map(repo => `https://github.com/chenyu76/${repo}`)
 };
 
