@@ -2,7 +2,7 @@
 // Game Constants
 const COLORS_COUNT = 6; // Total available colors
 let SEQUENCE_LENGTH = 4;
-const MAX_ATTEMPTS = 8;
+const MAX_ATTEMPTS = 99;
 
 // State
 let secretSequences = [];
@@ -11,6 +11,13 @@ let attemptsCount = 0;
 let activeSlotIndex = 0;
 let isGameOver = false;
 
+// Difficulty
+// 0: Secret sequence is fixed and can be guessed
+// 1: Secret sequence can be changed.
+//    One must use his guess to exclude other any other prosibility.
+// 2: Any guess result in obtain minimum amount of information.
+let difficulty = 0;
+
 // DOM Elements
 const board = document.getElementById("game-board");
 let currentSlots = document.querySelectorAll("#current-slots .slot");
@@ -18,6 +25,16 @@ const overlay = document.getElementById("overlay");
 const resultIcon = document.getElementById("result-icon");
 const answerReveal = document.getElementById("answer-reveal");
 const inputSlotsContainer = document.getElementById("current-slots");
+const diffBtn = document.getElementById("difficulty-btn");
+
+function cycleDifficulty() {
+  difficulty = (difficulty + 1) % 3;
+  let diffIcons =
+      [ 0, 1, 2 ].map(i => document.getElementById(`difficulty-icon-${i}`));
+  diffIcons.forEach(v => v.style.display = "none");
+  diffIcons[difficulty].style.display = "inline-block";
+  diffBtn.style.background = `var(--color-difficulty-${difficulty})`;
+}
 
 function changeSlotsLength(newLength) {
   SEQUENCE_LENGTH = newLength;
@@ -65,12 +82,30 @@ function checkAnswer(answer = []) {
     return num;
   };
   var s0numMatch = numMatch(secretSequences[0]);
-  if (s0numMatch == answer.length && secretSequences.length > 1) {
-    secretSequences = secretSequences.slice(1);
+  if (difficulty == 2) {
+    let numMatchSeq = secretSequences.map(numMatch);
+    let counts = Array(answer.length + 1).fill(0);
+    numMatchSeq.forEach(v => counts[v]++);
+    let max = -1;
+    for (let i = 0; i < counts.length; i++)
+      if (max < counts[i])
+        max = counts[i];
+    let po = [];
+    for (let i = 0; i < counts.length; i++)
+      if (max == counts[i])
+        po.push(i);
+    let choose = Math.floor(Math.random() * po.length);
+    secretSequences =
+        secretSequences.filter((_, i) => numMatchSeq[i] == po[choose]);
     s0numMatch = numMatch(secretSequences[0]);
+  } else if (difficulty == 1) {
+    if (s0numMatch == answer.length && secretSequences.length > 1) {
+      secretSequences = secretSequences.slice(1);
+      s0numMatch = numMatch(secretSequences[0]);
+    }
+    secretSequences =
+        secretSequences.filter((list, _) => numMatch(list) == s0numMatch);
   }
-  secretSequences =
-      secretSequences.filter((list) => numMatch(list) == s0numMatch);
   return s0numMatch;
 }
 
@@ -92,14 +127,16 @@ function initGame() {
   // Optional: we could pre-render empty rows, but dynamic is fine.
 }
 
-function generateSequence() {
+function generateSequence(random = false) {
   let pool = Array.from({length : SEQUENCE_LENGTH}, (_, i) => i);
+  if (!random)
+    return pool;
   // Fisher-Yates shuffle for uniqueness
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [pool[i], pool[j]] = [ pool[j], pool[i] ];
   }
-  return pool.slice(0, SEQUENCE_LENGTH);
+  return pool;
 }
 
 function selectSlot(index) {
@@ -282,3 +319,6 @@ document.addEventListener("keydown", (e) => {
 
 // Initialize on load
 initGame();
+// Set difficulty to 0 and cycle to 1 to ensure proper UI setup
+difficulty = 0;
+cycleDifficulty();

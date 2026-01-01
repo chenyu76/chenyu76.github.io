@@ -11,6 +11,10 @@
   --c3: #118ab2; /* Blue */
   --c4: #9d4edd; /* Purple */
   --c5: #ff9f1c; /* Orange */
+  /* diffierent difficulty colors */
+  --color-difficulty-0: #06d6a0; /* Easy - Green */
+  --color-difficulty-1: #ffd166; /* Medium - Yellow */
+  --color-difficulty-2: #ef476f; /* Hard - Red */
 }
 
 body {
