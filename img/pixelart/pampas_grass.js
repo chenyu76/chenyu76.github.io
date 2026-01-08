@@ -139,8 +139,8 @@ class Grass {
       0.8,
       2,
       0.4,
-      80, // 不同株的草在同一组中的最大偏移范围x
-      7,  // 不同株的草在同一组中的最大偏移范围y
+      100, // 不同株的草在同一组中的最大偏移范围x
+      7,   // 不同株的草在同一组中的最大偏移范围y
     ];
   }
 
@@ -246,6 +246,16 @@ class Grass {
 
     return ctx;
   }
+  /*
+   * 给其他模块调用的函数
+   * 计算在x3D位置，timestamp时间点的总风力
+   */
+  get_wind_strength(x3D, timestamp) {
+    let total_wind_force = 0;
+    for (let wind of this.winds)
+      total_wind_force += wind.f(x3D, timestamp);
+    return total_wind_force;
+  }
 
   /**
    * 开始移动蒲苇元素的动画
@@ -309,10 +319,6 @@ class Grass {
 
     // let count = Math.random() < 0.5;
     for (let d of this.data) {
-      // 每次只更新一半的蒲苇，降低计算量
-      // count = !count;
-      // if (count)
-      //   continue;
 
       // 计算蒲苇当前受到的风力
       let total_wind_force = 0;
@@ -466,7 +472,7 @@ class Grass {
                 num - this.initialCanvasIndex / this.totalCanvasCount));
 
     const width =
-        whData.map(c => c.maxX - c.minX).reduce((a, b) => Math.max(a, b)) + 2;
+        whData.map(c => c.maxX - c.minX).reduce((a, b) => Math.max(a, b)) + 20;
     const height =
         whData.map(c => c.maxY - c.minY).reduce((a, b) => Math.max(a, b)) + 2;
 
