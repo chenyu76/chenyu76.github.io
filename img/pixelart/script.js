@@ -327,14 +327,14 @@ async function imgInit(h = document.documentElement.clientHeight,
   // 画草地 背景蒲苇
   var grass = new Grass(pixelSize);
   const edgeLow = 20;
-  for (let i = 30; i > -edgeLow + 2; i -= 6) {
+  for (let i = 30; i > -edgeLow + 2; i -= 4) {
     for (let j = 0; j < Math.ceil(x / (150 - 2 * i)); j++) {
       foreground.appendChild(grass.register_single_pampas_grass_canvas(
           Math.round(Math.random() * x), bottom - i, 1 - (i + edgeLow) / 85,
           rgb2hex(...Array(3).fill(255 - (i + edgeLow)))));
     }
   }
-  // 画atri像素图
+  // 画atri像素图 102x125
   // 位于 character.js
   const totalFrames = gifMatrix.length;
   const renderer = new GifRenderer({
@@ -356,13 +356,18 @@ async function imgInit(h = document.documentElement.clientHeight,
   renderer.start();
 
   // 画草地 前景蒲苇
-  for (let i = -edgeLow + 2; i > -edgeLow; i -= 2) {
-    for (let j = 0; j < Math.ceil(x / (120 - 2 * i)); j++) {
+  for (let i = -edgeLow + 2; i > -edgeLow; i -= 3) {
+    for (let j = 0; j < Math.ceil(x / (150 - 2 * i)); j++) {
       foreground.appendChild(grass.register_single_pampas_grass_canvas(
           Math.round(Math.random() * x), bottom - i, 1 - (i + edgeLow) / 85,
           rgb2hex(...Array(3).fill(255 - (i + edgeLow)))));
     }
   }
+  // 一个肯定能挡在atri前的草
+  foreground.appendChild(grass.register_single_pampas_grass_canvas(
+      Math.round(x / 2 - 60), bottom, 1 - (edgeLow) / 85,
+      rgb2hex(...Array(3).fill(255 - (edgeLow)))));
+
   setTimeout(() => {
     grass.compute_offscreen_canvases();
     grass.start_move_element_animation();

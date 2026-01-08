@@ -74,9 +74,8 @@ class GifRenderer {
     // 维护一个 visited 数组用于流式布局定位
     // 0: 未填充, 1: 已填充
     // 每一帧开始时，visited 不会清空！因为下一帧要在上一帧的基础上画
-    // 但是 Python 脚本的逻辑是：每一帧的数据是基于“上一帧的差异”。
+    // 但是 Python 脚本的逻辑是：每一帧的数据是基于上一帧的差异。
     // 所以我们需要维护一个持久的画面 buffer。
-
     for (let f = 0; f < this.gifMatrix.length; f++) {
       const instructions = this.gifMatrix[f];
       const visited =
@@ -139,7 +138,7 @@ class GifRenderer {
         }
       }
 
-      // 4. 将当前帧生成的完整图像保存为 ImageBitmap 或 Canvas
+      // 4. 将当前帧生成的完整图像保存为 Canvas
       // 这样运行时只需要 drawImage
       const frameCanvas = document.createElement("canvas");
       frameCanvas.width = this.width;
@@ -172,9 +171,6 @@ class GifRenderer {
     if (!this.isPlaying)
       return;
 
-    // 1. 获取外部控制的帧数 (可能倒序，可能跳跃，但我们预渲染了所有帧，不怕)
-    // 假设 getFrameCount 返回的是一个全局的 tick 或者具体的 frame index
-    // 如果返回的是 0~totalFrames 的索引：
     let targetFrameIndex = this.getFrameCount(timestamp);
 
     // 确保索引在范围内 [0, length-1]
@@ -186,8 +182,6 @@ class GifRenderer {
     // 2. 只有当帧发生变化时才重绘 (Dirty Check)
     if (targetFrameIndex !== this.lastRenderedFrame) {
       this.lastRenderedFrame = targetFrameIndex;
-
-      // 3. 极速绘制：直接清理并把预渲染好的图贴上去
       this.ctx.clearRect(0, 0, this.width, this.height);
       this.ctx.drawImage(this.frames[targetFrameIndex], 0, 0);
     }
@@ -200,6 +194,3 @@ class GifRenderer {
    */
   getElement() { return this.canvas; }
 }
-
-// --- 辅助函数 (保留你原有的逻辑) ---
-// 假设 rgb2hex, colorMultiply, hex2rgb, interpolate_time_color 已经在上下文定义
