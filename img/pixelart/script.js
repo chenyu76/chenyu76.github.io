@@ -236,14 +236,17 @@ function dot(v1, v2) { return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2]; }
 // 初始化
 async function imgInit(h = document.documentElement.clientHeight,
                        // time = getDecimalHour()
-                       time = Math.random() * 24) {
+                       time = null) {
+  if (time === null && is_first_img_init)
+    time = Math.random() * 24;
   // 获取背景和前景容器
   const background = document.getElementById("pixel-art-background");
   const midground = document.getElementById("pixel-art-midground");
   const foreground = document.getElementById("pixel-art-foreground");
   // const container = document.getElementById("pixel-art");
 
-  currentHour = time;
+  if (time !== null)
+    currentHour = time;
   // currentHour = 12;
   // 像素大小
   pixelSize = Math.ceil(calculatePixelSize(h));
@@ -338,7 +341,7 @@ async function imgInit(h = document.documentElement.clientHeight,
   // 位于 character.js
   const totalFrames = gifMatrix.length;
   const renderer = new GifRenderer({
-    startX : Math.floor(x / 2) - 160,
+    startX : Math.floor(x / 3 - gifMatrixWidth),
     startY : bottom - 84,
     pixelSize : pixelSize, // 放大4倍
     colorList : colorList,
@@ -365,7 +368,7 @@ async function imgInit(h = document.documentElement.clientHeight,
   }
   // 一个肯定能挡在atri前的草
   foreground.appendChild(grass.register_single_pampas_grass_canvas(
-      Math.round(x / 2 - 60), bottom, 1 - (edgeLow) / 85,
+      Math.round(x / 3), bottom, 1 - (edgeLow) / 85,
       rgb2hex(...Array(3).fill(255 - (edgeLow)))));
 
   setTimeout(() => {

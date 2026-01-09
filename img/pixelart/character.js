@@ -31,6 +31,7 @@ class GifRenderer {
     this.lightColorDict = lightColorDict;
     this.getFrameCount = getFrameCount;
 
+    // 位于gif_matrix.js中定义的全局变量
     this.width = gifMatrixWidth;
     this.height = gifMatrixHeight;
 
@@ -43,7 +44,7 @@ class GifRenderer {
     this.canvas.style.top = `${this.startY}px`;
     this.canvas.style.right = `${this.startX}px`;
     this.canvas.style.zoom = this.pixelSize;
-    // 关闭图像平滑，保持像素风格
+    // 关闭图像平滑
     this.ctx.imageSmoothingEnabled = false;
 
     // 预渲染缓存
