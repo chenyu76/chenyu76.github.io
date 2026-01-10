@@ -188,7 +188,7 @@ remotePort = 51820        # 映射到服务器上的端口
 
 #### 1. 安装 WireGuard (Client 端)
 
-在内网服务器（下称 Client）上安装：
+在Client上安装WireGuard，例如如果使用debian系的发行版：
 
 ```bash
 sudo apt update
@@ -229,7 +229,7 @@ wg genkey | tee privatekey | wg pubkey > publickey
 
 编辑 `/etc/wireguard/wg0.conf`。为了让 User 能访问局域网，我们需要在接口启动时添加 `iptables` 规则来进行 NAT 伪装。
 
-```ini
+```toml
 [Interface]
 Address = 10.0.0.1/24
 ListenPort = 51820
@@ -254,17 +254,19 @@ AllowedIPs = 10.0.0.2/32
 
 #### 5. 配置 User 端 (用户电脑)
 
+先在User的电脑中也安装一个WireGuard。
+
 在 User 的 WireGuard 客户端中新建配置。关键点在于 `AllowedIPs` 的设置。
 
-```ini
+```toml
 [Interface]
 PrivateKey = <User的私钥>
-Address = 10.0.0.2/24
+Address = 10.0.0.2/32
 DNS = 114.114.114.114
 
 [Peer]
 PublicKey = <Client的公钥>
-AllowedIPs = 10.0.0.0/24, 172.16.0.0/12, <你需要访问的IP>
+AllowedIPs = 10.0.0.0/24, 172.16.0.0/12, ...<你需要访问的IP，逗号分隔>
 Endpoint = <frp服务器公网IP>:<frp映射后的UDP端口>
 # 保持连接，防止因长时间无流量导致穿透失效
 PersistentKeepalive = 25
@@ -272,9 +274,12 @@ PersistentKeepalive = 25
 
 > [!NOTE]
 > 在 User 端配置中，`AllowedIPs` 决定了哪些流量会走 WireGuard 隧道。如果你希望访问校园网，必须把校园网的网段（如 `172.16.0.0/12` 或 `10.0.0.0/8`）加进去。
+>
+> > [!TIP]
+> > 如果不确定有哪些IP需要访问，可以将`0.0.0.0/0`（全部IP）添加到`AllowedIPs`，但注意此时你的所有网络流量都会被路由。
 
-> [!TIP]
-> 如果不确定有哪些IP需要访问，可以将`0.0.0.0/0`（全部IP）添加到`AllowedIPs`，但注意此时你的所有网络流量都会被路由。
+> [!NOTE]
+> 在 User 端配置中`[Interface]`的`Address`与Client 端`[Peer]`的`AllowedIPs`一致。
 
 > [!IMPORTANT]
 > 请务必修改配置文件其中的`<Client的私钥>`和`<User的公钥>`为实际密钥；修改`<frp服务器公网IP>:<frp映射后的UDP端口>`为实际地址和端口。
@@ -293,6 +298,10 @@ sudo wg-quick up wg0
 > [!TIP]
 >
 > 我们在Client的配置中设置了`Address = 10.0.0.1`，这意味着我们可以在连接上后通过10.0.0.1这个地址访问Client自身的网络服务，例如ssh。
+
+> [!NOTE]
+>
+> 我们现在配置的WireGuard只支持同时一个用户使用，若需要多个用户使用，参加后面的“多用户同时连接”章节
 
 ### 配置各个服务的自启动
 
@@ -392,6 +401,96 @@ sudo systemctl status wg-quick@wg0
 # 查看日志
 sudo journalctl -u wg-quick@wg0 -f
 ```
+
+### 多用户同时连接
+
+在WireGuard中，User的一对公私钥只能在一个设备上使用，若有多个User，就需要编辑Client上Wireuard的配置文件，让每个User使用单独的公私钥，不同的公私钥可以使用之前提过的命令生成。
+
+具体配置操作中，Client上配置文件的的 `[Interface]` 部分保持不变，然后在下方添加具有不同地址和公钥的 `[Peer]` 区块。每个 `[Peer]` 区块需要在对应的User端有对应的`[Interface]`配置，其中的`Address`和`PrivateKey`要相匹配。
+
+#### 修改后的配置示例
+
+##### Client
+
+```toml
+[Interface]
+Address = 10.0.0.1/24
+ListenPort = 51820
+PrivateKey = <Client的私钥>
+
+PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+
+# 第一个用户
+[Peer]
+PublicKey = <User_A 的公钥>
+AllowedIPs = 10.0.0.2/32
+
+# 第二个用户
+[Peer]
+PublicKey = <User_B 的公钥>
+AllowedIPs = 10.0.0.3/32
+
+# 第三个用户
+[Peer]
+PublicKey = <User_C 的公钥>
+AllowedIPs = 10.0.0.4/32
+```
+
+##### User_A
+
+```toml
+[Interface]
+PrivateKey = <User_A的私钥>
+Address = 10.0.0.2/32
+DNS = 114.114.114.114
+
+[Peer]
+PublicKey = <Client的公钥>
+AllowedIPs = 10.0.0.0/24, 172.16.0.0/12, ...<你需要访问的IP，逗号分隔>
+Endpoint = <frp服务器公网IP>:<frp映射后的UDP端口>
+PersistentKeepalive = 25
+```
+
+##### User_B
+
+```toml
+[Interface]
+PrivateKey = <User_B的私钥>
+Address = 10.0.0.3/32
+DNS = 114.114.114.114
+
+[Peer]
+PublicKey = <Client的公钥>
+AllowedIPs = 10.0.0.0/24, 172.16.0.0/12, ...<你需要访问的IP，逗号分隔>
+Endpoint = <frp服务器公网IP>:<frp映射后的UDP端口>
+PersistentKeepalive = 25
+```
+
+##### User_C
+
+```toml
+[Interface]
+PrivateKey = <User_C的私钥>
+Address = 10.0.0.4/32
+DNS = 114.114.114.114
+
+[Peer]
+PublicKey = <Client的公钥>
+AllowedIPs = 10.0.0.0/24, 172.16.0.0/12, ...<你需要访问的IP，逗号分隔>
+Endpoint = <frp服务器公网IP>:<frp映射后的UDP端口>
+PersistentKeepalive = 25
+```
+
+#### 注意
+
+1. **公钥唯一性**：每一个 `[Peer]` 必须对应一个独有的公钥。
+2. **IP 地址唯一性**：每个 Peer 的 `AllowedIPs` 必须是唯一的（例如 `10.0.0.2`、`10.0.0.3` 等），不能冲突，否则 WireGuard 无法判断流量该发给谁。
+3. **客户端配置**：对应的User需要对应的`Address`和私钥配置，在上面这个配置示例中，
+   - User A 的客户端配置里，`Address`要填 `10.0.0.2/32`。
+   - User B 的客户端配置里，`Address` 要填 `10.0.0.3/32`。
+   - 它们的 `[Peer]` 部分都指向这台内网服务器的公钥和 frp 映射后的公网地址。
+   - 客户端配置文件中`[Interface]`的`PrivateKey`需要是与Client配置文件中对应`[Peer]`的`PublicKey`相对应的私钥。
 
 ### UPS 的电池容量
 
