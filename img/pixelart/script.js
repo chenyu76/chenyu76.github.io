@@ -197,12 +197,13 @@ function colorAverageHex(c1, c2, w1 = 0.5) {
 }
 
 // 计算网格宽度 x (像素图大小的宽)
-function calculateGridWidth(h = window.innerHeight, w = window.innerWidth) {
+function calculateGridWidth(h = document.documentElement.clientHeight,
+                            w = document.documentElement.clientWidth) {
   return Math.ceil((GRID_HEIGHT / h) * w);
 }
 
 // 计算像素单位大小
-function calculatePixelSize(h = window.innerHeight) {
+function calculatePixelSize(h = document.documentElement.clientHeight) {
   const screenHeight = h;
   return screenHeight / GRID_HEIGHT; // 每个像素单位的大小
 }
@@ -254,6 +255,7 @@ async function imgInit(h = document.documentElement.clientHeight,
   // 横向像素宽度
   const widthInPixel = calculateGridWidth(h);
   // 纵向像素高度
+  // 目标是 GRID_HEIGHT，但由于我希望屏幕像素大小是整数，所以不一定能达到
   const heightInPixel = Math.ceil(h / pixelSize);
   // 清空背景容器
   clearContainer(background);
