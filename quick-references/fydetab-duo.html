@@ -116,20 +116,161 @@
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>下。然后自行激活。(可以参考 <a href="https://tiebamma.github.io/InstallTutorial/">https://tiebamma.github.io/InstallTutorial/</a> )</p>
 <p>然后一个方便的desktop文件自然是极好的：</p>
-<pre><code class="language-bash">[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Mathematica
-Comment=Wolfram Mathematica Computational System
-Exec=/opt/Wolfram/WolframEngine/14.3/Executables/Mathematica %F
-Icon=/path/to/icon
-Terminal=<span class="hljs-literal">false</span>
-Categories=Education;Science;Math;
-Keywords=mathematica;math;wolfram;calculation;
-MimeType=application/mathematica;application/x-mathematica;
-StartupNotify=<span class="hljs-literal">true</span>
+<pre><code class="language-toml"><span class="hljs-section">[Desktop Entry]</span>
+<span class="hljs-attr">Version</span>=<span class="hljs-number">1.0</span>
+<span class="hljs-attr">Type</span>=Application
+<span class="hljs-attr">Name</span>=Mathematica
+<span class="hljs-attr">Comment</span>=Wolfram Mathematica Computational System
+<span class="hljs-attr">Exec</span>=/opt/Wolfram/WolframEngine/<span class="hljs-number">14.3</span>/Executables/Mathematica %F
+<span class="hljs-attr">Icon</span>=/path/to/icon
+<span class="hljs-attr">Terminal</span>=<span class="hljs-literal">false</span>
+<span class="hljs-attr">Categories</span>=Education<span class="hljs-comment">;Science;Math;</span>
+<span class="hljs-attr">Keywords</span>=mathematica<span class="hljs-comment">;math;wolfram;calculation;</span>
+<span class="hljs-attr">MimeType</span>=application/mathematica<span class="hljs-comment">;application/x-mathematica;</span>
+<span class="hljs-attr">StartupNotify</span>=<span class="hljs-literal">true</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>命名为<code>Mathematica.desktop</code>然后放到<code>/usr/share/applications</code>中。</p>
+<h3 id="h3-u8ba9u89e6u63a7u7b14u9632u8befu89e6">让触控笔防误触</h3><p>使用触控笔时gnome不会阻止手继续戳屏幕，所以可以编写一个脚本让检测到笔悬浮时禁用触摸屏。</p>
+<p>脚本有依赖：</p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> pacman -S python-evdev
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<pre><code class="language-python"><span class="hljs-comment">#!/usr/bin/env python3</span>
+<span class="hljs-keyword">import</span> evdev
+<span class="hljs-keyword">import</span> threading
+<span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">from</span> select <span class="hljs-keyword">import</span> select
+
+<span class="hljs-comment"># ================= 配置 =================</span>
+<span class="hljs-comment"># 抬笔后延迟多久恢复触控 (秒)</span>
+RESTORE_DELAY = <span class="hljs-number">3</span>
+<span class="hljs-comment"># =======================================</span>
+
+touch_device = <span class="hljs-literal">None</span>
+stylus_device = <span class="hljs-literal">None</span>
+restore_timer = <span class="hljs-literal">None</span>
+is_grabbed = <span class="hljs-literal">False</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">find_devices</span>():
+    <span class="hljs-string">&quot;&quot;&quot;自动查找触控屏和手写笔&quot;&quot;&quot;</span>
+    devices = [evdev.InputDevice(path) <span class="hljs-keyword">for</span> path <span class="hljs-keyword">in</span> evdev.list_devices()]
+    t_dev = <span class="hljs-literal">None</span>
+    s_dev = <span class="hljs-literal">None</span>
+
+    <span class="hljs-keyword">for</span> dev <span class="hljs-keyword">in</span> devices:
+        <span class="hljs-comment"># 根据名字匹配设备，忽略大小写</span>
+        name = dev.name.lower()
+        <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;touchscreen&quot;</span> <span class="hljs-keyword">in</span> name:
+            t_dev = dev
+        <span class="hljs-keyword">elif</span> <span class="hljs-string">&quot;stylus&quot;</span> <span class="hljs-keyword">in</span> name:
+            s_dev = dev
+    
+    <span class="hljs-keyword">return</span> t_dev, s_dev
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">enable_touch</span>():
+    <span class="hljs-keyword">global</span> is_grabbed
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> is_grabbed <span class="hljs-keyword">or</span> touch_device <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        <span class="hljs-keyword">return</span>
+    
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-comment"># 解除独占，恢复触控</span>
+        touch_device.ungrab()
+        is_grabbed = <span class="hljs-literal">False</span>
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;✅ 触控屏已恢复&quot;</span>)
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Error ungrabbing: <span class="hljs-subst">{e}</span>&quot;</span>)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">disable_touch</span>():
+    <span class="hljs-keyword">global</span> is_grabbed, restore_timer
+    
+    <span class="hljs-comment"># 如果有恢复计时器在跑，取消它</span>
+    <span class="hljs-keyword">if</span> restore_timer:
+        restore_timer.cancel()
+
+    <span class="hljs-keyword">if</span> is_grabbed:
+        <span class="hljs-keyword">return</span>
+
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">if</span> touch_device:
+            <span class="hljs-comment"># 独占设备，屏蔽触控</span>
+            touch_device.grab()
+            is_grabbed = <span class="hljs-literal">True</span>
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;🚫 触控屏已禁用 (笔进入范围)&quot;</span>)
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-comment"># 设备可能被拔出或正被其他程序独占</span>
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Error grabbing: <span class="hljs-subst">{e}</span>&quot;</span>)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">schedule_restore</span>():
+    <span class="hljs-keyword">global</span> restore_timer
+    <span class="hljs-keyword">if</span> restore_timer:
+        restore_timer.cancel()
+    <span class="hljs-comment"># 启动定时器</span>
+    restore_timer = threading.Timer(RESTORE_DELAY, enable_touch)
+    restore_timer.start()
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
+    <span class="hljs-keyword">global</span> touch_device, stylus_device
+
+    <span class="hljs-comment"># 必须以 root 运行</span>
+    <span class="hljs-keyword">if</span> os.geteuid() != <span class="hljs-number">0</span>:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;错误: 请使用 sudo 运行此脚本&quot;</span>)
+        sys.exit(<span class="hljs-number">1</span>)
+
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;正在搜索设备...&quot;</span>)
+    touch_device, stylus_device = find_devices()
+
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> touch_device:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;❌ 找不到触控屏 (Touchscreen)&quot;</span>)
+        sys.exit(<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> stylus_device:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;❌ 找不到手写笔 (Stylus)&quot;</span>)
+        sys.exit(<span class="hljs-number">1</span>)
+
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Found Touchscreen: <span class="hljs-subst">{touch_device.name}</span> (<span class="hljs-subst">{touch_device.path}</span>)&quot;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Found Stylus:      <span class="hljs-subst">{stylus_device.name}</span> (<span class="hljs-subst">{stylus_device.path}</span>)&quot;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\n服务已启动，按 Ctrl+C 退出...&quot;</span>)
+
+    <span class="hljs-comment"># 循环监听手写笔事件</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-comment"># select() 允许我们阻塞等待，直到有事件发生，不占用 CPU</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+            r, w, x = select([stylus_device.fd], [], [])
+            <span class="hljs-keyword">for</span> fd <span class="hljs-keyword">in</span> r:
+                <span class="hljs-keyword">for</span> event <span class="hljs-keyword">in</span> stylus_device.read():
+                    <span class="hljs-comment"># BTN_TOOL_PEN (code 320) 是标准的笔接近信号</span>
+                    <span class="hljs-comment"># value 1 = 进入感应区, value 0 = 离开感应区</span>
+                    <span class="hljs-keyword">if</span> event.<span class="hljs-built_in">type</span> == evdev.ecodes.EV_KEY <span class="hljs-keyword">and</span> event.code == evdev.ecodes.BTN_TOOL_PEN:
+                        <span class="hljs-keyword">if</span> event.value == <span class="hljs-number">1</span>:
+                            disable_touch()
+                        <span class="hljs-keyword">elif</span> event.value == <span class="hljs-number">0</span>:
+                            schedule_restore()
+                            
+    <span class="hljs-keyword">except</span> KeyboardInterrupt:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nStopping...&quot;</span>)
+        <span class="hljs-keyword">if</span> is_grabbed:
+            enable_touch()
+    <span class="hljs-keyword">except</span> OSError <span class="hljs-keyword">as</span> e:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;\n设备连接丢失: <span class="hljs-subst">{e}</span>&quot;</span>)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    main()
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>配套的systemd控制文件：</p>
+<pre><code class="language-toml"><span class="hljs-section">[Unit]</span>
+<span class="hljs-attr">Description</span>=Auto Disable Touchscreen <span class="hljs-literal">on</span> Stylus Proximity
+<span class="hljs-attr">After</span>=multi-user.target
+
+<span class="hljs-section">[Service]</span>
+<span class="hljs-attr">Type</span>=simple
+<span class="hljs-attr">ExecStart</span>=/usr/bin/python /path/to/palm_rejection.py
+<span class="hljs-attr">Restart</span>=<span class="hljs-literal">on</span>-failure
+
+<span class="hljs-section">[Install]</span>
+<span class="hljs-attr">WantedBy</span>=multi-user.target
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>将service文件放到 <code>/etc/systemd/system/palm_rejection.service</code> 。 
+然后启用它：<code>sudo systemctl enable --now palm_rejection.service</code></p>
 <h2 id="h2-fyde-os">Fyde OS</h2><h3 id="h3-android-u5b50u7cfbu7edf">Android 子系统</h3><p>似乎在<a href="chrome://flags"><code>chrome://flags</code></a>里打开<code>Enable custom ARCVM memory size</code>可以优化某些占内存软件的体验</p>
 <ul>
 <li>其下面的小猫猫代理可以系统范围的使用，包括Crostini</li>
@@ -186,6 +327,7 @@ XMODIFIERS=@im=fcitx
 <li><a href="#h3-u8f6fu4ef6u5305">软件包</a></li>
 <li><a href="#h3-gnome-u63d2u4ef6">Gnome 插件</a></li>
 <li><a href="#h3-mathematica-arm">Mathematica ARM</a></li>
+<li><a href="#h3-u8ba9u89e6u63a7u7b14u9632u8befu89e6">让触控笔防误触</a></li>
 </ul>
 <li><a href="#h2-fyde-os">Fyde OS</a></li>
 <ul>
