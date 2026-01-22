@@ -80,7 +80,10 @@
           </div>
 
           <div id="content-wrapper">
-            <div id="content"><h2 id="h2-u590du6742u7684u7badu5934">复杂的箭头</h2><pre><code class="language-latex"><span class="hljs-keyword">\draw</span>[-Implies, double, double distance = 0.5ex, red, out=30] (2em,1em) to [pos=0.5] node {<span class="hljs-keyword">\color</span>{red} <span class="hljs-keyword">\huge</span> <span class="hljs-built_in">$</span><span class="hljs-keyword">\times</span><span class="hljs-built_in">$</span>} (12em, 0em); 
+            <div id="content"><h2 id="h2-u590du6742u7684u7badu5934">复杂的箭头</h2><p>这个需要在导言区使用</p>
+<pre><code class="language-latex"><span class="hljs-keyword">\usetikzlibrary</span>{arrows.meta}
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<pre><code class="language-latex"><span class="hljs-keyword">\draw</span>[-Implies, double, double distance = 0.5ex, red, out=30] (2em,1em) to [pos=0.5] node {<span class="hljs-keyword">\color</span>{red} <span class="hljs-keyword">\huge</span> <span class="hljs-built_in">$</span><span class="hljs-keyword">\times</span><span class="hljs-built_in">$</span>} (12em, 0em); 
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p><svg
    version="1.1"

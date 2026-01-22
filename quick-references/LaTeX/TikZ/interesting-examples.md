@@ -2,6 +2,14 @@
 
 ## 复杂的箭头
 
+这个需要在导言区使用
+
+```latex
+\usetikzlibrary{arrows.meta}
+```
+
+
+
 ```latex
 \draw[-Implies, double, double distance = 0.5ex, red, out=30] (2em,1em) to [pos=0.5] node {\color{red} \huge $\times$} (12em, 0em); 
 ```

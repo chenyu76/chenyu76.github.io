@@ -84,6 +84,7 @@
           <div id="content-wrapper">
             <div id="content"><blockquote>
 <p>给ywk宝宝写的教程</p>
+<p>本教程假定读者具备一定的计算机与网络的基础知识。</p>
 </blockquote>
 <h2 id="h2-u6211u4eecu8981u505au4ec0u4e48">我们要做什么</h2><p>我们将在校园网内计算机上使用<a href="https://github.com/fatedier/frp">frp</a>配置<a href="https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86">反向代理</a>并安装<a href="https://www.wireguard.com/">WireGuard<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow></mrow><mtext>®</mtext></msup></mrow><annotation encoding="application/x-tex">^{\text{®}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9852em;"></span><span class="mord"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9852em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord accent mtight"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8889em;"><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span class="mord mtight"><span class="mord">R</span></span></span><span style="top:-2.8944em;"><span class="pstrut" style="height:2.7em;"></span><span class="accent-body accent-full" style="left:0em;top:.2em;"><span class="mord mtight">◯</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></a>实现在校外访问校内的网络资源。</p>
 <h3 id="h3-u6211u4eecu9700u8981u4ec0u4e48">我们需要什么</h3><ul>
@@ -415,72 +416,130 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <span class="hljs-comment"># 查看日志</span>
 <span class="hljs-built_in">sudo</span> journalctl -u wg-quick@wg0 -f
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h3 id="h3-u591au7528u6237u540cu65f6u8fdeu63a5">多用户同时连接</h3><p>在WireGuard中，User的一对公私钥只能在一个设备上使用，若有多个User，就需要编辑Client上Wireuard的配置文件，让每个User使用单独的公私钥，不同的公私钥可以使用之前提过的命令生成。</p>
-<p>具体配置操作中，Client上配置文件的的 <code>[Interface]</code> 部分保持不变，然后在下方添加具有不同地址和公钥的 <code>[Peer]</code> 区块。每个 <code>[Peer]</code> 区块需要在对应的User端有对应的<code>[Interface]</code>配置，其中的<code>Address</code>和<code>PrivateKey</code>要相匹配。</p>
-<h4 id="h4-u4feeu6539u540eu7684u914du7f6eu793au4f8b">修改后的配置示例</h4><h5 id="h5-client">Client</h5><pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
+<h3 id="h3-u591au7528u6237-u591au8bbeu5907-u63a5u5165u914du7f6e">多用户（多设备）接入配置</h3><p>在 WireGuard 的架构中，<strong>身份验证与 IP 路由是绑定的</strong>。每一个连接端（User）都必须拥有独一无二的公私钥对，且在中心节点中被分配唯一的内网 IP 地址。</p>
+<p>如果你直接将 User A 的配置文件复制给 User B 使用，不仅会导致密钥冲突，还会因为 IP 地址重复而导致路由混乱，最终造成两个设备互相顶号、掉线或无法联网。</p>
+<p>因此，接入多个用户（或设备）时，需要遵循以下三个步骤：</p>
+<ol>
+<li><strong>生成密钥</strong>：为每一个新用户生成独立的公私钥对。</li>
+<li><strong>分配 IP</strong>：为每一个新用户规划一个不重复的内网 IP（如 <code>10.0.0.2</code>, <code>10.0.0.3</code>）。</li>
+<li><strong>双向注册</strong>：在中心节点（Client）注册所有用户的公钥；在各用户设备上填入自己的私钥和中心节点的公钥。</li>
+</ol>
+<h4 id="h4-1-u8be6u7ec6u914du7f6eu903bu8f91">1. 详细配置逻辑</h4><p><strong>中心节点 (Client) 的变化：</strong></p>
+<ul>
+<li><code>[Interface]</code> 部分保持不变（它定义了中心节点自己的地址和监听端口）。</li>
+<li>需要为每一个新用户增加一个独立的 <code>[Peer]</code> 区块。</li>
+<li>每个 <code>[Peer]</code> 区块中，<code>PublicKey</code> 填写该用户的公钥，<code>AllowedIPs</code> 填写分配给该用户的具体 IP（通常使用 <code>/32</code>掩码，表示仅允许该特定 IP 流量）。</li>
+</ul>
+<p><strong>用户端 (User) 的变化：</strong></p>
+<ul>
+<li>每个用户拥有独立的配置文件。</li>
+<li><code>[Interface]</code> 中填写自己的私钥 (<code>PrivateKey</code>) 和分配到的唯一 IP (<code>Address</code>)。</li>
+<li><code>[Peer]</code> 指向中心节点，所有用户的 <code>[Peer]</code> 部分基本相同（都指向同一个中心节点的公钥和 Endpoint）。</li>
+</ul>
+<h4 id="h4-2-u4feeu6539u540eu7684u914du7f6eu793au4f8b">2. 修改后的配置示例</h4><p>假设我们将中心节点定义为 Client（作为网关/服务器），并接入三个用户设备（User_A, User_B, User_C）。</p>
+<h5 id="h5-a-u4e2du5fc3u8282u70b9u914du7f6e-client">A. 中心节点配置 (Client)</h5><p>该文件位于中心节点设备上。注意观察 <code>[Peer]</code> 区块是如何一一对应用户的。</p>
+<pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
+<span class="hljs-comment"># 中心节点的内网 IP，使用 /24 表示它属于该子网</span>
 <span class="hljs-attr">Address</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.1</span>/<span class="hljs-number">24</span>
 <span class="hljs-attr">ListenPort</span> = <span class="hljs-number">51820</span>
-<span class="hljs-attr">PrivateKey</span> = &lt;Client的私钥&gt;
+<span class="hljs-attr">PrivateKey</span> = &lt;Client 的私钥&gt;
 
+<span class="hljs-comment"># 启动/关闭时的防火墙规则 (保持原样)</span>
 <span class="hljs-attr">PostUp</span> = iptables -A FORWARD -i wg0 -j ACCEPT<span class="hljs-comment">; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE</span>
 <span class="hljs-attr">PostDown</span> = iptables -D FORWARD -i wg0 -j ACCEPT<span class="hljs-comment">; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE</span>
 
-<span class="hljs-comment"># 第一个用户</span>
+<span class="hljs-comment"># -------------------------------------------------</span>
+<span class="hljs-comment"># 用户 A (User_A)</span>
+<span class="hljs-comment"># -------------------------------------------------</span>
 <span class="hljs-section">[Peer]</span>
 <span class="hljs-attr">PublicKey</span> = &lt;User_A 的公钥&gt;
+<span class="hljs-comment"># 指定 User_A 只能使用 10.0.0.2 这个 IP 通信</span>
 <span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.2</span>/<span class="hljs-number">32</span>
 
-<span class="hljs-comment"># 第二个用户</span>
+<span class="hljs-comment"># -------------------------------------------------</span>
+<span class="hljs-comment"># 用户 B (User_B)</span>
+<span class="hljs-comment"># -------------------------------------------------</span>
 <span class="hljs-section">[Peer]</span>
 <span class="hljs-attr">PublicKey</span> = &lt;User_B 的公钥&gt;
+<span class="hljs-comment"># 指定 User_B 只能使用 10.0.0.3 这个 IP 通信</span>
 <span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.3</span>/<span class="hljs-number">32</span>
 
-<span class="hljs-comment"># 第三个用户</span>
+<span class="hljs-comment"># -------------------------------------------------</span>
+<span class="hljs-comment"># 用户 C (User_C)</span>
+<span class="hljs-comment"># -------------------------------------------------</span>
 <span class="hljs-section">[Peer]</span>
 <span class="hljs-attr">PublicKey</span> = &lt;User_C 的公钥&gt;
+<span class="hljs-comment"># 指定 User_C 只能使用 10.0.0.4 这个 IP 通信</span>
 <span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.4</span>/<span class="hljs-number">32</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h5 id="h5-user_a">User_A</h5><pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
-<span class="hljs-attr">PrivateKey</span> = &lt;User_A的私钥&gt;
+<h5 id="h5-b-u7528u6237u7aefu914du7f6e-user_a">B. 用户端配置 (User_A)</h5><ul>
+<li><strong>身份</strong>：User A</li>
+<li><strong>IP</strong>：10.0.0.2</li>
+</ul>
+<pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
+<span class="hljs-comment"># 这里必须填 User_A 独有的私钥</span>
+<span class="hljs-attr">PrivateKey</span> = &lt;User_A 的私钥&gt;
+<span class="hljs-comment"># 这里必须填分配给 User_A 的唯一 IP</span>
 <span class="hljs-attr">Address</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.2</span>/<span class="hljs-number">32</span>
 <span class="hljs-attr">DNS</span> = <span class="hljs-number">114.114</span>.<span class="hljs-number">114.114</span>
 
 <span class="hljs-section">[Peer]</span>
-<span class="hljs-attr">PublicKey</span> = &lt;Client的公钥&gt;
-<span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">24</span>, <span class="hljs-number">172.16</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">12</span>, ...&lt;你需要访问的IP，逗号分隔&gt;
+<span class="hljs-comment"># 指向中心节点的公钥</span>
+<span class="hljs-attr">PublicKey</span> = &lt;Client 的公钥&gt;
+<span class="hljs-comment"># 允许访问的网段：包括 VPN 内网(10.0.0.0/24) 和其他目标网段</span>
+<span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">24</span>, <span class="hljs-number">172.16</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">12</span>
+<span class="hljs-comment"># 通过 FRP 中转的连接地址</span>
 <span class="hljs-attr">Endpoint</span> = &lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;
+<span class="hljs-comment"># NAT 保持活跃心跳（防止连接中断）</span>
 <span class="hljs-attr">PersistentKeepalive</span> = <span class="hljs-number">25</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h5 id="h5-user_b">User_B</h5><pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
-<span class="hljs-attr">PrivateKey</span> = &lt;User_B的私钥&gt;
+<h5 id="h5-c-u7528u6237u7aefu914du7f6e-user_b">C. 用户端配置 (User_B)</h5><ul>
+<li><strong>身份</strong>：User B</li>
+<li><strong>IP</strong>：10.0.0.3</li>
+</ul>
+<pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
+<span class="hljs-comment"># 注意：使用 User_B 的私钥</span>
+<span class="hljs-attr">PrivateKey</span> = &lt;User_B 的私钥&gt;
+<span class="hljs-comment"># 注意：IP 变为 10.0.0.3</span>
 <span class="hljs-attr">Address</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.3</span>/<span class="hljs-number">32</span>
 <span class="hljs-attr">DNS</span> = <span class="hljs-number">114.114</span>.<span class="hljs-number">114.114</span>
 
 <span class="hljs-section">[Peer]</span>
-<span class="hljs-attr">PublicKey</span> = &lt;Client的公钥&gt;
-<span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">24</span>, <span class="hljs-number">172.16</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">12</span>, ...&lt;你需要访问的IP，逗号分隔&gt;
+<span class="hljs-comment"># 指向同一个中心节点</span>
+<span class="hljs-attr">PublicKey</span> = &lt;Client 的公钥&gt;
+<span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">24</span>, <span class="hljs-number">172.16</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">12</span>
 <span class="hljs-attr">Endpoint</span> = &lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;
 <span class="hljs-attr">PersistentKeepalive</span> = <span class="hljs-number">25</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h5 id="h5-user_c">User_C</h5><pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
-<span class="hljs-attr">PrivateKey</span> = &lt;User_C的私钥&gt;
+<h5 id="h5-d-u7528u6237u7aefu914du7f6e-user_c">D. 用户端配置 (User_C)</h5><ul>
+<li><strong>身份</strong>：User C</li>
+<li><strong>IP</strong>：10.0.0.4</li>
+</ul>
+<pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
+<span class="hljs-comment"># 注意：使用 User_C 的私钥</span>
+<span class="hljs-attr">PrivateKey</span> = &lt;User_C 的私钥&gt;
+<span class="hljs-comment"># 注意：IP 变为 10.0.0.4</span>
 <span class="hljs-attr">Address</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.4</span>/<span class="hljs-number">32</span>
 <span class="hljs-attr">DNS</span> = <span class="hljs-number">114.114</span>.<span class="hljs-number">114.114</span>
 
 <span class="hljs-section">[Peer]</span>
-<span class="hljs-attr">PublicKey</span> = &lt;Client的公钥&gt;
-<span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">24</span>, <span class="hljs-number">172.16</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">12</span>, ...&lt;你需要访问的IP，逗号分隔&gt;
+<span class="hljs-attr">PublicKey</span> = &lt;Client 的公钥&gt;
+<span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">24</span>, <span class="hljs-number">172.16</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">12</span>
 <span class="hljs-attr">Endpoint</span> = &lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;
 <span class="hljs-attr">PersistentKeepalive</span> = <span class="hljs-number">25</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h4 id="h4-u6ce8u610f">注意</h4><ol>
-<li><strong>公钥唯一性</strong>：每一个 <code>[Peer]</code> 必须对应一个独有的公钥。</li>
-<li><strong>IP 地址唯一性</strong>：每个 Peer 的 <code>AllowedIPs</code> 必须是唯一的（例如 <code>10.0.0.2</code>、<code>10.0.0.3</code> 等），不能冲突，否则 WireGuard 无法判断流量该发给谁。</li>
-<li><strong>客户端配置</strong>：对应的User需要对应的<code>Address</code>和私钥配置，在上面这个配置示例中，<ul>
-<li>User A 的客户端配置里，<code>Address</code>要填 <code>10.0.0.2/32</code>。</li>
-<li>User B 的客户端配置里，<code>Address</code> 要填 <code>10.0.0.3/32</code>。</li>
-<li>它们的 <code>[Peer]</code> 部分都指向这台内网服务器的公钥和 frp 映射后的公网地址。</li>
-<li>客户端配置文件中<code>[Interface]</code>的<code>PrivateKey</code>需要是与Client配置文件中对应<code>[Peer]</code>的<code>PublicKey</code>相对应的私钥。</li>
+<h4 id="h4-3-u5173u952eu6ce8u610fu4e8bu9879">3. 关键注意事项</h4><ol>
+<li><strong>公钥与私钥的配对</strong>：<ul>
+<li>切记：<strong>Client 配置文件</strong>中填写的 <code>[Peer] PublicKey</code>，必须是对应 <strong>User 配置文件</strong>中 <code>[Interface] PrivateKey</code> 生成的公钥。</li>
+</ul>
+</li>
+<li><strong>AllowedIPs 的唯一性</strong>：<ul>
+<li>在中心节点（Client）的配置文件中，每个 Peer 的 <code>AllowedIPs</code> 必须互不冲突（例如 <code>10.0.0.2/32</code> 和 <code>10.0.0.3/32</code>）。</li>
+<li>原理：当中心节点收到一个发往 <code>10.0.0.2</code> 的数据包时，它会根据 <code>AllowedIPs</code> 列表查找，发现它属于 User_A，于是使用 User_A 的公钥加密并发送。如果 IP 重复，WireGuard 将无法判断数据包该发给谁。</li>
+</ul>
+</li>
+<li><strong>心跳包 (PersistentKeepalive)</strong>：<ul>
+<li>由于你是通过 FRP 进行内网穿透或处于 NAT 环境后，<strong>务必</strong>在所有客户端（User 端）保留 <code>PersistentKeepalive = 25</code> 配置。这能强制每 25 秒发送一个空包，防止路由器或防火墙关闭 UDP 连接映射。</li>
 </ul>
 </li>
 </ol>
@@ -745,16 +804,17 @@ INTERVAL=300
 <li><a href="#h2-u9700u8981u6ce8u610fu7684u4e8bu9879">需要注意的事项</a></li>
 <ul>
 <li><a href="#h3-wireguard-u7684u81eau542fu52a8u7ba1u7406">WireGuard 的自启动管理</a></li>
-<li><a href="#h3-u591au7528u6237u540cu65f6u8fdeu63a5">多用户同时连接</a></li>
+<li><a href="#h3-u591au7528u6237-u591au8bbeu5907-u63a5u5165u914du7f6e">多用户（多设备）接入配置</a></li>
 <ul>
-<li><a href="#h4-u4feeu6539u540eu7684u914du7f6eu793au4f8b">修改后的配置示例</a></li>
+<li><a href="#h4-1-u8be6u7ec6u914du7f6eu903bu8f91">1. 详细配置逻辑</a></li>
+<li><a href="#h4-2-u4feeu6539u540eu7684u914du7f6eu793au4f8b">2. 修改后的配置示例</a></li>
 <ul>
-<li><a href="#h5-client">Client</a></li>
-<li><a href="#h5-user_a">User_A</a></li>
-<li><a href="#h5-user_b">User_B</a></li>
-<li><a href="#h5-user_c">User_C</a></li>
+<li><a href="#h5-a-u4e2du5fc3u8282u70b9u914du7f6e-client">A. 中心节点配置 (Client)</a></li>
+<li><a href="#h5-b-u7528u6237u7aefu914du7f6e-user_a">B. 用户端配置 (User_A)</a></li>
+<li><a href="#h5-c-u7528u6237u7aefu914du7f6e-user_b">C. 用户端配置 (User_B)</a></li>
+<li><a href="#h5-d-u7528u6237u7aefu914du7f6e-user_c">D. 用户端配置 (User_C)</a></li>
 </ul>
-<li><a href="#h4-u6ce8u610f">注意</a></li>
+<li><a href="#h4-3-u5173u952eu6ce8u610fu4e8bu9879">3. 关键注意事项</a></li>
 </ul>
 <li><a href="#h3-ups-u7684u7535u6c60u5bb9u91cf">UPS 的电池容量</a></li>
 <li><a href="#h3-u5728u6bcfu65e5u65adu7535u524du81eau52a8u5173u673a">在每日断电前自动关机</a></li>
