@@ -1,6 +1,8 @@
 # 宝宝也能上手的校园网穿透教程
 
 > 给ywk宝宝写的教程
+>
+> 本教程假定读者具备一定的计算机与网络的基础知识。
 
 ## 我们要做什么
 
@@ -402,95 +404,151 @@ sudo systemctl status wg-quick@wg0
 sudo journalctl -u wg-quick@wg0 -f
 ```
 
-### 多用户同时连接
+### 多用户（多设备）接入配置
 
-在WireGuard中，User的一对公私钥只能在一个设备上使用，若有多个User，就需要编辑Client上Wireuard的配置文件，让每个User使用单独的公私钥，不同的公私钥可以使用之前提过的命令生成。
+在 WireGuard 的架构中，**身份验证与 IP 路由是绑定的**。每一个连接端（User）都必须拥有独一无二的公私钥对，且在中心节点中被分配唯一的内网 IP 地址。
 
-具体配置操作中，Client上配置文件的的 `[Interface]` 部分保持不变，然后在下方添加具有不同地址和公钥的 `[Peer]` 区块。每个 `[Peer]` 区块需要在对应的User端有对应的`[Interface]`配置，其中的`Address`和`PrivateKey`要相匹配。
+如果你直接将 User A 的配置文件复制给 User B 使用，不仅会导致密钥冲突，还会因为 IP 地址重复而导致路由混乱，最终造成两个设备互相顶号、掉线或无法联网。
 
-#### 修改后的配置示例
+因此，接入多个用户（或设备）时，需要遵循以下三个步骤：
+1.  **生成密钥**：为每一个新用户生成独立的公私钥对。
+2.  **分配 IP**：为每一个新用户规划一个不重复的内网 IP（如 `10.0.0.2`, `10.0.0.3`）。
+3.  **双向注册**：在中心节点（Client）注册所有用户的公钥；在各用户设备上填入自己的私钥和中心节点的公钥。
 
-##### Client
+#### 1. 详细配置逻辑
+
+**中心节点 (Client) 的变化：**
+* `[Interface]` 部分保持不变（它定义了中心节点自己的地址和监听端口）。
+* 需要为每一个新用户增加一个独立的 `[Peer]` 区块。
+* 每个 `[Peer]` 区块中，`PublicKey` 填写该用户的公钥，`AllowedIPs` 填写分配给该用户的具体 IP（通常使用 `/32`掩码，表示仅允许该特定 IP 流量）。
+
+**用户端 (User) 的变化：**
+* 每个用户拥有独立的配置文件。
+* `[Interface]` 中填写自己的私钥 (`PrivateKey`) 和分配到的唯一 IP (`Address`)。
+* `[Peer]` 指向中心节点，所有用户的 `[Peer]` 部分基本相同（都指向同一个中心节点的公钥和 Endpoint）。
+
+#### 2. 修改后的配置示例
+
+假设我们将中心节点定义为 Client（作为网关/服务器），并接入三个用户设备（User_A, User_B, User_C）。
+
+##### A. 中心节点配置 (Client)
+
+该文件位于中心节点设备上。注意观察 `[Peer]` 区块是如何一一对应用户的。
 
 ```toml
 [Interface]
+# 中心节点的内网 IP，使用 /24 表示它属于该子网
 Address = 10.0.0.1/24
 ListenPort = 51820
-PrivateKey = <Client的私钥>
+PrivateKey = <Client 的私钥>
 
+# 启动/关闭时的防火墙规则 (保持原样)
 PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 
-# 第一个用户
+# -------------------------------------------------
+# 用户 A (User_A)
+# -------------------------------------------------
 [Peer]
 PublicKey = <User_A 的公钥>
+# 指定 User_A 只能使用 10.0.0.2 这个 IP 通信
 AllowedIPs = 10.0.0.2/32
 
-# 第二个用户
+# -------------------------------------------------
+# 用户 B (User_B)
+# -------------------------------------------------
 [Peer]
 PublicKey = <User_B 的公钥>
+# 指定 User_B 只能使用 10.0.0.3 这个 IP 通信
 AllowedIPs = 10.0.0.3/32
 
-# 第三个用户
+# -------------------------------------------------
+# 用户 C (User_C)
+# -------------------------------------------------
 [Peer]
 PublicKey = <User_C 的公钥>
+# 指定 User_C 只能使用 10.0.0.4 这个 IP 通信
 AllowedIPs = 10.0.0.4/32
+
 ```
 
-##### User_A
+##### B. 用户端配置 (User_A)
+
+* **身份**：User A
+* **IP**：10.0.0.2
 
 ```toml
 [Interface]
-PrivateKey = <User_A的私钥>
+# 这里必须填 User_A 独有的私钥
+PrivateKey = <User_A 的私钥>
+# 这里必须填分配给 User_A 的唯一 IP
 Address = 10.0.0.2/32
 DNS = 114.114.114.114
 
 [Peer]
-PublicKey = <Client的公钥>
-AllowedIPs = 10.0.0.0/24, 172.16.0.0/12, ...<你需要访问的IP，逗号分隔>
+# 指向中心节点的公钥
+PublicKey = <Client 的公钥>
+# 允许访问的网段：包括 VPN 内网(10.0.0.0/24) 和其他目标网段
+AllowedIPs = 10.0.0.0/24, 172.16.0.0/12
+# 通过 FRP 中转的连接地址
 Endpoint = <frp服务器公网IP>:<frp映射后的UDP端口>
+# NAT 保持活跃心跳（防止连接中断）
 PersistentKeepalive = 25
+
 ```
 
-##### User_B
+##### C. 用户端配置 (User_B)
+
+* **身份**：User B
+* **IP**：10.0.0.3
 
 ```toml
 [Interface]
-PrivateKey = <User_B的私钥>
+# 注意：使用 User_B 的私钥
+PrivateKey = <User_B 的私钥>
+# 注意：IP 变为 10.0.0.3
 Address = 10.0.0.3/32
 DNS = 114.114.114.114
 
 [Peer]
-PublicKey = <Client的公钥>
-AllowedIPs = 10.0.0.0/24, 172.16.0.0/12, ...<你需要访问的IP，逗号分隔>
+# 指向同一个中心节点
+PublicKey = <Client 的公钥>
+AllowedIPs = 10.0.0.0/24, 172.16.0.0/12
 Endpoint = <frp服务器公网IP>:<frp映射后的UDP端口>
 PersistentKeepalive = 25
+
 ```
 
-##### User_C
+##### D. 用户端配置 (User_C)
+
+* **身份**：User C
+* **IP**：10.0.0.4
 
 ```toml
 [Interface]
-PrivateKey = <User_C的私钥>
+# 注意：使用 User_C 的私钥
+PrivateKey = <User_C 的私钥>
+# 注意：IP 变为 10.0.0.4
 Address = 10.0.0.4/32
 DNS = 114.114.114.114
 
 [Peer]
-PublicKey = <Client的公钥>
-AllowedIPs = 10.0.0.0/24, 172.16.0.0/12, ...<你需要访问的IP，逗号分隔>
+PublicKey = <Client 的公钥>
+AllowedIPs = 10.0.0.0/24, 172.16.0.0/12
 Endpoint = <frp服务器公网IP>:<frp映射后的UDP端口>
 PersistentKeepalive = 25
+
 ```
 
-#### 注意
+#### 3. 关键注意事项
 
-1. **公钥唯一性**：每一个 `[Peer]` 必须对应一个独有的公钥。
-2. **IP 地址唯一性**：每个 Peer 的 `AllowedIPs` 必须是唯一的（例如 `10.0.0.2`、`10.0.0.3` 等），不能冲突，否则 WireGuard 无法判断流量该发给谁。
-3. **客户端配置**：对应的User需要对应的`Address`和私钥配置，在上面这个配置示例中，
-   - User A 的客户端配置里，`Address`要填 `10.0.0.2/32`。
-   - User B 的客户端配置里，`Address` 要填 `10.0.0.3/32`。
-   - 它们的 `[Peer]` 部分都指向这台内网服务器的公钥和 frp 映射后的公网地址。
-   - 客户端配置文件中`[Interface]`的`PrivateKey`需要是与Client配置文件中对应`[Peer]`的`PublicKey`相对应的私钥。
+1. **公钥与私钥的配对**：
+   - 切记：**Client 配置文件**中填写的 `[Peer] PublicKey`，必须是对应 **User 配置文件**中 `[Interface] PrivateKey` 生成的公钥。
+2. **AllowedIPs 的唯一性**：
+   - 在中心节点（Client）的配置文件中，每个 Peer 的 `AllowedIPs` 必须互不冲突（例如 `10.0.0.2/32` 和 `10.0.0.3/32`）。
+   - 原理：当中心节点收到一个发往 `10.0.0.2` 的数据包时，它会根据 `AllowedIPs` 列表查找，发现它属于 User_A，于是使用 User_A 的公钥加密并发送。如果 IP 重复，WireGuard 将无法判断数据包该发给谁。
+3. **心跳包 (PersistentKeepalive)**：
+   - 由于你是通过 FRP 进行内网穿透或处于 NAT 环境后，**务必**在所有客户端（User 端）保留 `PersistentKeepalive = 25` 配置。这能强制每 25 秒发送一个空包，防止路由器或防火墙关闭 UDP 连接映射。
 
 ### UPS 的电池容量
 
