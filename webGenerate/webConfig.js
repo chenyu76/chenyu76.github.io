@@ -35,6 +35,20 @@ export const gitRepositories = {
  */
 export const recommend = [
   {
+    date : 20250213,
+    link : "https://github.com/chenyu76/draftsman.nvim",
+    title : "Draftsman.nvim",
+    info :
+        "（Github链接）Neovim插件。<br>A feature-rich ASCII diagramming tool for Neovim. Draw boxes, arrows, lines, and text, and edit them easily. "
+  },
+  {
+    date : 20250126,
+    link : "https://github.com/chenyu76/github-latex-readme",
+    title : "在Github上用LaTeX写README",
+    info :
+        "（Github链接）使用 GitHub Actions 将 LaTeX 文件自动编译为 SVG，从而用 LaTeX 编写 Github 上的 README 文件。"
+  },
+  {
     date : 20251221,
     link : "writings/college-reverse-proxy.html",
     info :

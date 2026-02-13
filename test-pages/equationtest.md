@@ -56,6 +56,8 @@ A strange picture:
 
 ![what](/img/Tltamic.jpg)
 
+![hotiri](/img/hotori_pyramid.png)
+
 what?
 
 ## Alert Example
