@@ -92,8 +92,6 @@ $$
 
 ![sky change](./assets/sky_change_2.svg)
 
-
-
 ### 山脉轮廓
 
 使用分形算法生成山脉轮廓
@@ -118,6 +116,7 @@ $$
 $$
 
 其中：
+
 - $\vec{C}_A$ 和 $\vec{C}_B$ 是相邻条带的颜色向量
 - $w$ 是混合权重系数 ($0 \leq w \leq 1$)
 
@@ -128,6 +127,7 @@ w_{\text{noisy}} = \text{clamp}\left(w_{\text{base}} + \underbrace{\mathcal{N}(x
 $$
 
 其中：
+
 - $w_{\text{base}}$ 是基础权重（线性过渡）
 - $\mathcal{N}(x,y)$ 是坐标相关的噪声函数
 - $A_{\text{noise}}$ 是噪声强度系数
@@ -139,6 +139,7 @@ $$
 $$
 
 其中：
+
 - $s$ 是噪声缩放因子
 - $p$ 是持久性系数 ($0 < p < 1$)
 - $n$ 是倍频程数量
@@ -197,12 +198,12 @@ $$
 ```mathematica
 (* 绘图的Mathematica代码 *)
 Plot3D[
-  Module[{w = 0.6, h = 0.3, v = 0.0005, y = v*t - x}, 
-    Piecewise[{{h*(y/w), 0 < y < w}, 
-               {h*(2 - y/w), w <= y < 2*w}}]], 
-  {x, 0, 1}, {t, 0, 3200}, 
-  AxesLabel -> {"x", "t", "f(x, t)"}, 
-  ColorFunction -> "TemperatureMap", 
+  Module[{w = 0.6, h = 0.3, v = 0.0005, y = v*t - x},
+    Piecewise[{{h*(y/w), 0 < y < w},
+               {h*(2 - y/w), w <= y < 2*w}}]],
+  {x, 0, 1}, {t, 0, 3200},
+  AxesLabel -> {"x", "t", "f(x, t)"},
+  ColorFunction -> "TemperatureMap",
   PlotPoints -> 100]
 ```
 
@@ -211,7 +212,7 @@ Plot3D[
 ```javascript
 let total_wind_force = 0;
 for (let wind of this.winds) {
-    total_wind_force += wind.f(d.x3D, timestamp);
+  total_wind_force += wind.f(d.x3D, timestamp);
 }
 d.bentSpeed += total_wind_force * deltaT;
 d.bentSpeed -= d.bent * deltaT;
@@ -247,11 +248,10 @@ $$
 
 ```javascript
 function parabola_right_length_for_arc_length_approx(L, a) {
-// 这个比较数学上正确，但是不好看
-// return Math.sqrt((Math.sqrt(1 + 64 * a * L * L) - 1) / (8 * a));
-// 这个比较好看，但是不太数学
-return (Math.sqrt((Math.sqrt(1 + 64 * a * L * L) - 1) / (8 * a))) / 2 +
-       (L / 3);
+  // 这个比较数学上正确，但是不好看
+  // return Math.sqrt((Math.sqrt(1 + 64 * a * L * L) - 1) / (8 * a));
+  // 这个比较好看，但是不太数学
+  return Math.sqrt((Math.sqrt(1 + 64 * a * L * L) - 1) / (8 * a)) / 2 + L / 3;
 }
 ```
 
@@ -265,8 +265,6 @@ return (Math.sqrt((Math.sqrt(1 + 64 * a * L * L) - 1) / (8 * a))) / 2 +
 - 帧数上限为10帧，对于像素动画来说还不错？
 - 对于近且大的草，可以绘制更多帧数，远而小的，粗略绘制就可以了
 
-
-
 ## 更新3：fumo²
 
 收到了fumo！
@@ -275,6 +273,17 @@ return (Math.sqrt((Math.sqrt(1 + 64 * a * L * L) - 1) / (8 * a))) / 2 +
 
 ## 更新4：会动的小人
 
-有空再写！总之本来在画面上的比那名居天子变成ATRI并且会动了！
+本来在画面上的比那名居天子变成ATRI并且会动了！
 
-2025年2月6日。 7月4日更新1。8月25日更新2。9月20日更新3。
+1. 使用Gemini绘制了一个atri的像素图（毕竟我不怎么会画画）
+2. 使用[RePixel](https://github.com/chenyu76/RePixel)将Gemini生成的像素图转为像素对像素的真像素图
+   - 这个脚本是通过傅里叶分析完成的
+3. 使用[color_reducer](/img/pixelart/color_reducer.py)将真像素图颜色减少到一个合适的水平，让它看上去更干净
+   - 这个脚本是通过k-means聚类分析完成的
+4. 使用[aseprite](https://www.aseprite.org/)手动画了几帧，让角色能随风飘动。
+5. 把gif通过[这个脚本](../img/pixelart/gif2js.py)转为js数据
+6. 使用HTML canvas将js数据画出来，并和之前的草一起更新。
+
+值得一提的是，由于网站背景全都是程序生成的，所以所有需要下载到本地的内容只有大约40KB！
+
+2025年2月6日。 7月4日更新1。8月25日更新2。9月20日更新3。2026年1月9日更新4。
