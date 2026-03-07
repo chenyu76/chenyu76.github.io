@@ -49,6 +49,13 @@ export const recommend = [
         "（Github链接）使用 GitHub Actions 将 LaTeX 文件自动编译为 SVG，从而用 LaTeX 编写 Github 上的 README 文件。"
   },
   {
+    date : 20260109,
+    link : "writings/new-year-new-theme.html",
+    title : "本网页背景上的元素现在随风摆动",
+    info :
+        "可能需要稍等一会才会有风吹来。<br>也许会对您的设备有些许性能影响（虽然我已经尽量优化了）。"
+  },
+  {
     date : 20251221,
     link : "writings/college-reverse-proxy.html",
     info :
@@ -66,13 +73,6 @@ export const recommend = [
     title : "Glyph ASCII Canvas",
     info :
         "（Github链接）一个可以将图片转换为ASCII艺术的Python程序。<br>This program generates ASCII art from images using a sliding window template matching approach. Unlike simpler ASCII converters that map pixels directly to characters based on brightness, this algorithm considers the shape and spatial relationships by comparing image patches against rendered font templates using Mean Squared Error (MSE)."
-  },
-  {
-    date : 20250825,
-    link : "writings/new-year-new-theme.html",
-    title : "本网页背景上的草现在随风摆动",
-    info :
-        "可能需要稍等一会才会有风吹来。<br>也许会对您的设备有些许性能影响（虽然我已经尽量优化了）。"
   },
   {
     date : 20250715,
