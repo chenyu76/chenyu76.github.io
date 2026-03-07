@@ -35,14 +35,14 @@ export const gitRepositories = {
  */
 export const recommend = [
   {
-    date : 20250213,
+    date : 20260213,
     link : "https://github.com/chenyu76/draftsman.nvim",
     title : "Draftsman.nvim",
     info :
         "（Github链接）Neovim插件。<br>A feature-rich ASCII diagramming tool for Neovim. Draw boxes, arrows, lines, and text, and edit them easily. "
   },
   {
-    date : 20250126,
+    date : 20260126,
     link : "https://github.com/chenyu76/github-latex-readme",
     title : "在Github上用LaTeX写README",
     info :

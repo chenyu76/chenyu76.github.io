@@ -60,22 +60,16 @@ document.addEventListener("DOMContentLoaded", () => {
 // 控制左侧栏显示
 // 控制背景可见性
 const titleContainer = document.getElementById("title-container");
-const leftSidebar = document.getElementById("left-sidebar");
 const iframeBackground = document.getElementById("iframe-background");
 var currentTopContentScrollStatus = false; // 为真时是滚动到下方了
 window.addEventListener("scroll", () => {
-  if (!leftSidebar)
-    return;
-  // 当顶部的底部边缘跑到了视口上方，说明已经完全滚出去了
   let newScrollStatus = titleContainer.getBoundingClientRect().bottom < 0;
   if (newScrollStatus == currentTopContentScrollStatus)
     return;
   currentTopContentScrollStatus = newScrollStatus;
   if (currentTopContentScrollStatus) {
-    leftSidebar.classList.add("show");
     iframeBackground.style.display = "none";
   } else {
-    leftSidebar.classList.remove("show");
     iframeBackground.style.display = "";
   }
 }, true);

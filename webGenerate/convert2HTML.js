@@ -301,8 +301,8 @@ export function allMarkdown2Html(dir, templateHTML, rootPath = dir) {
           generateHtmlFile(
               htmlFilePath, templateHTML, content.title, 
               `<meta http-equiv="refresh" content="3;url=${content.redirect}">`,
-              `<h3>${relativePathTranslated}</h3><h1>${content.title}</h1>`,
-              `<p>Redirecting to <a href="${content.redirect}">${content.redirect}</a> in 3 seconds</p>`,
+              `<h3>${relativePathTranslated}</h3><h1>Redirecting to ${content.title}</h1>`,
+              `<p>Redirecting to <a href="${content.redirect}">${content.redirect}</a> in 3 seconds...</p>`,
               "", "", "");
         }
         else {
