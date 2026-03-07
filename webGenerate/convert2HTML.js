@@ -42,9 +42,91 @@ export function readTemplateHTML(inputPath) {
   }
 }
 
+/**
+ * 检测 Markdown 是否只包含一个可选标题和一个链接
+ * @param {string} md - 输入的 Markdown 文本
+ * @returns {string|null} - 如果匹配则返回链接，否则返回 null
+ */
+function getSingleLinkFromMarkdown(md) {
+  const len = md.length;
+  let i = 0;
+
+  // 辅助函数：跳过水平空白符（空格/制表符/回车）
+  function skipHorizontal() {
+    while (i < len && (md[i] === ' ' || md[i] === '\t' || md[i] === '\r')) i++;
+  }
+
+  // 辅助函数：计算并跳过连续换行
+  function consumeNewlines() {
+    let count = 0;
+    while (i < len) {
+      if (md[i] === '\n') {
+        count++;
+        i++;
+      } else if (md[i] === ' ' || md[i] === '\t' || md[i] === '\r') {
+        i++; // 换行间的空格也视为间隔
+      } else {
+        break;
+      }
+    }
+    return count;
+  }
+
+  // 处理可选标题
+  skipHorizontal();
+  if (md[i] === '#' && md[i + 1] === ' ') {
+    i += 2;
+    // 寻找标题行结束
+    while (i < len && md[i] !== '\n') i++;
+  }
+
+  // 检查标题后的换行
+  const nlAfterTitle = consumeNewlines();
+  if (nlAfterTitle > 2) return null; // 超过两个换行，直接短路
+
+  // 检测链接主体
+  let link = null;
+  skipHorizontal();
+
+  if (md[i] === '[') {
+    // 匹配 [alt](url)
+    const endBracket = md.indexOf(']', i + 1);
+    if (endBracket === -1 || md[endBracket + 1] !== '(') return null;
+    const endParen = md.indexOf(')', endBracket + 2);
+    if (endParen === -1) return null;
+    link = md.substring(endBracket + 2, endParen);
+    i = endParen + 1;
+  } else if (md.substring(i, i + 4) === 'http') {
+    // 匹配 http... (直到空格或换行)
+    const start = i;
+    while (i < len && md[i] !== ' ' && md[i] !== '\n' && md[i] !== '\r' && md[i] !== '\t') i++;
+    link = md.substring(start, i);
+  } else {
+    // 既不是标题，也不是指定的链接格式，短路
+    return null;
+  }
+
+  // 检查链接后的尾部内容
+  if (len - i > 3) return null; // 链接后如果还有超过3个字符，短路
+
+  return link;
+}
+
 export function convertMarkdown(inputPath) {
   // 读取 Markdown 文件
   const data = fs.readFileSync(inputPath, "utf8");
+
+  // 检查这个文件是不是单独的一个链接，如果是的话，就可以直接跳转过去了
+  const maybeLink = getSingleLinkFromMarkdown(data);
+  if (maybeLink) {
+    let firstLineEndIndex = data.indexOf("\n");
+    let firstLine = data.substring(0, firstLineEndIndex).trim();
+    // 检查第一行是否以 "# " 开头
+    if (data.startsWith("# ")) {
+      firstLine = data.substring(1, firstLineEndIndex).trim(); // 去掉#
+    }
+    return {title : firstLine, redirect : maybeLink};
+  }
 
   // 划分内容为 [标题, 正文, 脚注]
   const content = ((str) => {
@@ -214,12 +296,23 @@ export function allMarkdown2Html(dir, templateHTML, rootPath = dir) {
         });
         // 创建html文件
         const content = convertMarkdown(filePath);
-        const htmlContent = content.html;
-        const tocContent = generateTOC(content.toc);
-        generateHtmlFile(
-            htmlFilePath, templateHTML, content.title, "",
-            `<h3>${relativePathTranslated}</h3><h1>${content.title}</h1>`,
-            htmlContent, content.footnote, "", tocContent);
+        if (content.hasOwnProperty("redirect")) {
+          // 如果 content 中有 redirect 属性，说明这是一个重定向页面
+          generateHtmlFile(
+              htmlFilePath, templateHTML, content.title, 
+              `<meta http-equiv="refresh" content="3;url=${content.redirect}">`,
+              `<h3>${relativePathTranslated}</h3><h1>Redirecting to ${content.title}</h1>`,
+              `<p>Redirecting to <a href="${content.redirect}">${content.redirect}</a> in 3 seconds...</p>`,
+              "", "", "");
+        }
+        else {
+          const htmlContent = content.html;
+          const tocContent = generateTOC(content.toc);
+          generateHtmlFile(
+              htmlFilePath, templateHTML, content.title, "",
+              `<h3>${relativePathTranslated}</h3><h1>${content.title}</h1>`,
+              htmlContent, content.footnote, "", tocContent);
+        }
         // 记录已经有的文章的信息
         articles[path.join(
             relativePath,
