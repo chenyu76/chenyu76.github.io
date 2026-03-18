@@ -22,7 +22,7 @@
 
     <div id="spacer"></div>
 
-    <div id="anime-spacer" class="shrinked"></div>
+    <div class="shrinked anime-spacer"></div>
 
     <div id="content-wrapper-bg">
       <div id="main-grid-container">
@@ -79,8 +79,8 @@
             </div>
           </div>
 
-          <div id="content-wrapper">
-            <div id="content"><p>学校的公共 Wi-Fi 环境通常非常拥挤，设备数量众多。<code>avahi-daemon</code> 用于实现 mDNS/DNS-SD（多播 DNS/DNS 服务发现）协议，它会不断广播和接收网络上的服务信息。在设备众多的公共 Wi-Fi 环境中，大量的广播包可能会导致 <code>avahi-daemon</code> 消耗大量 CPU 资源来处理这些信息。</p>
+          <div class="content-wrapper">
+            <div class="content"><p>学校的公共 Wi-Fi 环境通常非常拥挤，设备数量众多。<code>avahi-daemon</code> 用于实现 mDNS/DNS-SD（多播 DNS/DNS 服务发现）协议，它会不断广播和接收网络上的服务信息。在设备众多的公共 Wi-Fi 环境中，大量的广播包可能会导致 <code>avahi-daemon</code> 消耗大量 CPU 资源来处理这些信息。</p>
 <h3 id="h3-u4f7fu7528-networkmanager-u7684-dispatcher-u811au672c">使用 NetworkManager 的 Dispatcher 脚本</h3><ul>
 <li>NetworkManager 在网络连接状态发生变化时，会运行 dispatcher 脚本。</li>
 <li>您可以编写一个 dispatcher 脚本，在连接到特定 SSID 时，禁用 Avahi 服务，断开连接时，启用 Avahi 服务。</li>

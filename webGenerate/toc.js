@@ -136,7 +136,6 @@ function folderTreeHtml(dir, articles) {
 }
 
 export function generateRecommend(type = 0, articles = {}) {
-  let year = 0;
   const listItems = recommend.map((item) => {
     let date;
     if (typeof item.date !== 'number') {
@@ -179,32 +178,28 @@ export function generateRecommend(type = 0, articles = {}) {
     const info = item.info || "";
     // marked.parse(item.info)
 
-    // 处理年份变化，年份变化时添加年份标题
-    let year_now = year;
-    if (item.date > 10000000) {
-      year_now = Math.floor(item.date / 10000);
-    } else if (item.date > 100000) {
-      year_now = Math.floor(item.date / 100);
-    }
-    const yearChange =
-        year_now !== year
-            ? `<hr><h3 style="text-align: center;">- ${year_now} -</h3>`
-            : "";
-    year = year_now;
-
     switch (type) {
     case 0:
       return `<li><a href="${link}">${title}</a> <small>(${date})</small></li>`;
     case 1:
-      return `${yearChange}<hr><h2><a href="${link}">${title}</a></h2>
-<small>${date}</small><br>
-<p style="text-indent:0">${info}</p>`;
+      return `
+<div class="card content">
+  <div class="card-top">
+    <h2><a href="${link}">${title}</a></h2>
+    <p>${info}</p>
+  </div>
+
+  <div class="card-bottom">
+    ${date}
+  </div>
+</div>
+`;
     }
   });
 
   let wrap = [
     [ "<ul>", "</ul>" ],
-    [ "", "" ],
+    [ "</div></div>", '<div class="content-wrapper"><div class="content">' ],
   ];
 
   return `${wrap[type][0]}\n${listItems.join("\n")}\n${wrap[type][1]}`;

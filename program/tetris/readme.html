@@ -22,7 +22,7 @@
 
     <div id="spacer"></div>
 
-    <div id="anime-spacer" class="shrinked"></div>
+    <div class="shrinked anime-spacer"></div>
 
     <div id="content-wrapper-bg">
       <div id="main-grid-container">
@@ -79,8 +79,8 @@
             </div>
           </div>
 
-          <div id="content-wrapper">
-            <div id="content"><p>如果一个俄罗斯方块每次给你的方块不是随机的，而是暗中由算法控制，或是帮助你，或是阻止你。</p>
+          <div class="content-wrapper">
+            <div class="content"><p>如果一个俄罗斯方块每次给你的方块不是随机的，而是暗中由算法控制，或是帮助你，或是阻止你。</p>
 <p><a href="https://chenyu76.github.io/program/tetris/index.html">开始游戏</a></p>
 <h2 id="h2-u7b97u6cd5u5b9eu73b0">算法实现</h2><p>AI的核心思想是模拟。对于当前正在下落的方块，AI会穷举其所有可能的旋转状态和最终落点位置。对每一种可能性，它都会模拟方块下落后形成的新局面，然后使用一个评估函数来为这个新局面打分。分数越低，代表局面越优。最终，AI会选择那个能够产生最低分（即最优局面）的操作来执行。</p>
 <h3 id="h3-u8bc4u4f30u51fdu6570">评估函数</h3><p>评估函数是AI的决策核心，它通过计算损失值来判断一个局面的好坏。这个损失值由四个指标加权计算得出：</p>
