@@ -52,7 +52,7 @@ const cardStyle = `
 .card-top {
   flex: 1;                    /* 占据剩余的所有垂直空间 */
   background-color: #ffffff;  /* 白色背景 */
-  padding: 20px;
+  padding: 40px;
   color: #333333;
 }
 
