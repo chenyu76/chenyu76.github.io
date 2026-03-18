@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Copy-tex extension</title>
+    <title>Using Via / Keychron Launcher on Linux</title>
 
     <link rel="preload" href="/img/pixelart/index.html" as="document" />
 
     <link rel="stylesheet" href="/styles.css" />
     <link rel="icon" href="/favicon.png" type="image/png" />
 
-    <link rel="stylesheet" href="/styles-code.css">
+    <meta http-equiv="refresh" content="3;url=https://www.rojtberg.net/2929/using-via-keychron-launcher-on-linux/">
   </head>
 
   <body>
@@ -61,7 +61,7 @@
 
         <div>
           <div id="title-container">
-            <div id="heading"><h3>/依赖包/katex/contrib/copy-tex/</h3><h1>Copy-tex extension</h1></div>
+            <div id="heading"><h3>/速查/archlinux/</h3><h1>Redirecting to Using Via / Keychron Launcher on Linux</h1></div>
             <div id="top-buttons-wrapper" class="top-buttons">
               <a href="/toc.html" title="文档索引" class="fade-in"
                 ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
@@ -80,34 +80,7 @@
           </div>
 
           <div id="content-wrapper">
-            <div id="content"><p>This extension modifies the copy/paste behavior in any browser supporting the
-<a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent">Clipboard API</a>
-so that, when selecting and copying KaTeX-rendered elements, the text
-content of the resulting clipboard renders KaTeX elements as their LaTeX source
-surrounded by specified delimiters.  (The HTML content of the resulting
-clipboard remains the selected HTML content, as it normally would.)
-The default delimiters are <code>$...$</code> for inline math and <code>$$...$$</code> for display
-math, but you can easy switch them to e.g. <code>\(...\)</code> and <code>\[...\]</code> by
-modifying <code>copyDelimiters</code> in <a href="copy-tex.js">the source code</a>.
-Note that a selection containing part of a KaTeX formula gets extended to
-include the entire KaTeX formula.</p>
-<h2 id="h2-usage">Usage</h2><p>This extension isn&#39;t part of KaTeX proper, so the script should be separately
-included in the page.</p>
-<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdn.jsdelivr.net/npm/katex@0.16.38/dist/contrib/copy-tex.min.js&quot;</span> <span class="hljs-attr">integrity</span>=<span class="hljs-string">&quot;sha384-Pe2JWbaShhSRT0SESJ9XLPeAsi4yrNi7r/CiH0Coq7giBjK5a6Ae7XcybE8rNlQP&quot;</span> <span class="hljs-attr">crossorigin</span>=<span class="hljs-string">&quot;anonymous&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-</code><button class="copy-btn" title="Copy">📋</button></pre>
-<p>(Note that, as of KaTeX 0.16.0, there is no longer a corresponding CSS file.)</p>
-<p>See <a href="index.html">index.html</a> for an example.
-(To run this example from a clone of the repository, run <code>yarn start</code>
-in the root KaTeX directory, and then visit
-<a href="http://localhost:7936/contrib/copy-tex/index.html">http://localhost:7936/contrib/copy-tex/index.html</a>
-with your web browser.)</p>
-<p>If you want to build your own custom copy handler based on this one,
-copy the <code>copy-tex.js</code> into your codebase and replace the <code>require</code>
-statement with <code>require(&#39;katex/contrib/copy-tex/katex2tex.js&#39;)</code>.</p>
-<p>ECMAScript module is also available:</p>
-<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdn.jsdelivr.net/npm/katex@0.16.38/dist/contrib/copy-tex.mjs&quot;</span> <span class="hljs-attr">integrity</span>=<span class="hljs-string">&quot;sha384-PTy3nbMSATx5Ifo/k1ErbnbMVEp3koLGaqTD+zBo5H0fPFue/mKr1M3//74Fu6Tf&quot;</span> <span class="hljs-attr">crossorigin</span>=<span class="hljs-string">&quot;anonymous&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-</code><button class="copy-btn" title="Copy">📋</button></pre>
-</div>
+            <div id="content"><p>Redirecting to <a href="https://www.rojtberg.net/2929/using-via-keychron-launcher-on-linux/">https://www.rojtberg.net/2929/using-via-keychron-launcher-on-linux/</a> in 3 seconds...</p></div>
             <div id="footnote"></div>
           </div>
         </div>
@@ -146,19 +119,5 @@ statement with <code>require(&#39;katex/contrib/copy-tex/katex2tex.js&#39;)</cod
     </div>
 
     
-<script>
-  document.querySelectorAll('.copy-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const pre = btn.parentElement;
-      const code = pre.querySelector('code');
-      try {
-        await navigator.clipboard.writeText(code.innerText);
-        btn.textContent = ' ✓ ';
-        setTimeout(() => btn.textContent = '📋', 1500);
-      } catch (err) { console.error(err); }
-    });
-  });
-</script>
-
   </body>
 </html>
