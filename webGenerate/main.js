@@ -33,6 +33,43 @@ function toggleNextNextVis(self) {
 }
 </script>
 `;
+const cardStyle = `
+<style>
+/* 卡片整体容器 */
+.card {
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;     /* 让子元素上下排列 */
+  font-family: sans-serif;
+  width: auto;
+  flex-grow: 1;
+  /* 占据剩余空间 */
+  max-width: var(--main-width);
+  margin: 40px 0;
+}
+
+/* 上半部分：白色内容区 */
+.card-top {
+  flex: 1;                    /* 占据剩余的所有垂直空间 */
+  background-color: #ffffff;  /* 白色背景 */
+  padding: 20px;
+  color: #333333;
+}
+
+/* 下半部分：灰色日期区 */
+.card-bottom {
+  height: 50px;               /* 固定底部高度 */
+  background-color: #f7f7f9;  /* 浅灰色背景 */
+  border-top: 1px solid #eaeaea; /* 可选：加一条淡淡的分割线 */
+  padding: 0 20px;
+  display: flex;
+  align-items: center;        /* 垂直居中日期 */
+  justify-content: flex-end;  /* 让日期靠右对齐 (如果想靠左可改为 flex-start) */
+  color: #888888;             /* 日期文字使用较淡的颜色 */
+  font-size: 14px;
+}
+</style>
+`
 
 // 遍历文件夹，处理其中的 .md 文件,生成html文件
 const templateHTML = readTemplateHTML(path.join(__dirname, "template.html"));
@@ -57,11 +94,11 @@ generateHtmlFile(
 generateHtmlFile(
     path.join(rootPath, "index.html"),
     templateHTML,
-    "chenyu76的主页",
+    "chenyu的主页",
+    cardStyle,
     "",
-    `<h1>chenyu76<span style="color: #888888;">.<wbr />github.<wbr />io</span></h1>`,
     `${convertMarkdown(path.join(rootPath, "README.md")).html}<br> 
-${generateRecommend(1, articles)}<br><hr><h2>小工具</h2>
+${generateRecommend(1, articles)}<h2>小工具</h2>
 ${convertMarkdown(path.join(rootPath, "program", "readme.md")).html}`,
     "",
     "",

@@ -249,6 +249,8 @@ export function generateHtmlFile(
         `;
   }
 
+  // 将 <hr> 标签替换为指定的 div 结构
+  // htmlContent = transformHrTags(htmlContent); 
   // 创建替换映射
   const replacements = {
     "TITLE_PLACEHOLDER" : titleContent,

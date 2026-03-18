@@ -4,7 +4,7 @@
 
 因为没有评论区，你可以在[Github Discussions](https://github.com/chenyu76/chenyu76.github.io/discussions)留下意见。
 
------
+---
 
 ## 使用的库
 
@@ -16,4 +16,5 @@
 
 - [这是 Justin King 的 Github 主页](https://jinqking.github.io/)：比我更会写东西的朋友，满满干货
 - [fangd](https://fangd.net/)（是不是挂了?）
-- [zhangzk](https://www.zhangzk.net/)
+- [ZHANG Zaikun](https://www.zhangzk.net/)
+- [L'Équipe Z](https://equipez.github.io/)
