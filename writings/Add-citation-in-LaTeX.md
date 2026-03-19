@@ -83,7 +83,17 @@
 
 每个`@`开头是一个条目，条目内部填入作者、标题等信息；这个示例中第一个条目中book是文档类型， 此外还有article, inproceedings, misc等，如它们的名称所暗示的，它们分别代表书籍、文章等格式；`latexguide`是引用时使用的名称，可以在之后使用类似的格式添加更多内容。对于正经期刊上发表的论文，其对应的bib条目一般可以直接在[Google Scholar](https://scholar.google.com/)或其他文献网站上复制获得，不推荐手写；或者你非常懒的话，也可以让AI生成，但务必注意核对信息。
 
+下图是在Google Scholar上获取对应的条目方式。
+
 ![Google Scholar 示例](./assets/google_scholar.png)
+
+> [!IMPORTANT]
+>
+> 网络上获取的文献的条目有可能存在信息不准确、错误或遗漏的情况，请注意甄别。
+
+> [!NOTE]
+>
+> 不同网站上获取的条目之间可能存在格式差异，例如同样名为Xiao Ming的作者可能在A处叫“Xiao M.” ，在另一个地方又叫“Ming Xiao”之类的，请注意。这需要手动修改统一。
 
 ## 2. 引用参考文献
 
