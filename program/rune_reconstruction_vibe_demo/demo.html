@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>符文重构 (Rune Reconstruction) - 逻辑架构增强版</title>
+    <style>
+        :root {
+            --bg: #050508;
+            --panel-bg: rgba(10, 10, 15, 0.98);
+            --accent: #00f2ff;
+            --trigger: #00ff88;
+            --operator: #ffcc00;
+            --effect: #ff3366;
+            --port-in: #444;
+            --port-out: #888;
+        }
+
+        body { margin: 0; padding: 0; background: var(--bg); color: #e0e0e0; font-family: 'Consolas', 'Courier New', monospace; overflow: hidden; user-select: none; }
+        canvas { display: block; }
+        #ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        
+        /* 顶部状态栏 */
+        #top-bar { position: absolute; top: 0; left: 0; width: 100%; height: 50px; background: rgba(0,0,0,0.8); display: flex; align-items: center; padding: 0 20px; border-bottom: 1px solid #333; z-index: 10; }
+        #exp-container { flex-grow: 1; height: 8px; background: #222; margin: 0 20px; border-radius: 4px; overflow: hidden; }
+        #exp-bar { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), #0066ff); box-shadow: 0 0 10px var(--accent); transition: width 0.3s; }
+        
+        /* 选择面板 (三选一) */
+        #choice-panel {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center;
+            z-index: 100; pointer-events: auto;
+        }
+        .choice-container { display: flex; gap: 30px; }
+        .choice-card {
+            width: 240px; background: #1a1a24; border: 2px solid #333; padding: 30px; border-radius: 12px;
+            text-align: center; cursor: pointer; transition: all 0.3s;
+        }
+        .choice-card:hover { border-color: var(--accent); transform: translateY(-10px); background: #252535; box-shadow: 0 0 30px rgba(0, 242, 255, 0.2); }
+        .choice-card h3 { margin: 15px 0; color: #fff; }
+        .choice-card p { font-size: 13px; color: #aaa; line-height: 1.5; }
+        .card-type { font-size: 11px; color: var(--accent); opacity: 0.7; letter-spacing: 2px; }
+
+        /* 节点编辑器 */
+        #node-editor {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--panel-bg); display: none; pointer-events: auto; flex-direction: column; z-index: 50;
+        }
+        #editor-header { padding: 20px 40px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        #editor-main { flex-grow: 1; position: relative; overflow: hidden; background-image: 
+            radial-gradient(circle, #222 1px, transparent 1px); background-size: 40px 40px; }
+        #btn-close { padding: 12px 40px; background: var(--accent); color: #000; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; }
+        #btn-close:hover { background: #fff; box-shadow: 0 0 15px var(--accent); }
+
+        /* 节点样式 */
+        .node {
+            position: absolute; width: 140px; background: #1a1a24; border: 1px solid #444;
+            border-radius: 6px; padding: 12px; cursor: move; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+        .node[data-type="TRIGGER"] { border-left: 5px solid var(--trigger); }
+        .node[data-type="OPERATOR"] { border-left: 5px solid var(--operator); }
+        .node[data-type="EFFECT"] { border-left: 5px solid var(--effect); }
+        .node-name { font-size: 14px; font-weight: bold; text-align: center; margin-bottom: 10px; color: #fff; }
+        
+        /* 端口布局 */
+        .ports-container { display: flex; justify-content: space-between; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        .port-column { display: flex; flex-direction: column; justify-content: space-around; height: 100%; }
+        .port {
+            width: 14px; height: 14px; background: #333; border: 2px solid #111; border-radius: 50%;
+            pointer-events: auto; cursor: crosshair; transition: all 0.2s; position: relative;
+        }
+        .port:hover { transform: scale(1.4); background: var(--accent); }
+        .port.occupied { background: #666; border-color: var(--accent); }
+        .port-in { margin-left: -7px; }
+        .port-out { margin-right: -7px; }
+        .port-label { position: absolute; font-size: 9px; color: #666; white-space: nowrap; top: -12px; left: 50%; transform: translateX(-50%); }
+
+        svg#connections-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+
+        .dmg-popup { position: absolute; pointer-events: none; font-weight: bold; animation: floatUp 1s ease-out forwards; }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-80px) scale(1.2); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <canvas id="gameCanvas"></canvas>
+    
+    <div id="ui-layer">
+        <div id="top-bar">
+            <div style="min-width: 80px; font-weight: bold;">LV.<span id="txt-lv">1</span></div>
+            <div id="hp-container" style="width: 150px; height: 8px; background: #400; border-radius: 4px; overflow: hidden; margin-right: 20px;">
+                <div id="hp-bar" style="width: 100%; height: 100%; background: #f33; box-shadow: 0 0 10px #f33; transition: width 0.1s;"></div>
+            </div>
+            <div id="exp-container"><div id="exp-bar"></div></div>
+            <div style="min-width: 120px; text-align: right; color: var(--accent);" id="txt-dmg">15</div>
+        </div>
+
+        <!-- 进化选择界面 -->
+        <div id="choice-panel">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <h1 style="color: var(--accent); letter-spacing: 10px;">符文进化</h1>
+                <p style="color: #666;">选择一个逻辑节点合并至你的法术架构</p>
+            </div>
+            <div class="choice-container" id="choice-list">
+                <!-- 动态填充 -->
+            </div>
+        </div>
+
+        <!-- 节点重构编辑器 -->
+        <div id="node-editor">
+            <div id="editor-header">
+                <div style="font-size: 24px; color: var(--accent); font-weight: bold;">架构解析器 / STRUCTURE PARSER</div>
+                <button id="btn-close">同步并锁定架构</button>
+            </div>
+            <div id="editor-main">
+                <svg id="connections-svg"></svg>
+            </div>
+            <div style="padding: 10px; text-align: center; background: #000; font-size: 12px; color: #444;">
+                [提示] 点击输出端口并拖动到输入端口进行连接 | 右键点击连线断开 | 右键点击节点可移除 (不可恢复)
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    /** 符文库定义 (带端口配置) **/
+    const RUNE_LIB = [
+        { id: 't_pulsar', type: 'TRIGGER', name: '脉冲核心', desc: '基础逻辑激发器，持续产生法术信号。', in: 0, out: 1 },
+        { id: 'o_aim', type: 'OPERATOR', name: '自动寻踪', desc: '计算场上最近的数理坐标，修正弹幕飞行方向。', in: 1, out: 1 },
+        { id: 'o_mult', type: 'OPERATOR', name: '倍增回路', desc: '伤害指数提升 x1.6。', in: 1, out: 1, stats: { mult: 1.6 } },
+        { id: 'o_split', type: 'OPERATOR', name: '逻辑分流器', desc: '将单路信号分流为双路，并增加弹幕数量。', in: 1, out: 2, stats: { split: 1 } },
+        { id: 'o_recur', type: 'OPERATOR', name: '递归循环', desc: '增加逻辑深度，极大放大伤害跳变。', in: 1, out: 1, stats: { recur: 1 } },
+        { id: 'o_accel', type: 'OPERATOR', name: '超频模块', desc: '缩短施法间隔 25%。', in: 1, out: 1, stats: { speed: 0.75 } },
+        { id: 'e_photon', type: 'EFFECT', name: '光子投射', desc: '发射高频光子弹。', in: 1, out: 0 },
+        { id: 'e_blackhole', type: 'EFFECT', name: '虛空坍缩', desc: '产生近距离的高能湮灭场。', in: 1, out: 0 }
+    ];
+
+    const state = {
+        player: { x: window.innerWidth/2, y: window.innerHeight/2, lv: 1, exp: 0, nextExp: 60, hp: 100, maxHp: 100 },
+        debug: { isInvincible: true }, // “不死”模式开关
+        nodes: [], // 实例化的节点
+        conns: [], // { fromId, fromPort, toId, toPort }
+        enemies: [],
+        bullets: [],
+        isPaused: false,
+        frame: 0,
+        lastFire: 0
+    };
+
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const editorMain = document.getElementById('editor-main');
+    const svgLayer = document.getElementById('connections-svg');
+
+    // 全局右键禁用
+    window.oncontextmenu = (e) => { e.preventDefault(); return false; };
+
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize);
+    resize();
+
+    /** 核心逻辑：基于端口的图遍历 **/
+    function resolveLogic() {
+        const activeSpells = [];
+        const triggers = state.nodes.filter(n => n.type === 'TRIGGER');
+
+        triggers.forEach(startNode => {
+            // 每一个输出端口发起一次遍历
+            for (let p = 0; p < startNode.out; p++) {
+                traverse(startNode, p, { dmg: 15, mult: 1.2, recur: 1, split: 1, area: 1.0, speed: 1.0, autoAim: false, effect: null });
+            }
+        });
+
+        function traverse(currNode, portIdx, context) {
+            // 应用当前节点效果
+            if (currNode.id === 'o_aim') context.autoAim = true;
+            if (currNode.id === 'o_mult') context.mult *= 1.6;
+            if (currNode.id === 'o_split') context.split += 1;
+            if (currNode.id === 'o_recur') context.recur += 1;
+            if (currNode.id === 'o_accel') context.speed *= 0.75;
+            if (currNode.type === 'EFFECT') {
+                context.effect = currNode.id;
+                context.finalDmg = context.dmg * Math.pow(context.mult, context.recur);
+                activeSpells.push({...context});
+                return;
+            }
+
+            // 寻找从该端口出去的所有连线
+            const outgoing = state.conns.filter(c => c.fromId === currNode.instId && c.fromPort === portIdx);
+            outgoing.forEach(conn => {
+                const nextNode = state.nodes.find(n => n.instId === conn.toId);
+                if (nextNode) traverse(nextNode, conn.toPort, {...context});
+            });
+        }
+        return activeSpells;
+    }
+
+    /** 玩家伤害逻辑 **/
+    function takeDamage(amt) {
+        state.player.hp -= amt;
+        if (state.player.hp <= 0 && !state.debug.isInvincible) {
+            gameOver();
+        }
+    }
+
+    function gameOver() {
+        state.isPaused = true;
+        alert("架构崩溃：逻辑回路已过载。系统尝试重启中...");
+        location.reload();
+    }
+
+    /** 节点编辑器交互 **/
+    function createNodeUI(inst) {
+        const div = document.createElement('div');
+        div.className = 'node';
+        div.id = 'node-' + inst.instId;
+        div.dataset.type = inst.type;
+        div.style.left = inst.x + 'px';
+        div.style.top = inst.y + 'px';
+        
+        // 构建端口 HTML
+        let inPorts = '';
+        for(let i=0; i<inst.in; i++) inPorts += `<div class="port port-in" data-port="${i}"><div class="port-label">IN ${i+1}</div></div>`;
+        let outPorts = '';
+        for(let i=0; i<inst.out; i++) outPorts += `<div class="port port-out" data-port="${i}"><div class="port-label">OUT ${i+1}</div></div>`;
+
+        div.innerHTML = `
+            <div class="node-name">${inst.name}</div>
+            <div class="ports-container">
+                <div class="port-column">${inPorts}</div>
+                <div class="port-column">${outPorts}</div>
+            </div>
+        `;
+
+        // 拖拽
+        div.onmousedown = (e) => {
+            if (e.target.classList.contains('port')) return;
+            if (e.button === 2) { // 右键删除节点
+                removeNode(inst);
+                return;
+            }
+            const ox = e.clientX - div.offsetLeft;
+            const oy = e.clientY - div.offsetTop;
+            document.onmousemove = (me) => {
+                inst.x = me.clientX - ox;
+                inst.y = me.clientY - oy;
+                div.style.left = inst.x + 'px';
+                div.style.top = inst.y + 'px';
+                renderConnections();
+            };
+            document.onmouseup = () => document.onmousemove = null;
+        };
+
+        // 端口连线
+        div.querySelectorAll('.port-out').forEach(port => {
+            port.onmousedown = (e) => {
+                e.stopPropagation();
+                startDrawing(inst, parseInt(port.dataset.port), e);
+            };
+        });
+
+        div.querySelectorAll('.port-in').forEach(port => {
+            port.onmouseup = (e) => {
+                if (drawing) finalizeConn(inst, parseInt(port.dataset.port));
+            };
+        });
+
+        editorMain.appendChild(div);
+    }
+
+    let drawing = null; // { fromId, fromPort, x, y }
+    function startDrawing(inst, portIdx, e) {
+        // 每个输出端口只能连一个？根据用户需求：每个节点有最大连接数。
+        // 我们实现为：每个具体的端口只能连一个，如果要多连，必须用分流器或其他节点。
+        const existing = state.conns.find(c => c.fromId === inst.instId && c.fromPort === portIdx);
+        if (existing) state.conns.splice(state.conns.indexOf(existing), 1);
+
+        drawing = { fromId: inst.instId, fromPort: portIdx, x: e.clientX, y: e.clientY };
+        
+        document.onmousemove = (me) => {
+            drawing.curX = me.clientX;
+            drawing.curY = me.clientY;
+            renderConnections();
+        };
+        document.onmouseup = () => { drawing = null; document.onmousemove = null; renderConnections(); };
+    }
+
+    function finalizeConn(toInst, toPortIdx) {
+        // 检查输入端口是否占用
+        const existing = state.conns.find(c => c.toId === toInst.instId && c.toPort === toPortIdx);
+        if (existing) state.conns.splice(state.conns.indexOf(existing), 1);
+
+        state.conns.push({ fromId: drawing.fromId, fromPort: drawing.fromPort, toId: toInst.instId, toPort: toPortIdx });
+        drawing = null;
+        renderConnections();
+    }
+
+    function renderConnections() {
+        svgLayer.innerHTML = '';
+        state.conns.forEach((c, idx) => {
+            const f = state.nodes.find(n => n.instId === c.fromId);
+            const t = state.nodes.find(n => n.instId === c.toId);
+            if(!f || !t) return;
+
+            // 计算端口位置 (简化：根据 index 垂直分布)
+            const x1 = f.x + 140, y1 = f.y + (f.out > 1 ? (c.fromPort+1)*(45/(f.out+1))+15 : 30);
+            const x2 = t.x, y2 = t.y + (t.in > 1 ? (c.toPort+1)*(45/(t.in+1))+15 : 30);
+            
+            drawCurve(x1, y1, x2, y2, '#555', idx);
+        });
+
+        if (drawing) {
+            const f = state.nodes.find(n => n.instId === drawing.fromId);
+            const x1 = f.x + 140, y1 = f.y + (f.out > 1 ? (drawing.fromPort+1)*(45/(f.out+1))+15 : 30);
+            drawCurve(x1, y1, drawing.curX, drawing.curY - 50, varColor('--accent'), -1);
+        }
+
+        // 更新端口状态
+        document.querySelectorAll('.port').forEach(p => p.classList.remove('occupied'));
+        state.conns.forEach(c => {
+            const f = document.querySelector(`#node-${c.fromId} .port-out[data-port="${c.fromPort}"]`);
+            if(f) f.classList.add('occupied');
+            const t = document.querySelector(`#node-${c.toId} .port-in[data-port="${c.toPort}"]`);
+            if(t) t.classList.add('occupied');
+        });
+    }
+
+    function drawCurve(x1, y1, x2, y2, color, connIdx) {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        const cp1x = x1 + (x2 - x1) / 2;
+        const d = `M ${x1} ${y1} C ${cp1x} ${y1}, ${cp1x} ${y2}, ${x2} ${y2}`;
+        path.setAttribute('d', d);
+        path.setAttribute('stroke', color);
+        path.setAttribute('stroke-width', '3');
+        path.setAttribute('fill', 'none');
+        if (connIdx !== -1) {
+            path.style.pointerEvents = 'auto';
+            path.style.cursor = 'pointer';
+            path.onmouseenter = () => path.setAttribute('stroke', '#ff3366');
+            path.onmouseleave = () => path.setAttribute('stroke', color);
+            path.onmousedown = (e) => { if(e.button === 2) { state.conns.splice(connIdx, 1); renderConnections(); } };
+        }
+        svgLayer.appendChild(path);
+    }
+
+    function removeNode(inst) {
+        state.nodes = state.nodes.filter(n => n !== inst);
+        state.conns = state.conns.filter(c => c.fromId !== inst.instId && c.toId !== inst.instId);
+        document.getElementById('node-' + inst.instId).remove();
+        renderConnections();
+    }
+
+    function varColor(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+    /** 升级流程 **/
+    function levelUp() {
+        state.player.lv++;
+        state.player.exp = 0;
+        state.player.nextExp *= 1.3;
+        state.isPaused = true;
+        
+        // 三选一面板
+        const panel = document.getElementById('choice-panel');
+        const list = document.getElementById('choice-list');
+        list.innerHTML = '';
+        panel.style.display = 'flex';
+
+        const pool = [...RUNE_LIB].sort(() => 0.5 - Math.random()).slice(0, 3);
+        pool.forEach(proto => {
+            const card = document.createElement('div');
+            card.className = 'choice-card';
+            card.innerHTML = `
+                <div class="card-type">${proto.type}</div>
+                <h3>${proto.name}</h3>
+                <p>${proto.desc}</p>
+                <div style="margin-top:20px; font-size:10px; color:#555;">端口: ${proto.in}入 / ${proto.out}出</div>
+            `;
+            card.onclick = () => {
+                const inst = { ...proto, instId: Math.random().toString(36).substr(2,9), x: 100 + Math.random()*200, y: 100 + Math.random()*200 };
+                state.nodes.push(inst);
+                createNodeUI(inst);
+                panel.style.display = 'none';
+                openEditor();
+            };
+            list.appendChild(card);
+        });
+    }
+
+    function openEditor() {
+        document.getElementById('node-editor').style.display = 'flex';
+        renderConnections();
+    }
+
+    document.getElementById('btn-close').onclick = () => {
+        document.getElementById('node-editor').style.display = 'none';
+        state.isPaused = false;
+    };
+
+    /** 初始化与主循环 **/
+    function init() {
+        // 初始节点：脉冲核心 -> 自动寻踪 -> 光子投射
+        const t = { ...RUNE_LIB[0], instId: 'init-t', x: 50, y: 200 };
+        const a = { ...RUNE_LIB[1], instId: 'init-a', x: 250, y: 200 };
+        const e = { ...RUNE_LIB[6], instId: 'init-e', x: 450, y: 200 };
+        state.nodes.push(t, a, e);
+        state.conns.push(
+            { fromId: 'init-t', fromPort: 0, toId: 'init-a', toPort: 0 },
+            { fromId: 'init-a', fromPort: 0, toId: 'init-e', toPort: 0 }
+        );
+        
+        state.nodes.forEach(createNodeUI);
+        
+        // 键盘控制
+        const keys = {};
+        window.onkeydown = (e) => keys[e.key.toLowerCase()] = true;
+        window.onkeyup = (e) => keys[e.key.toLowerCase()] = false;
+
+        function loop() {
+            if (!state.isPaused) {
+                state.frame++;
+                if (keys.w) state.player.y -= 4; if (keys.s) state.player.y += 4;
+                if (keys.a) state.player.x -= 4; if (keys.d) state.player.x += 4;
+
+                const spells = resolveLogic();
+                const minInterval = spells.reduce((min, s) => Math.min(min, 600 * s.speed), 600);
+                if (Date.now() - state.lastFire > minInterval) {
+                    spells.forEach(s => {
+                        let targetAngle = null;
+                        if (s.autoAim && state.enemies.length > 0) {
+                            // 寻踪：查找最近敌人
+                            let nearest = null, minDist = Infinity;
+                            state.enemies.forEach(e => {
+                                const d = Math.hypot(e.x - state.player.x, e.y - state.player.y);
+                                if (d < minDist) { minDist = d; nearest = e; }
+                            });
+                            if (nearest) targetAngle = Math.atan2(nearest.y - state.player.y, nearest.x - state.player.x);
+                        }
+
+                        for(let i=0; i<s.split; i++) {
+                            const angle = targetAngle !== null 
+                                ? targetAngle + (Math.random() - 0.5) * 0.2 // 寻踪时带一点散射
+                                : (Math.PI*2/s.split)*i + state.frame*0.05;
+                            state.bullets.push({ 
+                                x: state.player.x, y: state.player.y, vx: Math.cos(angle)*8, vy: Math.sin(angle)*8, 
+                                dmg: s.finalDmg, color: getDmgColor(s.finalDmg), life: 80 
+                            });
+                        }
+                    });
+                    state.lastFire = Date.now();
+                }
+
+                if (state.frame % 50 === 0) spawnEnemy();
+
+                // 更新实体
+                state.bullets.forEach((b, bi) => {
+                    b.x += b.vx; b.y += b.vy; b.life--;
+                    if(b.life <= 0) state.bullets.splice(bi, 1);
+                });
+                state.enemies.forEach((e, ei) => {
+                    const dx = state.player.x-e.x, dy = state.player.y-e.y, d = Math.sqrt(dx*dx+dy*dy);
+                    e.x += dx/d*2; e.y += dy/d*2;
+
+                    // 怪物碰撞玩家伤害检测
+                    if (d < 30) {
+                        takeDamage(0.5); // 持续造成伤害
+                    }
+
+                    state.bullets.forEach((b, bi) => {
+                        if (Math.hypot(b.x-e.x, b.y-e.y) < 25) {
+                            e.hp -= b.dmg;
+                            popDmg(e.x, e.y, b.dmg);
+                            state.bullets.splice(bi, 1);
+                            if(e.hp <= 0) {
+                                state.enemies.splice(ei, 1);
+                                state.player.exp += 20;
+                                if(state.player.exp >= state.player.nextExp) levelUp();
+                            }
+                        }
+                    });
+                });
+            }
+
+            // 渲染
+            ctx.fillStyle = '#050508'; ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = varColor('--accent'); ctx.beginPath(); ctx.arc(state.player.x, state.player.y, 15, 0, Math.PI*2); ctx.fill();
+            state.enemies.forEach(e => { ctx.fillStyle = '#ff3366'; ctx.fillRect(e.x-15, e.y-15, 30, 30); });
+            state.bullets.forEach(b => { ctx.fillStyle = b.color; ctx.beginPath(); ctx.arc(b.x, b.y, 6, 0, Math.PI*2); ctx.fill(); });
+
+            // UI
+            document.getElementById('txt-lv').innerText = state.player.lv;
+            document.getElementById('exp-bar').style.width = (state.player.exp/state.player.nextExp*100)+'%';
+            document.getElementById('hp-bar').style.width = Math.max(0, (state.player.hp/state.player.maxHp*100))+'%';
+            
+            const spells = resolveLogic();
+            const maxDmg = spells.length ? Math.max(...spells.map(s => s.finalDmg)) : 0;
+            document.getElementById('txt-dmg').innerText = format(maxDmg);
+
+            requestAnimationFrame(loop);
+        }
+        loop();
+    }
+
+
+    function spawnEnemy() {
+        const a = Math.random()*Math.PI*2;
+        state.enemies.push({ x: state.player.x+Math.cos(a)*600, y: state.player.y+Math.sin(a)*600, hp: 25*Math.pow(1.3, state.player.lv) });
+    }
+
+    function popDmg(x, y, dmg) {
+        const d = document.createElement('div'); d.className = 'dmg-popup';
+        d.style.left = x+'px'; d.style.top = y+'px'; d.style.color = getDmgColor(dmg);
+        d.innerText = format(dmg); document.body.appendChild(d);
+        setTimeout(() => d.remove(), 1000);
+    }
+
+    function getDmgColor(d) {
+        if(d<1000) return '#fff'; if(d<1e6) return varColor('--operator');
+        if(d<1e12) return varColor('--effect'); return '#fff';
+    }
+
+    function format(n) { return n < 1e6 ? Math.floor(n).toLocaleString() : n.toExponential(2).replace('e+','E+'); }
+
+    init();
+</script>
+</body>
+</html>
