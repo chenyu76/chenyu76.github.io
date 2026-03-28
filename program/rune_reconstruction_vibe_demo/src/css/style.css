@@ -1,0 +1,100 @@
+:root {
+    --bg: #050508;
+    --panel-bg: rgba(10, 10, 15, 0.98);
+    --accent: #00f2ff;
+    --trigger: #00ff88;
+    --operator: #ffcc00;
+    --movement: #66a3ff;
+    --effect: #ff3366;
+    --port-in: #444;
+    --port-out: #888;
+}
+
+body { margin: 0; padding: 0; background: var(--bg); color: #e0e0e0; font-family: 'Consolas', 'Courier New', monospace; overflow: hidden; user-select: none; }
+canvas { display: block; }
+#ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+
+/* 顶部状态栏 */
+#top-bar { position: absolute; top: 0; left: 0; width: 100%; height: 50px; background: rgba(0,0,0,0.8); display: flex; align-items: center; padding: 0 20px; border-bottom: 1px solid #333; z-index: 10; }
+#exp-container { flex-grow: 1; height: 8px; background: #222; margin: 0 20px; border-radius: 4px; overflow: hidden; }
+#exp-bar { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), #0066ff); box-shadow: 0 0 10px var(--accent); transition: width 0.3s; }
+
+/* 选择面板 (三选一) */
+#choice-panel {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center;
+    z-index: 100; pointer-events: auto;
+}
+.choice-container { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; max-width: 1400px; }
+.choice-card {
+    width: 200px; background: #1a1a24; border: 2px solid #333; padding: 20px; border-radius: 12px;
+    text-align: center; cursor: pointer; transition: all 0.3s;
+}
+.choice-card:hover { border-color: var(--accent); transform: translateY(-10px); background: #252535; box-shadow: 0 0 30px rgba(0, 242, 255, 0.2); }
+.choice-card h3 { margin: 15px 0; color: #fff; }
+.choice-card p { font-size: 13px; color: #aaa; line-height: 1.5; }
+.card-type { font-size: 11px; color: var(--accent); opacity: 0.7; letter-spacing: 2px; }
+
+/* 节点编辑器 */
+#node-editor {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--panel-bg); display: none; pointer-events: auto; flex-direction: column; z-index: 50;
+}
+#editor-header { padding: 20px 40px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+#editor-main { flex-grow: 1; position: relative; overflow: hidden; background-color: var(--panel-bg); }
+#editor-canvas { width: 4000px; height: 4000px; position: absolute; transform-origin: 0 0; background-image: radial-gradient(circle, #444 1px, transparent 1px); background-size: 40px 40px; }
+#btn-close { padding: 12px 40px; background: var(--accent); color: #000; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; }
+#btn-close:hover { background: #fff; box-shadow: 0 0 15px var(--accent); }
+
+/* 节点样式 */
+.node {
+    position: absolute; width: 140px; background: #1a1a24; border: 1px solid #444;
+    border-radius: 6px; padding: 12px; cursor: move; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+.node[data-type="TRIGGER"] { border-left: 5px solid var(--trigger); }
+.node[data-type="OPERATOR"] { border-left: 5px solid var(--operator); }
+.node[data-type="MOVEMENT"] { border-left: 5px solid var(--movement); }
+.node[data-type="EFFECT"] { border-left: 5px solid var(--effect); }
+.node-name { font-size: 14px; font-weight: bold; text-align: center; margin-bottom: 10px; color: #fff; }
+
+/* 端口布局 */
+.ports-container { display: flex; justify-content: space-between; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+.port-column { display: flex; flex-direction: column; justify-content: space-around; height: 100%; }
+.port {
+    width: 14px; height: 14px; background: #333; border: 2px solid #111; border-radius: 50%;
+    pointer-events: auto; cursor: crosshair; transition: all 0.2s; position: relative;
+}
+.port:hover { transform: scale(1.4); background: var(--accent); }
+.port.occupied { background: #666; border-color: var(--accent); }
+.port-in { margin-left: -7px; }
+.port-out { margin-right: -7px; }
+.port-label { position: absolute; font-size: 9px; color: #666; white-space: nowrap; top: -12px; left: 50%; transform: translateX(-50%); }
+
+svg#connections-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+
+.dmg-popup { position: absolute; pointer-events: none; font-weight: bold; animation: floatUp 1s ease-out forwards; }
+@keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-80px) scale(1.2); opacity: 0; } }
+
+/* 节点详细信息 Tooltip */
+#node-tooltip {
+    position: absolute;
+    background: rgba(10, 10, 15, 0.95);
+    border: 1px solid var(--accent);
+    color: #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+    font-size: 13px;
+    max-width: 250px;
+    pointer-events: none;
+    z-index: 1000;
+    display: none;
+    line-height: 1.5;
+}
+#node-tooltip .tt-title { font-size: 16px; font-weight: bold; color: #fff; margin-bottom: 5px; }
+#node-tooltip .tt-type { font-size: 11px; margin-bottom: 10px; letter-spacing: 1px; }
+#node-tooltip .tt-type.TRIGGER { color: var(--trigger); }
+#node-tooltip .tt-type.OPERATOR { color: var(--operator); }
+#node-tooltip .tt-type.MOVEMENT { color: var(--movement); }
+#node-tooltip .tt-type.EFFECT { color: var(--effect); }
+#node-tooltip .tt-desc { color: #aaa; }

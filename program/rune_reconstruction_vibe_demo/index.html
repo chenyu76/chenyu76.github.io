@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>符文重构 (Rune Reconstruction)</title>
+    <link rel="stylesheet" href="src/css/style.css">
+</head>
+<body>
+
+<div id="game-container">
+    <canvas id="gameCanvas"></canvas>
+    
+    <div id="ui-layer">
+        <div id="top-bar">
+            <div style="min-width: 80px; font-weight: bold;">LV.<span id="txt-lv">1</span></div>
+            <div id="hp-container" style="width: 150px; height: 8px; background: #400; border-radius: 4px; overflow: hidden; margin-right: 20px;">
+                <div id="hp-bar" style="width: 100%; height: 100%; background: #f33; box-shadow: 0 0 10px #f33; transition: width 0.1s;"></div>
+            </div>
+            <div id="exp-container"><div id="exp-bar"></div></div>
+            <div style="min-width: 120px; text-align: right; color: var(--accent);" id="txt-dmg">15</div>
+        </div>
+
+        <!-- 进化选择界面 -->
+        <div id="choice-panel">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <h1 style="color: var(--accent); letter-spacing: 10px;">符文进化</h1>
+                <p style="color: #666;">选择一个逻辑节点合并至你的法术架构</p>
+            </div>
+            <div class="choice-container" id="choice-list"></div>
+        </div>
+
+        <!-- 节点重构编辑器 -->
+        <div id="node-editor">
+            <div id="editor-header">
+                <div style="font-size: 24px; color: var(--accent); font-weight: bold;">架构解析器 / STRUCTURE PARSER</div>
+                <button id="btn-close">同步并锁定架构</button>
+            </div>
+            <div id="inventory-panel" style="position: absolute; right: 0; top: 71px; width: 250px; height: calc(100% - 71px); background: #111; border-left: 1px solid #333; overflow-y: auto; z-index: 60; padding: 10px;">
+                <div style="color: var(--accent); font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px;">节点储存库 / NODE REPOSITORY</div>
+                <div id="inventory-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+            </div>
+            <div id="editor-main" style="width: calc(100% - 250px); overflow: hidden; position: relative; background-color: #222;">
+                <div id="editor-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform-origin: 0 0;">
+                    <svg id="connections-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible;"></svg>
+                </div>
+            </div>
+            <div style="padding: 10px; text-align: center; background: #000; font-size: 12px; color: #444;">
+                [提示] 点击输出端口并拖动到输入端口进行连接 | 右键点击连线断开 | 右键点击节点可移除
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { init } from './src/js/game.js';
+    init();
+</script>
+</body>
+</html>
