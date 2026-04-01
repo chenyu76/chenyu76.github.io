@@ -35,6 +35,12 @@ export const gitRepositories = {
  */
 export const recommend = [
   {
+    date : 20260401,
+    link : "program/4d-sokoban/index.html",
+    title : "4D推箱子",
+    info : "相信大家都玩过2D的推箱子游戏，那让我们试试4D的。（这真是给人类玩的吗）"
+  },
+  {
     date : 20260213,
     link : "https://github.com/chenyu76/draftsman.nvim",
     title : "Draftsman.nvim",
