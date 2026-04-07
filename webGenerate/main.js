@@ -96,7 +96,7 @@ generateHtmlFile(
     templateHTML,
     "chenyu的主页",
     cardStyle,
-    '<h1><img src="/img/avatar.png" style="border-radius:50%; border:1px solid #2c3e66; width:150px; object-fit:cover; margin:20px 0 0 0"></h1>',
+    '<h1><img src="/img/avatar.png" style="border-radius:50%; border:1px solid #2c3e66; width:100px; object-fit:cover; margin:20px 0 0 0"></h1>',
     `${convertMarkdown(path.join(rootPath, "README.md")).html}<br> 
 ${generateRecommend(1, articles)}<h2>小工具</h2>
 ${convertMarkdown(path.join(rootPath, "program", "readme.md")).html}`,
