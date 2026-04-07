@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>chenyu的主页</title>
 
-    <link rel="preload" href="/img/pixelart/index.html" as="document" />
-
     <link rel="stylesheet" href="/styles.css" />
     <link rel="icon" href="/favicon.png" type="image/png" />
 
@@ -22,7 +20,7 @@
   flex-grow: 1;
   /* 占据剩余空间 */
   max-width: var(--main-width);
-  margin: 40px 0;
+  margin: 40px auto;
 }
 
 /* 上半部分：白色内容区 */
@@ -97,7 +95,6 @@
 
         <div>
           <div id="title-container">
-            <div id="heading"></div>
             <div id="top-buttons-wrapper" class="top-buttons">
               <a href="/toc.html" title="文档索引" class="fade-in"
                 ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
@@ -113,6 +110,7 @@
                 ><img src="/img/icon/info.svg" alt="Info" class="icon"
               /></a>
             </div>
+            <div id="heading"><h1><img src="/img/avatar.png" style="border-radius:50%; border:1px solid #2c3e66; width:150px; object-fit:cover; margin:20px 0 0 0"></h1></div>
           </div>
 
           <div class="content-wrapper">

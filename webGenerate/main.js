@@ -45,7 +45,7 @@ const cardStyle = `
   flex-grow: 1;
   /* 占据剩余空间 */
   max-width: var(--main-width);
-  margin: 40px 0;
+  margin: 40px auto;
 }
 
 /* 上半部分：白色内容区 */
@@ -96,7 +96,7 @@ generateHtmlFile(
     templateHTML,
     "chenyu的主页",
     cardStyle,
-    "",
+    '<h1><img src="/img/avatar.png" style="border-radius:50%; border:1px solid #2c3e66; width:150px; object-fit:cover; margin:20px 0 0 0"></h1>',
     `${convertMarkdown(path.join(rootPath, "README.md")).html}<br> 
 ${generateRecommend(1, articles)}<h2>小工具</h2>
 ${convertMarkdown(path.join(rootPath, "program", "readme.md")).html}`,
@@ -110,7 +110,7 @@ generateHtmlFile(
     "404 not found",
     "",
     "<h1>404 Not Found</h1>",
-    "<p>你访问的页面不存在，可能是因为链接错误或者页面已被移动或删除。</p><br><img src=\"/img/404.svg\" />",
+    '<p>你访问的页面不存在，可能是因为链接错误或者页面已被移动或删除。</p><br><img src="/img/404.svg" />',
     "",
     "",
 );

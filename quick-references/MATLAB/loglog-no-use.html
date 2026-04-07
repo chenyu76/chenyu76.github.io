@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MATLAB 调用 loglog 函数绘图但图像却没有使用对数坐标轴</title>
 
-    <link rel="preload" href="/img/pixelart/index.html" as="document" />
-
     <link rel="stylesheet" href="/styles.css" />
     <link rel="icon" href="/favicon.png" type="image/png" />
 
@@ -61,7 +59,6 @@
 
         <div>
           <div id="title-container">
-            <div id="heading"><h3>/速查/MATLAB/</h3><h1>MATLAB 调用 loglog 函数绘图但图像却没有使用对数坐标轴</h1></div>
             <div id="top-buttons-wrapper" class="top-buttons">
               <a href="/toc.html" title="文档索引" class="fade-in"
                 ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
@@ -77,6 +74,7 @@
                 ><img src="/img/icon/info.svg" alt="Info" class="icon"
               /></a>
             </div>
+            <div id="heading"><h3>/速查/MATLAB/</h3><h1>MATLAB 调用 loglog 函数绘图但图像却没有使用对数坐标轴</h1></div>
           </div>
 
           <div class="content-wrapper">
@@ -91,9 +89,7 @@ loglog(x, y);
 loglog(x, z);
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>输出</p>
-<img src="./assets/matlab_loglog_fail.svg" />
-
-<h2 id="h2-u6b63u786eu8303u4f8b">正确范例：</h2><p>注意<code>hold on</code>的位置：</p>
+<img src="./assets/matlab_loglog_fail.svg" /><h2 id="h2-u6b63u786eu8303u4f8b">正确范例：</h2><p>注意<code>hold on</code>的位置：</p>
 <pre><code class="language-matlab">x = [<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>];
 y = [<span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">8</span> <span class="hljs-number">16</span>];
 z = [<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">7</span>];
@@ -104,9 +100,7 @@ loglog(x, y);
 loglog(x, z);
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>输出</p>
-<img src="./assets/matlab_loglog_success.svg" />
-
-<h2 id="h2-u4e3au4ec0u4e48">为什么？</h2><p>我也不知道……</p>
+<img src="./assets/matlab_loglog_success.svg" /><h2 id="h2-u4e3au4ec0u4e48">为什么？</h2><p>我也不知道……</p>
 <p>似乎在创建了<code>figure</code>后直接调用<code>hold on</code>就会这样。</p>
 </div>
             <div id="footnote"></div>

@@ -328,8 +328,8 @@ p {
   display: none;
 }
 
-/* 移动端 (小于1200px) */
-@media (max-width: 1199px) {
+/* 移动端 */
+@media (max-width: 799px) {
   #iframe-background,
   #spacer {
     height: 38.2vh;
@@ -449,8 +449,8 @@ p {
   }
 }
 
-/* PC 端 (大于等于1200px) */
-@media (min-width: 1200px) {
+/* PC 端 */
+@media (min-width: 800px) {
   #top-buttons-wrapper {
     display: none;
   }
