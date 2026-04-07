@@ -45,7 +45,7 @@ const cardStyle = `
   flex-grow: 1;
   /* 占据剩余空间 */
   max-width: var(--main-width);
-  margin: 40px 0;
+  margin: 40px auto;
 }
 
 /* 上半部分：白色内容区 */
