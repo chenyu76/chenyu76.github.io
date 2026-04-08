@@ -1,7 +1,10 @@
 :root {
   --bg-color: #f0f0f0;
   --card-bg-color: #ffffff;
-  --main-width: 800px;
+  --main-width: min(
+    800px,
+    calc(100vw - var(--lett-sidebar-width) - var(--right-sidebar-width) - 100px)
+  );
   --right-sidebar-width: 260px;
   --lett-sidebar-width: 60px;
 }
