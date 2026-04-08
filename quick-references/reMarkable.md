@@ -10,10 +10,9 @@ Any time you add, remove, or update font files, you need to rebuild the font cac
 fc-cache -fv
 ```
 
------
+---
 
 字体已经放在了`/usr/share/font/ttf`中，所以只需要使用SSH连接上再软连接上字体即可
-
 
 ```bash
 ssh root@10.11.99.1
@@ -22,6 +21,7 @@ ln -s /home/root/fonts /usr/share/fonts/ttf
 ```
 
 更新后可能会报
+
 ```
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
@@ -32,7 +32,7 @@ ln -s /home/root/fonts /usr/share/fonts/ttf
 
 `~/.ssh/known_hosts` 下的10.11.99.1 的信任删除
 
-root 密码在 Settings > Help  > Copyrights and licenses 中
+root 密码在 Settings > Help > Copyrights and licenses 中
 
 ## 休眠壁纸
 
@@ -46,10 +46,14 @@ root 密码在 Settings > Help  > Copyrights and licenses 中
 # power off
 /usr/share/remarkable/poweroff.png
 ```
+
 使用scp复制过去
+
 ```
 scp './suspended.png' root@10.11.99.1:/usr/share/remarkable/suspended.png
 ```
+
+壁纸尺寸 1872x1404
 
 ## 可能有用的链接
 
@@ -79,6 +83,7 @@ Configuring oxide-utils.
 Run the following command(s) to use remux as your launcher
 launcherctl switch-launcher --start remux
 ```
+
 ## 屏幕尺寸
 
 ```
