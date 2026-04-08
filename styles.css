@@ -1,12 +1,14 @@
 :root {
   --bg-color: #f0f0f0;
   --card-bg-color: #ffffff;
-  --main-width: min(
+  --right-sidebar-width: 260px;
+  --lett-sidebar-width: 60px;
+  --main-width-desktop: min(
     800px,
     calc(100vw - var(--lett-sidebar-width) - var(--right-sidebar-width) - 100px)
   );
-  --right-sidebar-width: 260px;
-  --lett-sidebar-width: 60px;
+  --main-width-mobile: 95vw;
+  --main-width: var(--main-width-desktop);
 }
 
 /* styles.css */
@@ -333,6 +335,10 @@ p {
 
 /* 移动端 */
 @media (max-width: 799px) {
+  :root {
+    --main-width: var(--main-width-mobile);
+  }
+
   #iframe-background,
   #spacer {
     height: 38.2vh;
@@ -454,6 +460,10 @@ p {
 
 /* PC 端 */
 @media (min-width: 800px) {
+  :root {
+    --main-width: var(--main-width-desktop);
+  }
+
   #top-buttons-wrapper {
     display: none;
   }
