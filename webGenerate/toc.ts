@@ -19,8 +19,10 @@ const folderBlackList = [ "node_modules", "webGenerate" ];
 const jsFolderBlackList = [ "webGenerate", "program", "img", "libs" ];
 
 // 翻译函数，将一些目录的英文翻译成中文
-export function tr(str) {
-  const dict = {
+export type ArticlesMap = Record<string, { title: string; footnote?: string; [key: string]: unknown }>;
+
+export function tr(str: string) {
+  const dict: Record<string, string> = {
     "node_modules" : "依赖包",
     "program" : "程序",
     "writings" : "文章",
@@ -35,10 +37,10 @@ export function tr(str) {
 }
 
 // 创建文件目录树
-function folderTreeHtml(dir, articles) {
+function folderTreeHtml(dir: string, articles: ArticlesMap) {
   // 递归文件夹，生成目录树
-  function folderTree(currentPath, depth = 0, startPath = null, lineD = 0) {
-    const table = [];
+  function folderTree(currentPath: string, depth = 0, startPath: string | null = null, lineD = 0): string[] {
+    const table: string[] = [];
     const items =
         fs.readdirSync(currentPath)
             .filter((item) => {
@@ -59,16 +61,16 @@ function folderTreeHtml(dir, articles) {
                                                currentPath.includes(item));
             }); // 去掉 node_modules 等
 
-    function createItemButton(item, relativePath) {
+    function createItemButton(item: string, relativePath: string) {
       // 文档的文件名,去掉后缀
       const baseName = path.basename(item, path.extname(item));
       // 如果是 md 文件，尝试读取第一行作为标题
       // 文件的完整路径，没有后缀
       // const articlePath = path.join(currentPath, baseName);
 
-      const relativePathName = relativePath.replace(/\.html$/, "");
-      let articleTitle = relativePathName in articles
-                             ? articles[relativePathName].title
+      const relativePathWithoutExt = relativePath.replace(/\.html$/, "");
+      let articleTitle = relativePathWithoutExt in articles
+                             ? articles[relativePathWithoutExt]?.title
                              : undefined;
       return ((hashExtension.some((ext) => item.endsWith(ext)) ? `<a href="#`
                                                                : `<a href="`) +
@@ -77,11 +79,11 @@ function folderTreeHtml(dir, articles) {
                                              : articleTitle}</a><br>`);
     }
     // 改变文本颜色的函数
-    function col(str, color = "gray", label = "code") {
+    function col(str: string, color = "gray", label = "code") {
       return `<${label} style="color:${color}">${str}</${label}>`;
     }
 
-    items.forEach((item, index) => {
+    items.forEach((item: string, index: number) => {
       const isLast = index === items.length - 1;
       let prefix = "";
       let line = lineD;
@@ -135,7 +137,7 @@ function folderTreeHtml(dir, articles) {
   }</p>`;
 }
 
-export function generateRecommend(type = 0, articles = {}) {
+export function generateRecommend(type = 0, articles: ArticlesMap = {}) {
   const listItems = recommend.map((item) => {
     let date;
     if (typeof item.date !== 'number') {
@@ -169,7 +171,7 @@ export function generateRecommend(type = 0, articles = {}) {
         item.link.replace(/\.html$/, "").replace(/^\//, "");
     const title = "title" in item ? item.title
                   : relativePathWithoutExt in articles
-                      ? articles[relativePathWithoutExt].title
+                      ? articles[relativePathWithoutExt]?.title
                       : path.basename(item.link, path.extname(item.link));
     const link =
         encodeURI(item.link.startsWith("/") || item.link.startsWith("https")
@@ -197,12 +199,12 @@ export function generateRecommend(type = 0, articles = {}) {
     }
   });
 
-  let wrap = [
+  let wrap: string[][] = [
     [ "<ul>", "</ul>" ],
     [ "</div></div>", '<div class="content-wrapper"><div class="content">' ],
   ];
 
-  return `${wrap[type][0]}\n${listItems.join("\n")}\n${wrap[type][1]}`;
+  return `${wrap[type]![0]}\n${listItems.join("\n")}\n${wrap[type]![1]}`;
 }
 
 /* function randomArticleJsGen(jsPath, dirPath) {
@@ -230,11 +232,10 @@ export function generateRecommend(type = 0, articles = {}) {
     /\/\/begin[\s\S]*?\/\/end/,
     `${startTag}\n${articles.join(",\n")}\n${endTag}`,
   );
-
   fs.writeFileSync(jsPath, newContent);
 } */
 
-export function tocGen(dir, articles) {
+export function tocGen(dir: string, articles: ArticlesMap) {
   const tree = folderTreeHtml(dir, articles);
   const recommendation = generateRecommend(0, articles);
 

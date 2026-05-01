@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // 删除同名markdown 的html
-function deleteGeneratedHTML(dirPath) {
+function deleteGeneratedHTML(dirPath: string) {
   // 模板文件
 
   // 读取目录内容
@@ -49,12 +49,12 @@ function deleteGeneratedHTML(dirPath) {
   });
 }
 
-function removeFile(path) {
+function removeFile(path: string) {
   try {
     fs.rmSync(path);
     console.log(`rm ${path}`);
-  } catch (err) {
-    if (err.code === "ENOENT") {
+  } catch (err: unknown) {
+    if (err instanceof Error && (err as NodeJS.ErrnoException).code === "ENOENT") {
       console.log(`skip ${path}`);
     } else {
       // 其他错误，打印错误信息

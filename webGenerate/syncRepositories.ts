@@ -10,7 +10,7 @@ const execAsync = util.promisify(exec);
  * 辅助函数：从 URL 获取仓库名
  * 例如: https://github.com/user/repo.git -> repo
  */
-function getRepoName(url) { return url.split('/').pop().replace('.git', ''); }
+function getRepoName(url: string) { return url.split('/').pop()!.replace('.git', ''); }
 
 /**
  * 辅助函数：生成 ZIP 下载链接
@@ -18,7 +18,7 @@ function getRepoName(url) { return url.split('/').pop().replace('.git', ''); }
  * 输出: https://github.com/user/repo/archive/HEAD.zip
  * 同时返回仓库名: repo
  */
-function parseRepoInfo(url) {
+function parseRepoInfo(url: string) {
   // 去掉末尾可能的 .git
   const cleanUrl = url.replace(/\.git$/, '');
   const repoName = cleanUrl.split('/').pop();
@@ -31,7 +31,7 @@ function parseRepoInfo(url) {
  * 下载对应Github仓库并解压 (Sync via Zip)
  * 清理旧目录 -> curl 下载 -> unzip 解压 -> 修正文件夹名称
  */
-export async function syncRepositories(rootPath, reps) {
+export async function syncRepositories(rootPath: string, reps: Record<string, string[]>) {
   console.log(`开始在 ${rootPath} 下同步仓库 (ZIP 下载模式)...\n`);
 
   for (const [relativePath, urls] of Object.entries(reps)) {
@@ -46,7 +46,7 @@ export async function syncRepositories(rootPath, reps) {
 
     const tasks = urls.map(async (url) => {
       const {repoName, zipUrl} = parseRepoInfo(url);
-      const finalRepoPath = path.join(baseDir, repoName);
+      const finalRepoPath = path.join(baseDir, repoName as string);
 
       // 临时文件路径，用于下载和解压中转
       const tempZipName = `temp_${repoName}_${Date.now()}.zip`;
@@ -80,7 +80,7 @@ export async function syncRepositories(rootPath, reps) {
         // repoName。
         const files = await fs.promises.readdir(tempExtractDir);
         if (files.length > 0) {
-          const extractedFolderName = files[0]; // 获取 'repo-branchname'
+          const extractedFolderName = files[0] as string; // 获取 'repo-branchname'
           const srcPath = path.join(tempExtractDir, extractedFolderName);
 
           // 移动并重命名
@@ -90,9 +90,9 @@ export async function syncRepositories(rootPath, reps) {
           throw new Error("解压后为空，下载可能失败");
         }
 
-      } catch (error) {
-        console.error(
-            `   [失败] 处理 ${repoName} 失败: ${error.message.trim()}`);
+      } catch (error: unknown) {
+        const msg = error instanceof Error ? error.message.trim() : String(error);
+        console.error(`   [失败] 处理 ${repoName} 失败: ${msg}`);
       } finally {
         // E. 清理临时文件 (无论成功失败都执行)
         try {
@@ -116,7 +116,7 @@ export async function syncRepositories(rootPath, reps) {
  * 删除仓库
  * 遍历列表，如果指定的仓库文件夹存在，将其强制删除
  */
-export async function deleteRepositories(rootPath, reps) {
+export async function deleteRepositories(rootPath: string, reps: Record<string, string[]>) {
   console.log(`开始在 ${rootPath} 下删除指定仓库...\n`);
 
   for (const [relativePath, urls] of Object.entries(reps)) {
@@ -142,8 +142,9 @@ export async function deleteRepositories(rootPath, reps) {
         } else {
           console.log(`   [未找到] ${repoName} 不存在，无需删除`);
         }
-      } catch (error) {
-        console.error(`   [删除失败] 无法删除 ${repoName}: ${error.message}`);
+      } catch (error: unknown) {
+        const msg = error instanceof Error ? error.message : String(error);
+        console.error(`   [删除失败] 无法删除 ${repoName}: ${msg}`);
       }
     });
 
@@ -152,3 +153,4 @@ export async function deleteRepositories(rootPath, reps) {
   }
   console.log(' 删除操作全部完成。\n');
 }
+

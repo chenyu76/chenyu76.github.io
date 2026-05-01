@@ -10,6 +10,20 @@ import path from "path";
 
 // 引入翻译函数
 import {tr} from "./toc.js";
+export interface TocItem {
+  depth: number;
+  text: string;
+  id: string;
+}
+
+export interface ArticleInfo {
+  title: string;
+  html?: string;
+  footnote?: string;
+  toc?: TocItem[];
+  redirect?: string;
+  [key: string]: unknown;
+}
 
 // 设置 marked 的渲染器
 const marked = new Marked(
@@ -32,7 +46,7 @@ marked.use(markedAlert());
 // 启用 marked-footnote 插件处理脚注
 marked.use(markedFootnote());
 
-export function readTemplateHTML(inputPath) {
+export function readTemplateHTML(inputPath: string) {
   try {
     const data = fs.readFileSync(inputPath, "utf8");
     return data;
@@ -47,7 +61,7 @@ export function readTemplateHTML(inputPath) {
  * @param {string} md - 输入的 Markdown 文本
  * @returns {string|null} - 如果匹配则返回链接，否则返回 null
  */
-function getSingleLinkFromMarkdown(md) {
+function getSingleLinkFromMarkdown(md: string) {
   const len = md.length;
   let i = 0;
 
@@ -112,7 +126,7 @@ function getSingleLinkFromMarkdown(md) {
   return link;
 }
 
-export function convertMarkdown(inputPath) {
+export function convertMarkdown(inputPath: string): ArticleInfo {
   // 读取 Markdown 文件
   const data = fs.readFileSync(inputPath, "utf8");
 
@@ -157,13 +171,13 @@ export function convertMarkdown(inputPath) {
   })(data.trim());
 
   // 生成目录
-  const toc = [];
+  const toc: TocItem[] = [];
   const renderer = new marked.Renderer();
-  function createSlug(str) {
+  function createSlug(str: string) {
     return str
         // 将汉字转换为 Unicode 编码（保留原汉字作为后备）
         .replace(/[\u4e00-\u9fa5]/g,
-                 (char) =>
+                 (char: string) =>
                      `u${char.charCodeAt(0).toString(16).padStart(4, '0')}`)
         // 处理其他字符
         .toLowerCase()
@@ -180,15 +194,15 @@ export function convertMarkdown(inputPath) {
   };
 
   marked.setOptions({renderer : renderer});
-  const html = marked.parse(content[1]);
+  const html = marked.parse(content[1] || "") as string;
 
   console.log(`${inputPath} -> markdown`);
-  return {title : content[0], html : html, footnote : content[2], toc : toc};
+  return {title : content[0] || "", html : html, footnote : content[2], toc : toc};
 }
 
 export function generateHtmlFile(
     outputPath = "",       // 输出路径
-    templateHTML = "",     // HTML 模板字符串
+    templateHTML: string | null = "",     // HTML 模板字符串
     titleContent = "",     // 标题内容
     headContent = "",      // <head> 额外内容
     headingContent = "",   // 文档标题内容
@@ -252,7 +266,7 @@ export function generateHtmlFile(
   // 将 <hr> 标签替换为指定的 div 结构
   // htmlContent = transformHrTags(htmlContent); 
   // 创建替换映射
-  const replacements = {
+  const replacements: Record<string, string> = {
     "TITLE_PLACEHOLDER" : titleContent,
     "HEAD_PLACEHOLDER" : headContent,
     "HEADING_PLACEHOLDER" : headingContent,
@@ -264,15 +278,15 @@ export function generateHtmlFile(
 
   const regex = new RegExp(Object.keys(replacements).join("|"), "g");
   const fullHtml =
-      templateHTML.replace(regex, (matched) => replacements[matched]);
+      (templateHTML as string).replace(regex, (matched) => replacements[matched]!);
 
   fs.writeFileSync(outputPath, fullHtml, "utf8");
   console.log(`  -> ${outputPath}`);
 }
 
-export function allMarkdown2Html(dir, templateHTML, rootPath = dir) {
-  let articles = {};
-  let traverseDirectory = (dirPath) => {
+export function allMarkdown2Html(dir: string, templateHTML: string | null, rootPath = dir) {
+  let articles: Record<string, ArticleInfo> = {};
+  let traverseDirectory = (dirPath: string) => {
     // 读取目录内容
     let files = fs.readdirSync(dirPath);
     files.forEach((file) => {
@@ -309,7 +323,7 @@ export function allMarkdown2Html(dir, templateHTML, rootPath = dir) {
         }
         else {
           const htmlContent = content.html;
-          const tocContent = generateTOC(content.toc);
+          const tocContent = generateTOC(content.toc || []);
           generateHtmlFile(
               htmlFilePath, templateHTML, content.title, "",
               `<h3>${relativePathTranslated}</h3><h1>${content.title}</h1>`,
@@ -338,14 +352,14 @@ export function allMarkdown2Html(dir, templateHTML, rootPath = dir) {
         id: 标题的锚点ID
 }
 */
-function generateTOC(tocItems) {
+function generateTOC(tocItems: TocItem[]) {
   if (tocItems.length < 3)
     return '';
 
   let html = '<div class="toc">\n<ul>\n';
   let lastLevel = 1;
 
-  tocItems.forEach(item => {
+  tocItems.forEach((item: TocItem) => {
     // 处理层级关系
     while (lastLevel < item.depth) {
       html += '<ul>\n';
@@ -358,7 +372,6 @@ function generateTOC(tocItems) {
 
     html += `<li><a href="#${item.id}">${item.text}</a></li>\n`;
   });
-
   // 关闭所有未闭合的ul标签
   while (lastLevel > 1) {
     html += '</ul>\n';
@@ -367,4 +380,4 @@ function generateTOC(tocItems) {
 
   html += '</ul>\n</div>';
   return html;
-};
+}
