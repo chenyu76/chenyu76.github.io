@@ -9,3 +9,17 @@
 ## 主页推荐
 
 配置在`webConfig.js`中的推荐会被显示在主页上
+
+## 手动使用
+
+生成：
+
+```bash
+npm start
+```
+
+清理：
+
+```bash
+npm run clean
+```
