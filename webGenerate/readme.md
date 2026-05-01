@@ -1,6 +1,6 @@
 # 网站编译流程
 
-通过Github action, 每次push上去时会通过npm调用`webGenerate/main.js`，将目录下的`.md`文件都转成`.html`,然后遍历文件夹，将这些html加入到网站目录中
+通过Github action, 每次push上去时会通过npm调用`webGenerate/main.ts`，将目录下的`.md`文件都转成`.html`,然后遍历文件夹，将这些html加入到网站目录中
 
 ## Github仓库
 

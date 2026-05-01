@@ -5,5 +5,24 @@
   "description": "Deploy html file",
   "main": "main.js",
   "keywords": [],
-  "author": "chenyu76"
+  "author": "chenyu76",
+  "devDependencies": {
+    "@types/marked": "^5.0.2",
+    "@types/node": "^25.6.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "tsx main.ts",
+    "clean": "tsx cleanGeneratedWebFiles.ts"
+  },
+  "dependencies": {
+    "highlight.js": "^11.11.1",
+    "marked": "^18.0.2",
+    "marked-alert": "^2.1.2",
+    "marked-footnote": "^1.4.0",
+    "marked-highlight": "^2.2.4",
+    "marked-katex-extension": "^5.1.8"
+  }
 }
