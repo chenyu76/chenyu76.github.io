@@ -143,6 +143,7 @@ pre.ascii-table {
   font-family: "Cascadia Code", "Courier New", monospace; /* 必须使用等宽字体 */
   letter-spacing: 0; /* 消除字间距 */
   font-variant-ligatures: none; /* 禁用连字 */
+  background-color: #ffffff;
 }
 
 pre.ascii-table code {
