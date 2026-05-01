@@ -64,7 +64,7 @@ const cardStyle = `
   padding: 0 20px;
   display: flex;
   align-items: center;        /* 垂直居中日期 */
-  justify-content: flex-end;  /* 让日期靠右对齐 (如果想靠左可改为 flex-start) */
+  justify-content: flex-end;  /* 让日期靠右对齐 */
   color: #888888;             /* 日期文字使用较淡的颜色 */
   font-size: 14px;
 }
