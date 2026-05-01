@@ -1,8 +1,10 @@
 import fs from "fs";
 import path from "path";
-import {fileURLToPath} from "url";
+import { fileURLToPath } from "url";
 
-import {recommend} from "./webConfig.js";
+import { recommend } from "./webConfig.js";
+
+const html = String.raw;
 
 // 获取当前文件的路径
 export const __filename = fileURLToPath(import.meta.url);
@@ -10,28 +12,31 @@ export const __filename = fileURLToPath(import.meta.url);
 export const __dirname = path.dirname(__filename);
 
 // 这些文件会在目录里显示
-const clickableExtension = [ ".html" ];
+const clickableExtension = [".html"];
 // 这些后缀的文件会在按钮链接中加上 #
-const hashExtension = [ ".js" ];
+const hashExtension = [".js"];
 // 始终不显示的文件夹
-const folderBlackList = [ "node_modules", "webGenerate" ];
+const folderBlackList = ["node_modules", "webGenerate"];
 // 文件路径含有这些的js文件将不会被显示
-const jsFolderBlackList = [ "webGenerate", "program", "img", "libs" ];
+const jsFolderBlackList = ["webGenerate", "program", "img", "libs"];
 
 // 翻译函数，将一些目录的英文翻译成中文
-export type ArticlesMap = Record<string, { title: string; footnote?: string; [key: string]: unknown }>;
+export type ArticlesMap = Record<
+  string,
+  { title: string; footnote?: string; [key: string]: unknown }
+>;
 
 export function tr(str: string) {
   const dict: Record<string, string> = {
-    "node_modules" : "依赖包",
-    "program" : "程序",
-    "writings" : "文章",
-    "img" : "图片",
-    "docs" : "文档",
-    "test-pages" : "测试页面",
-    "excerpts" : "摘录",
-    "webGenerate" : "网站生成",
-    "quick-references" : "速查",
+    node_modules: "依赖包",
+    program: "程序",
+    writings: "文章",
+    img: "图片",
+    docs: "文档",
+    "test-pages": "测试页面",
+    excerpts: "摘录",
+    webGenerate: "网站生成",
+    "quick-references": "速查",
   };
   return str in dict ? dict[str] : str;
 }
@@ -39,27 +44,33 @@ export function tr(str: string) {
 // 创建文件目录树
 function folderTreeHtml(dir: string, articles: ArticlesMap) {
   // 递归文件夹，生成目录树
-  function folderTree(currentPath: string, depth = 0, startPath: string | null = null, lineD = 0): string[] {
+  function folderTree(
+    currentPath: string,
+    depth = 0,
+    startPath: string | null = null,
+    lineD = 0,
+  ): string[] {
     const table: string[] = [];
-    const items =
-        fs.readdirSync(currentPath)
-            .filter((item) => {
-              const fullPath = path.join(currentPath, item);
-              const isDir = fs.statSync(fullPath).isDirectory();
-              return ((isDir && !item.startsWith(".")) ||
-                      (!isDir &&
-                       clickableExtension.some((ext) => item.endsWith(ext))));
-            })
-            .filter((item) => {
-              return !(
-                  path.extname(item) === ".js" &&
-                  jsFolderBlackList.some((item) => currentPath.includes(item)));
-              // 排除掉 program 等 文件夹里的 js
-            })
-            .filter(() => {
-              return !folderBlackList.some((item) =>
-                                               currentPath.includes(item));
-            }); // 去掉 node_modules 等
+    const items = fs
+      .readdirSync(currentPath)
+      .filter((item) => {
+        const fullPath = path.join(currentPath, item);
+        const isDir = fs.statSync(fullPath).isDirectory();
+        return (
+          (isDir && !item.startsWith(".")) ||
+          (!isDir && clickableExtension.some((ext) => item.endsWith(ext)))
+        );
+      })
+      .filter((item) => {
+        return !(
+          path.extname(item) === ".js" &&
+          jsFolderBlackList.some((item) => currentPath.includes(item))
+        );
+        // 排除掉 program 等 文件夹里的 js
+      })
+      .filter(() => {
+        return !folderBlackList.some((item) => currentPath.includes(item));
+      }); // 去掉 node_modules 等
 
     function createItemButton(item: string, relativePath: string) {
       // 文档的文件名,去掉后缀
@@ -69,14 +80,18 @@ function folderTreeHtml(dir: string, articles: ArticlesMap) {
       // const articlePath = path.join(currentPath, baseName);
 
       const relativePathWithoutExt = relativePath.replace(/\.html$/, "");
-      let articleTitle = relativePathWithoutExt in articles
-                             ? articles[relativePathWithoutExt]?.title
-                             : undefined;
-      return ((hashExtension.some((ext) => item.endsWith(ext)) ? `<a href="#`
-                                                               : `<a href="`) +
-              `${relativePath}">${
-                  articleTitle === undefined ? baseName
-                                             : articleTitle}</a><br>`);
+      let articleTitle =
+        relativePathWithoutExt in articles
+          ? articles[relativePathWithoutExt]?.title
+          : undefined;
+      return (
+        (hashExtension.some((ext) => item.endsWith(ext))
+          ? `<a href="#`
+          : `<a href="`) +
+        `${relativePath}">${
+          articleTitle === undefined ? baseName : articleTitle
+        }</a><br>`
+      );
     }
     // 改变文本颜色的函数
     function col(str: string, color = "gray", label = "code") {
@@ -94,114 +109,124 @@ function folderTreeHtml(dir: string, articles: ArticlesMap) {
       }
 
       const style =
-          prefix + col("│<br>\n") + prefix + col(isLast ? "└──" : "├──");
+        prefix + col("│<br>\n") + prefix + col(isLast ? "└──" : "├──");
       const fullPath = path.join(currentPath, item);
       const isDirectory = fs.statSync(fullPath).isDirectory();
 
       if (isDirectory) {
         const children = folderTree(
-            fullPath,
-            depth + 1,
-            startPath || currentPath,
-            (isLast ? 0 : 1 << depth) + lineD,
+          fullPath,
+          depth + 1,
+          startPath || currentPath,
+          (isLast ? 0 : 1 << depth) + lineD,
         );
         if (children.length > 0) {
           table.push(`${style}${tr(item)}<br>`);
           if (children.length > 10 && lineD === 0) {
             children.splice(
-                7,
-                0,
-                `${prefix}${
-                    col("│　　")}<a href="javascript:void(0);" style="font-size:80%;line-height:100%" onclick="toggleNextNextVis(this)">显示全部</a><br>
-            <span class="hiddenContent" style="display: none;">`,
+              7,
+              0,
+              html`${prefix}${col("│　　")}<a
+                  href="javascript:void(0);"
+                  style="font-size:80%;line-height:100%"
+                  onclick="toggleNextNextVis(this)"
+                  >显示全部</a
+                ><br />
+                <span class="hiddenContent" style="display: none;"></span>`,
             );
             children.push("</span>");
           }
           table.push(...children);
         }
       } else {
-        const relativePath = path.relative(startPath || currentPath, fullPath)
-                                 .split(path.sep)
-                                 .join("/");
+        const relativePath = path
+          .relative(startPath || currentPath, fullPath)
+          .split(path.sep)
+          .join("/");
         table.push(style + createItemButton(item, relativePath));
       }
     });
 
     return table;
   }
-  return `<p style="text-indent:0;line-height:70%">/root<br>\n${
-      folderTree(dir).join("\n").replace(
+  return html`<p style="text-indent:0;line-height:70%">
+    /root<br />
+    ${
+      folderTree(dir)
+        .join("\n")
+        .replace(
           /<\/span><span style="color:gray">/g,
           "",
-          ) /* 删掉重复的颜色设置 */
-  }</p>`;
+        ) /* 删掉重复的颜色设置 */
+    }
+  </p>`;
 }
 
 export function generateRecommend(type = 0, articles: ArticlesMap = {}) {
   const listItems = recommend.map((item) => {
     let date;
-    if (typeof item.date !== 'number') {
+    if (typeof item.date !== "number") {
       date = new Date(item.date).toLocaleDateString("zh-CN", {
-        day : "2-digit",
-        month : "long",
-        year : "numeric",
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
       });
     } else {
       if (item.date > 10000000) {
-        date =
-            new Date(
-                String(item.date).replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
-                )
-                .toLocaleDateString("zh-CN", {
-                  day : "2-digit",
-                  month : "long",
-                  year : "numeric",
-                });
+        date = new Date(
+          String(item.date).replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
+        ).toLocaleDateString("zh-CN", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        });
       } else if (item.date > 100000) {
         date = new Date(
-                   String(item.date).replace(/(\d{4})(\d{2})/, "$1-$2"),
-                   )
-                   .toLocaleDateString("zh-CN",
-                                       {month : "long", year : "numeric"});
+          String(item.date).replace(/(\d{4})(\d{2})/, "$1-$2"),
+        ).toLocaleDateString("zh-CN", { month: "long", year: "numeric" });
       } else {
         date = "----";
       }
     }
-    const relativePathWithoutExt =
-        item.link.replace(/\.html$/, "").replace(/^\//, "");
-    const title = "title" in item ? item.title
-                  : relativePathWithoutExt in articles
-                      ? articles[relativePathWithoutExt]?.title
-                      : path.basename(item.link, path.extname(item.link));
-    const link =
-        encodeURI(item.link.startsWith("/") || item.link.startsWith("https")
-                      ? item.link
-                      : "/" + item.link);
+    const relativePathWithoutExt = item.link
+      .replace(/\.html$/, "")
+      .replace(/^\//, "");
+    const title =
+      "title" in item
+        ? item.title
+        : relativePathWithoutExt in articles
+          ? articles[relativePathWithoutExt]?.title
+          : path.basename(item.link, path.extname(item.link));
+    const link = encodeURI(
+      item.link.startsWith("/") || item.link.startsWith("https")
+        ? item.link
+        : "/" + item.link,
+    );
     const info = item.info || "";
     // marked.parse(item.info)
 
     switch (type) {
-    case 0:
-      return `<li><a href="${link}">${title}</a> <small>(${date})</small></li>`;
-    case 1:
-      return `
-<div class="card content">
-  <div class="card-top">
-    <h2><a href="${link}">${title}</a></h2>
-    <p>${info}</p>
-  </div>
+      case 0:
+        return html`<li>
+          <a href="${link}">${title}</a> <small>(${date})</small>
+        </li>`;
+      case 1:
+        return html`
+          <div class="card content">
+            <div class="card-top">
+              <h2><a href="${link}">${title}</a></h2>
+              <p>${info}</p>
+            </div>
 
-  <div class="card-bottom">
-    ${date}
-  </div>
-</div>
-`;
+            <div class="card-bottom">${date}</div>
+          </div>
+        `;
     }
   });
 
   let wrap: string[][] = [
-    [ "<ul>", "</ul>" ],
-    [ "</div></div>", '<div class="content-wrapper"><div class="content">' ],
+    ["<ul>", "</ul>"],
+    ["</div></div>", '<div class="content-wrapper"><div class="content">'],
   ];
 
   return `${wrap[type]![0]}\n${listItems.join("\n")}\n${wrap[type]![1]}`;
