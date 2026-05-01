@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/styles.css" />
     <link rel="icon" href="/favicon.png" type="image/png" />
 
-    <link rel="stylesheet" href="/styles-code.css">
+    <link rel="stylesheet" href="/styles-code.css" />
   </head>
 
   <body>
@@ -74,7 +74,8 @@
                 ><img src="/img/icon/info.svg" alt="Info" class="icon"
               /></a>
             </div>
-            <div id="heading"><h3>/文章/</h3><h1>在LaTeX中添加参考文献</h1></div>
+            <div id="heading"><h3>/文章/</h3>
+              <h1>在LaTeX中添加参考文献</h1></div>
           </div>
 
           <div class="content-wrapper">
@@ -277,8 +278,8 @@ xelatex yourfile.tex
           <div id="toc-card" class="sidebar-card">
             <div class="toc-header">目录</div>
             <div id="toc-content"><div class="toc">
-<ul>
-<ul>
+    <ul></ul>
+  </div> <ul>
 <li><a href="#h2-0-u5185u5bb9u4e0eu683cu5f0fu7684u5206u79bb">0. 内容与格式的分离</a></li>
 <li><a href="#h2-1-u521bu5efau5305u542bu53c2u8003u6587u732eu6761u76ee-bib-u6587u4ef6">1. 创建包含参考文献条目 `.bib` 文件</a></li>
 <li><a href="#h2-2-u5f15u7528u53c2u8003u6587u732e">2. 引用参考文献</a></li>
@@ -315,19 +316,21 @@ xelatex yourfile.tex
     </div>
 
     
-<script>
-  document.querySelectorAll('.copy-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const pre = btn.parentElement;
-      const code = pre.querySelector('code');
-      try {
-        await navigator.clipboard.writeText(code.innerText);
-        btn.textContent = ' ✓ ';
-        setTimeout(() => btn.textContent = '📋', 1500);
-      } catch (err) { console.error(err); }
-    });
-  });
-</script>
-
+      <script>
+        document.querySelectorAll(".copy-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const pre = btn.parentElement;
+            const code = pre.querySelector("code");
+            try {
+              await navigator.clipboard.writeText(code.innerText);
+              btn.textContent = " ✓ ";
+              setTimeout(() => (btn.textContent = "📋"), 1500);
+            } catch (err) {
+              console.error(err);
+            }
+          });
+        });
+      </script>
+    
   </body>
 </html>

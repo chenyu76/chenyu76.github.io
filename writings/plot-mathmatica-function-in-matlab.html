@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/styles.css" />
     <link rel="icon" href="/favicon.png" type="image/png" />
 
-    <link rel="stylesheet" href="/styles-code.css">
+    <link rel="stylesheet" href="/styles-code.css" />
   </head>
 
   <body>
@@ -74,7 +74,8 @@
                 ><img src="/img/icon/info.svg" alt="Info" class="icon"
               /></a>
             </div>
-            <div id="heading"><h3>/文章/</h3><h1>使用Matlab绘制Mathematica中二元函数的热力图</h1></div>
+            <div id="heading"><h3>/文章/</h3>
+              <h1>使用Matlab绘制Mathematica中二元函数的热力图</h1></div>
           </div>
 
           <div class="content-wrapper">
@@ -216,19 +217,21 @@ t = lrt:((urt - lrt)/stps):urt;
     </div>
 
     
-<script>
-  document.querySelectorAll('.copy-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const pre = btn.parentElement;
-      const code = pre.querySelector('code');
-      try {
-        await navigator.clipboard.writeText(code.innerText);
-        btn.textContent = ' ✓ ';
-        setTimeout(() => btn.textContent = '📋', 1500);
-      } catch (err) { console.error(err); }
-    });
-  });
-</script>
-
+      <script>
+        document.querySelectorAll(".copy-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const pre = btn.parentElement;
+            const code = pre.querySelector("code");
+            try {
+              await navigator.clipboard.writeText(code.innerText);
+              btn.textContent = " ✓ ";
+              setTimeout(() => (btn.textContent = "📋"), 1500);
+            } catch (err) {
+              console.error(err);
+            }
+          });
+        });
+      </script>
+    
   </body>
 </html>

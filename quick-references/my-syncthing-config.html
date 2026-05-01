@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/styles.css" />
     <link rel="icon" href="/favicon.png" type="image/png" />
 
-    <link rel="stylesheet" href="/styles-code.css">
+    <link rel="stylesheet" href="/styles-code.css" />
   </head>
 
   <body>
@@ -74,7 +74,8 @@
                 ><img src="/img/icon/info.svg" alt="Info" class="icon"
               /></a>
             </div>
-            <div id="heading"><h3>/速查/</h3><h1>我的Syncthing 配置</h1></div>
+            <div id="heading"><h3>/速查/</h3>
+              <h1>我的Syncthing 配置</h1></div>
           </div>
 
           <div class="content-wrapper">
@@ -205,8 +206,8 @@ systemctl --user <span class="hljs-built_in">enable</span> --now syncthing-power
           <div id="toc-card" class="sidebar-card">
             <div class="toc-header">目录</div>
             <div id="toc-content"><div class="toc">
-<ul>
-<ul>
+    <ul></ul>
+  </div> <ul>
 <li><a href="#h2-u57fau7840u5b89u88c5">基础安装</a></li>
 <li><a href="#h2-u542fu52a8u6838u5fc3u670du52a1">启动核心服务</a></li>
 <li><a href="#h2-u914du7f6e-syncthing-tray">配置 Syncthing Tray</a></li>
@@ -239,19 +240,21 @@ systemctl --user <span class="hljs-built_in">enable</span> --now syncthing-power
     </div>
 
     
-<script>
-  document.querySelectorAll('.copy-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const pre = btn.parentElement;
-      const code = pre.querySelector('code');
-      try {
-        await navigator.clipboard.writeText(code.innerText);
-        btn.textContent = ' ✓ ';
-        setTimeout(() => btn.textContent = '📋', 1500);
-      } catch (err) { console.error(err); }
-    });
-  });
-</script>
-
+      <script>
+        document.querySelectorAll(".copy-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const pre = btn.parentElement;
+            const code = pre.querySelector("code");
+            try {
+              await navigator.clipboard.writeText(code.innerText);
+              btn.textContent = " ✓ ";
+              setTimeout(() => (btn.textContent = "📋"), 1500);
+            } catch (err) {
+              console.error(err);
+            }
+          });
+        });
+      </script>
+    
   </body>
 </html>

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/styles.css" />
     <link rel="icon" href="/favicon.png" type="image/png" />
 
-    <link rel="stylesheet" href="/styles-code.css">
+    <link rel="stylesheet" href="/styles-code.css" />
   </head>
 
   <body>
@@ -74,7 +74,8 @@
                 ><img src="/img/icon/info.svg" alt="Info" class="icon"
               /></a>
             </div>
-            <div id="heading"><h3>/速查/archlinux/</h3><h1>pacman和yay清除缓存</h1></div>
+            <div id="heading"><h3>/速查/archlinux/</h3>
+              <h1>pacman和yay清除缓存</h1></div>
           </div>
 
           <div class="content-wrapper">
@@ -117,8 +118,8 @@ yay -Scc
           <div id="toc-card" class="sidebar-card">
             <div class="toc-header">目录</div>
             <div id="toc-content"><div class="toc">
-<ul>
-<ul>
+    <ul></ul>
+  </div> <ul>
 <li><a href="#h2-paccache-https-man-archlinux-org-man-paccache-8">[paccache](https://man.archlinux.org/man/paccache.8)</a></li>
 <li><a href="#h2-u4f7fu7528-pacman">使用 pacman</a></li>
 <li><a href="#h2-u4f7fu7528yay">使用yay</a></li>
@@ -145,19 +146,21 @@ yay -Scc
     </div>
 
     
-<script>
-  document.querySelectorAll('.copy-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const pre = btn.parentElement;
-      const code = pre.querySelector('code');
-      try {
-        await navigator.clipboard.writeText(code.innerText);
-        btn.textContent = ' ✓ ';
-        setTimeout(() => btn.textContent = '📋', 1500);
-      } catch (err) { console.error(err); }
-    });
-  });
-</script>
-
+      <script>
+        document.querySelectorAll(".copy-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const pre = btn.parentElement;
+            const code = pre.querySelector("code");
+            try {
+              await navigator.clipboard.writeText(code.innerText);
+              btn.textContent = " ✓ ";
+              setTimeout(() => (btn.textContent = "📋"), 1500);
+            } catch (err) {
+              console.error(err);
+            }
+          });
+        });
+      </script>
+    
   </body>
 </html>

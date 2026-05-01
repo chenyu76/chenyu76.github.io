@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/styles.css" />
     <link rel="icon" href="/favicon.png" type="image/png" />
 
-    <link rel="stylesheet" href="/styles-code.css">
+    <link rel="stylesheet" href="/styles-code.css" />
   </head>
 
   <body>
@@ -74,7 +74,8 @@
                 ><img src="/img/icon/info.svg" alt="Info" class="icon"
               /></a>
             </div>
-            <div id="heading"><h3>/文章/</h3><h1>使用Inkscape给LaTeX文档绘图时在其中插入公式</h1></div>
+            <div id="heading"><h3>/文章/</h3>
+              <h1>使用Inkscape给LaTeX文档绘图时在其中插入公式</h1></div>
           </div>
 
           <div class="content-wrapper">
@@ -183,8 +184,8 @@ figure环境:
           <div id="toc-card" class="sidebar-card">
             <div class="toc-header">目录</div>
             <div id="toc-content"><div class="toc">
-<ul>
-<ul>
+    <ul></ul>
+  </div> <ul>
 <li><a href="#h2-1-inkscapeu4e2du63d2u5165u6587u672cu65f6u76f4u63a5u4f7fu7528latexu683cu5f0f">1.Inkscape中插入文本时直接使用LaTeX格式</a></li>
 <li><a href="#h2-2-u5bfcu51fapdf">2. 导出PDF</a></li>
 <li><a href="#h2-3-u5728latexu63d2u5165u7ed8u5236u597du7684u6587u4ef6">3. 在LaTeX插入绘制好的文件</a></li>
@@ -222,19 +223,21 @@ figure环境:
     </div>
 
     
-<script>
-  document.querySelectorAll('.copy-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const pre = btn.parentElement;
-      const code = pre.querySelector('code');
-      try {
-        await navigator.clipboard.writeText(code.innerText);
-        btn.textContent = ' ✓ ';
-        setTimeout(() => btn.textContent = '📋', 1500);
-      } catch (err) { console.error(err); }
-    });
-  });
-</script>
-
+      <script>
+        document.querySelectorAll(".copy-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const pre = btn.parentElement;
+            const code = pre.querySelector("code");
+            try {
+              await navigator.clipboard.writeText(code.innerText);
+              btn.textContent = " ✓ ";
+              setTimeout(() => (btn.textContent = "📋"), 1500);
+            } catch (err) {
+              console.error(err);
+            }
+          });
+        });
+      </script>
+    
   </body>
 </html>

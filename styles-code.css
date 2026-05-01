@@ -137,16 +137,11 @@ pre code {
   background-color: #777;
 }
 
-/* 制表符专用样式 */
-pre.ascii-table {
-  line-height: 1em !important; /* 强制行高为 1em，消除行间距 */
+pre.ascii-table code {
   font-family: "Cascadia Code", "Courier New", monospace; /* 必须使用等宽字体 */
   letter-spacing: 0; /* 消除字间距 */
   font-variant-ligatures: none; /* 禁用连字 */
-  background-color: #ffffff;
-}
-
-pre.ascii-table code {
   line-height: 1em !important;
   white-space: pre; /* 确保空格不合并 */
+  background-color: #ffffff;
 }

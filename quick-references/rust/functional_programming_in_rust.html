@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/styles.css" />
     <link rel="icon" href="/favicon.png" type="image/png" />
 
-    <link rel="stylesheet" href="/styles-code.css">
+    <link rel="stylesheet" href="/styles-code.css" />
   </head>
 
   <body>
@@ -74,7 +74,8 @@
                 ><img src="/img/icon/info.svg" alt="Info" class="icon"
               /></a>
             </div>
-            <div id="heading"><h3>/速查/rust/</h3><h1>Rust 中进行函数式编程</h1></div>
+            <div id="heading"><h3>/速查/rust/</h3>
+              <h1>Rust 中进行函数式编程</h1></div>
           </div>
 
           <div class="content-wrapper">
@@ -238,8 +239,8 @@ y = <span class="hljs-number">20</span>;         <span class="hljs-comment">// �
           <div id="toc-card" class="sidebar-card">
             <div class="toc-header">目录</div>
             <div id="toc-content"><div class="toc">
-<ul>
-<ul>
+    <ul></ul>
+  </div> <ul>
 <li><a href="#h2-1-u4f7fu7528u4e0du53efu53d8u6570u636e-immutability">1. **使用不可变数据（Immutability）**</a></li>
 <li><a href="#h2-2-u9ad8u9636u51fdu6570-higher-order-functions">2. **高阶函数（Higher-Order Functions）**</a></li>
 <li><a href="#h2-3-u95edu5305-closures">3. **闭包（Closures）**</a></li>
@@ -273,19 +274,21 @@ y = <span class="hljs-number">20</span>;         <span class="hljs-comment">// �
     </div>
 
     
-<script>
-  document.querySelectorAll('.copy-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const pre = btn.parentElement;
-      const code = pre.querySelector('code');
-      try {
-        await navigator.clipboard.writeText(code.innerText);
-        btn.textContent = ' ✓ ';
-        setTimeout(() => btn.textContent = '📋', 1500);
-      } catch (err) { console.error(err); }
-    });
-  });
-</script>
-
+      <script>
+        document.querySelectorAll(".copy-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const pre = btn.parentElement;
+            const code = pre.querySelector("code");
+            try {
+              await navigator.clipboard.writeText(code.innerText);
+              btn.textContent = " ✓ ";
+              setTimeout(() => (btn.textContent = "📋"), 1500);
+            } catch (err) {
+              console.error(err);
+            }
+          });
+        });
+      </script>
+    
   </body>
 </html>
