@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/styles.css" />
     <link rel="icon" href="/favicon.png" type="image/png" />
 
-    
+    <link rel="stylesheet" href="/styles-code.css" />
   </head>
 
   <body>
@@ -81,7 +81,23 @@
           <div class="content-wrapper">
             <div class="content"><p>通过Github action, 每次push上去时会通过npm调用<code>webGenerate/main.ts</code>，将目录下的<code>.md</code>文件都转成<code>.html</code>,然后遍历文件夹，将这些html加入到网站目录中</p>
 <h2 id="h2-githubu4ed3u5e93">Github仓库</h2><p>配置在<code>webConfig.js</code>中的仓库会被下载到对应位置。可以访问</p>
-<h2 id="h2-u4e3bu9875u63a8u8350">主页推荐</h2><p>配置在<code>webConfig.js</code>中的推荐会被显示在主页上</p>
+<h2 id="h2-u4e3bu9875u63a8u8350">主页推荐</h2><ul>
+<li>配置在<code>webConfig.js</code>中的推荐会被显示在主页上</li>
+<li>同时可以同步一些别的仓库到网站上，如果没有index，readme会被重命名为index</li>
+</ul>
+<h2 id="h2-u7279u6b8au7684markdownu8bedu6cd5">特殊的markdown语法</h2><p>网站处理markdown文件时具有以下附加特性：</p>
+<ul>
+<li>第一行如果以<code># </code>开头，这个标题会被作为文章大标题和标签页标题。</li>
+<li>最后一行如果是日期，会被作为脚注使用小号的灰色字体附在文末。同时文末的分隔符（如果有）会被删除。</li>
+<li>如果一个代码块里包含unicode线段（<code>┌ ┐ └ ┘ ─ │</code>），这个代码块会被显示为让线能连起来的紧凑格式、使用白色背景、不显示复制按钮</li>
+<li>支持公式，但是似乎由于我的配置原因行间公式前面需要有两个或以上的<code>\n</code>；并且<code>$$</code>后面必须立即跟随<code>\n</code>，<code>$</code>开头的行内公式前面必须有一个空格。</li>
+</ul>
+<h2 id="h2-u624bu52a8u4f7fu7528">手动使用</h2><p>生成：</p>
+<pre><code class="language-bash">npm start
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>清理：</p>
+<pre><code class="language-bash">npm run clean
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 </div>
             <div id="footnote"></div>
           </div>
@@ -100,7 +116,16 @@
         <div id="right-sidebar" class="sidebar">
           <div id="toc-card" class="sidebar-card">
             <div class="toc-header">目录</div>
-            <div id="toc-content"></div>
+            <div id="toc-content"><div class="toc">
+    <ul></ul>
+  </div> <ul>
+<li><a href="#h2-githubu4ed3u5e93">Github仓库</a></li>
+<li><a href="#h2-u4e3bu9875u63a8u8350">主页推荐</a></li>
+<li><a href="#h2-u7279u6b8au7684markdownu8bedu6cd5">特殊的markdown语法</a></li>
+<li><a href="#h2-u624bu52a8u4f7fu7528">手动使用</a></li>
+</ul>
+</ul>
+</div></div>
           </div>
         </div>
       </div>
@@ -120,6 +145,22 @@
       <div id="toc-content-mobile"></div>
     </div>
 
+    
+      <script>
+        document.querySelectorAll(".copy-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const pre = btn.parentElement;
+            const code = pre.querySelector("code");
+            try {
+              await navigator.clipboard.writeText(code.innerText);
+              btn.textContent = " ✓ ";
+              setTimeout(() => (btn.textContent = "📋"), 1500);
+            } catch (err) {
+              console.error(err);
+            }
+          });
+        });
+      </script>
     
   </body>
 </html>

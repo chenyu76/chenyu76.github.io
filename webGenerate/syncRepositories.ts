@@ -30,14 +30,14 @@ function parseRepoInfo(url: string) {
 }
 
 /**
- * 下载对应Github仓库并解压 (Sync via Zip)
+ * 下载对应Github仓库并解压
  * 清理旧目录 -> curl 下载 -> unzip 解压 -> 修正文件夹名称
  */
 export async function syncRepositories(
   rootPath: string,
   reps: Record<string, string[]>,
 ) {
-  console.log(`开始在 ${rootPath} 下同步仓库 (ZIP 下载模式)...\n`);
+  console.log(`开始在 ${rootPath} 下同步仓库...\n`);
 
   for (const [relativePath, urls] of Object.entries(reps)) {
     const baseDir = path.resolve(rootPath, relativePath);
@@ -62,13 +62,13 @@ export async function syncRepositories(
       );
 
       try {
-        // A. 清理旧仓库
+        // 清理旧仓库
         if (fs.existsSync(finalRepoPath)) {
           console.log(`   [清理] 删除旧目录 ${repoName}...`);
           await fs.promises.rm(finalRepoPath, { recursive: true, force: true });
         }
 
-        // B. 下载 ZIP (使用 curl)
+        // 下载 ZIP (使用 curl)
         // -L 跟随重定向, -o 输出文件, -s
         // 静默模式(防止进度条刷屏，只由脚本控制日志)
         console.log(`   [下载] 正在下载 ${repoName} (HEAD.zip)...`);
@@ -76,14 +76,14 @@ export async function syncRepositories(
           cwd: baseDir,
         });
 
-        // C. 解压 ZIP (使用 unzip)
+        // 解压 ZIP (使用 unzip)
         // -q 安静模式, -d 指定解压目录
         console.log(`   [解压] 正在解压 ${repoName}...`);
         await execAsync(`unzip -q "${tempZipPath}" -d "${tempExtractDir}"`, {
           cwd: baseDir,
         });
 
-        // D. 目录重命名 (关键步骤)
+        // 目录重命名
         // GitHub zip 解压后通常是 'repo-main' 或 'repo-master'。
         // 我们需要读取临时目录里的那个唯一的文件夹，并把它移出来重命名为
         // repoName。
@@ -94,6 +94,22 @@ export async function syncRepositories(
 
           // 移动并重命名
           await fs.promises.rename(srcPath, finalRepoPath);
+
+          // 如果文件里有有readme.md但是没有index.md或index.html（均忽略大小写）
+          // 将这个readme.md重命名为index.md
+          const repoFiles = await fs.promises.readdir(finalRepoPath);
+          const hasIndex = repoFiles.some((f) =>
+            /^index\.(md|html)$/i.test(f),
+          );
+          const readmeFile = repoFiles.find((f) => /^readme\.md$/i.test(f));
+
+          if (readmeFile && !hasIndex) {
+            await fs.promises.rename(
+              path.join(finalRepoPath, readmeFile),
+              path.join(finalRepoPath, "index.md"),
+            );
+            console.log(`   [重命名] ${readmeFile} -> index.md`);
+          }
           console.log(`   [完成] ${repoName} 已就绪`);
         } else {
           throw new Error("解压后为空，下载可能失败");

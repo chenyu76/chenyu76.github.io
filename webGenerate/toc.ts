@@ -20,12 +20,12 @@ const folderBlackList = ["node_modules", "webGenerate"];
 // 文件路径含有这些的js文件将不会被显示
 const jsFolderBlackList = ["webGenerate", "program", "img", "libs"];
 
-// 翻译函数，将一些目录的英文翻译成中文
 export type ArticlesMap = Record<
   string,
   { title: string; footnote?: string; [key: string]: unknown }
 >;
 
+// 翻译函数，将一些目录的英文翻译成中文
 export function tr(str: string) {
   const dict: Record<string, string> = {
     node_modules: "依赖包",
@@ -126,13 +126,13 @@ function folderTreeHtml(dir: string, articles: ArticlesMap) {
             children.splice(
               7,
               0,
-              html`${prefix}${col("│　　")}<a
+              `${prefix}${col("│　　")}<a
                   href="javascript:void(0);"
                   style="font-size:80%;line-height:100%"
                   onclick="toggleNextNextVis(this)"
                   >显示全部</a
                 ><br />
-                <span class="hiddenContent" style="display: none;"></span>`,
+                <span class="hiddenContent" style="display: none;">`,
             );
             children.push("</span>");
           }
@@ -163,26 +163,47 @@ function folderTreeHtml(dir: string, articles: ArticlesMap) {
 }
 
 export function generateRecommend(type = 0, articles: ArticlesMap = {}) {
+  const rootPath = path.dirname(__dirname);
   const listItems = recommend.map((item) => {
+    let itemDate: any = item.date;
+    // 1. 如果没有date信息，尝试从md文件中读取最后一行
+    if (!itemDate && !item.link.startsWith("http")) {
+      const mdPath = item.link.endsWith(".md")
+        ? path.join(rootPath, item.link)
+        : path.join(rootPath, item.link.replace(/\.html$/, "") + ".md");
+      if (fs.existsSync(mdPath)) {
+        const lines = fs.readFileSync(mdPath, "utf-8").trim().split("\n");
+        const lastLine = lines[lines.length - 1]?.trim() || "";
+        // 简单处理中文日期：去掉“日”后面的，换年月日为/
+        if (lastLine) {
+          itemDate = lastLine.replace(/日.*$/, "").replace(/[年月]/g, "/");
+        }
+      }
+    }
+
     let date;
-    if (typeof item.date !== "number") {
-      date = new Date(item.date).toLocaleDateString("zh-CN", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      });
+    if (typeof itemDate !== "number") {
+      if (itemDate) {
+        date = new Date(itemDate).toLocaleDateString("zh-CN", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        });
+      } else {
+        date = "----";
+      }
     } else {
-      if (item.date > 10000000) {
+      if (itemDate > 10000000) {
         date = new Date(
-          String(item.date).replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
+          String(itemDate).replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
         ).toLocaleDateString("zh-CN", {
           day: "2-digit",
           month: "long",
           year: "numeric",
         });
-      } else if (item.date > 100000) {
+      } else if (itemDate > 100000) {
         date = new Date(
-          String(item.date).replace(/(\d{4})(\d{2})/, "$1-$2"),
+          String(itemDate).replace(/(\d{4})(\d{2})/, "$1-$2"),
         ).toLocaleDateString("zh-CN", { month: "long", year: "numeric" });
       } else {
         date = "----";
@@ -202,8 +223,27 @@ export function generateRecommend(type = 0, articles: ArticlesMap = {}) {
         ? item.link
         : "/" + item.link,
     );
-    const info = item.info || "";
-    // marked.parse(item.info)
+    let info = item.info || "";
+    // 2. 如果没有info信息，从指向的文件中找到第一个自然段
+    if (!info && !item.link.startsWith("http")) {
+      const filePath = path.join(rootPath, item.link);
+      if (fs.existsSync(filePath)) {
+        const content = fs.readFileSync(filePath, "utf-8");
+        if (item.link.endsWith(".html")) {
+          const match = content.match(/<p>(.*?)<\/p>/i);
+          if (match && match[1]) info = match[1];
+        } else if (item.link.endsWith(".md")) {
+          const lines = content.split("\n");
+          for (const line of lines) {
+            const trimmed = line.trim();
+            if (trimmed && !trimmed.startsWith("#")) {
+              info = trimmed;
+              break;
+            }
+          }
+        }
+      }
+    }
 
     switch (type) {
       case 0:

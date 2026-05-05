@@ -241,6 +241,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <pre><code class="language-toml"><span class="hljs-attr">bindPort</span> = <span class="hljs-number">7000</span>           <span class="hljs-comment"># frp 服务端监听的端口</span>
 <span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;你的加密口令&quot;</span>  <span class="hljs-comment"># 只有拿着正确密码的 client 才能连接</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>这里的“加密口令”可以是你自定义的任意文本</p>
 <h4 id="h4-3-u542fu52a8u670du52a1u7aef">3. 启动服务端</h4><pre><code class="language-bash">./frps -c ./frps.toml
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-u914du7f6eclientu4e0au7684frpc">配置client上的frpc</h3><p>现在回到宿舍里的client，我们要告诉它如何找到外面的服务器。</p>
@@ -339,7 +340,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
 <p>请务必修改配置文件其中的<code>&lt;Client的私钥&gt;</code>和<code>&lt;User的公钥&gt;</code>为实际密钥；修改<code>&lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;</code>为实际地址和端口。</p>
 </div>
-<h4 id="h4-6-u542fu52a8wireguard">6. 启动WireGuard</h4><p>配置完成后，在 Client 执行 </p>
+<h4 id="h4-6-u542fu52a8wireguard">6. 启动WireGuard</h4><p>配置完成后，在 Client 执行</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> wg-quick up wg0
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>启动WireGuard服务。</p>
@@ -362,7 +363,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <h4 id="h4-2-u544au8bc9systemdu8be5u505au4ec0u4e48">2. 告诉systemd该做什么</h4><p>在打开的空白编辑器里，粘贴下面这段内容：</p>
 <pre><code class="language-ini"><span class="hljs-section">[Unit]</span>
 <span class="hljs-attr">Description</span>=frp client for campus network
-<span class="hljs-attr">After</span>=network.target 
+<span class="hljs-attr">After</span>=network.target
 
 <span class="hljs-section">[Service]</span>
 <span class="hljs-attr">Type</span>=simple
@@ -669,7 +670,7 @@ LOG_FILE = __file__ + <span class="hljs-string">&quot;.log&quot;</span>
 
 <span class="hljs-comment"># --- 配置区域 ---</span>
 <span class="hljs-comment"># 校园网登录脚本的绝对路径</span>
-LOGIN_SCRIPT=<span class="hljs-string">&quot;/home/user/scripts/login.py&quot;</span> 
+LOGIN_SCRIPT=<span class="hljs-string">&quot;/home/user/scripts/login.py&quot;</span>
 <span class="hljs-comment"># 目标IP</span>
 CHECK_IP=<span class="hljs-string">&quot;223.5.5.5&quot;</span> <span class="hljs-comment"># 阿里的 DNS</span>
 <span class="hljs-comment"># 检查间隔（秒）</span>
@@ -680,7 +681,7 @@ INTERVAL=300
 <span class="hljs-keyword">while</span> <span class="hljs-literal">true</span>; <span class="hljs-keyword">do</span>
     <span class="hljs-comment"># ping 1个包，超时时间5秒</span>
     ping -c 1 -W 5 <span class="hljs-variable">$CHECK_IP</span> &gt; /dev/null 2&gt;&amp;1
-    
+
     <span class="hljs-keyword">if</span> [ $? -ne 0 ]; <span class="hljs-keyword">then</span>
         <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-subst">$(date)</span>: Network is down. Attempting to login...&quot;</span>
         <span class="hljs-comment"># 执行登录脚本</span>
@@ -688,7 +689,7 @@ INTERVAL=300
     <span class="hljs-keyword">else</span>
         <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-subst">$(date)</span>: Network is OK.&quot;</span>
     <span class="hljs-keyword">fi</span>
-    
+
     <span class="hljs-built_in">sleep</span> <span class="hljs-variable">$INTERVAL</span>
 <span class="hljs-keyword">done</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>

@@ -6,6 +6,7 @@
  * （submodule 要反复同步更新这些仓库，不是很方便，所以不想用）
  * NOTE: 由于使用github自动打包的zip，所以gitlab等其他平台的仓库应该不适用
  */
+const toMyRepo = (repo: string) => `https://github.com/chenyu76/${repo}`;
 export const gitRepositories = {
   program: [
     "draw-n-pointed-star",
@@ -16,7 +17,8 @@ export const gitRepositories = {
     "turntable-web",
     "guitar-sight-reading-trainer-web",
     "color_sequence_game",
-  ].map((repo) => `https://github.com/chenyu76/${repo}`),
+  ].map(toMyRepo),
+  writings: ["how-to-expose-ssh-to-the-internet-with-frp"].map(toMyRepo),
 };
 
 /**
@@ -27,19 +29,19 @@ export const gitRepositories = {
  * date:
  * 日期，格式YYYYMMDD 或 YYYYMM 或 YYYY 或
  * 字符串（这会移交给JavaScript的Date对象处理）
- * TODO:
- * 最好能直接从markdown文件中读出来，因为我在markdown中保持在最后一行写日期的惯例。
+ * 如果不指定，会尝试从md文件最后一行读出来
  *
  * title:
  * 标题（可选，若不填，尝试从对应的markdown文件的第一行寻找标题）
  *
  * info:
  * html格式的介绍
- * （可选，若不填，
- * TODO:
- * 我希望能从生成的html文件里找到第一个<p>填进去，但目前还没实现）
+ * （可选，若不填，从生成的html文件里找到第一个<p>填进去）
  */
 export const recommend = [
+  {
+    link: "writings/how-to-expose-ssh-to-the-internet-with-frp/index.html",
+  },
   {
     date: 20260401,
     link: "program/4d-sokoban/index.html",
