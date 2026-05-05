@@ -177,10 +177,18 @@ export function convertMarkdown(inputPath: string): ArticleInfo {
       ((lastLine.includes("月") && lastLine.includes("日")) ||
         (lastLine.match(/\//g) || []).length === 2)
     ) {
-      return [firstLine, str.substring(0, lastIndex).trim(), lastLine];
+      // 去除正文最后的分割线（支持 ---, ***, ___, 以及带空格或多于3个字符的非标准写法）
+      let mainContent = str
+        .substring(0, lastIndex)
+        .trim()
+        .replace(/(?:\n|^)\s*(?:[-_*]\s*){3,}$/, "")
+        .trim();
+      return [firstLine, mainContent, lastLine];
     }
+    // 去除正文最后的分割线
+    let mainContent = str.replace(/(?:\n|^)\s*(?:[-_*]\s*){3,}$/, "").trim();
     // 如果不满足条件，返回空
-    return [firstLine, str, ""];
+    return [firstLine, mainContent, ""];
   })(data.trim());
 
   // 生成目录
@@ -245,12 +253,12 @@ export function generateHtmlFile(
         const count = matches ? matches.length : 0;
 
         if (count >= 10) {
-          // 情况 A: 认为是制表/示意图
-          // 1. 添加类名 ascii-table 以便通过 CSS 控制样式
-          // 2. 这种块不需要复制按钮
+          // 制表/示意图
+          // 添加类名 ascii-table 以便通过 CSS 控制样式
+          // 这种块不需要复制按钮
           return html`<pre class="ascii-table" lang="en">${fullContent}</pre>`;
         } else {
-          // 情况 B: 普通代码块
+          // 普通代码块
           // 注入复制按钮
           return html`<pre>${fullContent}<button class="copy-btn" title="Copy">📋</button></pre>`;
         }
