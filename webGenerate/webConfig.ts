@@ -6,6 +6,7 @@
  * （submodule 要反复同步更新这些仓库，不是很方便，所以不想用）
  * NOTE: 由于使用github自动打包的zip，所以gitlab等其他平台的仓库应该不适用
  */
+const toMyRepo = (repo: string) => `https://github.com/chenyu76/${repo}`;
 export const gitRepositories = {
   program: [
     "draw-n-pointed-star",
@@ -16,7 +17,8 @@ export const gitRepositories = {
     "turntable-web",
     "guitar-sight-reading-trainer-web",
     "color_sequence_game",
-  ].map((repo) => `https://github.com/chenyu76/${repo}`),
+  ].map(toMyRepo),
+  writings: ["how-to-expose-ssh-to-the-internet-with-frp"].map(toMyRepo),
 };
 
 /**
