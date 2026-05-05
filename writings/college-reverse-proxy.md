@@ -74,7 +74,6 @@ $$
 }_{\text{可访问公网}}
 $$
 
-
 #### frp
 
 [frp的GitHub仓库](https://github.com/fatedier/frp)
@@ -122,7 +121,6 @@ WireGuard 是一个非常简单、快速、现代化的虚拟专用网协议。�
 | Server | frp服务端                           |
 | User   | WireGuard（作为客户端）             |
 
-
 ### 配置server上的frps
 
 > [!NOTE]
@@ -138,10 +136,12 @@ WireGuard 是一个非常简单、快速、现代化的虚拟专用网协议。�
 
 新建一个名为 `frps.toml` 的文件，写入以下内容：
 
-   ```toml
-   bindPort = 7000           # frp 服务端监听的端口
-   auth.token = "你的加密口令"  # 只有拿着正确密码的 client 才能连接
-   ```
+```toml
+bindPort = 7000           # frp 服务端监听的端口
+auth.token = "你的加密口令"  # 只有拿着正确密码的 client 才能连接
+```
+
+这里的“加密口令”可以是你自定义的任意文本
 
 #### 3. 启动服务端
 
@@ -152,7 +152,6 @@ WireGuard 是一个非常简单、快速、现代化的虚拟专用网协议。�
 ### 配置client上的frpc
 
 现在回到宿舍里的client，我们要告诉它如何找到外面的服务器。
-
 
 > [!NOTE]
 > 如果使用[SAKURA FRP](https://www.natfrp.com/)，他们fork并修改了frpc，使其支持通过命令行的`-f`参数直接启动而不用编写配置文件，你可以在[这里](https://www.natfrp.com/tunnel/download)下载并参照他们的教程运行。
@@ -202,17 +201,20 @@ sudo apt install wireguard
 这是实现局域网访问的关键。你需要让 Linux 内核允许数据包在不同网卡间转发。
 
 可以通过命令在临时修改，测试配置：
+
 ```bash
 sudo sysctl -w net.ipv4.ip_forward=1
 ```
 
 如果想重启后仍生效，需要设置配置文件。如果`/etc/sysctl.conf`存在，可以将`net.ipv4.ip_forward=1`添加到文件中：
+
 ```bash
 echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 ```
 
 不同发行版可能具有不同配置，`/etc/sysctl.conf`可能不存在，这时也可以考虑将配置添加到`/etc/sysctl.d`文件夹中的一个新的文件中，如
+
 ```bash
 sudo echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/9999-ip-forward.conf
 ```
@@ -286,13 +288,14 @@ PersistentKeepalive = 25
 > [!IMPORTANT]
 > 请务必修改配置文件其中的`<Client的私钥>`和`<User的公钥>`为实际密钥；修改`<frp服务器公网IP>:<frp映射后的UDP端口>`为实际地址和端口。
 
-
 #### 6. 启动WireGuard
 
-配置完成后，在 Client 执行 
+配置完成后，在 Client 执行
+
 ```bash
 sudo wg-quick up wg0
 ```
+
 启动WireGuard服务。
 
 在 User 端点击“连接”，测试是否能连接上。
@@ -330,7 +333,7 @@ sudo nano /etc/systemd/system/frpc.service
 ```ini
 [Unit]
 Description=frp client for campus network
-After=network.target 
+After=network.target
 
 [Service]
 Type=simple
@@ -350,11 +353,11 @@ WantedBy=multi-user.target
 写好后，按 `Ctrl + O` 保存，再按 `Ctrl + X` 退出。然后执行下面这几条命令：
 
 1. **刷新清单**：
-`sudo systemctl daemon-reload`
+   `sudo systemctl daemon-reload`
 2. **设置开机自动启动**：
-`sudo systemctl enable frpc`
+   `sudo systemctl enable frpc`
 3. **现在立刻帮我启动**：
-`sudo systemctl start frpc`
+   `sudo systemctl start frpc`
 
 #### 4. 检查服务状态
 
@@ -371,6 +374,7 @@ sudo systemctl status frpc
 ### WireGuard 的自启动管理
 
 WireGuard的.service有些许不同，在此附上如下。
+
 ```ini
 [Unit]
 Description=WireGuard via wg-quick(8) for %I
@@ -387,9 +391,11 @@ Environment=WG_ENDPOINT_RESOLUTION_RETRIES=infinity
 [Install]
 WantedBy=multi-user.target
 ```
+
 将以上内容保存为`/etc/systemd/system/wg-quick@.service`。
 
 控制方法如下：
+
 ```bash
 # 启用服务（开机自启）
 sudo systemctl enable wg-quick@wg0
@@ -411,6 +417,7 @@ sudo journalctl -u wg-quick@wg0 -f
 如果你直接将 User A 的配置文件复制给 User B 使用，不仅会导致密钥冲突，还会因为 IP 地址重复而导致路由混乱，最终造成两个设备互相顶号、掉线或无法联网。
 
 因此，接入多个用户（或设备）时，需要遵循以下三个步骤：
+
 1.  **生成密钥**：为每一个新用户生成独立的公私钥对。
 2.  **分配 IP**：为每一个新用户规划一个不重复的内网 IP（如 `10.0.0.2`, `10.0.0.3`）。
 3.  **双向注册**：在中心节点（Client）注册所有用户的公钥；在各用户设备上填入自己的私钥和中心节点的公钥。
@@ -418,14 +425,16 @@ sudo journalctl -u wg-quick@wg0 -f
 #### 1. 详细配置逻辑
 
 **中心节点 (Client) 的变化：**
-* `[Interface]` 部分保持不变（它定义了中心节点自己的地址和监听端口）。
-* 需要为每一个新用户增加一个独立的 `[Peer]` 区块。
-* 每个 `[Peer]` 区块中，`PublicKey` 填写该用户的公钥，`AllowedIPs` 填写分配给该用户的具体 IP（通常使用 `/32`掩码，表示仅允许该特定 IP 流量）。
+
+- `[Interface]` 部分保持不变（它定义了中心节点自己的地址和监听端口）。
+- 需要为每一个新用户增加一个独立的 `[Peer]` 区块。
+- 每个 `[Peer]` 区块中，`PublicKey` 填写该用户的公钥，`AllowedIPs` 填写分配给该用户的具体 IP（通常使用 `/32`掩码，表示仅允许该特定 IP 流量）。
 
 **用户端 (User) 的变化：**
-* 每个用户拥有独立的配置文件。
-* `[Interface]` 中填写自己的私钥 (`PrivateKey`) 和分配到的唯一 IP (`Address`)。
-* `[Peer]` 指向中心节点，所有用户的 `[Peer]` 部分基本相同（都指向同一个中心节点的公钥和 Endpoint）。
+
+- 每个用户拥有独立的配置文件。
+- `[Interface]` 中填写自己的私钥 (`PrivateKey`) 和分配到的唯一 IP (`Address`)。
+- `[Peer]` 指向中心节点，所有用户的 `[Peer]` 部分基本相同（都指向同一个中心节点的公钥和 Endpoint）。
 
 #### 2. 修改后的配置示例
 
@@ -474,8 +483,8 @@ AllowedIPs = 10.0.0.4/32
 
 ##### B. 用户端配置 (User_A)
 
-* **身份**：User A
-* **IP**：10.0.0.2
+- **身份**：User A
+- **IP**：10.0.0.2
 
 ```toml
 [Interface]
@@ -499,8 +508,8 @@ PersistentKeepalive = 25
 
 ##### C. 用户端配置 (User_B)
 
-* **身份**：User B
-* **IP**：10.0.0.3
+- **身份**：User B
+- **IP**：10.0.0.3
 
 ```toml
 [Interface]
@@ -521,8 +530,8 @@ PersistentKeepalive = 25
 
 ##### D. 用户端配置 (User_C)
 
-* **身份**：User C
-* **IP**：10.0.0.4
+- **身份**：User C
+- **IP**：10.0.0.4
 
 ```toml
 [Interface]
@@ -705,7 +714,7 @@ username ALL=(ALL) NOPASSWD: /usr/sbin/shutdown
 
 # --- 配置区域 ---
 # 校园网登录脚本的绝对路径
-LOGIN_SCRIPT="/home/user/scripts/login.py" 
+LOGIN_SCRIPT="/home/user/scripts/login.py"
 # 目标IP
 CHECK_IP="223.5.5.5" # 阿里的 DNS
 # 检查间隔（秒）
@@ -716,7 +725,7 @@ echo "Campus network monitor started..."
 while true; do
     # ping 1个包，超时时间5秒
     ping -c 1 -W 5 $CHECK_IP > /dev/null 2>&1
-    
+
     if [ $? -ne 0 ]; then
         echo "$(date): Network is down. Attempting to login..."
         # 执行登录脚本
@@ -724,13 +733,14 @@ while true; do
     else
         echo "$(date): Network is OK."
     fi
-    
+
     sleep $INTERVAL
 done
 
 ```
 
 3. 执行命令赋予脚本执行权限：
+
 ```bash
 chmod +x /home/user/scripts/auto_login_monitor.sh
 ```
@@ -740,7 +750,7 @@ chmod +x /home/user/scripts/auto_login_monitor.sh
 为了让这个脚本像系统服务一样在后台运行，并随开机启动，我们需要创建一个 `.service` 文件。
 
 1. 创建服务文件：
-`sudo nano /etc/systemd/system/auto-login.service`
+   `sudo nano /etc/systemd/system/auto-login.service`
 2. 使用以下配置：
 
 ```ini
@@ -781,6 +791,5 @@ sudo systemctl start auto-login.service
 - **查看实时日志**（排查是否成功 ping 通）：`journalctl -u auto-login.service -f`
 - **停止服务**：`sudo systemctl stop auto-login.service`
 
-
-
 2025/12/21
+
