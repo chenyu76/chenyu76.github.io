@@ -12,6 +12,21 @@ import { gitRepositories } from "./webConfig.js";
 
 const html = String.raw;
 
+const tocStyle = html`
+  <style>
+    .hiddenContent {
+      transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+      opacity: 0;
+      display: none;
+    }
+    .hiddenContent.show {
+      opacity: 1;
+      display: inline-block;
+    }
+  </style>
+`;
 const foldingFuncForTOC = html`
   <script>
     function toggleNextNextVis(self) {
@@ -86,7 +101,7 @@ generateHtmlFile(
   path.join(rootPath, "toc.html"),
   templateHTML,
   "文档索引",
-  "",
+  tocStyle,
   html`<h1>文档索引</h1>`,
   tocGen(rootPath, articles),
   "",
