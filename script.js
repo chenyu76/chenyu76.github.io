@@ -93,3 +93,137 @@ document.addEventListener("click", (e) => {
     }
   }
 });
+
+// --- PJAX (无刷新无缝切换页面) ---
+document.addEventListener("click", (e) => {
+  // 寻找被点击的 a 标签
+  const link = e.target.closest("a");
+  if (!link) return;
+
+  const href = link.getAttribute("href");
+  // 忽略无效链接或包含 _blank 的链接
+  if (!href || link.target === "_blank") return;
+
+  // 使用完整的 URL 解析，便于比较
+  const url = new URL(link.href, window.location.href);
+  // 只处理同源同端口的链接
+  if (url.origin !== window.location.origin) return;
+
+  // 忽略非 HTML 或目录的资源（如 .pdf, .zip, .png）
+  if (url.pathname.match(/\.[^/]+$/) && !url.pathname.endsWith(".html")) return;
+
+  // 如果仅仅是 hash 改变（页面内锚点跳转），交给浏览器原生处理
+  if (url.pathname === window.location.pathname && url.search === window.location.search) {
+      return;
+  }
+
+  e.preventDefault();
+  navigateTo(url.href);
+});
+
+window.addEventListener("popstate", () => {
+  navigateTo(window.location.href, false);
+});
+
+async function navigateTo(url, pushState = true) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+        window.location.href = url; // 降级处理
+        return;
+    }
+    const htmlText = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlText, "text/html");
+
+    // 1. 替换标题
+    document.title = doc.title;
+    
+    // 2. 同步 Head 中的 CSS 链接 (例如 katex, highlight.js 的按需引入)
+    const currentLinks = Array.from(document.head.querySelectorAll('link[rel="stylesheet"]')).map(l => l.href);
+    doc.head.querySelectorAll('link[rel="stylesheet"]').forEach(newLink => {
+        if (!currentLinks.includes(newLink.href)) {
+            const linkNode = document.createElement("link");
+            linkNode.rel = "stylesheet";
+            linkNode.href = newLink.href;
+            if (newLink.integrity) linkNode.integrity = newLink.integrity;
+            if (newLink.crossOrigin) linkNode.crossOrigin = newLink.crossOrigin;
+            document.head.appendChild(linkNode);
+        }
+    });
+
+    // 3. 替换内容区域
+    const selectorsToReplace = ["#heading", ".content", "#footnote"];
+    selectorsToReplace.forEach(selector => {
+        const newEl = doc.querySelector(selector);
+        const oldEl = document.querySelector(selector);
+        if (newEl && oldEl) {
+            oldEl.innerHTML = newEl.innerHTML;
+        } else if (oldEl && !newEl) {
+            oldEl.innerHTML = ""; // 处理新页面不存在该部分的情况
+        }
+    });
+    
+    // 4. 替换和处理目录
+    const newToc = doc.querySelector("#toc-content");
+    const tocContent = document.querySelector("#toc-content");
+    if (newToc && tocContent) {
+        tocContent.innerHTML = newToc.innerHTML;
+        
+        // 重新同步到移动端目录
+        const mobileTocContent = document.getElementById("toc-content-mobile");
+        if (mobileTocContent) {
+             mobileTocContent.innerHTML = newToc.innerHTML;
+             mobileTocContent.querySelectorAll("a").forEach(a => {
+                a.addEventListener("click", () => {
+                    const wrapper = document.getElementById("toc-mobile-wrapper");
+                    if (wrapper) wrapper.classList.remove("active");
+                });
+            });
+        }
+        
+        // 控制侧边栏显隐逻辑
+        const rightSidebar = document.getElementById("right-sidebar");
+        const mobileBtn = document.getElementById("toc-mobile-btn");
+        if (!tocContent.innerHTML.trim() || tocContent.innerText.trim() === "") {
+             if (rightSidebar) rightSidebar.style.display = "none";
+             if (mobileBtn) mobileBtn.style.display = "none";
+             document.documentElement.style.setProperty('--right-sidebar-width', '0px');
+        } else {
+             if (rightSidebar) rightSidebar.style.display = "";
+             if (mobileBtn) mobileBtn.style.display = "";
+             document.documentElement.style.setProperty('--right-sidebar-width', ''); // 恢复默认
+        }
+    }
+
+    // 5. 更新 URL
+    if (pushState) {
+      history.pushState(null, "", url);
+    }
+    
+    // 6. 重新执行新页面注入的内联脚本 (例如由于有代码块才动态插入的 copy-btn 脚本)
+    doc.body.querySelectorAll("script:not([src])").forEach(script => {
+         const newScript = document.createElement("script");
+         newScript.textContent = script.textContent;
+         document.body.appendChild(newScript);
+         setTimeout(() => newScript.remove(), 100);
+    });
+
+    // 如果目标 url 中带有 hash，滚动到对应元素；否则滚动到顶部
+    const urlObj = new URL(url);
+    if (urlObj.hash) {
+        const targetElement = document.querySelector(urlObj.hash);
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            scrollToTop();
+        }
+    } else {
+        scrollToTop();
+    }
+
+  } catch (err) {
+    console.error("PJAX 发生错误，降级回传统跳转:", err);
+    window.location.href = url;
+  }
+}
