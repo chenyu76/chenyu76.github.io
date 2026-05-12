@@ -40,6 +40,11 @@ loglog(x, z);
 
 ## 为什么？
 
-我也不知道……
+`hold on` 会固定当前坐标轴属性，包括 XScale 和 YScale，所以要么先 `loglog` 再 `hold on`，要么就再重新设置 XScale 和 YScale。
 
-似乎在创建了`figure`后直接调用`hold on`就会这样。
+```matlab
+hold on
+loglog(x, y)
+set(gca, 'XScale', 'log', 'YScale', 'log')
+```
+
