@@ -65,6 +65,20 @@ const questions = [
         "MATLAB performed an implicit type conversion, converting the char vector to a string."
   },
   {
+    question : `
+What is the output of the following MATLAB program?
+\`\`\`
+str1='str1';
+str2="str2";
+disp(str1(4)==str(4))
+\`\`\`
+`,
+    options : [ "0 (false)", "1 (true)", "Error" ],
+    answer : 2,
+    explanation :
+        "Index exceeds the number of array elements. Index must not exceed 1 since `str2` is a 1x1 string."
+  },
+  {
     question : "What is the result of evaluating `\"\"\"\" == ''''` in MATLAB?",
     options : [ "1 (true)", "0 (false)", "[]", "Error" ],
     answer : 1,

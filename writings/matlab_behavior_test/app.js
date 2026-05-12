@@ -22,7 +22,7 @@ function parseMarkdown(text) {
       .replace(/`([^`]+)`/g, '<code>$1</code>')
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
       .replace(/__([^_]+)__/g, '<em>$1</em>')
-      .replace("\n\n", "<br>");
+      .replace("\n", "<br>");
 }
 
 function renderQuestion() {
