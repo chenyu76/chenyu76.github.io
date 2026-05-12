@@ -153,6 +153,12 @@ disp(str1(4)==str(4))
     explanation : "`~` has a higher priority."
   },
   {
+    question : "What is the result of evaluating the equality `i==j`?",
+    options : [ "1 (true)", "NaN", "Error", "0 (false)" ],
+    answer : 0,
+    explanation : "Without assignment, `i` and `j` are both imaginary units."
+  },
+  {
     question :
         "What is the output of comparing two Not-a-Number values: `disp(NaN == NaN)`?",
     options : [ "0 (false)", "1 (true)", "NaN", "[]" ],
@@ -163,6 +169,14 @@ disp(str1(4)==str(4))
   {
     question :
         "What is the output of comparing two empty arrays: `disp([] == [])`?",
+    options : [ "0 (false)", "1 (true)", "[]", "" ],
+    answer : 3,
+    explanation :
+        "MATLAB trys to compare elements in the matrix, so the result is a 0x0 logical array."
+  },
+  {
+    question :
+        "What is the output of comparing two empty arrays: `disp([] == [[]])`?",
     options : [ "0 (false)", "1 (true)", "[]", "" ],
     answer : 3,
     explanation :
@@ -308,5 +322,35 @@ disp(s1==s2);
     options : [ "0 (false)", "1 (true)", "Error" ],
     answer : 0,
     explanation : "I don't know :( \n\nI hate MATLAB."
+  },
+  {
+    question :
+        `Which of the following MATLAB codes can correctly create the graph with the logarithmic coordinate axis？`,
+    options : [
+      `\`\`\`
+x = [1 2 3 4];
+y = [2 4 8 16];
+z = [1 3 5 7];
+
+figure;
+loglog(x, y);
+hold on
+loglog(x, z);
+\`\`\``,
+      `\`\`\`
+x = [1 2 3 4];
+y = [2 4 8 16];
+z = [1 3 5 7];
+
+figure;
+hold on
+loglog(x, y);
+loglog(x, z);
+\`\`\``,
+      "Both", "Neither"
+    ],
+    answer : 0,
+    explanation :
+        "`hold on` will fix the current coordinate axis properties, including XScale and YScale. Therefore, either `loglog` first and then `hold on`, or reset XScale and YScale again."
   },
 ];
