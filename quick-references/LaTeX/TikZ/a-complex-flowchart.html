@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>一个复杂的流程图</title>
+
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+
+    <link rel="stylesheet" href="/styles-code.css" />
+  </head>
+
+  <body>
+    <iframe
+      id="iframe-background"
+      src="/img/pixelart/index.html"
+      title="background"
+    ></iframe>
+
+    <div id="spacer"></div>
+
+    <div class="shrinked anime-spacer"></div>
+
+    <div id="content-wrapper-bg">
+      <div id="main-grid-container">
+        <div id="left-sidebar" class="sidebar">
+          <div class="sidebar-card">
+            <div class="vertical-buttons">
+              <a href="/toc.html" title="文档索引"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon"
+              /></a>
+              <a href="/index.html" title="返回主页"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon"
+              /></a>
+              <a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon"
+              /></a>
+              <a href="/About.html" title="关于"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+              <button
+                onclick="scrollToTop()"
+                title="滚动到顶部"
+                class="scroll-top-btn"
+              >
+                <img
+                  src="/img/icon/arrow-upward.svg"
+                  alt="Return Top"
+                  class="icon"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div id="title-container">
+            <div id="top-buttons-wrapper" class="top-buttons">
+              <a href="/toc.html" title="文档索引" class="fade-in"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
+              ><a href="/index.html" title="返回主页" class="fade-in"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon" /></a
+              ><a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                class="fade-in"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon" /></a
+              ><a href="/About.html" title="关于" class="fade-in"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+            </div>
+            <div id="heading"><h3>/速查/LaTeX/TikZ/</h3>
+              <h1>一个复杂的流程图</h1></div>
+          </div>
+
+          <div class="content-wrapper">
+            <div class="content"><h2 id="h2-svg">SVG</h2><p><img src="./a-complex-flowchart.svg" alt="flowchart"></p>
+<h2 id="h2-latex">LaTeX</h2><p>使用<code>minipage</code>套<code>tcolorbox</code>，结合<code>tikz</code>绘制箭头。</p>
+<pre><code class="language-latex"><span class="hljs-keyword">\documentclass</span>[border=14pt, varwidth=25cm]{standalone}
+<span class="hljs-keyword">\usepackage</span>{ctex}
+<span class="hljs-keyword">\usepackage</span>{graphicx}
+<span class="hljs-keyword">\usepackage</span>[most]{tcolorbox}
+<span class="hljs-keyword">\usepackage</span>{pgfplots}
+<span class="hljs-keyword">\usepackage</span>{amsmath}
+<span class="hljs-keyword">\usepackage</span>{amssymb}
+<span class="hljs-keyword">\usepackage</span>{multirow}
+<span class="hljs-keyword">\usepackage</span>{xcolor}
+<span class="hljs-keyword">\usepackage</span>{varwidth}
+<span class="hljs-keyword">\usetikzlibrary</span>{positioning, arrows.meta, calc, tikzmark}
+
+<span class="hljs-keyword">\colorlet</span>{darkgreen}{green!50!black}
+<span class="hljs-keyword">\graphicspath</span>{{./figures/}}
+
+<span class="hljs-comment">% 一个圆圈文字</span>
+<span class="hljs-keyword">\newcommand</span>{<span class="hljs-keyword">\circledtext</span>}[3]{<span class="hljs-comment">%</span>
+  <span class="hljs-keyword">\tikz</span>[baseline=(X.base)]{<span class="hljs-comment">%</span>
+    <span class="hljs-keyword">\node</span>[circle, draw=none, fill=<span class="hljs-params">#2</span>, inner sep=2pt] (X) {<span class="hljs-comment">%</span>
+      <span class="hljs-keyword">\textcolor</span>{<span class="hljs-params">#1</span>}{<span class="hljs-params">#3</span>}<span class="hljs-comment">%</span>
+    };<span class="hljs-comment">%</span>
+  }<span class="hljs-comment">%</span>
+}
+
+<span class="hljs-keyword">\begin</span>{document}
+<span class="hljs-keyword">\small</span>
+
+<span class="hljs-keyword">\tikzset</span>{
+  my arrow/.style={-&gt;, &gt;={Latex[scale=1.2]}, line width=1.4pt}
+}
+<span class="hljs-comment">% 1. 全局样式定义</span>
+<span class="hljs-keyword">\tcbset</span>{
+  my flex/.style={
+    enhanced,
+    <span class="hljs-comment">% nobeforeafter,       % 取消前后间距</span>
+    <span class="hljs-comment">% hbox,                % 宽度由内部内容决定</span>
+    arc=8pt,
+    boxrule=1.2pt,
+    colback=<span class="hljs-params">#1</span>!0,
+    colframe=<span class="hljs-params">#1</span>,
+    fonttitle=<span class="hljs-keyword">\bfseries</span>,
+    boxsep=0pt, top=4pt, bottom=4pt, left=4pt, right=4pt
+  },
+  <span class="hljs-comment">% 子盒子专用样式</span>
+  sub flex/.style={
+    enhanced,
+    <span class="hljs-comment">% nobeforeafter,</span>
+    <span class="hljs-comment">% hbox,</span>
+    arc=4pt,             <span class="hljs-comment">% 子盒子圆角小一点</span>
+    boxrule=1pt,
+    colback=<span class="hljs-params">#1</span>!0,
+    colframe=<span class="hljs-params">#1</span>, <span class="hljs-comment">% !80</span>
+    fonttitle=<span class="hljs-keyword">\small</span><span class="hljs-keyword">\bfseries</span>,
+    center title,
+    <span class="hljs-comment">% halign=center,       % 内部文字水平居中</span>
+    valign=center,
+    <span class="hljs-comment">% 稍微收紧子盒子的内边距</span>
+    boxsep=0pt, top=4pt, bottom=4pt, left=4pt, right=4pt
+  },
+  my flex/.default=gray,
+  sub flex/.default=gray
+}
+
+<span class="hljs-keyword">\begin</span>{flushright}
+  <span class="hljs-keyword">\begin</span>{minipage}{3.0cm}
+    <span class="hljs-keyword">\begin</span>{flushright}
+      <span class="hljs-keyword">\begin</span>{tcolorbox}[
+          my flex=blue,
+          <span class="hljs-comment">% equal height group=A,% 父盒子：这一排A盒子强制等高</span>
+          title=<span class="hljs-keyword">\circledtext</span>{blue}{white}{1} aaaaaa,
+          remember as=box1
+        ]
+        <span class="hljs-keyword">\begin</span>{tcolorbox}[
+            sub flex=gray,
+          ]
+          <span class="hljs-keyword">\centering</span>
+
+          something
+
+        <span class="hljs-keyword">\end</span>{tcolorbox}
+        <span class="hljs-keyword">\begin</span>{tcolorbox}[
+            sub flex=gray,
+          ]
+          <span class="hljs-keyword">\centering</span>
+          Observation <span class="hljs-built_in">$</span>o<span class="hljs-built_in">_</span>t<span class="hljs-built_in">$</span>
+        <span class="hljs-keyword">\end</span>{tcolorbox}
+      <span class="hljs-keyword">\end</span>{tcolorbox}<span class="hljs-comment">%</span>
+
+      <span class="hljs-keyword">\vspace</span>{0.5cm}
+      <span class="hljs-keyword">\begin</span>{minipage}{2.3cm}
+        <span class="hljs-keyword">\begin</span>{tcolorbox}[
+            sub flex=gray,
+            remember as=oap
+          ]
+          <span class="hljs-keyword">\centering</span>
+
+          bbbbb
+
+        <span class="hljs-keyword">\end</span>{tcolorbox}
+      <span class="hljs-keyword">\end</span>{minipage}
+    <span class="hljs-keyword">\end</span>{flushright}
+  <span class="hljs-keyword">\end</span>{minipage}
+  <span class="hljs-keyword">\hspace</span>{0.5cm}
+  <span class="hljs-keyword">\begin</span>{minipage}{8.0cm}
+    <span class="hljs-keyword">\begin</span>{tcolorbox}[
+        my flex=red,
+        title=<span class="hljs-keyword">\circledtext</span>{red}{white}{2} Interface,
+        remember as=box2,
+        equal height group=box,
+      ]
+      <span class="hljs-keyword">\begin</span>{center}
+        <span class="hljs-keyword">\begin</span>{tikzpicture}
+          <span class="hljs-keyword">\node</span>[] (qbase) {<span class="hljs-built_in">$</span>q<span class="hljs-built_in">_</span>{<span class="hljs-keyword">\text</span>{base}}<span class="hljs-built_in">$</span>};
+          <span class="hljs-keyword">\node</span>[right=of qbase, draw=red, fill=red!10, rounded
+          corners] (magic) {magic};
+          <span class="hljs-keyword">\node</span>[right=of magic] (qexec) {<span class="hljs-built_in">$</span>q<span class="hljs-built_in">_</span>{<span class="hljs-keyword">\text</span>{exec}}<span class="hljs-built_in">$</span>};
+          <span class="hljs-keyword">\draw</span>[] (qbase) -- (magic);
+          <span class="hljs-keyword">\draw</span>[] (magic) -- (qexec);
+        <span class="hljs-keyword">\end</span>{tikzpicture}
+      <span class="hljs-keyword">\end</span>{center}
+
+      <span class="hljs-keyword">\begin</span>{minipage}{0.3<span class="hljs-keyword">\linewidth</span>}
+        <span class="hljs-keyword">\begin</span>{tcolorbox}[
+            sub flex=red,
+            equal height group=DI1
+          ]
+          <span class="hljs-keyword">\textcolor</span>{red}{<span class="hljs-keyword">\circledtext</span>{white}{red}{A}
+          <span class="hljs-keyword">\bfseries</span> cue}
+
+        <span class="hljs-keyword">\end</span>{tcolorbox}
+      <span class="hljs-keyword">\end</span>{minipage}<span class="hljs-keyword">\hfill</span>
+      <span class="hljs-keyword">\begin</span>{minipage}{0.3<span class="hljs-keyword">\linewidth</span>}
+        <span class="hljs-keyword">\begin</span>{tcolorbox}[
+            sub flex=red,
+            equal height group=DI1
+          ]
+          <span class="hljs-keyword">\textcolor</span>{red}{<span class="hljs-keyword">\circledtext</span>{white}{red}{B}
+            <span class="hljs-keyword">\bfseries</span> Finger
+          }
+
+          budget <span class="hljs-built_in">$</span>B<span class="hljs-built_in">_</span>{i,t}<span class="hljs-built_in">$</span>
+        <span class="hljs-keyword">\end</span>{tcolorbox}
+      <span class="hljs-keyword">\end</span>{minipage}<span class="hljs-keyword">\hfill</span>
+      <span class="hljs-keyword">\begin</span>{minipage}{0.35<span class="hljs-keyword">\linewidth</span>}
+        <span class="hljs-keyword">\begin</span>{tcolorbox}[
+            sub flex=red,
+            equal height group=DI1
+          ]
+          <span class="hljs-keyword">\textcolor</span>{red}{<span class="hljs-keyword">\circledtext</span>{white}{red}{C}
+            <span class="hljs-keyword">\bfseries</span>  damping
+          }
+
+        <span class="hljs-keyword">\end</span>{tcolorbox}
+      <span class="hljs-keyword">\end</span>{minipage}
+      <span class="hljs-keyword">\begin</span>{tcolorbox}[
+          sub flex=red,
+        ]
+        <span class="hljs-keyword">\begin</span>{minipage}{12cm}
+          <span class="hljs-keyword">\textcolor</span>{red}{<span class="hljs-keyword">\circledtext</span>{white}{red}{D}
+            <span class="hljs-keyword">\bfseries</span> Bounded residual adaptation
+          }
+        <span class="hljs-keyword">\end</span>{minipage}
+      <span class="hljs-keyword">\end</span>{tcolorbox}
+    <span class="hljs-keyword">\end</span>{tcolorbox}<span class="hljs-comment">%</span>
+  <span class="hljs-keyword">\end</span>{minipage}
+  <span class="hljs-keyword">\hspace</span>{0.5cm}
+  <span class="hljs-keyword">\begin</span>{minipage}{5.0cm}
+    <span class="hljs-keyword">\begin</span>{tcolorbox}[
+        my flex=orange,
+        title=<span class="hljs-keyword">\circledtext</span>{orange}{white}{3} Execution,
+        remember as=box3,
+        equal height group=box,
+      ]
+      <span class="hljs-keyword">\centering</span>
+      {<span class="hljs-keyword">\bfseries</span> PD}
+
+      <span class="hljs-keyword">\vspace</span>{0.5em}
+
+      <span class="hljs-built_in">$</span>o<span class="hljs-built_in">_</span>t+1<span class="hljs-built_in">$</span>
+    <span class="hljs-keyword">\end</span>{tcolorbox}
+  <span class="hljs-keyword">\end</span>{minipage}
+
+  <span class="hljs-keyword">\vspace</span>{2em}
+  <span class="hljs-keyword">\begin</span>{minipage}{12.5cm}
+    <span class="hljs-keyword">\begin</span>{tcolorbox}[
+        my flex=darkgreen,
+        title=<span class="hljs-keyword">\circledtext</span>{darkgreen}{white}{4} Offline,
+        remember as=box4
+      ]
+      <span class="hljs-comment">% 下面两个是最大宽度，不是实际宽度</span>
+      <span class="hljs-keyword">\newcommand</span>{<span class="hljs-keyword">\maxTextWidth</span>}{8cm}
+      <span class="hljs-keyword">\newcommand</span>{<span class="hljs-keyword">\maxImgWidth</span>}{8cm}
+      <span class="hljs-keyword">\centering</span>
+      <span class="hljs-keyword">\begin</span>{tabular}{@{}cccc@{}}
+        <span class="hljs-keyword">\begin</span>{tcolorbox}[
+            sub flex=gray,
+            remember as=sub1,
+            hbox,
+            equal height group=PAOF,
+          ]
+          <span class="hljs-keyword">\begin</span>{varwidth}{<span class="hljs-keyword">\maxTextWidth</span>}
+            {<span class="hljs-keyword">\bfseries</span> Roughness}
+
+            <span class="hljs-built_in">$</span>R<span class="hljs-built_in">$</span>
+          <span class="hljs-keyword">\end</span>{varwidth}
+          <span class="hljs-keyword">\begin</span>{varwidth}{<span class="hljs-keyword">\maxImgWidth</span>}
+            img1
+            <span class="hljs-comment">%\includegraphics{}</span>
+          <span class="hljs-keyword">\end</span>{varwidth}
+        <span class="hljs-keyword">\end</span>{tcolorbox} <span class="hljs-built_in">&amp;</span>
+        <span class="hljs-keyword">\begin</span>{tcolorbox}[
+            sub flex=gray,
+            remember as=sub2,
+            hbox,
+            equal height group=PAOF
+          ]
+          <span class="hljs-keyword">\begin</span>{varwidth}{<span class="hljs-keyword">\maxTextWidth</span>}
+            {<span class="hljs-keyword">\bfseries</span> Tail}
+
+            <span class="hljs-built_in">$</span>q<span class="hljs-built_in">_</span>{90}(S)<span class="hljs-built_in">$</span>
+          <span class="hljs-keyword">\end</span>{varwidth}
+          <span class="hljs-keyword">\begin</span>{varwidth}{<span class="hljs-keyword">\maxImgWidth</span>}
+            img2
+          <span class="hljs-keyword">\end</span>{varwidth}
+        <span class="hljs-keyword">\end</span>{tcolorbox} <span class="hljs-built_in">&amp;</span>
+        <span class="hljs-keyword">\begin</span>{tcolorbox}[
+            sub flex=gray,
+            remember as=sub2,
+            hbox,
+            equal height group=PAOF
+          ]
+          <span class="hljs-keyword">\begin</span>{varwidth}{<span class="hljs-keyword">\maxTextWidth</span>}
+            {<span class="hljs-keyword">\bfseries</span> ratio}
+
+            <span class="hljs-built_in">$</span><span class="hljs-keyword">\displaystyle</span> <span class="hljs-keyword">\rho</span><span class="hljs-built_in">_</span>c = <span class="hljs-keyword">\frac</span>1F <span class="hljs-keyword">\sum</span><span class="hljs-built_in">_</span>f c<span class="hljs-built_in">_</span>f<span class="hljs-built_in">$</span>
+          <span class="hljs-keyword">\end</span>{varwidth}
+          <span class="hljs-keyword">\begin</span>{varwidth}{<span class="hljs-keyword">\maxImgWidth</span>}
+            img
+          <span class="hljs-keyword">\end</span>{varwidth}
+        <span class="hljs-keyword">\end</span>{tcolorbox} <span class="hljs-built_in">&amp;</span>
+        <span class="hljs-keyword">\begin</span>{tcolorbox}[
+            sub flex=gray,
+            remember as=sub2,
+            hbox,
+            equal height group=PAOF
+          ]
+          <span class="hljs-keyword">\begin</span>{varwidth}{<span class="hljs-keyword">\maxTextWidth</span>}
+            {<span class="hljs-keyword">\bfseries</span> Invention}
+
+            <span class="hljs-built_in">$</span>E<span class="hljs-built_in">$</span>
+          <span class="hljs-keyword">\end</span>{varwidth}
+          <span class="hljs-keyword">\begin</span>{varwidth}{<span class="hljs-keyword">\maxImgWidth</span>}
+            img
+          <span class="hljs-keyword">\end</span>{varwidth}
+        <span class="hljs-keyword">\end</span>{tcolorbox}
+      <span class="hljs-keyword">\end</span>{tabular}
+    <span class="hljs-keyword">\end</span>{tcolorbox}
+  <span class="hljs-keyword">\end</span>{minipage}
+<span class="hljs-keyword">\end</span>{flushright}
+
+<span class="hljs-keyword">\begin</span>{tikzpicture}[
+    remember picture, overlay,
+  ]
+  <span class="hljs-keyword">\draw</span>[my arrow] (oap.north |- box1.south) -- (oap.north);
+  <span class="hljs-keyword">\draw</span>[my arrow] (oap.east) -- (box2.west |- oap.east);
+  <span class="hljs-keyword">\draw</span>[my arrow] (oap.east) -- (box2.west |- oap.east);
+  <span class="hljs-keyword">\draw</span>[my arrow] (box2.east) -- (box3.west);
+  <span class="hljs-keyword">\draw</span>[my arrow] (box3.south) -- (box3.south |- box4.north);
+  <span class="hljs-keyword">\draw</span>[my arrow] (box2.south |- box4.north) -- (box2.south);
+  <span class="hljs-keyword">\coordinate</span> (box41mid) at ([xshift=1em, yshift=-1em]box1.west |- box4.north);
+  <span class="hljs-keyword">\draw</span>[my arrow, dashed]
+  (box4.west |- box41mid) --
+  (box41mid) --
+  (box41mid |- box1.south);
+<span class="hljs-keyword">\end</span>{tikzpicture}
+<span class="hljs-keyword">\end</span>{document}
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+</div>
+            <div id="footnote"></div>
+          </div>
+        </div>
+
+        <div class="bottom-button mobile-only">
+          <button onclick="scrollToTop()" title="滚动到顶部">
+            <img
+              src="/img/icon/arrow-upward.svg"
+              alt="Return Top"
+              class="icon"
+            />
+          </button>
+        </div>
+
+        <div id="right-sidebar" class="sidebar">
+          <div id="toc-card" class="sidebar-card">
+            <div class="toc-header">目录</div>
+            <div id="toc-content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/script.js"></script>
+
+    <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+      <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
+    </button>
+
+    <div id="toc-mobile-wrapper">
+      <div class="toc-header-mobile">
+        <span>目录</span>
+        <button onclick="toggleToc()" class="toc-close-btn">×</button>
+      </div>
+      <div id="toc-content-mobile"></div>
+    </div>
+
+    
+      <script>
+        document.querySelectorAll(".copy-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const pre = btn.parentElement;
+            const code = pre.querySelector("code");
+            try {
+              await navigator.clipboard.writeText(code.innerText);
+              btn.textContent = " ✓ ";
+              setTimeout(() => (btn.textContent = "📋"), 1500);
+            } catch (err) {
+              console.error(err);
+            }
+          });
+        });
+      </script>
+    
+  </body>
+</html>

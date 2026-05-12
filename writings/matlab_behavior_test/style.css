@@ -1,0 +1,145 @@
+:root {
+  --primary-color: #4a90e2;
+  --success-color: #2ecc71;
+  --error-color: #e74c3c;
+  --text-color: #333;
+  --bg-color: #f5f7fa;
+  --card-bg: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  width: 90%;
+  max-width: 600px;
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+.header {
+  text-align: right;
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.question {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.option-btn {
+  padding: 1rem;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.option-btn:hover:not(:disabled) {
+  border-color: var(--primary-color);
+  background-color: #f0f7ff;
+}
+
+.option-btn.correct {
+  background-color: var(--success-color);
+  color: white;
+  border-color: var(--success-color);
+}
+
+.option-btn.wrong {
+  background-color: var(--error-color);
+  color: white;
+  border-color: var(--error-color);
+}
+
+.explanation {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #fff4e5;
+  border-left: 4px solid #ffa94d;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.navigation {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+button:not(.option-btn) {
+  padding: 0.6rem 1.2rem;
+  border: 2px solid white;
+  border-radius: 6px;
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+button:disabled {
+  background-color: #ccc;
+  border: 2px solid #ccc;
+  cursor: not-allowed;
+}
+
+.hidden {
+  display: none;
+}
+
+code,
+pre {
+  background: #00000011;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+code {
+  padding: 0.2rem 0.4rem;
+}
+
+pre {
+  padding: 0.8rem;
+  white-space: pre-wrap;
+  margin: 0.8rem 0;
+  overflow-x: auto;
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
+    width: 95%;
+  }
+  .question {
+    font-size: 1rem;
+  }
+}

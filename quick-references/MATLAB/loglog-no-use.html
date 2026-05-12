@@ -101,8 +101,11 @@ loglog(x, y);
 loglog(x, z);
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>输出</p>
-<img src="./assets/matlab_loglog_success.svg" /><h2 id="h2-u4e3au4ec0u4e48">为什么？</h2><p>我也不知道……</p>
-<p>似乎在创建了<code>figure</code>后直接调用<code>hold on</code>就会这样。</p>
+<img src="./assets/matlab_loglog_success.svg" /><h2 id="h2-u4e3au4ec0u4e48">为什么？</h2><p><code>hold on</code> 会固定当前坐标轴属性，包括 XScale 和 YScale，所以要么先 <code>loglog</code> 再 <code>hold on</code>，要么就再重新设置 XScale 和 YScale。</p>
+<pre><code class="language-matlab"><span class="hljs-built_in">hold</span> on
+loglog(x, y)
+set(gca, <span class="hljs-string">&#x27;XScale&#x27;</span>, <span class="hljs-string">&#x27;log&#x27;</span>, <span class="hljs-string">&#x27;YScale&#x27;</span>, <span class="hljs-string">&#x27;log&#x27;</span>)
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 </div>
             <div id="footnote"></div>
           </div>
