@@ -242,7 +242,7 @@ disp(ndims(ten));
     options : [ "0", "1", "2", "3", "4" ],
     answer : 2,
     explanation :
-        "`ten` is 2x4 double. `N = ndims(A)` returns the number of dimensions in the array A. The number of dimensions is always greater than or equal to 2. It's a pity that you cannot construct a tensor in MATLAB like this."
+        "`ten` is 2x4 double. `N = ndims(A)` returns the number of dimensions in the array A. The number of dimensions is always greater than or equal to 2. Unfortunately you cannot construct a tensor in MATLAB like this."
   },
   {
     question : `

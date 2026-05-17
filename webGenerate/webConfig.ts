@@ -40,6 +40,12 @@ export const gitRepositories = {
  */
 export const recommend = [
   {
+    link: "writings/matlab_behavior_test/index.html",
+    date: "20260512",
+    title: "奇妙的MATLAB语言特性小测试",
+    info: "我讨厌MATLAB。",
+  },
+  {
     link: "writings/how-to-expose-ssh-to-the-internet-with-frp/index.html",
   },
   {

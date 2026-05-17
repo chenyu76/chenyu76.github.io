@@ -78,10 +78,10 @@ const cardStyle = html`
       height: 50px; /* 固定底部高度 */
       background-color: #f7f7f9; /* 浅灰色背景 */
       border-top: 1px solid #eaeaea; /* 可选：加一条淡淡的分割线 */
-      padding: 0 20px;
+      padding: 0 40px;
       display: flex;
       align-items: center; /* 垂直居中日期 */
-      justify-content: flex-end; /* 让日期靠右对齐 */
+      justify-content: flex-start;
       color: #888888; /* 日期文字使用较淡的颜色 */
       font-size: 14px;
     }
