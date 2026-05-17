@@ -174,41 +174,13 @@ export function generateRecommend(type = 0, articles: ArticlesMap = {}) {
       if (fs.existsSync(mdPath)) {
         const lines = fs.readFileSync(mdPath, "utf-8").trim().split("\n");
         const lastLine = lines[lines.length - 1]?.trim() || "";
-        // 简单处理中文日期：去掉“日”后面的，换年月日为/
         if (lastLine) {
-          itemDate = lastLine.replace(/日.*$/, "").replace(/[年月]/g, "/");
+          itemDate = lastLine;
         }
       }
     }
 
-    let date;
-    if (typeof itemDate !== "number") {
-      if (itemDate) {
-        date = new Date(itemDate).toLocaleDateString("zh-CN", {
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-        });
-      } else {
-        date = "----";
-      }
-    } else {
-      if (itemDate > 10000000) {
-        date = new Date(
-          String(itemDate).replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
-        ).toLocaleDateString("zh-CN", {
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-        });
-      } else if (itemDate > 100000) {
-        date = new Date(
-          String(itemDate).replace(/(\d{4})(\d{2})/, "$1-$2"),
-        ).toLocaleDateString("zh-CN", { month: "long", year: "numeric" });
-      } else {
-        date = "----";
-      }
-    }
+    let date = getDateString(itemDate);
     const relativePathWithoutExt = item.link
       .replace(/\.html$/, "")
       .replace(/^\//, "");
@@ -270,6 +242,48 @@ export function generateRecommend(type = 0, articles: ArticlesMap = {}) {
   ];
 
   return `${wrap[type]![0]}\n${listItems.join("\n")}\n${wrap[type]![1]}`;
+}
+
+// 通过我的各种启发式规则得到一个规整的日期字符串
+function getDateString(itemDate: any): string {
+  let date: any;
+  let dateLang: string = "zh-CN";
+  let dateFormatDM: Object = {
+    month: "long",
+    year: "numeric",
+  };
+  let dateFormatDMY: Object = {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  };
+  if (typeof itemDate !== "number") {
+    if (itemDate) {
+      // 简单处理中文日期：去掉“日”后面的，换年月日为/
+      itemDate = itemDate.replace(/日.*$/, "").replace(/[年月]/g, "/");
+      date = new Date(itemDate).toLocaleDateString(dateLang, dateFormatDMY);
+      // fallback
+      if (isNaN(date))
+        date = new Date(
+          itemDate.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
+        ).toLocaleDateString(dateLang, dateFormatDMY);
+    } else {
+      date = "----";
+    }
+  } else {
+    if (itemDate > 10000000) {
+      date = new Date(
+        String(itemDate).replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
+      ).toLocaleDateString(dateLang, dateFormatDMY);
+    } else if (itemDate > 100000) {
+      date = new Date(
+        String(itemDate).replace(/(\d{4})(\d{2})/, "$1-$2"),
+      ).toLocaleDateString(dateLang, dateFormatDM);
+    } else {
+      date = "----";
+    }
+  }
+  return date;
 }
 
 /* function randomArticleJsGen(jsPath, dirPath) {
