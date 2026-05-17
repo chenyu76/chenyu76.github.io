@@ -165,25 +165,17 @@ function folderTreeHtml(dir: string, articles: ArticlesMap) {
 export function generateRecommend(type = 0, articles: ArticlesMap = {}) {
   const rootPath = path.dirname(__dirname);
   const listItems = recommend.map((item) => {
-    let itemDate: any = item.date;
-    // 1. 如果没有date信息，尝试从md文件中读取最后一行
-    if (!itemDate && !item.link.startsWith("http")) {
-      const mdPath = item.link.endsWith(".md")
-        ? path.join(rootPath, item.link)
-        : path.join(rootPath, item.link.replace(/\.html$/, "") + ".md");
-      if (fs.existsSync(mdPath)) {
-        const lines = fs.readFileSync(mdPath, "utf-8").trim().split("\n");
-        const lastLine = lines[lines.length - 1]?.trim() || "";
-        if (lastLine) {
-          itemDate = lastLine;
-        }
-      }
-    }
-
-    let date = getDateString(itemDate);
     const relativePathWithoutExt = item.link
       .replace(/\.html$/, "")
+      .replace(/\.md$/, "")
       .replace(/^\//, "");
+    let itemDate: string | number | undefined = item.date
+      ? item.date
+      : !item.link.startsWith("http") && relativePathWithoutExt in articles
+        ? // 如果没有date信息，尝试使用 articles 信息的 footnote
+          articles[relativePathWithoutExt]?.footnote
+        : undefined;
+    let date = getDateString(itemDate);
     const title =
       "title" in item
         ? item.title
@@ -196,7 +188,7 @@ export function generateRecommend(type = 0, articles: ArticlesMap = {}) {
         : "/" + item.link,
     );
     let info = item.info || "";
-    // 2. 如果没有info信息，从指向的文件中找到第一个自然段
+    // 如果没有info信息，从指向的文件中找到第一个自然段
     if (!info && !item.link.startsWith("http")) {
       const filePath = path.join(rootPath, item.link);
       if (fs.existsSync(filePath)) {
@@ -246,6 +238,7 @@ export function generateRecommend(type = 0, articles: ArticlesMap = {}) {
 
 // 通过我的各种启发式规则得到一个规整的日期字符串
 function getDateString(itemDate: any): string {
+  if (itemDate === undefined) return "----";
   let date: any;
   let dateLang: string = "zh-CN";
   let dateFormatDM: Object = {
