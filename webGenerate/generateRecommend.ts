@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { recommend } from "./webConfig.js";
+import { __dirname, __filename } from "./toc.js";
 const xml = String.raw;
 const html = String.raw;
 
@@ -78,15 +79,13 @@ export function generateRecommend(type = 0, articles: ArticlesMap = {}) {
           </div>
         `;
       case 2:
-        return xml`
-          <item>
+        return xml`<item>
             <title>${title}</title>
             <link>${link}</link>
             <description><![CDATA[${info}]]></description>
             <pubDate>${date}</pubDate>
             <guid>${link}</guid>
-          </item>
-        `;
+          </item>`;
     }
   });
 
