@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Linux + Windows 双系统时间差了八个小时</title>
+
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+
+    <link rel="stylesheet" href="/styles-code.css" />
+  </head>
+
+  <body>
+    <iframe
+      id="iframe-background"
+      src="/img/pixelart/index.html"
+      title="background"
+    ></iframe>
+
+    <div id="spacer"></div>
+
+    <div class="shrinked anime-spacer"></div>
+
+    <div id="content-wrapper-bg">
+      <div id="main-grid-container">
+        <div id="left-sidebar" class="sidebar">
+          <div class="sidebar-card">
+            <div class="vertical-buttons">
+              <a href="/toc.html" title="文档索引"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon"
+              /></a>
+              <a href="/index.html" title="返回主页"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon"
+              /></a>
+              <a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon"
+              /></a>
+              <a href="/About.html" title="关于"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+              <button
+                onclick="scrollToTop()"
+                title="滚动到顶部"
+                class="scroll-top-btn"
+              >
+                <img
+                  src="/img/icon/arrow-upward.svg"
+                  alt="Return Top"
+                  class="icon"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div id="title-container">
+            <div id="top-buttons-wrapper" class="top-buttons">
+              <a href="/toc.html" title="文档索引" class="fade-in"
+                ><img src="/img/icon/folder.svg" alt="Toc" class="icon" /></a
+              ><a href="/index.html" title="返回主页" class="fade-in"
+                ><img src="/img/icon/home.svg" alt="Home" class="icon" /></a
+              ><a
+                href="https://github.com/chenyu76"
+                target="_blank"
+                title="跳转到 GitHub"
+                class="fade-in"
+                ><img src="/img/icon/github.svg" alt="Github" class="icon" /></a
+              ><a href="/About.html" title="关于" class="fade-in"
+                ><img src="/img/icon/info.svg" alt="Info" class="icon"
+              /></a>
+            </div>
+            <div id="heading"><h3>/速查/archlinux/</h3>
+              <h1>Linux + Windows 双系统时间差了八个小时</h1></div>
+          </div>
+
+          <div class="content-wrapper">
+            <div class="content"><p>因为 Windows 和 Linux 在看待主板硬件时间（RTC）时，采用了不同的逻辑。</p>
+<ul>
+<li><strong>Linux</strong>：默认认为主板上的硬件时间是 <strong>UTC（世界标准时间）</strong>。</li>
+<li><strong>Windows</strong>：默认认为主板上的硬件时间就是 *<em>Local Time（当地时间）</em>。</li>
+</ul>
+<h2 id="h2-u89e3u51b3u65b9u6848-u4efbu9009u5176u4e00">解决方案（任选其一）</h2><h3 id="h3-u65b9u6848u4e00-u4feeu6539-linux">方案一：修改 Linux</h3><p>让 Linux 和 Windows 一样，直接将主板时间视为当地时间。</p>
+<ol>
+<li>进入 Linux 系统。</li>
+<li>打开终端（Terminal），复制并运行以下命令：</li>
+</ol>
+<pre><code class="language-bash">timedatectl set-local-rtc 1 --adjust-system-clock
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<ol start="3">
+<li>检查是否修改成功，运行：</li>
+</ol>
+<pre><code class="language-bash">timedatectl
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>看输出中的 <code>RTC in local TZ: yes</code> 是否为 <strong>yes</strong>。如果是，就大功告成了！</p>
+<p>注意，这可能会警告你</p>
+<pre><code>Warning: The system is configured to read the RTC time in the local time zone.
+         This mode cannot be fully supported. It will create various problems
+         with time zone changes and daylight saving time adjustments. The RTC
+         time is never updated, it relies on external facilities to maintain it.
+         If at all possible, use RTC in UTC by calling
+         &#x27;timedatectl set-local-rtc 0&#x27;.
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<h3 id="h3-u65b9u6848u4e8c-u4feeu6539-windows">方案二：修改 Windows</h3><p>让 Windows 和 Linux 一样，将主板时间视为 UTC 时间。</p>
+<p>下面两个方法任选一个。</p>
+<h4 id="h4-u56feu5f62u754cu9762u65b9u6cd5">图形界面方法</h4><ol>
+<li>进入 Windows 系统。</li>
+<li>按下 <code>Win + R</code> 键，输入 <code>regedit</code> 回车，打开<strong>注册表编辑器</strong>。</li>
+<li>导航到以下路径：
+<code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation</code></li>
+<li>在右侧空白处点击右键 -&gt; <strong>新建</strong> -&gt; <strong>DWORD (32位)值</strong>。</li>
+<li>将其命名为：<code>RealTimeIsUniversal</code></li>
+<li>双击这个新建的值，将“数值数据”由 <code>0</code> 改为 <code>1</code>，基数选择“十六进制”，点击确定。</li>
+<li>重启电脑。</li>
+</ol>
+<h4 id="h4-u547du4ee4u884cu65b9u6cd5">命令行方法</h4><p>需要管理员</p>
+<pre><code class="language-powershell">Reg add HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation /v RealTimeIsUniversal /t REG_DWORD /d <span class="hljs-number">1</span> /f
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<blockquote>
+<p>⚠️ <strong>注意</strong>：方案二在某些 Windows 大版本更新后，可能会因为注册表被重置而偶尔失效。</p>
+</blockquote>
+</div>
+            <div id="footnote">2026/5/18</div>
+          </div>
+        </div>
+
+        <div class="bottom-button mobile-only">
+          <button onclick="scrollToTop()" title="滚动到顶部">
+            <img
+              src="/img/icon/arrow-upward.svg"
+              alt="Return Top"
+              class="icon"
+            />
+          </button>
+        </div>
+
+        <div id="right-sidebar" class="sidebar">
+          <div id="toc-card" class="sidebar-card">
+            <div class="toc-header">目录</div>
+            <div id="toc-content"><div class="toc">
+    <ul></ul>
+  </div> <ul>
+<li><a href="#h2-u89e3u51b3u65b9u6848-u4efbu9009u5176u4e00">解决方案（任选其一）</a></li>
+<ul>
+<li><a href="#h3-u65b9u6848u4e00-u4feeu6539-linux">方案一：修改 Linux</a></li>
+<li><a href="#h3-u65b9u6848u4e8c-u4feeu6539-windows">方案二：修改 Windows</a></li>
+<ul>
+<li><a href="#h4-u56feu5f62u754cu9762u65b9u6cd5">图形界面方法</a></li>
+<li><a href="#h4-u547du4ee4u884cu65b9u6cd5">命令行方法</a></li>
+</ul>
+</ul>
+</ul>
+</ul>
+</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/script.js"></script>
+
+    <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+      <img src="/img/icon/bookmark.svg" alt="TOC" class="icon" />
+    </button>
+
+    <div id="toc-mobile-wrapper">
+      <div class="toc-header-mobile">
+        <span>目录</span>
+        <button onclick="toggleToc()" class="toc-close-btn">×</button>
+      </div>
+      <div id="toc-content-mobile"></div>
+    </div>
+
+    
+      <script>
+        document.querySelectorAll(".copy-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const pre = btn.parentElement;
+            const code = pre.querySelector("code");
+            try {
+              await navigator.clipboard.writeText(code.innerText);
+              btn.textContent = " ✓ ";
+              setTimeout(() => (btn.textContent = "📋"), 1500);
+            } catch (err) {
+              console.error(err);
+            }
+          });
+        });
+      </script>
+    
+  </body>
+</html>

@@ -345,8 +345,11 @@ export function allMarkdown2Html(
 
         // 获取文件相对于网站根目录的路径
         const relativePath = path.dirname(path.relative(rootPath, filePath));
-        const relativePathTranslated =
-          "/" + relativePath.split(path.sep).map(tr).join("/") + "/";
+        const relativePathTranslated = (
+          "/" +
+          relativePath.split(path.sep).map(tr).join("/") +
+          "/"
+        ).replace("/./", "/");
         // 将文件的后缀换成 .html 的完整路径
         const htmlFilePath = path.format({
           dir: path.dirname(filePath),

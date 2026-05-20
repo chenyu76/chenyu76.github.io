@@ -73,3 +73,4 @@ await deleteRepositories(rootPath, gitRepositories);
 removeFile(path.join(rootPath, "index.html"));
 removeFile(path.join(rootPath, "toc.html"));
 removeFile(path.join(rootPath, "404.html"));
+removeFile(path.join(rootPath, "rss.xml"));

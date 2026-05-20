@@ -1,3 +1,4 @@
+import fs from "fs";
 import path from "path";
 
 import {
@@ -7,7 +8,8 @@ import {
   readTemplateHTML,
 } from "./convert2HTML.js";
 import { syncRepositories } from "./syncRepositories.js";
-import { __dirname, __filename, generateRecommend, tocGen } from "./toc.js";
+import { __dirname, __filename, tocGen } from "./toc.js";
+import { generateRecommend } from "./generateRecommend.js";
 import { gitRepositories } from "./webConfig.js";
 
 const html = String.raw;
@@ -125,6 +127,13 @@ ${convertMarkdown(path.join(rootPath, "program", "readme.md")).html}`,
   "",
   "",
 );
+
+// 生成 RSS 文件
+fs.writeFileSync(
+  path.join(rootPath, "rss.xml"),
+  generateRecommend(2, articles),
+);
+
 // 生成404页面
 generateHtmlFile(
   path.join(rootPath, "404.html"),

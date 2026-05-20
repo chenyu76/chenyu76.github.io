@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+      <rss version="2.0">
+      <channel>
+      <title>Chen Yu's Website</title>
+      <description>Welcome!</description>
+<item>
+            <title>奇妙的MATLAB语言特性小测试</title>
+            <link>/writings/matlab_behavior_test/index.html</link>
+            <description><![CDATA[我讨厌MATLAB。]]></description>
+            <pubDate>Tue, 12 May 2026 00:00:00 GMT</pubDate>
+            <guid>/writings/matlab_behavior_test/index.html</guid>
+          </item>
+<item>
+            <title>内网穿透：使用frp远程访问SSH</title>
+            <link>/writings/how-to-expose-ssh-to-the-internet-with-frp/index.html</link>
+            <description><![CDATA[若希望按照本文配置，请确保你被内网穿透的服务足够安全，对于ssh，这里提供以下建议：]]></description>
+            <pubDate>Tue, 05 May 2026 00:00:00 GMT</pubDate>
+            <guid>/writings/how-to-expose-ssh-to-the-internet-with-frp/index.html</guid>
+          </item>
+<item>
+            <title>4D推箱子</title>
+            <link>/program/4d-sokoban/index.html</link>
+            <description><![CDATA[相信大家都玩过2D的推箱子游戏，那让我们试试4D的。（这真是给人类玩的吗）]]></description>
+            <pubDate>Wed, 01 Apr 2026 00:00:00 GMT</pubDate>
+            <guid>/program/4d-sokoban/index.html</guid>
+          </item>
+<item>
+            <title>Draftsman.nvim</title>
+            <link>https://github.com/chenyu76/draftsman.nvim</link>
+            <description><![CDATA[（Github链接）Neovim插件。<br>A feature-rich ASCII diagramming tool for Neovim. Draw boxes, arrows, lines, and text, and edit them easily. ]]></description>
+            <pubDate>Fri, 13 Feb 2026 00:00:00 GMT</pubDate>
+            <guid>https://github.com/chenyu76/draftsman.nvim</guid>
+          </item>
+<item>
+            <title>在Github上用LaTeX写README</title>
+            <link>https://github.com/chenyu76/github-latex-readme</link>
+            <description><![CDATA[（Github链接）使用 GitHub Actions 将 LaTeX 文件自动编译为 SVG，从而用 LaTeX 编写 Github 上的 README 文件。]]></description>
+            <pubDate>Mon, 26 Jan 2026 00:00:00 GMT</pubDate>
+            <guid>https://github.com/chenyu76/github-latex-readme</guid>
+          </item>
+<item>
+            <title>本网页背景上的元素现在随风摆动</title>
+            <link>/writings/new-year-new-theme.html</link>
+            <description><![CDATA[可能需要稍等一会才会有风吹来。<br>也许会对您的设备有些许性能影响（虽然我已经尽量优化了）。]]></description>
+            <pubDate>Fri, 09 Jan 2026 00:00:00 GMT</pubDate>
+            <guid>/writings/new-year-new-theme.html</guid>
+          </item>
+<item>
+            <title>宝宝也能上手的校园网穿透教程</title>
+            <link>/writings/college-reverse-proxy.html</link>
+            <description><![CDATA[我们将在校园网内计算机上使用frp配置反向代理并安装WireGuard实现在校外访问校内的网络资源。以及一些相关的注意事项。]]></description>
+            <pubDate>Sun, 21 Dec 2025 00:00:00 GMT</pubDate>
+            <guid>/writings/college-reverse-proxy.html</guid>
+          </item>
+<item>
+            <title>那些由一个又一个表格组成的Word文档</title>
+            <link>/writings/deans-office-latex.html</link>
+            <description><![CDATA[在经过本科几年与这些超级表格文档的“抗争”后，我终于实现了一个<a href="https://github.com/chenyu76/deans-Office-LaTeX">比较满意的LaTeX解决方案</a>，可以比较方便的创建类似的文档。]]></description>
+            <pubDate>Sun, 07 Dec 2025 00:00:00 GMT</pubDate>
+            <guid>/writings/deans-office-latex.html</guid>
+          </item>
+<item>
+            <title>Glyph ASCII Canvas</title>
+            <link>https://github.com/chenyu76/glyph-ascii-canvas</link>
+            <description><![CDATA[（Github链接）一个可以将图片转换为ASCII艺术的Python程序。<br>This program generates ASCII art from images using a sliding window template matching approach. Unlike simpler ASCII converters that map pixels directly to characters based on brightness, this algorithm considers the shape and spatial relationships by comparing image patches against rendered font templates using Mean Squared Error (MSE).]]></description>
+            <pubDate>Fri, 21 Nov 2025 00:00:00 GMT</pubDate>
+            <guid>https://github.com/chenyu76/glyph-ascii-canvas</guid>
+          </item>
+<item>
+            <title>多角星的生成</title>
+            <link>/program/draw-n-pointed-star/readme.html</link>
+            <description><![CDATA[ 我们都知道，正五角星只有一种画法（除去平凡的正五边形情形），但当点数增大时，画法就有很多了。我感觉当点数增加时，绘制的形状应该会很好看。]]></description>
+            <pubDate>Tue, 15 Jul 2025 00:00:00 GMT</pubDate>
+            <guid>/program/draw-n-pointed-star/readme.html</guid>
+          </item>
+<item>
+            <title>颜色战争 · 改</title>
+            <link>/program/color_wars/index.html</link>
+            <description><![CDATA[来自JindoBlu的1 2 3 4 Player Games 里有一个叫Color wars的游戏，原版是只有一个方形地图的2～4人对抗游戏。我寻思着可以加点东西，于是就写了这个。增加了更多地图类型和更多玩家。]]></description>
+            <pubDate>Sat, 14 Jun 2025 00:00:00 GMT</pubDate>
+            <guid>/program/color_wars/index.html</guid>
+          </item>
+<item>
+            <title>由算法控制难度的俄罗斯方块</title>
+            <link>/program/tetris/readme.html</link>
+            <description><![CDATA[如果一个俄罗斯方块每次给你的方块不是随机的，而是暗中由算法控制，或是帮助你，或是阻止你。<br>将难度调到1享受要啥没啥的狗屎版俄罗斯方块；还附带一个可以自己玩俄罗斯方块的AI，也许你可以看着它玩用于解闷。]]></description>
+            <pubDate>Sat, 07 Jun 2025 00:00:00 GMT</pubDate>
+            <guid>/program/tetris/readme.html</guid>
+          </item>
+<item>
+            <title>给reMarkable 1做的保护套</title>
+            <link>/writings/remarkable_cover.html</link>
+            <description><![CDATA[便宜实用手感好，避免屏幕被划伤，但是不耐脏？]]></description>
+            <pubDate>Sat, 12 Apr 2025 00:00:00 GMT</pubDate>
+            <guid>/writings/remarkable_cover.html</guid>
+          </item>
+<item>
+            <title>使用Inkscape给LaTeX文档绘图时在其中插入公式</title>
+            <link>/writings/latex-with-inkscape.html</link>
+            <description><![CDATA[没有附带一个Inkscape教程]]></description>
+            <pubDate>Tue, 11 Mar 2025 00:00:00 GMT</pubDate>
+            <guid>/writings/latex-with-inkscape.html</guid>
+          </item>
+<item>
+            <title>在LaTeX中添加参考文献</title>
+            <link>/writings/Add-citation-in-LaTeX.html</link>
+            <description><![CDATA[有同学问我怎么引用文章，就有了这一篇基础的LaTeX引用方法]]></description>
+            <pubDate>Thu, 20 Feb 2025 00:00:00 GMT</pubDate>
+            <guid>/writings/Add-citation-in-LaTeX.html</guid>
+          </item>
+<item>
+            <title>新年新主题！</title>
+            <link>/writings/new-year-new-theme.html</link>
+            <description><![CDATA[蛇年的全新网站样式！动态随机生成的js背景！]]></description>
+            <pubDate>Thu, 06 Feb 2025 00:00:00 GMT</pubDate>
+            <guid>/writings/new-year-new-theme.html</guid>
+          </item>
+<item>
+            <title>Julia集的计算机艺术</title>
+            <link>/writings/julia-set.pdf</link>
+            <description><![CDATA[（pdf文件)（某课程作业）简单的迭代居然能生成复杂而迷人的图形。]]></description>
+            <pubDate>Sun, 15 Dec 2024 00:00:00 GMT</pubDate>
+            <guid>/writings/julia-set.pdf</guid>
+          </item>
+<item>
+            <title>Hirota D 算子的 Mathematica 实现</title>
+            <link>https://github.com/chenyu76/MMA-Hirota-D-operators</link>
+            <description><![CDATA[（Github 链接）]]></description>
+            <pubDate>Sun, 17 Nov 2024 00:00:00 GMT</pubDate>
+            <guid>https://github.com/chenyu76/MMA-Hirota-D-operators</guid>
+          </item>
+<item>
+            <title>一个拼图游戏</title>
+            <link>/program/7-piece-puzzle/Readme%20and%20solution.html</link>
+            <description><![CDATA[关卡随机生成的拼图游戏]]></description>
+            <pubDate>Mon, 09 Sep 2024 00:00:00 GMT</pubDate>
+            <guid>/program/7-piece-puzzle/Readme%20and%20solution.html</guid>
+          </item>
+<item>
+            <title>一个对抗游戏</title>
+            <link>/program/TractorBattle3D/readme.html</link>
+            <description><![CDATA[生成障碍阻碍对手的多人本地游戏，Godot练习]]></description>
+            <pubDate>Thu, 01 Aug 2024 00:00:00 GMT</pubDate>
+            <guid>/program/TractorBattle3D/readme.html</guid>
+          </item>
+<item>
+            <title>some SZU LaTeX templates</title>
+            <link>/writings/some-szu-LaTeX-template.html</link>
+            <description><![CDATA[<a href="https://github.com/chenyu76/some-SZU-LaTeX-templates">仓库地址</a>]]></description>
+            <pubDate>Thu, 01 Aug 2024 00:00:00 GMT</pubDate>
+            <guid>/writings/some-szu-LaTeX-template.html</guid>
+          </item>
+<item>
+            <title>以网格形式批量查看有命名规范的图片的Qt程序</title>
+            <link>https://github.com/chenyu76/MatrixGraphViewer</link>
+            <description><![CDATA[（Github链接）]]></description>
+            <pubDate>Mon, 26 Aug 2024 00:00:00 GMT</pubDate>
+            <guid>https://github.com/chenyu76/MatrixGraphViewer</guid>
+          </item>
+<item>
+            <title>关于本站</title>
+            <link>/writings/about-the-website.html</link>
+            <description><![CDATA[第一篇文章]]></description>
+            <pubDate>Thu, 20 Jun 2024 00:00:00 GMT</pubDate>
+            <guid>/writings/about-the-website.html</guid>
+          </item>
+</channel>
+      </rss>
