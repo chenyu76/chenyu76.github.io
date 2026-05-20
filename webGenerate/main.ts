@@ -8,7 +8,8 @@ import {
   readTemplateHTML,
 } from "./convert2HTML.js";
 import { syncRepositories } from "./syncRepositories.js";
-import { __dirname, __filename, generateRecommend, tocGen } from "./toc.js";
+import { __dirname, __filename, tocGen } from "./toc.js";
+import { generateRecommend } from "./generateRecommend.js";
 import { gitRepositories } from "./webConfig.js";
 
 const html = String.raw;
