@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 import { recommend } from "./webConfig.js";
 
 const html = String.raw;
+const xml = String.raw;
 
 // 获取当前文件的路径
 export const __filename = fileURLToPath(import.meta.url);
@@ -162,6 +163,10 @@ function folderTreeHtml(dir: string, articles: ArticlesMap) {
   </p>`;
 }
 
+// 生成首页的推荐
+// type: 0. 列表
+//       1. 首页的卡片
+//       2. rss xml
 export function generateRecommend(type = 0, articles: ArticlesMap = {}) {
   const rootPath = path.dirname(__dirname);
   const listItems = recommend.map((item) => {
@@ -169,13 +174,14 @@ export function generateRecommend(type = 0, articles: ArticlesMap = {}) {
       .replace(/\.html$/, "")
       .replace(/\.md$/, "")
       .replace(/^\//, "");
-    let itemDate: string | number | undefined = item.date
-      ? item.date
-      : !item.link.startsWith("http") && relativePathWithoutExt in articles
-        ? // 如果没有date信息，尝试使用 articles 信息的 footnote
-          articles[relativePathWithoutExt]?.footnote
-        : undefined;
-    let date = getDateString(itemDate);
+    let itemDate: string | number | undefined =
+      "date" in item
+        ? item.date
+        : !item.link.startsWith("http") && relativePathWithoutExt in articles
+          ? // 如果没有date信息，尝试使用 articles 信息的 footnote
+            articles[relativePathWithoutExt]?.footnote
+          : undefined;
+    let date = getDateString(itemDate, type == 2);
     const title =
       "title" in item
         ? item.title
@@ -225,53 +231,81 @@ export function generateRecommend(type = 0, articles: ArticlesMap = {}) {
             <div class="card-bottom">${date}</div>
           </div>
         `;
+      case 2:
+        return xml`
+          <item>
+            <title>${title}</title>
+            <link>${link}</link>
+            <description><![CDATA[${info}]]></description>
+            <pubDate>${date}</pubDate>
+            <guid>${link}</guid>
+          </item>
+        `;
     }
   });
 
   let wrap: string[][] = [
     ["<ul>", "</ul>"],
     ["</div></div>", '<div class="content-wrapper"><div class="content">'],
+    [
+      `<?xml version="1.0" encoding="UTF-8" ?>
+      <rss version="2.0">
+      <channel>
+      <title>Chen Yu's Website</title>
+      <description>Welcome!</description>`,
+      `</channel>
+      </rss>`,
+    ],
   ];
 
   return `${wrap[type]![0]}\n${listItems.join("\n")}\n${wrap[type]![1]}`;
 }
 
 // 通过我的各种启发式规则得到一个规整的日期字符串
-function getDateString(itemDate: any): string {
+function getDateString(itemDate: any, useUTC: boolean = false): string {
   if (itemDate === undefined) return "----";
   let date: any;
   let dateLang: string = "zh-CN";
-  let dateFormatDM: Object = {
+  let dateFormatDM: any = {
     month: "long",
     year: "numeric",
   };
-  let dateFormatDMY: Object = {
+  let dateFormatDMY: any = {
     day: "2-digit",
     month: "long",
     year: "numeric",
   };
+
+  const formatDate = (d: Date, options: any) => {
+    if (useUTC) return d.toUTCString();
+    return d.toLocaleDateString(dateLang, options);
+  };
+
   if (typeof itemDate !== "number") {
     if (itemDate) {
       // 简单处理中文日期：去掉“日”后面的，换年月日为/
       itemDate = itemDate.replace(/日.*$/, "").replace(/[年月]/g, "/");
-      date = new Date(itemDate).toLocaleDateString(dateLang, dateFormatDMY);
+      date = formatDate(new Date(itemDate), dateFormatDMY);
       // fallback
-      if (isNaN(date))
-        date = new Date(
-          itemDate.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
-        ).toLocaleDateString(dateLang, dateFormatDMY);
+      if (isNaN(date) || date === "Invalid Date")
+        date = formatDate(
+          new Date(itemDate.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3")),
+          dateFormatDMY,
+        );
     } else {
       date = "----";
     }
   } else {
     if (itemDate > 10000000) {
-      date = new Date(
-        String(itemDate).replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
-      ).toLocaleDateString(dateLang, dateFormatDMY);
+      date = formatDate(
+        new Date(String(itemDate).replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3")),
+        dateFormatDMY,
+      );
     } else if (itemDate > 100000) {
-      date = new Date(
-        String(itemDate).replace(/(\d{4})(\d{2})/, "$1-$2"),
-      ).toLocaleDateString(dateLang, dateFormatDM);
+      date = formatDate(
+        new Date(String(itemDate).replace(/(\d{4})(\d{2})/, "$1-$2")),
+        dateFormatDM,
+      );
     } else {
       date = "----";
     }

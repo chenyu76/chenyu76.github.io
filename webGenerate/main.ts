@@ -1,3 +1,4 @@
+import fs from "fs";
 import path from "path";
 
 import {
@@ -125,6 +126,13 @@ ${convertMarkdown(path.join(rootPath, "program", "readme.md")).html}`,
   "",
   "",
 );
+
+// 生成 RSS 文件
+fs.writeFileSync(
+  path.join(rootPath, "rss.xml"),
+  generateRecommend(2, articles),
+);
+
 // 生成404页面
 generateHtmlFile(
   path.join(rootPath, "404.html"),
