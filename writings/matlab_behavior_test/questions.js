@@ -353,4 +353,26 @@ loglog(x, z);
     explanation :
         "`hold on` will fix the current coordinate axis properties, including XScale and YScale. Therefore, either `loglog` first and then `hold on`, or reset XScale and YScale again."
   },
+  {
+    question : `
+Which of the following statement can print out \`NaN\`?
+`,
+    options : [
+      "`fprintf(string(NaN))`", "`fprintf(num2str(NaN))`", "fprintf(NaN)",
+      "All of three", "Neither"
+    ],
+    answer : 1,
+    explanation : "`string(NaN)` returns a `<missing>`."
+  },
+  {
+    question : `
+Which of the following statement can print out \`missing\`?
+`,
+    options : [
+      "`fprintf(string(missing))`", "`fprintf(num2str(missing))`",
+      "fprintf(missing)", "All of three", "Neither"
+    ],
+    answer : 4,
+    explanation : "Most of functions in MATLAB don't accept `missing`."
+  },
 ];
