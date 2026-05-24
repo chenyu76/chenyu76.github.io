@@ -321,7 +321,11 @@ disp(s1==s2);
 `,
     options : [ "0 (false)", "1 (true)", "Error" ],
     answer : 0,
-    explanation : "I don't know :( \n\nI hate MATLAB."
+    explanation : `I don't know :( 
+
+<a href="https://www.mathworks.com/matlabcentral/answers/2183830-unexpected-size-change-when-assigning-a-scalar-to-a-0x0-matrix-using-indexing">
+See my question in MATLAB help Center.
+</a>`
   },
   {
     question :
