@@ -37,17 +37,18 @@ export const gitRepositories = {
  * info:
  * html格式的介绍
  * （可选，若不填，从生成的html文件里找到第一个<p>填进去）
+ *
+ * 也可以只放一个字符串，默认是一个link
  */
 export const recommend = [
+  "writings/copilot-key-as-input-method-switch.html",
   {
     link: "writings/matlab_behavior_test/index.html",
     date: "20260512",
     title: "奇妙的MATLAB语言特性小测试",
     info: "我讨厌MATLAB。",
   },
-  {
-    link: "writings/how-to-expose-ssh-to-the-internet-with-frp/index.html",
-  },
+  "writings/how-to-expose-ssh-to-the-internet-with-frp/index.html",
   {
     date: 20260401,
     link: "program/4d-sokoban/index.html",
@@ -77,9 +78,7 @@ export const recommend = [
     link: "writings/college-reverse-proxy.html",
     info: "我们将在校园网内计算机上使用frp配置反向代理并安装WireGuard实现在校外访问校内的网络资源。以及一些相关的注意事项。",
   },
-  {
-    link: "writings/deans-office-latex.html",
-  },
+  "writings/deans-office-latex.html",
   {
     date: 20251121,
     link: "https://github.com/chenyu76/glyph-ascii-canvas",
@@ -169,6 +168,6 @@ export const recommend = [
     title: "关于本站",
     info: "第一篇文章",
   },
-];
+].map((v) => (typeof v === "string" ? { link: v } : v));
 
 export default { recommend, gitRepositories };
