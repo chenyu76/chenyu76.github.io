@@ -131,8 +131,7 @@ class GifRenderer {
           let finalColor = rawColor;
           // 应用光照逻辑
           if (rawColor.startsWith("#")) {
-            finalColor =
-                rgb2hex(...colorMultiply(hex2rgb(rawColor), light_color));
+            finalColor = rgb2hex(colorMultiply(hex2rgb(rawColor), light_color));
           }
           bufferCtx.fillStyle = finalColor;
           bufferCtx.fillRect(x, y, w, h);

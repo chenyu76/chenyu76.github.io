@@ -24,7 +24,17 @@ gnome使用[iBus](https://wiki.archlinux.org/title/IBus)
 sudo pacman -S ibus-rime
 ```
 
-重启后去系统设置里配置键盘即可。
+重启后去gnome系统设置里配置键盘即可。
+
+[rime设置为默认简体](https://miaostay.com/2018/11/rime%E8%AE%BE%E7%BD%AE%E4%B8%BA%E9%BB%98%E8%AE%A4%E7%AE%80%E4%BD%93/)
+
+修改`~/.config/ibus/rime/build/`下的配置文件
+
+```
+  - name: simplification
+    reset: 1
+    states: ["漢字", "汉字"]
+```
 
 ### YAY
 

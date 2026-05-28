@@ -83,6 +83,8 @@ var isPaused = false; // 全局暂停标志，
 // https://stackoverflow.com/questions/8022885/rgb-to-hsv-color-in-javascript
 // input: r,g,b in [0,1], out: h in [0,360) and s,v in [0,1]
 function rgb2hsv(r, g, b) {
+  if (g === undefined)
+    return rgb2hex(...r);
   let v = Math.max(r, g, b), c = v - Math.min(r, g, b);
   let h = c && (v == r   ? (g - b) / c
                 : v == g ? 2 + (b - r) / c
@@ -111,6 +113,8 @@ function hex2rgb(hex) {
 }
 // 反过来
 function rgb2hex(r, g, b) {
+  if (g === undefined)
+    return rgb2hex(...r);
   return `#${
       ((1 << 24) | (r << 16) | (g << 8) | b)
           .toString(16)
@@ -178,7 +182,7 @@ function colorMultiply(c1 = [ 255, 255, 255 ], c2 = [ 255, 255, 255 ]) {
 // 两个颜色相乘，
 // 输入输出：hex #FFFFFF 形式颜色
 function colorMultiplyHex(c1, c2) {
-  return rgb2hex(...colorMultiply(hex2rgb(c1), hex2rgb(c2)));
+  return rgb2hex(colorMultiply(hex2rgb(c1), hex2rgb(c2)));
 }
 
 // 两个颜色平均值，
@@ -193,7 +197,7 @@ function colorAverage(c1 = [ 255, 255, 255 ], c2 = [ 255, 255, 255 ],
 }
 
 function colorAverageHex(c1, c2, w1 = 0.5) {
-  return rgb2hex(...colorAverage(hex2rgb(c1), hex2rgb(c2), w1));
+  return rgb2hex(colorAverage(hex2rgb(c1), hex2rgb(c2), w1));
 }
 
 // 计算网格宽度 x (像素图大小的宽)
@@ -267,7 +271,7 @@ async function imgInit(h = document.documentElement.clientHeight,
 
   // 计算三个背景颜色
   bgcolors = skyColorDict.map(
-      (color) => rgb2hex(...interpolate_time_color(currentHour, color)),
+      (color) => rgb2hex(interpolate_time_color(currentHour, color)),
   );
   // 设置背景宽度
   background.style.width = `${widthInPixel * pixelSize}px`;
@@ -338,8 +342,7 @@ async function imgInit(h = document.documentElement.clientHeight,
     for (let j = 0; j < Math.ceil(widthInPixel / (150 - 2 * i)); j++) {
       foreground.appendChild(grass.register_single_pampas_grass_canvas(
           Math.round(Math.random() * widthInPixel), heightInPixel - i,
-          1 - (i + edgeLow) / 85,
-          rgb2hex(...Array(3).fill(255 - (i + edgeLow)))));
+          1 - (i + edgeLow) / 85, rgb2hex(Array(3).fill(255 - (i + edgeLow)))));
     }
   }
   // 画atri像素图 102x125
@@ -368,14 +371,13 @@ async function imgInit(h = document.documentElement.clientHeight,
     for (let j = 0; j < Math.ceil(widthInPixel / (150 - 2 * i)); j++) {
       foreground.appendChild(grass.register_single_pampas_grass_canvas(
           Math.round(Math.random() * widthInPixel), heightInPixel - i,
-          1 - (i + edgeLow) / 85,
-          rgb2hex(...Array(3).fill(255 - (i + edgeLow)))));
+          1 - (i + edgeLow) / 85, rgb2hex(Array(3).fill(255 - (i + edgeLow)))));
     }
   }
   // 一个肯定能挡在atri前的草
   foreground.appendChild(grass.register_single_pampas_grass_canvas(
       Math.round(widthInPixel / 3), heightInPixel, 1 - (edgeLow) / 85,
-      rgb2hex(...Array(3).fill(255 - (edgeLow)))));
+      rgb2hex(Array(3).fill(255 - (edgeLow)))));
 
   setTimeout(() => {
     grass.compute_offscreen_canvases();
@@ -405,6 +407,7 @@ async function imgInit(h = document.documentElement.clientHeight,
       }
     }, true);
   }
+  foreground.appendChild(PixelTextRenderer.setupTextCycle());
 
   is_first_img_init = false;
 }

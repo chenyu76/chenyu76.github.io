@@ -40,7 +40,7 @@ export function generateRecommend(type = 0, articles: ArticlesMap = {}) {
         ? item.link
         : "/" + item.link,
     );
-    let info = item.info || "";
+    let info = "info" in item ? item.info : "";
     // 如果没有info信息，从指向的文件中找到第一个自然段
     if (!info && !item.link.startsWith("http")) {
       const filePath = path.join(rootPath, item.link);

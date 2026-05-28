@@ -87,7 +87,13 @@
 <h3 id="h3-u8f93u5165u6cd5">输入法</h3><p>gnome使用<a href="https://wiki.archlinux.org/title/IBus">iBus</a></p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> pacman -S ibus-rime
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<p>重启后去系统设置里配置键盘即可。</p>
+<p>重启后去gnome系统设置里配置键盘即可。</p>
+<p><a href="https://miaostay.com/2018/11/rime%E8%AE%BE%E7%BD%AE%E4%B8%BA%E9%BB%98%E8%AE%A4%E7%AE%80%E4%BD%93/">rime设置为默认简体</a></p>
+<p>修改<code>~/.config/ibus/rime/build/</code>下的配置文件</p>
+<pre><code>  - name: simplification
+    reset: 1
+    states: [&quot;漢字&quot;, &quot;汉字&quot;]
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-yay">YAY</h3><p>See <a href="https://wiki.archlinuxcn.org/zh-cn/Yay">arch wiki yay</a></p>
 <h3 id="h3-u4e2du6587u5b57u4f53">中文字体</h3><p>刚安装好时缺字体，从<a href="https://arch.icekylin.online/guide/rookie/desktop-env-and-app.html">这里</a>抄一份字体清单。</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> pacman -S --needed adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra

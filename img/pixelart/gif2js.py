@@ -1,3 +1,4 @@
+#!/bin/python
 import sys
 
 import numpy as np
@@ -33,7 +34,7 @@ def compress_gif_to_js(image_path):
     # 为了逻辑统一，我们假设第0帧之前是空的，所有内容都是“变化”
     prev_pixels = None
 
-    print(f"开始处理 GIF (Skip模式)，共 {len(frames)} 帧...")
+    print(f"开始处理 GIF，共 {len(frames)} 帧...")
 
     for frame_idx, pixels in enumerate(frames):
         frame_instructions = []
@@ -176,19 +177,22 @@ def compress_gif_to_js(image_path):
         js_output = js_output.rstrip(",")
     js_output += "];"
 
-    js_output += f"\nconst gifMatrixWidth = {width};\nconst gifMatrixHeight = {height};"
+    js_output += (
+        f"\nconst gifMatrixWidth = {width};\nconst gifMatrixHeight = {height};"
+    )
 
     return js_output
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("使用方法: python gif2js_skip.py <GIF图片路径>")
+    if len(sys.argv) != 3:
+        print(f"Usage: {sys.argv[0]} <GIF INPUT> <JS OUTPUT>")
         sys.exit(1)
 
     image_path = sys.argv[1]
+    js_path = sys.argv[2]
     js_output = compress_gif_to_js(image_path)
 
-    with open("gif_matrix.js", "w", encoding="utf-8") as f:
+    with open(js_path, "w", encoding="utf-8") as f:
         f.write(js_output)
-    print("生成完成: gif_matrix.js")
+    print(f"{image_path} > {js_path}")
