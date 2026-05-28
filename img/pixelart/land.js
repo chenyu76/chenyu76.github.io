@@ -19,14 +19,14 @@ class Land {
       ...mountain_colors
           .map(
               (c) => rgb2hex(
-                  ...colorMultiply(
+                  colorMultiply(
                       hex2rgb(c),
                       interpolate_time_color(currentHour, lightColorDict),
                       ),
                   ),
               )
           .map((c, i) => i == 0 ? c
-                                : rgb2hex(...colorAverage(
+                                : rgb2hex(colorAverage(
                                       hex2rgb(c),
                                       interpolate_time_color(currentHour,
                                                              skyColorDict[2]),

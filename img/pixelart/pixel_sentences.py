@@ -1,6 +1,18 @@
 from PIL import Image, ImageFont, ImageDraw
-
 from sentences import SENTENCES
+
+r"""
+PixelFont 类 — 加载像素字体 TTF，提供：
+    - 字符去重（deduplicate_chars）
+    - 单字符 → 二维布尔数组 + 基线偏移（char_to_bool_array，空格返回 6x1 空白）
+    - 布尔数组 → ASCII 32-95 六位编码（encode_to_ascii）及其解码
+    - 字符串 → {字符: {encoded, baseline, width, height}} 字典（generate_character_map）
+build_glyph_table
+    输入字符字典 + 字符串列表，按字频降序排列，
+    输出 (编号列表, 字形列表)，\n 映射为 -1
+write_glyph_data_js
+    将上述数据写入合法 JS 文件
+"""
 
 
 class PixelFont:

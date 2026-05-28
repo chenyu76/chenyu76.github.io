@@ -547,7 +547,7 @@ class Grass {
     // 光线影响
     return pampas_color.map(
         (color) => rgb2hex(
-            ...colorMultiply(
+            colorMultiply(
                 colorMultiply(hex2rgb(color), light_color),
                 hex2rgb(color_multiplyer),
                 ),
