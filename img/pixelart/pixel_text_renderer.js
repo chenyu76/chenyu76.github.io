@@ -222,8 +222,6 @@ class PixelTextRenderer {
   static setupTextCycle() {
     if (PixelTextRenderer._textCycleSetup) {
       const canvas = PixelTextRenderer._textCanvas;
-      if (!canvas)
-        return;
       const h = document.documentElement.clientHeight;
       const gridH = Math.ceil(h / pixelSize);
       const gridW = calculateGridWidth(h);
@@ -232,13 +230,11 @@ class PixelTextRenderer {
       canvas.style.zoom = pixelSize;
       if (PixelTextRenderer._triggerNext)
         PixelTextRenderer._triggerNext();
-      return;
+      return canvas;
     }
     PixelTextRenderer._textCycleSetup = true;
 
     const lists = PIXEL_GLYPH_DATA.indexLists;
-    if (!lists || lists.length === 0)
-      return;
 
     const canvas = document.createElement('canvas');
     canvas.style.position = 'absolute';
@@ -250,7 +246,7 @@ class PixelTextRenderer {
 
     const fillColor = rgb2hex(
         colorAverage(isNight ? [ 255, 255, 255 ] : [ 0, 0, 0 ],
-                     interpolate_time_color(currentHour, skyColorDict[1])));
+                     interpolate_time_color(currentHour, skyColorDict[0])));
     const renderer = new PixelTextRenderer(
         {canvas : canvas, pixelSize : 1, fillColor : fillColor});
 
@@ -265,9 +261,10 @@ class PixelTextRenderer {
 
     async function cycle() {
       while (true) {
-        const h = document.documentElement.clientHeight;
-        const gridH = Math.ceil(h / pixelSize);
-        const gridW = calculateGridWidth(h);
+        const gridH =
+            Math.ceil(document.documentElement.clientHeight / pixelSize);
+        const gridW =
+            Math.ceil(document.documentElement.clientWidth / pixelSize);
         canvas.width = gridW;
         canvas.height = gridH;
         canvas.style.zoom = pixelSize;
@@ -280,7 +277,7 @@ class PixelTextRenderer {
         lastList = list;
 
         const size = renderer.getSize(list);
-        const offsetX = Math.round(targetX - size.width / 2);
+        const offsetX = Math.max(Math.round(targetX - size.width / 2), 12);
         const offsetY = Math.round((gridH - size.height) / 2);
 
         const delays = [];
@@ -320,7 +317,7 @@ class PixelTextRenderer {
         const lines = list.filter(c => c === -1).length + 1;
         await new Promise(resolve => {
           const t =
-              setTimeout(resolve, 100000 + lines * displayTimePerLine * 1000);
+              setTimeout(resolve, 30000 + lines * displayTimePerLine * 1000);
           triggerNext = function() {
             clearTimeout(t);
             triggerNext = null;

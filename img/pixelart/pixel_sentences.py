@@ -1,4 +1,5 @@
 from PIL import Image, ImageFont, ImageDraw
+from fontTools.ttLib import TTFont
 from sentences import SENTENCES
 
 r"""
@@ -147,6 +148,25 @@ class PixelFont:
         return result
 
 
+def get_missing_chars(font_path, text: str) -> str:
+    """
+    Check which characters in text are not available in the font.
+
+    Returns:
+        A string of characters that are missing from the font.
+        Returns an empty string if all characters exist.
+    """
+    missing = []
+    with TTFont(font_path) as font:
+        cmap = font.getBestCmap()
+        for ch in text:
+            if ch == "\n":
+                continue
+            if ord(ch) not in cmap:
+                missing.append(ch)
+    return "".join(missing)
+
+
 def build_glyph_table(char_map: dict, texts: list):
     """
     Build a frequency-ordered glyph table and convert texts to index lists.
@@ -222,11 +242,6 @@ def write_glyph_data_js(index_lists: list, glyphs: list, output_path: str):
         f.write(js_content)
 
 
-def generate_pixel_map(font_path: str, s: str, size: int = 16) -> dict:
-    pf = PixelFont(font_path, size)
-    return pf.generate_character_map(s)
-
-
 if __name__ == "__main__":
     import sys
 
@@ -239,17 +254,26 @@ if __name__ == "__main__":
     size = int(sys.argv[2])
     js_path = sys.argv[3]
     texts = SENTENCES
-    pixel_map = generate_pixel_map(font_path, "".join(texts), size)
+
+    missing = get_missing_chars(font_path, "".join(texts))
+    if missing:
+        print(
+            f"Error: the following characters are not supported by {font_path}: \n{missing}"
+        )
+        sys.exit(1)
+
+    pf = PixelFont(font_path, size)
+    pixel_map = pf.generate_character_map("".join(texts))
 
     index_lists, glyphs = build_glyph_table(pixel_map, texts)
-    print("Glyphs:")
-    for i, (encoded, baseline, width) in enumerate(glyphs):
-        print(
-            f"  [{i}] encoded={repr(encoded)}, baseline={baseline}, width={width}"
-        )
-    print(f"\nIndex lists:")
-    for i, indices in enumerate(index_lists):
-        print(f"  line {i}: {indices}")
+    # print("Glyphs:")
+    # for i, (encoded, baseline, width) in enumerate(glyphs):
+    #     print(
+    #         f"  [{i}] encoded={repr(encoded)}, baseline={baseline}, width={width}"
+    #     )
+    # print(f"\nIndex lists:")
+    # for i, indices in enumerate(index_lists):
+    #     print(f"  line {i}: {indices}")
 
     write_glyph_data_js(index_lists, glyphs, js_path)
     print(f"Written: {js_path}")

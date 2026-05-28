@@ -203,7 +203,8 @@ function colorAverageHex(c1, c2, w1 = 0.5) {
 // 计算网格宽度 x (像素图大小的宽)
 function calculateGridWidth(h = document.documentElement.clientHeight,
                             w = document.documentElement.clientWidth) {
-  return Math.ceil((GRID_HEIGHT / h) * w);
+  return Math.ceil(document.documentElement.clientWidth / pixelSize);
+  // return Math.ceil(GRID_HEIGHT * (w / h));
 }
 
 // 计算像素单位大小
@@ -257,7 +258,7 @@ async function imgInit(h = document.documentElement.clientHeight,
   pixelSize = Math.ceil(calculatePixelSize(h));
 
   // 横向像素宽度
-  const widthInPixel = calculateGridWidth(h);
+  const widthInPixel = calculateGridWidth();
   // 纵向像素高度
   // 目标是 GRID_HEIGHT，但由于我希望屏幕像素大小是整数，所以不一定能达到
   const heightInPixel = Math.ceil(h / pixelSize);
@@ -294,7 +295,7 @@ async function imgInit(h = document.documentElement.clientHeight,
       ss.style.right = ss.style.top = "0px";
       ss.style.position = "absolute";
       for (let i = 0; i < 42; i++)
-        ss.appendChild(createStar(h));
+        ss.appendChild(createStar());
       midground.appendChild(ss);
 
       // 间隔生成流星
@@ -341,8 +342,9 @@ async function imgInit(h = document.documentElement.clientHeight,
   for (let i = 30; i > -edgeLow + 2; i -= 4) {
     for (let j = 0; j < Math.ceil(widthInPixel / (150 - 2 * i)); j++) {
       foreground.appendChild(grass.register_single_pampas_grass_canvas(
-          Math.round(Math.random() * widthInPixel), heightInPixel - i,
-          1 - (i + edgeLow) / 85, rgb2hex(Array(3).fill(255 - (i + edgeLow)))));
+          Math.round(Math.random() * (widthInPixel + 20) + 30),
+          heightInPixel - i, 1 - (i + edgeLow) / 85,
+          rgb2hex(Array(3).fill(255 - (i + edgeLow)))));
     }
   }
   // 画atri像素图 102x125
@@ -370,8 +372,9 @@ async function imgInit(h = document.documentElement.clientHeight,
   for (let i = -edgeLow + 2; i > -edgeLow; i -= 3) {
     for (let j = 0; j < Math.ceil(widthInPixel / (150 - 2 * i)); j++) {
       foreground.appendChild(grass.register_single_pampas_grass_canvas(
-          Math.round(Math.random() * widthInPixel), heightInPixel - i,
-          1 - (i + edgeLow) / 85, rgb2hex(Array(3).fill(255 - (i + edgeLow)))));
+          Math.round(Math.random() * (widthInPixel + 20) + 30),
+          heightInPixel - i, 1 - (i + edgeLow) / 85,
+          rgb2hex(Array(3).fill(255 - (i + edgeLow)))));
     }
   }
   // 一个肯定能挡在atri前的草
@@ -383,6 +386,8 @@ async function imgInit(h = document.documentElement.clientHeight,
     grass.compute_offscreen_canvases();
     grass.start_move_element_animation();
   }, 200);
+
+  foreground.appendChild(PixelTextRenderer.setupTextCycle());
 
   if (is_first_img_init) {
     // 滚动事件监听器，往下滚动后暂停动画
@@ -407,7 +412,6 @@ async function imgInit(h = document.documentElement.clientHeight,
       }
     }, true);
   }
-  foreground.appendChild(PixelTextRenderer.setupTextCycle());
 
   is_first_img_init = false;
 }

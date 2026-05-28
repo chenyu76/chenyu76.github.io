@@ -2,12 +2,12 @@ const CLOUD_CANVAS_SIZE = [ 80, 40 ];
 const METEOR_LIFE_LEN = 30;
 
 // 返回一个星星 draw a star on foreground
-function createStar(h) {
+function createStar() {
   const star = document.createElement("div");
   star.classList.add("star");
 
   const max_y = GRID_HEIGHT / 2;
-  const max_x = calculateGridWidth(h);
+  const max_x = calculateGridWidth();
 
   // 生成随机位置
   const x = Math.ceil(Math.random() * max_x) * pixelSize;
