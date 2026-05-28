@@ -266,7 +266,7 @@ if __name__ == "__main__":
     pixel_map = pf.generate_character_map("".join(texts))
 
     index_lists, glyphs = build_glyph_table(pixel_map, texts)
-    # print("Glyphs:")
+    print(f"Glyphs length: {len(glyphs)}")
     # for i, (encoded, baseline, width) in enumerate(glyphs):
     #     print(
     #         f"  [{i}] encoded={repr(encoded)}, baseline={baseline}, width={width}"
