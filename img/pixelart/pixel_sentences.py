@@ -227,10 +227,26 @@ def write_glyph_data_js(index_lists: list, glyphs: list, output_path: str):
         output_path: path to the output .js file
     """
     import json
+    import math
+
+    maxAbove = 0
+    maxBelow = 0
+    for encoded, baseline, width in glyphs:
+        if width == 0 or len(encoded) == 0:
+            continue
+        height = math.ceil((len(encoded) * 6) / width)
+        above = baseline
+        below = height - baseline
+        if above > maxAbove:
+            maxAbove = above
+        if below > maxBelow:
+            maxBelow = below
 
     data = {
         "glyphs": glyphs,
         "indexLists": index_lists,
+        "lineBaseOffset": maxAbove,
+        "lineRowHeight": maxAbove + maxBelow,
     }
     js_content = (
         "const PIXEL_GLYPH_DATA = "

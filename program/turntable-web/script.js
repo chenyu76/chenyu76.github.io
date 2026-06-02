@@ -214,41 +214,28 @@ document.addEventListener('DOMContentLoaded', () => {
   // 输入框内容变化时，重新生成转盘
   function updateWheelFromInput() {
     const text = itemInput.value.trim();
-    const lineItems = text.split('\n').filter(
-        line => line.trim() !== ''); // 按行分割，并移除空行
-
-    if (lineItems.length == 1) {
-      // 如果只有一行，尝试按逗号分割
-      // 替换全角逗号为半角逗号
-      lineItems[0] = lineItems[0].replace(/，/g, ',');
-      const commaItems = lineItems[0]
-                             .split(',')
-                             .map(item => item.trim())
-                             .filter(item => item !== '');
-      if (commaItems.length > 1) {
-        items = commaItems;
-        generateWheel(items);
-        return;
-      } else {
-        var numberItems = parseInt(lineItems[0]);
-        if (!isNaN(numberItems) && numberItems > 1) {
-          // 如果是一个数字，生成对应数量的默认项目
-          if (numberItems > 100)
-            numberItems = 100; // 限制最大数量
-          const defaultItems =
-              Array.from({length : numberItems}, (_, i) => `${i + 1}`);
-          items = defaultItems;
-          generateWheel(items);
-          return;
-        }
-      }
-    } else if (lineItems.length > 0) {
-      items = lineItems;
-      generateWheel(items);
-      return;
+    let items = [];
+    if (/^\d+$/.test(text)) {
+      var numberItems = parseInt(text);
+      if (100 > numberItems && numberItems > 1)
+        items = Array.from({length : numberItems}, (_, i) => `${i + 1}`);
     }
-    // 如果没有输入，使用默认值
-    items = [ 'A', 'B', 'C', 'D', 'E' ];
+    if (items.length <= 1) {
+      const splitTextBy = s =>
+          text.split(s).map(i => i.trim()).filter(i => i !== '');
+      const splitOrder = [
+        '\n', '\t', '。', '；', '，', '、', '. ', ';', ',', '或', '和', ' or ',
+        ' and ', '/', '|', '.', ' '
+      ];
+      for (let s of splitOrder) {
+        items = splitTextBy(s);
+        if (items.length > 1)
+          break;
+      }
+      // fallback to default
+      if (items.length <= 1)
+        items = [ 'A', 'B', 'C', 'D', 'E' ];
+    }
     generateWheel(items);
   }
 

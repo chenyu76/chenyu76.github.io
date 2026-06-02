@@ -13,15 +13,13 @@ class PixelTextRenderer {
     this.ctx = canvas.getContext('2d');
     this.lineGap = lineGap;
 
-    this.glyphs =
-        PIXEL_GLYPH_DATA.glyphs.map(g => ({
-                                      pixels : this._decodeGlyph(g[0], g[2]),
-                                      baseline : g[1],
-                                      width : g[2]
-                                    }));
+    this.glyphs = PIXEL_GLYPH_DATA.glyphs.map(
+        g =>
+            ({_encoded : g[0], baseline : g[1], width : g[2], _pixels : null}));
 
     this.setFillColor(fillColor);
-    this._calcLineMetrics();
+    this.lineBaseOffset = PIXEL_GLYPH_DATA.lineBaseOffset;
+    this.lineHeight = PIXEL_GLYPH_DATA.lineRowHeight + this.lineGap;
   }
 
   /**
@@ -53,24 +51,12 @@ class PixelTextRenderer {
     return pixels;
   }
 
-  /**
-   * 根据所有字形计算行高和基线偏移
-   */
-  _calcLineMetrics() {
-    let maxAbove = 0;
-    let maxBelow = 0;
-    for (const g of this.glyphs) {
-      if (g.pixels.length === 0)
-        continue;
-      const above = g.baseline;
-      const below = g.pixels.length - g.baseline;
-      if (above > maxAbove)
-        maxAbove = above;
-      if (below > maxBelow)
-        maxBelow = below;
+  _getGlyphPixels(idx) {
+    const g = this.glyphs[idx];
+    if (g._pixels === null) {
+      g._pixels = this._decodeGlyph(g._encoded, g.width);
     }
-    this.lineBaseOffset = maxAbove;
-    this.lineHeight = maxAbove + maxBelow + this.lineGap;
+    return g._pixels;
   }
 
   /**
@@ -162,11 +148,12 @@ class PixelTextRenderer {
 
       if (drawn >= prevVisibleChars) {
         const glyph = this.glyphs[idx];
+        const pixels = this._getGlyphPixels(idx);
         const topY = baselineY - glyph.baseline;
 
-        for (let y = 0; y < glyph.pixels.length; y++) {
+        for (let y = 0; y < pixels.length; y++) {
           for (let x = 0; x < glyph.width; x++) {
-            if (glyph.pixels[y][x]) {
+            if (pixels[y][x]) {
               const px = offsetX + cursorX + x;
               const py = offsetY + topY + y;
               if (px >= 0 && px < w && py >= 0 && py < h) {
@@ -220,8 +207,8 @@ class PixelTextRenderer {
     const fillColor =
         colorAverage(isNight ? [ 255, 255, 255 ] : [ 0, 0, 0 ],
                      interpolate_time_color(currentHour, skyColorDict[0]));
-    const renderer =
-        new PixelTextRenderer({canvas : canvas, fillColor : fillColor});
+    const renderer = new PixelTextRenderer(
+        {canvas : canvas, fillColor : fillColor, lineGap : 1});
 
     const timePerPixel = 0.02;
     const displayTimePerLine = 4;
