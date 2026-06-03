@@ -1,4 +1,5 @@
 #!/bin/python
+import json
 import sys
 
 import numpy as np
@@ -13,6 +14,10 @@ def get_color_str(r, g, b, a):
         return f"rgba({r},{g},{b},{a/255:.2f})"
     else:
         return f"#{r:02x}{g:02x}{b:02x}"
+
+
+MAX_BLOCK_DIM = 94
+ASCII_OFFSET = 32
 
 
 def compress_gif_to_js(image_path):
@@ -34,7 +39,7 @@ def compress_gif_to_js(image_path):
     # 为了逻辑统一，我们假设第0帧之前是空的，所有内容都是“变化”
     prev_pixels = None
 
-    print(f"开始处理 GIF，共 {len(frames)} 帧...")
+    print(f"{len(frames)} frames GIF:")
 
     for frame_idx, pixels in enumerate(frames):
         frame_instructions = []
@@ -78,9 +83,9 @@ def compress_gif_to_js(image_path):
 
                 # --- 贪婪算法：寻找最大同类型矩形 ---
 
-                # 1. 向右扩展宽度 w
+                # 1. 向右扩展宽度 w (最大 MAX_BLOCK_DIM)
                 w = 0
-                while x + w < width:
+                while x + w < width and w < MAX_BLOCK_DIM:
                     if visited[y, x + w]:
                         break
 
@@ -112,9 +117,9 @@ def compress_gif_to_js(image_path):
                         break
                     w += 1
 
-                # 2. 向下扩展高度 h
+                # 2. 向下扩展高度 h (最大 MAX_BLOCK_DIM)
                 h = 1
-                while y + h < height:
+                while y + h < height and h < MAX_BLOCK_DIM:
                     # 检查这一行 [x : x+w] 是否全部符合条件
                     row_match = True
                     for k in range(w):
@@ -152,27 +157,24 @@ def compress_gif_to_js(image_path):
 
         gif_matrix.append(frame_instructions)
         prev_pixels = pixels
-        print(f"帧 {frame_idx} 处理完成: {len(frame_instructions)} 个指令块")
+        print(f"frame {frame_idx}: size {len(frame_instructions)}")
+
+    # 将每帧编码为字符串：每3个字符一组 (w+32, h+32, color_idx+32)
+    for i, frame in enumerate(gif_matrix):
+        frame_str = ""
+        for w, h, color_idx in frame:
+            frame_str += (
+                chr(w + ASCII_OFFSET)
+                + chr(h + ASCII_OFFSET)
+                + chr(color_idx + ASCII_OFFSET)
+            )
+        gif_matrix[i] = frame_str
 
     # 生成 JS 字符串
     js_output = f"const colorList = {str(color_list).replace(' ', '')};\n"
     js_output += "const gifMatrix = ["
     for frame in gif_matrix:
-        js_output += "["
-        for item in frame:
-            # item:
-            # [w, h, color_index] if h > 1 else [w, color_index]
-            # else w == 1: color_index
-            if item[1] == 1:
-                if item[0] == 1:
-                    js_output += f"{item[2]},"
-                else:
-                    js_output += f"[{item[0]},{item[2]}],"
-            else:
-                js_output += f"[{item[0]},{item[1]},{item[2]}],"
-        if len(frame) > 0:
-            js_output = js_output.rstrip(",")
-        js_output += "],"
+        js_output += json.dumps(frame, ensure_ascii=False) + ","
     if len(gif_matrix) > 0:
         js_output = js_output.rstrip(",")
     js_output += "];"
