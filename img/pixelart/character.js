@@ -64,16 +64,12 @@ class GifRenderer {
    * 每3个字符一组: chr(w+32) + chr(h+32) + chr(colorIdx+32)
    */
   _decodeMatrix(encodedMatrix) {
-    return encodedMatrix.map(frameStr => {
-      const instructions = [];
-      for (let i = 0; i < frameStr.length; i += 3) {
-        const w = frameStr.charCodeAt(i) - 32;
-        const h = frameStr.charCodeAt(i + 1) - 32;
-        const colorIdx = frameStr.charCodeAt(i + 2) - 32;
-        instructions.push([w, h, colorIdx]);
-      }
-      return instructions;
-    });
+    return encodedMatrix.map(
+        frameStr => Array(frameStr.length / 3)
+                        .fill(null)
+                        .map((_, i) => [frameStr.charCodeAt(i * 3) - 32,
+                                        frameStr.charCodeAt(i * 3 + 1) - 32,
+                                        frameStr.charCodeAt(i * 3 + 2) - 32]));
   }
 
   /**
@@ -88,6 +84,11 @@ class GifRenderer {
 
     const light_color =
         interpolate_time_color(currentHour, this.lightColorDict);
+    // 预先缓存用得到的颜色
+    const adjustedColorList = this.colorList.map(
+        c => (c != "skip" && c != "transparent")
+                 ? rgb2hex(colorMultiply(hex2rgb(c), light_color))
+                 : c);
 
     // 维护一个 visited 数组用于流式布局定位
     // 0: 未填充, 1: 已填充
@@ -105,9 +106,9 @@ class GifRenderer {
         const [w, h, colorIdx] = instructions[i];
 
         // 1. 寻找光标位置 (流式布局)
-        while (cursor < visited.length && visited[cursor] === 1) {
+        while (cursor < visited.length && visited[cursor] === 1)
           cursor++;
-        }
+
         if (cursor >= visited.length)
           break;
 
@@ -115,34 +116,20 @@ class GifRenderer {
         const y = Math.floor(cursor / this.width);
 
         // 2. 标记占用
-        for (let row = 0; row < h; row++) {
-          const rowOffset = (y + row) * this.width;
-          for (let col = 0; col < w; col++) {
-            if (rowOffset + x + col < visited.length) {
-              visited[rowOffset + x + col] = 1;
-            }
-          }
-        }
+        for (let row = 0; row < h; row++)
+          for (let col = 0; col < w; col++)
+            visited[(y + row) * this.width + x + col] = 1;
 
         // 3. 绘制
-        const rawColor = this.colorList[colorIdx];
-
-        if (rawColor === "skip") {
-          // Skip: 什么都不做，BufferCtx 保留上一帧的像素
-          // 这就是差异渲染的核心
-        } else if (rawColor === "transparent") {
-          // Transparent: 需要擦除
-          bufferCtx.clearRect(x, y, w, h);
-        } else {
-          // 正常颜色: 应用光照并绘制
-          let finalColor = rawColor;
-          // 应用光照逻辑
-          if (rawColor.startsWith("#")) {
-            finalColor = rgb2hex(colorMultiply(hex2rgb(rawColor), light_color));
+        const adjustedColor = adjustedColorList[colorIdx];
+        if (adjustedColor !== "skip")
+          if (adjustedColor === "transparent") // Transparent: 需要擦除
+            bufferCtx.clearRect(x, y, w, h);
+          else {
+            // 正常颜色: 应用光照并绘制
+            bufferCtx.fillStyle = adjustedColor;
+            bufferCtx.fillRect(x, y, w, h);
           }
-          bufferCtx.fillStyle = finalColor;
-          bufferCtx.fillRect(x, y, w, h);
-        }
       }
 
       // 4. 将当前帧生成的完整图像保存为 Canvas

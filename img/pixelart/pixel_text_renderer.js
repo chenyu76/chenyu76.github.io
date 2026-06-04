@@ -5,10 +5,12 @@ class PixelTextRenderer {
   /**
    * @param {Object} config
    * @param {HTMLCanvasElement} config.canvas - 目标 canvas
-   * @param {number[]} [config.fillColor=[255,255,255]] - 着色像素颜色 [R,G,B]
+   * @param {Array<number>=} config.fillColor - 着色像素颜色 [R,G,B]
    * @param {number} [config.lineGap=0] - 行间额外间距（像素）
    */
+  /** @type {number} */
   static ASCII_BASE = 32;
+  /** @type {number} */
   static ASCII_RANGE = 64;
 
   constructor({canvas, fillColor = [ 255, 255, 255 ], lineGap = 0}) {
@@ -29,7 +31,9 @@ class PixelTextRenderer {
                                                        _pixels : null
                                                      }));
 
+    /** @type {!Array<number>} */ this._rgba = [ 255, 255, 255, 255 ];
     this.setFillColor(fillColor);
+    /** @type {?ImageData} */ this._imageData = null;
     this.lineBaseOffset = PIXEL_GLYPH_DATA.lineBaseOffset;
     this.lineHeight = PIXEL_GLYPH_DATA.lineRowHeight + this.lineGap;
   }
@@ -40,53 +44,49 @@ class PixelTextRenderer {
    * 0).
    */
   _decodeIndexList(encoded) {
-    const result = [];
-    const base = PixelTextRenderer.ASCII_BASE;
-    const range = PixelTextRenderer.ASCII_RANGE;
-    for (let i = 0; i < encoded.length; i += 2) {
-      const hi = encoded.charCodeAt(i) - base;
-      const lo = encoded.charCodeAt(i + 1) - base;
-      result.push(hi * range + lo - 1);
-    }
-    return result;
+    return Array(encoded.length / 2)
+        .fill(null)
+        .map((_, i) =>
+                 (encoded.charCodeAt(2 * i) - PixelTextRenderer.ASCII_BASE) *
+                     PixelTextRenderer.ASCII_RANGE +
+                 encoded.charCodeAt(2 * i + 1) - PixelTextRenderer.ASCII_BASE -
+                 1);
   }
 
   /**
    * 解码 6-bit ASCII 编码的字符串 -> 二维布尔数组
    */
   _decodeGlyph(encoded, width) {
-    if (width === 0 || encoded.length === 0)
-      return [];
-
     const base = PixelTextRenderer.ASCII_BASE;
     const totalBits = encoded.length * 6;
     const height = Math.floor(totalBits / width);
-    const pixels = [];
+    const pixels = new Array(height);
 
     for (let y = 0; y < height; y++) {
-      const row = [];
-      const rowStart = y * width;
+      const row = new Array(width);
+      const rowOffset = y * width;
+
       for (let x = 0; x < width; x++) {
-        const bitIndex = rowStart + x;
-        if (bitIndex >= totalBits)
-          row.push(false);
-        else {
+        const bitIndex = rowOffset + x;
+
+        if (bitIndex >= totalBits) {
+          row[x] = false;
+        } else {
           const charIndex = (bitIndex / 6) | 0;
           const value = encoded.charCodeAt(charIndex) - base;
-          row.push(((value >> (5 - (bitIndex - charIndex * 6))) & 1) === 1);
+          row[x] = ((value >> (5 - (bitIndex - charIndex * 6))) & 1) === 1;
         }
       }
-      pixels.push(row);
+      pixels[y] = row;
     }
     return pixels;
   }
 
   _getGlyphPixels(idx) {
     const g = this.glyphs[idx];
-    if (g._pixels === null) {
-      g._pixels = this._decodeGlyph(g._encoded, g.width);
-    }
-    return g._pixels;
+    return g._pixels === null
+               ? g._pixels = this._decodeGlyph(g._encoded, g.width)
+               : g._pixels;
   }
 
   /**
@@ -103,7 +103,7 @@ class PixelTextRenderer {
         if (totalWidth > maxWidth)
           maxWidth = totalWidth;
         totalWidth = 0;
-      } else if (idx >= 0 && idx < this.glyphs.length) {
+      } else {
         totalWidth += this.glyphs[idx].width;
       }
     }
@@ -138,7 +138,7 @@ class PixelTextRenderer {
   /**
    * 增量渲染 indexList 从 prevVisibleChars 到 visibleChars
    * 首次调用（prev=0）时清除画布；后续只绘制新增字符
-   * @param {number[]} indexList
+   * @param {!Array<number>} indexList
    * @param {number} visibleChars - 要显示的字数（包含换行符 -1）
    * @param {number} [prevVisibleChars=0] - 已绘制的字数
    * @param {number} [offsetX=0] - 渲染起始 X 偏移（像素）
@@ -172,9 +172,6 @@ class PixelTextRenderer {
         drawn++;
         continue;
       }
-
-      if (idx < 0 || idx >= this.glyphs.length)
-        continue;
 
       if (drawn >= prevVisibleChars) {
         const glyph = this.glyphs[idx];
@@ -218,6 +215,8 @@ class PixelTextRenderer {
       canvas.width = gridW;
       canvas.height = gridH;
       canvas.style.zoom = pixelSize;
+      PixelTextRenderer._cachedGridH = gridH;
+      PixelTextRenderer._cachedGridW = gridW;
       if (PixelTextRenderer._triggerNext)
         PixelTextRenderer._triggerNext();
       return canvas;
@@ -238,6 +237,11 @@ class PixelTextRenderer {
     const renderer = new PixelTextRenderer(
         {canvas : canvas, fillColor : fillColor, lineGap : 1});
 
+    PixelTextRenderer._cachedGridH =
+        Math.ceil(document.documentElement.clientHeight / pixelSize);
+    PixelTextRenderer._cachedGridW =
+        Math.ceil(document.documentElement.clientWidth / pixelSize);
+
     const lists = PIXEL_GLYPH_DATA.indexLists;
 
     const timePerPixel = 0.02;
@@ -251,10 +255,8 @@ class PixelTextRenderer {
 
     async function cycle() {
       while (true) {
-        const gridH =
-            Math.ceil(document.documentElement.clientHeight / pixelSize);
-        const gridW =
-            Math.ceil(document.documentElement.clientWidth / pixelSize);
+        const gridH = PixelTextRenderer._cachedGridH;
+        const gridW = PixelTextRenderer._cachedGridW;
         canvas.width = gridW;
         canvas.height = gridH;
         canvas.style.zoom = pixelSize;
@@ -271,23 +273,17 @@ class PixelTextRenderer {
         const offsetX = Math.max(Math.round(targetX - size.width / 2), 12);
         const offsetY = Math.round((gridH - size.height) / 2);
 
-        const delays = [];
         let total = 0;
-        for (const idx of list) {
-          let w = 4;
-          if (idx !== -1 && idx >= 0 && idx < renderer.glyphs.length) {
-            w = renderer.glyphs[idx].width;
-          }
-          total += w * timePerPixel;
-          delays.push(total);
-        }
+        const delays = list.map(item => total +=
+                                (item == -1 ? 4 : renderer.glyphs[item].width) *
+                                timePerPixel);
 
         const start = performance.now();
         let lastCount = 0;
         await new Promise(resolve => {
           function step() {
             const elapsed = (performance.now() - start) / 1000;
-            let count = 0;
+            let count = lastCount;
             while (count < delays.length && elapsed >= delays[count])
               count++;
 

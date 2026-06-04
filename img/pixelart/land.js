@@ -41,7 +41,7 @@ class Land {
             Math.round(w * (Math.random() * 0.3 * ((j / 2 + 3) / 5) + 0.15) *
                        (1 / (i / 2 + 1)));
         let x = Math.round(Math.random() * (w - mw));
-        this.#draw_mountain(ctx, land_color[3 + i],
+        this._draw_mountain(ctx, land_color[3 + i],
                             colorMultiplyHex(land_color[3 + i], "#EEEEEE"), x,
                             h - 35 - mh, mw, mh, 0.5 + i / 5, 4 + i);
       }
@@ -62,13 +62,13 @@ class Land {
     });
 
     // 在条带之间添加噪声过渡
-    this.#addNoiseTransition(ctx, bands, w, h);
+    this._addNoiseTransition(ctx, bands, w, h);
 
     return canvas;
   }
 
   // 添加噪声过渡函数
-  #addNoiseTransition(ctx, bands, w, _h) {
+  _addNoiseTransition(ctx, bands, w, _h) {
     // 过渡参数
     const transitionWidth = 4;  // 过渡区域宽度
     const noiseAmplitude = 0.8; // 噪声强度
@@ -80,6 +80,8 @@ class Land {
       const topBand = bands[i + 1];     // 上方的条带
       const bottomBand = bands[i];      // 下方的条带
       const transitionY = bottomBand.y; // 过渡开始位置
+      const c1 = hex2rgb(topBand.color);
+      const c2 = hex2rgb(bottomBand.color);
 
       // 创建过渡区域图像数据
       const imageData = ctx.getImageData(
@@ -98,7 +100,7 @@ class Land {
           const baseWeight = y / transitionWidth;
 
           // 生成噪声值（-0.5到0.5之间）
-          const noise = (this.#fractalNoise(x, globalY, noiseScale) - 0.5) *
+          const noise = (this._fractalNoise(x, globalY, noiseScale) - 0.5) *
                         noiseAmplitude;
 
           // 应用噪声扰动
@@ -109,8 +111,6 @@ class Land {
 
           // 混合颜色
           const idx = (y * w + x) * 4;
-          const c1 = hex2rgb(topBand.color);
-          const c2 = hex2rgb(bottomBand.color);
           for (let c = 0; c < 3; c++)
             data[idx + c] = Math.round(
                 c1[c] * (1 - noisyWeight) + c2[c] * noisyWeight,
@@ -126,13 +126,13 @@ class Land {
   }
 
   // 简单分形噪声生成器
-  #fractalNoise(x, y, scale, octaves = 3, persistence = 0.5) {
+  _fractalNoise(x, y, scale, octaves = 3, persistence = 0.5) {
     let value = 0;
     let amplitude = 1;
     let maxValue = 0;
 
     for (let i = 0; i < octaves; i++) {
-      value += this.#simpleNoise(x * scale, y * scale) * amplitude;
+      value += this._simpleNoise(x * scale, y * scale) * amplitude;
       maxValue += amplitude;
       amplitude *= persistence;
       scale *= 2;
@@ -141,13 +141,12 @@ class Land {
     return value / maxValue;
   }
 
-  // 简单噪声函数（基于三角函数）
-  #simpleNoise(x, y) {
-    const n = Math.sin(x * 12.3737 + y * 78.114514) * 424242.4242;
-    return n - Math.floor(n);
+  // 简单噪声函数
+  _simpleNoise(x, y) {
+    return (((x * 374761393 + y * 668265263) & 0x7FFFFFFF) % 10000) / 10000;
   }
 
-  #draw_mountain(
+  _draw_mountain(
       ctx,
       color = "#AAAAAA",
       shading_color = "#FFFFFF",
@@ -159,7 +158,7 @@ class Land {
       iterations = 2,
   ) {
     // 生成山脉点
-    const p = this.#generate_mountain_points(w, h, roughness, iterations);
+    const p = this._generate_mountain_points(w, h, roughness, iterations);
 
     for (let i = 0; i < p.length - 1; i++) {
       for (let xi = p[i].x + x; xi < p[i + 1].x + x; xi++) {
@@ -184,7 +183,7 @@ class Land {
   // roughness: 粗糙度（0到1之间）
   // iterations: 迭代次数（决定细节层次）
   // 返回: 山脉点数组 [{x, y}, ...]
-  #generate_mountain_points(w, h, roughness, iterations) {
+  _generate_mountain_points(w, h, roughness, iterations) {
     // 设置点数组
     let points = [
       {x : 0, y : h},

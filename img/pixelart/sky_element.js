@@ -82,18 +82,26 @@ function generateMeteor(w, pixelSize) {
   let lastUpdateTime = 0; // 上一次更新位置的时间戳
 
   function moveMeteorAnimation(timestamp) {
+    if (!m.isConnected) {
+      cancelAnimationFrame(animationFrameId);
+      return;
+    }
+
     // 确保第一次渲染或达到延迟时间后才更新
     const elapsed = timestamp - lastUpdateTime;
     if (lastUpdateTime === 0 || elapsed >= delay_time && !isPaused) {
 
       let visiblePartsCount = 0;
-      // 遍历所有“节”来更新它们的位置
-      for (const mp of m.children) {
+      // 反向遍历所有"节"来更新它们的位置（避免live
+      // HTMLCollection删除时跳过元素）
+      const children = m.children;
+      for (let idx = children.length - 1; idx >= 0; idx--) {
+        const mp = children[idx];
         const life = parseInt(mp.dataset.life, 10);
 
         const y = pixelSize * (pos[1] - life + pass_time);
 
-        // 如果“节”已经超出屏幕下方，则直接移除
+        // 如果"节"已经超出屏幕下方，则直接移除
         if (y > window.innerHeight) {
           mp.remove();
         } else {
@@ -120,7 +128,6 @@ function generateMeteor(w, pixelSize) {
     animationFrameId = requestAnimationFrame(moveMeteorAnimation);
   }
 
-  // 忽略 k < 1 的情况，与原逻辑保持一致
   if (k >= 1) {
     // 启动这个流星的唯一动画循环
     animationFrameId = requestAnimationFrame(moveMeteorAnimation);
@@ -361,6 +368,11 @@ function generateClouds(init_x, init_y) {
 
   // rAF 动画循环函数
   function cloudAnimation(timestamp) {
+    if (!cloud.isConnected) {
+      cancelAnimationFrame(animationFrameId);
+      return;
+    }
+
     // timestamp 是由 requestAnimationFrame 自动传入的高精度时间戳
 
     // 1. 时间判断逻辑
@@ -457,9 +469,9 @@ function draw_background_sky(w, h, pixelSize) {
     (x, y) => !typeF[1](x, y),
   ];
   for (let y = 0; y < h; y++)
-    for (let i = 0; i < edges.length - 1; i++)
+    for (let i = 0, j = 0; i < edges.length - 1; i++, j = Math.floor(i / 4))
       for (let x = edges[i][y]; x < edges[i + 1][y]; x++)
-        fill(x, y, Math.floor(i / 4) + (typeF[i % 4](x, y) ? 1 : 0));
+        fill(x, y, j + (typeF[i % 4](x, y) ? 1 : 0));
 
   ctx.putImageData(imageData, 0, 0);
 
