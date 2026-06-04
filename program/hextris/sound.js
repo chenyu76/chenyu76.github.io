@@ -11,7 +11,8 @@ class SoundEffect {
     // --- 音乐参数 ---
     this.tempo = 120.0;    // BPM (Beats Per Minute)
     this.currentStep = 0;  // 当前进行到第几步 (0-15)
-    this.currentNote = 0;  // 当前音符索引
+    this.currentNote = 0;  // 当前音符索引 (最近一个)
+    this.prevNote = 0;     // 前一个音符索引 (第二近的)
     this.historyNote = []; // 历史音符索引
     this.playHistory = 0;
 
@@ -32,33 +33,31 @@ class SoundEffect {
     // this.scale = [69, 70, 71, 72, 73, 74, 75].map(p => 440 * Math.pow(2, (p -
     // 69) / 12));
 
-    this.A = [
-      [ 10, 20, 5, 5, 5, 5, 10 ],
-      [ 1, 10, 20, 5, 5, 5, 5 ],
-      [ 5, 2, 10, 20, 5, 5, 5 ],
-      [ 5, 2, 5, 10, 15, 5, 5 ],
-      [ 5, 5, 3, 15, 7, 16, 5 ],
-      [ 5, 5, 5, 15, 5, 1, 10 ],
-      [ 1, 10, 5, 5, 8, 5, 5 ],
-    ];
-    // this.A =
-    // 	[
-    // 		[98, 17, 4, 76, 99, 14, 94],
-    // 		[35, 22, 61, 99, 11, 54, 16],
-    // 		[0, 86, 99, 4, 36, 12, 19],
-    // 		[96, 8, 80, 94, 31, 65, 2],
-    // 		[16, 8, 46, 70, 71, 7, 53],
-    // 		[6, 69, 56, 58, 61, 56, 65],
-    // 		[50, 3, 75, 29, 17, 7, 42],
-    // 	];
-    // 概率归一化
-    for (let row of this.A) {
-      let sum = row.reduce((sum, value) => sum + value, 0);
-      for (let i = 0; i < row.length; i++) {
-        row[i] /= sum;
-      }
-      for (let i = 1; i < row.length; i++) {
-        row[i] += row[i - 1]; // 累加概率
+    // 二阶马尔可夫链转移张量: A[prev2][prev1][next]
+    // 使用带动量的高斯随机游走生成:
+    //   raw_score ∝ exp(-(next - center)² / (2σ²))
+    //   center = prev1 + momentum * (prev1 - prev2)
+    // 动量使得旋律有方向性，高斯分布保证相邻音优先
+    this.A = [];
+    const N = this.scale.length;
+    const momentum = 0.35;
+    const sigma2 = 2.5;
+    for (let prev2 = 0; prev2 < N; prev2++) {
+      this.A[prev2] = [];
+      for (let prev1 = 0; prev1 < N; prev1++) {
+        let row = [];
+        let center = prev1 + momentum * (prev1 - prev2);
+        for (let next = 0; next < N; next++) {
+          row.push(Math.exp(-((next - center) * (next - center)) / (2 * sigma2)));
+        }
+        let sum = row.reduce((s, v) => s + v, 0);
+        for (let k = 0; k < N; k++) {
+          row[k] /= sum;
+        }
+        for (let k = 1; k < N; k++) {
+          row[k] += row[k - 1];
+        }
+        this.A[prev2].push(row);
       }
     }
 
@@ -230,9 +229,10 @@ class SoundEffect {
     // }
     if (step % 2 === 0) {
       let rn = Math.random();
-      const p = this.A[this.currentNote];
+      const p = this.A[this.prevNote][this.currentNote];
       for (let i = 0; i < p.length; i++) {
         if (rn < p[i]) {
+          this.prevNote = this.currentNote;
           this.currentNote = i;
           break;
         }
@@ -335,16 +335,18 @@ class SoundEffect {
     if (!this.audioContext)
       this.initializeAudioContext();
 
-    const toggleButton = document.getElementById('toggleBGM');
+    const toggleButton = document.getElementById('settings-bgm');
     this.isPlaying = !this.isPlaying;
     if (this.isPlaying) {
       this.currentStep = 0;
+      this.currentNote = 0;
+      this.prevNote = 0;
       this.nextNoteTime = this.audioContext.currentTime;
       this.sequencer(); // 启动音序器
-      toggleButton.textContent = '停止音乐';
+      toggleButton.textContent = 'Stop BGM';
     } else {
       clearTimeout(this.sequencerTimer); // 停止音序器
-      toggleButton.textContent = '播放音乐';
+      toggleButton.textContent = 'Play BGM';
     }
     return this.isPlaying;
   }

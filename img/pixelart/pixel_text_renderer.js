@@ -8,18 +8,47 @@ class PixelTextRenderer {
    * @param {number[]} [config.fillColor=[255,255,255]] - 着色像素颜色 [R,G,B]
    * @param {number} [config.lineGap=0] - 行间额外间距（像素）
    */
+  static ASCII_BASE = 32;
+  static ASCII_RANGE = 64;
+
   constructor({canvas, fillColor = [ 255, 255, 255 ], lineGap = 0}) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.lineGap = lineGap;
 
-    this.glyphs = PIXEL_GLYPH_DATA.glyphs.map(
-        g =>
-            ({_encoded : g[0], baseline : g[1], width : g[2], _pixels : null}));
+    let gBase =
+        Array.from(PIXEL_GLYPH_DATA.glyphsBaseline)
+            .map(char => char.charCodeAt(0) - PixelTextRenderer.ASCII_BASE);
+    let gWidth =
+        Array.from(PIXEL_GLYPH_DATA.glyphsWidth)
+            .map(char => char.charCodeAt(0) - PixelTextRenderer.ASCII_BASE);
+    this.glyphs = PIXEL_GLYPH_DATA.glyphsEncoded.map((g, i) => ({
+                                                       _encoded : g,
+                                                       baseline : gBase[i],
+                                                       width : gWidth[i],
+                                                       _pixels : null
+                                                     }));
 
     this.setFillColor(fillColor);
     this.lineBaseOffset = PIXEL_GLYPH_DATA.lineBaseOffset;
     this.lineHeight = PIXEL_GLYPH_DATA.lineRowHeight + this.lineGap;
+  }
+
+  /**
+   * Decode a single base-64 encoded index string to an array of glyph indices.
+   * Each pair of characters decodes to one index (shifted by +1 so -1 becomes
+   * 0).
+   */
+  _decodeIndexList(encoded) {
+    const result = [];
+    const base = PixelTextRenderer.ASCII_BASE;
+    const range = PixelTextRenderer.ASCII_RANGE;
+    for (let i = 0; i < encoded.length; i += 2) {
+      const hi = encoded.charCodeAt(i) - base;
+      const lo = encoded.charCodeAt(i + 1) - base;
+      result.push(hi * range + lo - 1);
+    }
+    return result;
   }
 
   /**
@@ -29,8 +58,9 @@ class PixelTextRenderer {
     if (width === 0 || encoded.length === 0)
       return [];
 
+    const base = PixelTextRenderer.ASCII_BASE;
     const totalBits = encoded.length * 6;
-    const height = Math.ceil(totalBits / width);
+    const height = Math.floor(totalBits / width);
     const pixels = [];
 
     for (let y = 0; y < height; y++) {
@@ -42,7 +72,7 @@ class PixelTextRenderer {
           row.push(false);
         else {
           const charIndex = (bitIndex / 6) | 0;
-          const value = encoded.charCodeAt(charIndex) - 32;
+          const value = encoded.charCodeAt(charIndex) - base;
           row.push(((value >> (5 - (bitIndex - charIndex * 6))) & 1) === 1);
         }
       }
@@ -194,8 +224,6 @@ class PixelTextRenderer {
     }
     PixelTextRenderer._textCycleSetup = true;
 
-    const lists = PIXEL_GLYPH_DATA.indexLists;
-
     const canvas = document.createElement('canvas');
     canvas.style.position = 'absolute';
     canvas.style.right = '0px';
@@ -210,9 +238,11 @@ class PixelTextRenderer {
     const renderer = new PixelTextRenderer(
         {canvas : canvas, fillColor : fillColor, lineGap : 1});
 
+    const lists = PIXEL_GLYPH_DATA.indexLists;
+
     const timePerPixel = 0.02;
     const displayTimePerLine = 4;
-    let lastList = null;
+    let lastEncoded = null;
     let triggerNext = null;
     PixelTextRenderer._triggerNext = function() {
       if (triggerNext)
@@ -230,11 +260,12 @@ class PixelTextRenderer {
         canvas.style.zoom = pixelSize;
         const targetX = Math.round(gridW * 0.39);
 
-        let list;
+        let encoded;
         do {
-          list = lists[Math.floor(Math.random() * lists.length)];
-        } while (lists.length > 1 && list === lastList);
-        lastList = list;
+          encoded = lists[Math.floor(Math.random() * lists.length)];
+        } while (lists.length > 1 && encoded === lastEncoded);
+        lastEncoded = encoded;
+        const list = renderer._decodeIndexList(encoded);
 
         const size = renderer.getSize(list);
         const offsetX = Math.max(Math.round(targetX - size.width / 2), 12);

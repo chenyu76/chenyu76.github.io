@@ -49,24 +49,103 @@ class Matrix {
   }
 }
 
-// 页面加载完成后初始化
-window.addEventListener("DOMContentLoaded", () => {
-  const ht = new HexTris("grid-container", 10);
+let ht = null;
 
-  // 处理窗口大小变化
-  function handleResize() {
-    ht.resetView(); // 重置视图
-  }
-  // 防抖函数封装
-  function debounce(func, delay = 250) {
-    let timeoutId;
-    return (...args) => {
-      clearTimeout(timeoutId); // 清除之前的定时器
-      timeoutId = setTimeout(() => {
-        func.apply(this, args); // 延迟执行目标函数
-      }, delay);
-    };
-  }
-  // 监听窗口resize事件
-  window.addEventListener("resize", debounce(handleResize));
+// Settings sliders — game config
+
+function getGameOptions() {
+  return {
+    blockCount: parseInt(document.getElementById("settings-blocks").value),
+    baseDropInterval: parseInt(document.getElementById("settings-drop-speed").value),
+    dropHeight: parseInt(document.getElementById("settings-height").value),
+  };
+}
+
+function startGame() {
+  document.getElementById("start-screen").classList.add("hidden");
+  document.getElementById("end-screen").classList.add("hidden");
+  const options = getGameOptions();
+  ht = new HexTris("grid-container", 10, options);
+}
+
+// Settings sliders — game config
+document.getElementById("settings-blocks").addEventListener("input", (e) => {
+  document.getElementById("settings-blocks-value").textContent = e.target.value;
 });
+document.getElementById("settings-drop-speed").addEventListener("input", (e) => {
+  document.getElementById("settings-speed-value").textContent = e.target.value + "ms";
+});
+document.getElementById("settings-height").addEventListener("input", (e) => {
+  document.getElementById("settings-height-value").textContent = e.target.value;
+});
+
+// Start button
+document.getElementById("start-btn").addEventListener("click", startGame);
+
+// Restart button
+document.getElementById("restart-btn").addEventListener("click", () => {
+  const options = getGameOptions();
+  if (ht) {
+    ht.restart(options);
+  } else {
+    ht = new HexTris("grid-container", 10, options);
+  }
+  document.getElementById("end-screen").classList.add("hidden");
+});
+
+// Settings restart button
+document.getElementById("settings-restart").addEventListener("click", () => {
+  const options = getGameOptions();
+  document.getElementById("settings-screen").classList.add("hidden");
+  document.getElementById("end-screen").classList.add("hidden");
+  if (ht) {
+    ht.restart(options);
+  } else {
+    ht = new HexTris("grid-container", 10, options);
+  }
+});
+
+// Settings navigation
+let settingsReturnTo = "start";
+
+function openSettings(from) {
+  settingsReturnTo = from;
+  if (from === "game" && ht) ht.pause();
+  document.getElementById("start-screen").classList.add("hidden");
+  document.getElementById("end-screen").classList.add("hidden");
+  document.getElementById("settings-screen").classList.remove("hidden");
+}
+
+function closeSettings() {
+  document.getElementById("settings-screen").classList.add("hidden");
+  if (settingsReturnTo === "start") {
+    document.getElementById("start-screen").classList.remove("hidden");
+  } else if (ht) {
+    ht.resume();
+  }
+}
+
+document.getElementById("start-settings-btn").addEventListener("click", () => openSettings("start"));
+document.getElementById("sidebar-settings-btn").addEventListener("click", () => openSettings("game"));
+document.getElementById("settings-back").addEventListener("click", closeSettings);
+
+// Settings sliders sync with UI
+document.getElementById("settings-zoom").addEventListener("input", (e) => {
+  document.getElementById("settings-zoom-value").textContent = parseFloat(e.target.value).toFixed(2);
+});
+document.getElementById("settings-animation").addEventListener("input", (e) => {
+  document.getElementById("settings-anim-value").textContent = parseFloat(e.target.value).toFixed(1) + "s";
+});
+
+// Resize handler
+function handleResize() {
+  if (ht) ht.resetView();
+}
+function debounce(func, delay = 250) {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(this, args), delay);
+  };
+}
+window.addEventListener("resize", debounce(handleResize));

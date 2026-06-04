@@ -1,6 +1,62 @@
+import os
+
 from PIL import Image, ImageFont, ImageDraw
 from fontTools.ttLib import TTFont
 from sentences import SENTENCES
+import json
+import math
+
+CUSTOM_FONT_DIR = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "custom_font"
+)
+
+
+def _parse_custom_font_filename(filename: str):
+    if not filename.endswith(".png"):
+        return None
+    stem = filename[:-4]
+    parts = stem.rsplit("_", 1)
+    if len(parts) != 2:
+        return None
+    try:
+        return parts[0], int(parts[1])
+    except ValueError:
+        return None
+
+
+def load_custom_glyph(char: str, custom_font_dir: str = CUSTOM_FONT_DIR):
+    if not os.path.isdir(custom_font_dir):
+        return None
+
+    for filename in os.listdir(custom_font_dir):
+        parsed = _parse_custom_font_filename(filename)
+        if parsed is None:
+            continue
+        file_char, baseline = parsed
+        if file_char != char:
+            continue
+
+        try:
+            img = Image.open(os.path.join(custom_font_dir, filename))
+            if img.mode != "RGBA":
+                img = img.convert("RGBA")
+            width, height = img.size
+            array_2d = []
+            for y in range(height):
+                row = []
+                for x in range(width):
+                    r, g, b, a = img.getpixel((x, y))
+                    if a < 128:
+                        row.append(False)
+                    else:
+                        row.append(r < 128 and g < 128 and b < 128)
+                array_2d.append(row)
+            return array_2d, baseline
+        except Exception:
+            continue
+
+    return None
+
 
 r"""
 PixelFont 类 — 加载像素字体 TTF，提供：
@@ -133,7 +189,11 @@ class PixelFont:
         result = {}
 
         for char in unique_chars:
-            array_2d, baseline = self.char_to_bool_array(char)
+            custom = load_custom_glyph(char)
+            if custom is not None:
+                array_2d, baseline = custom
+            else:
+                array_2d, baseline = self.char_to_bool_array(char)
             encoded = self.encode_to_ascii(array_2d)
             width = len(array_2d[0]) if array_2d else 0
             height = len(array_2d)
@@ -192,10 +252,29 @@ def build_glyph_table(char_map: dict, texts: list):
 
     char_to_idx = {ch: i for i, ch in enumerate(sorted_chars)}
 
-    glyphs = []
+    glyphsEncoded = []
+    glyphsBaseline = ""
+    glyphsWidth = ""
+    maxAbove = 0
+    maxBelow = 0
     for ch in sorted_chars:
-        data = char_map[ch]
-        glyphs.append([data["encoded"], data["baseline"], data["width"]])
+        encoded = char_map[ch]["encoded"]
+        baseline = char_map[ch]["baseline"]
+        width = char_map[ch]["width"]
+        height = char_map[ch]["height"]
+
+        glyphsEncoded.append(encoded)
+        glyphsBaseline += chr(baseline + 32)
+        glyphsWidth += chr(width + 32)
+
+        if height <= 0 or len(encoded) == 0:
+            continue
+        above = baseline
+        below = height - baseline
+        if above > maxAbove:
+            maxAbove = above
+        if below > maxBelow:
+            maxBelow = below
 
     index_lists = []
     for text in texts:
@@ -207,44 +286,85 @@ def build_glyph_table(char_map: dict, texts: list):
                 indices.append(char_to_idx[ch])
         index_lists.append(indices)
 
-    return index_lists, glyphs
+    return (
+        index_lists,
+        glyphsEncoded,
+        glyphsBaseline,
+        glyphsWidth,
+        maxAbove,
+        maxBelow,
+    )
 
 
-def write_glyph_data_js(index_lists: list, glyphs: list, output_path: str):
+_INDEX_ASCII_BASE = 32
+_INDEX_ASCII_RANGE = 64
+
+
+def encode_index_list(indices: list) -> str:
+    """
+    Encode a list of glyph indices into a compact two-char-per-index string.
+
+    Each index is shifted by +1 so that -1 (newline) becomes 0,
+    then split into two base-64 ASCII digits (chars 32–95).
+    """
+    chars = []
+    for idx in indices:
+        v = idx + 1
+        hi = v // _INDEX_ASCII_RANGE
+        lo = v % _INDEX_ASCII_RANGE
+        chars.append(chr(_INDEX_ASCII_BASE + hi))
+        chars.append(chr(_INDEX_ASCII_BASE + lo))
+    return "".join(chars)
+
+
+def decode_index_list(encoded: str) -> list:
+    """
+    Decode an index string back to a list of glyph indices.
+
+    Inverse of encode_index_list.
+    """
+    result = []
+    for i in range(0, len(encoded), 2):
+        hi = ord(encoded[i]) - _INDEX_ASCII_BASE
+        lo = ord(encoded[i + 1]) - _INDEX_ASCII_BASE
+        v = hi * _INDEX_ASCII_RANGE + lo
+        result.append(v - 1)
+    return result
+
+
+def write_glyph_data_js(
+    output_path,
+    index_lists,
+    glyphsEncoded,
+    glyphsBaseline,
+    glyphsWidth,
+    maxAbove,
+    maxBelow,
+):
     """
     Write index lists and glyph data to a JavaScript file.
 
     The output file defines a global variable:
 
         const PIXEL_GLYPH_DATA = {
-            glyphs: [[encoded, baseline, width], ...],
-            index_lists: [[idx, ...], ...]
+            glyphsEncoded: [encoded1, encoded2 ...],
+            glyphsBaseline: encoded_string
+            glyphsWidth: encoded_string,
+            indexLists: ["encoded_string", ...],
+            lineBaseOffset: number,
+            lineRowHeight: number
         };
 
-    Args:
-        index_lists: list[list[int]]
-        glyphs: list of [encoded, baseline, width]
-        output_path: path to the output .js file
+    indexLists are encoded as compact strings using encode_index_list.
     """
-    import json
-    import math
 
-    maxAbove = 0
-    maxBelow = 0
-    for encoded, baseline, width in glyphs:
-        if width == 0 or len(encoded) == 0:
-            continue
-        height = math.ceil((len(encoded) * 6) / width)
-        above = baseline
-        below = height - baseline
-        if above > maxAbove:
-            maxAbove = above
-        if below > maxBelow:
-            maxBelow = below
+    encoded_lists = [encode_index_list(lst) for lst in index_lists]
 
     data = {
-        "glyphs": glyphs,
-        "indexLists": index_lists,
+        "glyphsEncoded": glyphsEncoded,
+        "glyphsBaseline": glyphsBaseline,
+        "glyphsWidth": glyphsWidth,
+        "indexLists": encoded_lists,
         "lineBaseOffset": maxAbove,
         "lineRowHeight": maxAbove + maxBelow,
     }
@@ -271,7 +391,15 @@ if __name__ == "__main__":
     js_path = sys.argv[3]
     texts = SENTENCES
 
+    custom_chars = set()
+    if os.path.isdir(CUSTOM_FONT_DIR):
+        for f in os.listdir(CUSTOM_FONT_DIR):
+            parsed = _parse_custom_font_filename(f)
+            if parsed:
+                custom_chars.add(parsed[0])
+
     missing = get_missing_chars(font_path, "".join(texts))
+    missing = "".join(ch for ch in missing if ch not in custom_chars)
     if missing:
         print(
             f"Error: the following characters are not supported by {font_path}: \n{missing}"
@@ -281,15 +409,36 @@ if __name__ == "__main__":
     pf = PixelFont(font_path, size)
     pixel_map = pf.generate_character_map("".join(texts))
 
-    index_lists, glyphs = build_glyph_table(pixel_map, texts)
-    print(f"Glyphs length: {len(glyphs)}")
-    # for i, (encoded, baseline, width) in enumerate(glyphs):
-    #     print(
-    #         f"  [{i}] encoded={repr(encoded)}, baseline={baseline}, width={width}"
-    #     )
-    # print(f"\nIndex lists:")
-    # for i, indices in enumerate(index_lists):
-    #     print(f"  line {i}: {indices}")
+    (
+        index_lists,
+        glyphsEncoded,
+        glyphsBaseline,
+        glyphsWidth,
+        maxAbove,
+        maxBelow,
+    ) = build_glyph_table(pixel_map, texts)
+    print(f"Glyphs length: {len(glyphsEncoded)}")
 
-    write_glyph_data_js(index_lists, glyphs, js_path)
+    write_glyph_data_js(
+        js_path,
+        index_lists,
+        glyphsEncoded,
+        glyphsBaseline,
+        glyphsWidth,
+        maxAbove,
+        maxBelow,
+    )
     print(f"Written: {js_path}")
+
+    from pixel_preview import render_sentences
+
+    preview_path = os.path.splitext(js_path)[0] + "_preview.png"
+    render_sentences(
+        index_lists,
+        glyphsEncoded,
+        glyphsBaseline,
+        glyphsWidth,
+        js_path,
+        preview_path,
+        scale=8,
+    )

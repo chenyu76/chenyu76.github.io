@@ -27,7 +27,7 @@ class GifRenderer {
     this.startY = startY;
     this.pixelSize = pixelSize;
     this.colorList = colorList;
-    this.gifMatrix = gifMatrix;
+    this.gifMatrix = this._decodeMatrix(gifMatrix);
     this.lightColorDict = lightColorDict;
     this.getFrameCount = getFrameCount;
 
@@ -60,6 +60,23 @@ class GifRenderer {
   }
 
   /**
+   * 将编码字符串解码为数字矩阵
+   * 每3个字符一组: chr(w+32) + chr(h+32) + chr(colorIdx+32)
+   */
+  _decodeMatrix(encodedMatrix) {
+    return encodedMatrix.map(frameStr => {
+      const instructions = [];
+      for (let i = 0; i < frameStr.length; i += 3) {
+        const w = frameStr.charCodeAt(i) - 32;
+        const h = frameStr.charCodeAt(i + 1) - 32;
+        const colorIdx = frameStr.charCodeAt(i + 2) - 32;
+        instructions.push([w, h, colorIdx]);
+      }
+      return instructions;
+    });
+  }
+
+  /**
    * 预渲染所有帧
    */
   _preRenderFrames() {
@@ -85,17 +102,7 @@ class GifRenderer {
 
       // 遍历指令
       for (let i = 0; i < instructions.length; i++) {
-        let w = 1;
-        let h = 1;
-        let colorIdx = 0;
-        if (typeof instructions[i] === "number") {
-          // 仅颜色索引，宽高均为1
-          colorIdx = instructions[i];
-        } else if (instructions[i].length === 3) {
-          [w, h, colorIdx] = instructions[i];
-        } else {
-          [w, colorIdx] = instructions[i];
-        }
+        const [w, h, colorIdx] = instructions[i];
 
         // 1. 寻找光标位置 (流式布局)
         while (cursor < visited.length && visited[cursor] === 1) {

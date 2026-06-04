@@ -1,11 +1,11 @@
 class HexTris {
-  constructor(containerId, hexSize = 40) {
+  constructor(containerId, hexSize = 40, gameOptions = {}) {
     this.container = document.getElementById(containerId);
     this.hexSize = hexSize;
     this.scale = 1;
     this.hexagons = new Map(); // 存储当前显示的六边形
     this.animationDuration = parseFloat(
-        document.getElementById("animation").value); // 默认动画时间(s)
+        document.getElementById("settings-animation").value); // 默认动画时间(s)
 
     this.initSVG();
     this.setupEventListeners();
@@ -23,13 +23,43 @@ class HexTris {
 
     this.soundEffect = new SoundEffect(); // 初始化音效
     this.game =
-        new Game(this.updateDropInterval, this.soundEffect); // 初始化游戏
+        new Game(this.updateDropInterval, this.soundEffect, gameOptions); // 初始化游戏
 
     this.updateDropInterval(this.game.dropInterval);
     this.updateGrid();
   }
 
+  restart(gameOptions = {}) {
+    if (this.dropTimer) {
+      clearInterval(this.dropTimer);
+    }
+    this.game = new Game(this.updateDropInterval, this.soundEffect, gameOptions);
+    this.hexagons.clear();
+    while (this.hexGroup.firstChild) {
+      this.hexGroup.removeChild(this.hexGroup.firstChild);
+    }
+    while (this.axisGroup.firstChild) {
+      this.axisGroup.removeChild(this.axisGroup.firstChild);
+    }
+    this.resetView();
+    this.updateDropInterval(this.game.dropInterval);
+    this.updateGrid();
+  }
+
   update() { this.game.playerDrop() && this.updateGrid(); }
+
+  pause() {
+    if (this.dropTimer) {
+      clearInterval(this.dropTimer);
+      this.dropTimer = null;
+    }
+  }
+
+  resume() {
+    if (!this.dropTimer) {
+      this.dropTimer = setInterval(() => this.update(), this.dropInterval);
+    }
+  }
 
   // 初始化SVG容器
   initSVG() {
@@ -209,25 +239,25 @@ class HexTris {
     this.translateY = this.container.clientHeight / 2;
     this.scale = 1;
     this.setScale(1);
-    document.getElementById("zoom").value = 1;
-    document.getElementById("zoom-value").textContent = "1.00";
+    document.getElementById("settings-zoom").value = 1;
+    document.getElementById("settings-zoom-value").textContent = "1.00";
   }
 
   // 设置事件监听
   setupEventListeners() {
     // 缩放控制
-    const zoomSlider = document.getElementById("zoom");
+    const zoomSlider = document.getElementById("settings-zoom");
     zoomSlider.addEventListener("input", () => {
       const zoomValue = parseFloat(zoomSlider.value);
-      document.getElementById("zoom-value").textContent = zoomValue.toFixed(2);
+      document.getElementById("settings-zoom-value").textContent = zoomValue.toFixed(2);
       this.setScale(zoomValue);
     });
 
     // 动画速度控制
-    const animationSlider = document.getElementById("animation");
+    const animationSlider = document.getElementById("settings-animation");
     animationSlider.addEventListener("input", () => {
       const speedValue = parseFloat(animationSlider.value);
-      document.getElementById("speed-value").textContent =
+      document.getElementById("settings-anim-value").textContent =
           `${speedValue.toFixed(1)}s`;
       this.animationDuration = speedValue;
 
@@ -248,8 +278,28 @@ class HexTris {
 
     // 音乐按钮
 
-    document.getElementById('toggleBGM')
+    document.getElementById('settings-bgm')
         .addEventListener('click', () => this.soundEffect.toggleBGM());
+
+    // Game control buttons
+    const bindBtn = (id, action) => {
+      document.getElementById(id).addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        const ok = action();
+        if (ok) {
+          this.soundEffect.playMoveSound();
+          this.updateGrid();
+        } else {
+          this.soundEffect.playExplosionSound();
+          this.shakeHexagons();
+        }
+      });
+    };
+    bindBtn("btn-left", () => this.game.playerMove(-1));
+    bindBtn("btn-right", () => this.game.playerMove(1));
+    bindBtn("btn-down", () => this.game.playerDrop());
+    bindBtn("btn-rotl", () => this.game.playerRotate(-1));
+    bindBtn("btn-rotr", () => this.game.playerRotate(1));
 
     // 玩家操作
     document.addEventListener("keydown", async (event) => {
@@ -345,8 +395,8 @@ class HexTris {
     this.setScale(newScale);
 
     // 更新UI
-    document.getElementById("zoom").value = newScale;
-    document.getElementById("zoom-value").textContent = newScale.toFixed(2);
+    document.getElementById("settings-zoom").value = newScale;
+    document.getElementById("settings-zoom-value").textContent = newScale.toFixed(2);
   }
 
   // 绘制指向的轴

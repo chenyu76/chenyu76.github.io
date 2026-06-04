@@ -1,5 +1,5 @@
 class Game {
-  constructor(updateDropInterval, soundEffect) {
+  constructor(updateDropInterval, soundEffect, options = {}) {
     this.updateDropInterval = updateDropInterval;
     this.soundEffect = soundEffect;
 
@@ -18,11 +18,13 @@ class Game {
       "#7C4DFF",
       "#18FFFF",
     ];
-    this.dropHeight = 30;                      // 掉落高度
-    this.baseDropInterval = 1250;              // 基础掉落间隔时间(ms)
-    this.dropInterval = this.baseDropInterval; // 实际掉落间隔时间(ms)
-    this.score = 0;                            // 玩家得分
-    this.gameOver = false;                     // 游戏是否结束
+    this.blockCount = options.blockCount || 6;
+    this.dropHeight = options.dropHeight || 30;                      // 掉落高度
+    this.baseDropInterval = options.baseDropInterval || 1250;       // 基础掉落间隔时间(ms)
+    this.dropInterval = this.baseDropInterval;                      // 实际掉落间隔时间(ms)
+    this.score = 0;                                                 // 玩家得分
+    this.gameOver = false;                                          // 游戏是否结束
+    this.savedOptions = options;
 
     // 三倍大小的旋转矩阵,应用完要除以3
     // 第一个元素是向左转
@@ -45,6 +47,10 @@ class Game {
       return {index : i, value : v[i] / 2};
     });
 
+    this.init();
+  }
+
+  init() {
     /*
      * id: 全局唯一id
      * color: 方块颜色
@@ -55,6 +61,12 @@ class Game {
      *   -1, -2：下一个六边形，-2是主六边形
      */
     this.data = [];
+    this.score = 0;
+    this.gameOver = false;
+    this.dropInterval = this.baseDropInterval;
+    this.updateDropInterval(this.dropInterval);
+    document.getElementById("score").textContent = "0";
+
     // 初始中心块
     this.data.push({
       id : getGlobalId(),
@@ -156,7 +168,7 @@ class Game {
     let newData = [
       {id : getGlobalId(), color : color, pos : [ 0, 0, 0 ], player : player}
     ];
-    for (let i = 1; i < 6; i++) {
+    for (let i = 1; i < this.blockCount; i++) {
       let baseHex, dir, newPos;
       do {
         baseHex = newData[Math.floor(Math.random() * i)];
@@ -258,7 +270,8 @@ class Game {
     }
     if (this.gameOver) {
       this.soundEffect.stopBGM();
-      document.getElementById("is-game-over").style.visibility = "visible";
+      document.getElementById("end-screen").classList.remove("hidden");
+      document.getElementById("end-score").textContent = this.score;
     }
 
     return true;
@@ -421,37 +434,56 @@ class Game {
   // 若成环，消除，降落更高的
   #eliminateRing() {
     let score = 0;
-    let layer = 1;
     const dist = pos => pos.reduce((a, b) => a + Math.abs(b), 0);
-    while (true) {
-      layer++;
-      let ring = this.data.filter(d => dist(d.pos) == 2 * layer);
-      let num = ring.length;
-      if (num == 0)
-        break; // 没有六边形了，退出循环
-      if (num >= layer * 6) {
-        // 成环，消除
-        this.data = this.data.filter(item => !ring.includes(item));
-        // 降落更高的六边形
-        let outerHex = this.data.filter(d => dist(d.pos) >= 2 * layer);
-        for (let d of outerHex) {
-          const pos = this.directions.map(dir => Vector.add(d.pos, dir));
-          const distDPos = dist(d.pos);
-          for (let p of pos)
-            if (dist(p) < distDPos)
-              d.pos = p;
-        }
-        // 消除重叠的六边形
-        let possible = outerHex.filter(d => d.pos.some(x => Math.abs(x) <= 1));
-        let duplicates = [];
-        for (let d of possible) {
-          if (possible.some(v => v != d && arrayValEqual(v.pos)(d.pos))) {
-            duplicates.push(d);
-          }
-        }
-        this.data = this.data.filter(item => !duplicates.includes(item));
+    const getPlaced = () => this.data.filter(d => d.player === 0);
 
-        score += layer * 6; // 增加分数
+    let restart = true;
+    while (restart) {
+      restart = false;
+
+      const placed = getPlaced();
+      const byDist = {};
+      for (const d of placed) {
+        const h = dist(d.pos);
+        if (!byDist[h])
+          byDist[h] = [];
+        byDist[h].push(d);
+      }
+
+      let layer = 1;
+      while (true) {
+        layer++;
+        const ring = byDist[2 * layer] || [];
+        const num = ring.length;
+        if (num == 0)
+          break; // 没有六边形了，退出循环
+        if (num >= layer * 6) {
+          // 成环，消除
+          this.data = this.data.filter(item => !ring.includes(item));
+          // 降落更高的六边形（仅已放置的）
+          let outerHex = getPlaced().filter(d => dist(d.pos) >= 2 * layer);
+          for (let d of outerHex) {
+            const adjacent = this.directions.map(dir => Vector.add(d.pos, dir));
+            const dDist = dist(d.pos);
+            for (let p of adjacent)
+              if (dist(p) < dDist)
+                d.pos = p;
+          }
+          // 消除重叠的六边形
+          let possible =
+              outerHex.filter(d => d.pos.some(x => Math.abs(x) <= 1));
+          let duplicates = [];
+          for (let d of possible) {
+            if (possible.some(v => v != d && arrayValEqual(v.pos)(d.pos))) {
+              duplicates.push(d);
+            }
+          }
+          this.data = this.data.filter(item => !duplicates.includes(item));
+
+          score += layer * 6; // 增加分数
+          restart = true;
+          break;
+        }
       }
     }
     return score;
@@ -460,32 +492,41 @@ class Game {
   // 感觉没有消除环好，不用了
   #eliminateBlocks() {
     let score = 0;
-    let maps = this.dataMap;
-    let dataByH = {};
+    const maps = this.dataMap;
+    const distCache = new Map();
+    const dist = pos => {
+      const key = pos.join(",");
+      if (!distCache.has(key))
+        distCache.set(key, pos.reduce((a, b) => a + Math.abs(b), 0));
+      return distCache.get(key);
+    };
+
+    const dataByH = {};
     let hMax = 0;
-    for (let d of maps) {
-      const h = d.pos.reduce((a, b) => a + Math.abs(b), 0);
-      if (h > hMax)
-        hMax = h;
-      if (!dataByH[h])
-        dataByH[h] = [];
+    for (const d of maps) {
+      const h = dist(d.pos);
+      if (h > hMax) hMax = h;
+      if (!dataByH[h]) dataByH[h] = [];
       dataByH[h].push(d);
     }
+
     const sizeCount = (size) => 1 + 3 * size * (size + 1);
-    const dist = pos => pos.reduce((a, b) => a + Math.abs(b), 0);
+    const mapsWithDist = maps.map(d => ({ d, h: dist(d.pos) }));
+
     for (let hexSize = Math.ceil(hMax / 4) * 2 + 2; hexSize > 2; hexSize -= 2) {
-      for (let h in dataByH) {
-        if (parseInt(h) <= hMax / 2 + 2 && parseInt(h) > 6) {
-          for (let d of dataByH[h]) {
-            if (d) {
-              let blocks = maps.filter(
-                  d2 => dist(Vector.subtract(d2.pos, d.pos)) <= hexSize &&
-                        dist(d2.pos) > 1);
-              if (blocks.length >= sizeCount(hexSize / 2)) {
-                // 消除
-                this.data = this.data.filter(item => !blocks.includes(item));
-                score += blocks.length;
-              }
+      for (const h in dataByH) {
+        const hNum = parseInt(h);
+        if (hNum <= hMax / 2 + 2 && hNum > 6) {
+          for (const d of dataByH[hNum]) {
+            if (!d) continue;
+            let blocks = mapsWithDist.filter(
+                d2 => dist(Vector.subtract(d2.d.pos, d.pos)) <= hexSize &&
+                      d2.h > 1);
+            blocks = blocks.map(d2 => d2.d);
+            if (blocks.length >= sizeCount(hexSize / 2)) {
+              // 消除
+              this.data = this.data.filter(item => !blocks.includes(item));
+              score += blocks.length;
             }
           }
         }
