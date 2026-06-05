@@ -76,26 +76,35 @@ class SoundEffect {
 
     const now = this.audioContext.currentTime;
     const gainNode = this.audioContext.createGain();
-    const oscillator = this.audioContext.createOscillator();
+    const osc1 = this.audioContext.createOscillator();
+    const osc2 = this.audioContext.createOscillator();
+    const filter = this.audioContext.createBiquadFilter();
 
-    // 设置音量包络：快速起音，然后快速衰减
-    gainNode.gain.setValueAtTime(1, now);
-    gainNode.gain.exponentialRampToValueAtTime(0.001,
-                                               now + 0.20); // 音量衰减到几乎为0
+    gainNode.gain.setValueAtTime(0.7, now);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
 
-    // 设置振荡器（音源）
-    oscillator.type = 'sine';                      // 正弦波听起来比较圆润
-    oscillator.frequency.setValueAtTime(440, now); // 起始音调
-    oscillator.frequency.exponentialRampToValueAtTime(600, now + 0.05);
-    oscillator.frequency.exponentialRampToValueAtTime(500, now + 0.15);
+    osc1.type = 'triangle';
+    osc1.frequency.setValueAtTime(330, now);
+    osc1.frequency.exponentialRampToValueAtTime(520, now + 0.06);
+    osc1.frequency.exponentialRampToValueAtTime(440, now + 0.12);
 
-    // 连接节点：振荡器 -> 音量控制器 -> 输出设备
-    oscillator.connect(gainNode);
-    gainNode.connect(this.audioContext.destination);
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(660, now);
 
-    // 启动和停止
-    oscillator.start(now);
-    oscillator.stop(now + 0.2); // 在0.2秒后停止振荡器，释放资源
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(3000, now);
+    filter.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+    filter.Q.value = 0.5;
+
+    osc1.connect(gainNode);
+    osc2.connect(gainNode);
+    gainNode.connect(filter);
+    filter.connect(this.audioContext.destination);
+
+    osc1.start(now);
+    osc2.start(now);
+    osc1.stop(now + 0.15);
+    osc2.stop(now + 0.15);
   }
 
   async playLaserSound() {
@@ -105,24 +114,26 @@ class SoundEffect {
     const now = this.audioContext.currentTime;
     const gainNode = this.audioContext.createGain();
     const oscillator = this.audioContext.createOscillator();
+    const filter = this.audioContext.createBiquadFilter();
 
-    // 设置音量包络
-    gainNode.gain.setValueAtTime(0.5, now);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+    gainNode.gain.setValueAtTime(0.4, now);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
 
-    // 设置振荡器
-    oscillator.type = 'square'; // 方波听起来更具科技感和冲击力
-    oscillator.frequency.setValueAtTime(800, now); // 起始音调较高
-    oscillator.frequency.exponentialRampToValueAtTime(
-        200, now + 0.15); // 在0.15秒内音调快速下降
+    oscillator.type = 'sawtooth';
+    oscillator.frequency.setValueAtTime(1200, now);
+    oscillator.frequency.exponentialRampToValueAtTime(150, now + 0.12);
 
-    // 连接
-    oscillator.connect(gainNode);
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(6000, now);
+    filter.frequency.exponentialRampToValueAtTime(300, now + 0.12);
+    filter.Q.value = 2;
+
+    oscillator.connect(filter);
+    filter.connect(gainNode);
     gainNode.connect(this.audioContext.destination);
 
-    // 启动和停止
     oscillator.start(now);
-    oscillator.stop(now + 0.2);
+    oscillator.stop(now + 0.18);
   }
 
   async playExplosionSound() {
@@ -130,40 +141,45 @@ class SoundEffect {
       this.initializeAudioContext();
 
     const now = this.audioContext.currentTime;
-    const gainNode = this.audioContext.createGain();
 
-    // 创建一个缓冲区来存放白噪音数据
-    const bufferSize = this.audioContext.sampleRate * 1; // 1秒的缓冲区
+    const subOsc = this.audioContext.createOscillator();
+    const subGain = this.audioContext.createGain();
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(80, now);
+    subOsc.frequency.exponentialRampToValueAtTime(20, now + 0.25);
+    subGain.gain.setValueAtTime(1.2, now);
+    subGain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+    subOsc.connect(subGain);
+    subGain.connect(this.audioContext.destination);
+    subOsc.start(now);
+    subOsc.stop(now + 0.3);
+
+    const bufferSize = this.audioContext.sampleRate * 1;
     const buffer = this.audioContext.createBuffer(1, bufferSize,
-                                                  this.audioContext.sampleRate);
+                                                   this.audioContext.sampleRate);
     const output = buffer.getChannelData(0);
-
-    // 填充随机数，生成白噪音
     for (let i = 0; i < bufferSize; i++) {
       output[i] = Math.random() * 2 - 1;
     }
 
-    // 创建白噪音源
     const noiseSource = this.audioContext.createBufferSource();
     noiseSource.buffer = buffer;
 
-    // 创建一个低通滤波器，让声音听起来更“闷”
     const filter = this.audioContext.createBiquadFilter();
+    const noiseGain = this.audioContext.createGain();
+
     filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(1000, now); // 初始截止频率
-    filter.frequency.linearRampToValueAtTime(
-        100, now + 0.3); // 频率快速下降，模拟爆炸后能量的衰减
+    filter.frequency.setValueAtTime(2000, now);
+    filter.frequency.exponentialRampToValueAtTime(80, now + 0.35);
+    filter.Q.value = 0.3;
 
-    // 设置音量包络
-    gainNode.gain.setValueAtTime(1, now);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+    noiseGain.gain.setValueAtTime(0.7, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
 
-    // 连接：噪音源 -> 滤波器 -> 音量 -> 输出
     noiseSource.connect(filter);
-    filter.connect(gainNode);
-    gainNode.connect(this.audioContext.destination);
+    filter.connect(noiseGain);
+    noiseGain.connect(this.audioContext.destination);
 
-    // 启动和停止
     noiseSource.start(now);
     noiseSource.stop(now + 0.5);
   }
@@ -180,29 +196,22 @@ class SoundEffect {
     const gainNode = this.audioContext.createGain();
     const filter = this.audioContext.createBiquadFilter();
 
-    // 设置振荡器
-    oscillator.type = 'triangle'; // 三角波比正弦波稍显尖锐
-    oscillator.frequency.setValueAtTime(200, now);
-    oscillator.frequency.exponentialRampToValueAtTime(
-        3000, now + 0.3); // 音调在0.3秒内急剧升高
+    oscillator.type = 'sawtooth';
+    oscillator.frequency.setValueAtTime(180, now);
+    oscillator.frequency.exponentialRampToValueAtTime(4000, now + 0.35);
 
-    // 设置滤波器，让声音变得“更细”
-    filter.type = 'highpass'; // 高通滤波器，只允许高频通过
-    filter.Q.value = 1;       // Q值（谐振）
-    filter.frequency.setValueAtTime(100, now);
-    filter.frequency.exponentialRampToValueAtTime(
-        2500, now + 0.3); // 滤波频率也随之升高
+    filter.type = 'bandpass';
+    filter.Q.value = 2;
+    filter.frequency.setValueAtTime(300, now);
+    filter.frequency.exponentialRampToValueAtTime(3000, now + 0.3);
 
-    // 设置音量包络，在最后快速淡出
-    gainNode.gain.setValueAtTime(0.6, now);
+    gainNode.gain.setValueAtTime(0.35, now);
     gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
 
-    // 连接: 振荡器 -> 滤波器 -> 音量 -> 输出
     oscillator.connect(filter);
     filter.connect(gainNode);
     gainNode.connect(this.audioContext.destination);
 
-    // 启动和停止
     oscillator.start(now);
     oscillator.stop(now + 0.4);
   }
@@ -274,25 +283,37 @@ class SoundEffect {
   playKick(time) {
     const osc = this.audioContext.createOscillator();
     const gain = this.audioContext.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(150, time);
-    osc.frequency.exponentialRampToValueAtTime(0.01,
-                                               time + 0.1); // 音高快速下降
+    const clickOsc = this.audioContext.createOscillator();
+    const clickGain = this.audioContext.createGain();
 
-    gain.gain.setValueAtTime(2, time);
-    gain.gain.exponentialRampToValueAtTime(0.01, time + 0.1); // 音量快速衰减
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(200, time);
+    osc.frequency.exponentialRampToValueAtTime(30, time + 0.08);
+
+    gain.gain.setValueAtTime(1.8, time);
+    gain.gain.exponentialRampToValueAtTime(0.001, time + 0.15);
+
+    clickOsc.type = 'triangle';
+    clickOsc.frequency.setValueAtTime(1000, time);
+    clickOsc.frequency.exponentialRampToValueAtTime(200, time + 0.005);
+    clickGain.gain.setValueAtTime(0.15, time);
+    clickGain.gain.exponentialRampToValueAtTime(0.001, time + 0.005);
 
     osc.connect(gain);
     gain.connect(this.audioContext.destination);
+    clickOsc.connect(clickGain);
+    clickGain.connect(this.audioContext.destination);
+
     osc.start(time);
-    osc.stop(time + 0.1);
+    osc.stop(time + 0.15);
+    clickOsc.start(time);
+    clickOsc.stop(time + 0.005);
   }
 
   playHiHat(time) {
-    // 使用白噪音来模拟踩镲
     const bufferSize = this.audioContext.sampleRate * 0.1;
     const buffer = this.audioContext.createBuffer(1, bufferSize,
-                                                  this.audioContext.sampleRate);
+                                                   this.audioContext.sampleRate);
     const output = buffer.getChannelData(0);
     for (let i = 0; i < bufferSize; i++) {
       output[i] = Math.random() * 2 - 1;
@@ -300,35 +321,71 @@ class SoundEffect {
     const noise = this.audioContext.createBufferSource();
     noise.buffer = buffer;
 
-    const filter = this.audioContext.createBiquadFilter();
-    filter.type = 'highpass';
-    filter.frequency.value = 10000; // 滤掉低频
+    const bpFilter = this.audioContext.createBiquadFilter();
+    bpFilter.type = 'bandpass';
+    bpFilter.frequency.value = 9000;
+    bpFilter.Q.value = 1.5;
+
+    const hpFilter = this.audioContext.createBiquadFilter();
+    hpFilter.type = 'highpass';
+    hpFilter.frequency.value = 7000;
 
     const gain = this.audioContext.createGain();
-    gain.gain.setValueAtTime(0.3, time);
-    gain.gain.exponentialRampToValueAtTime(0.01, time + 0.05); // 极快的衰减
+    gain.gain.setValueAtTime(0.38, time);
+    gain.gain.exponentialRampToValueAtTime(0.001, time + 0.06);
 
-    noise.connect(filter);
-    filter.connect(gain);
+    noise.connect(hpFilter);
+    hpFilter.connect(bpFilter);
+    bpFilter.connect(gain);
     gain.connect(this.audioContext.destination);
     noise.start(time);
-    noise.stop(time + 0.05);
+    noise.stop(time + 0.06);
   }
 
   playLeadNote(time, frequency, type = 'triangle') {
-    const osc = this.audioContext.createOscillator();
+    const osc1 = this.audioContext.createOscillator();
+    const osc2 = this.audioContext.createOscillator();
     const gain = this.audioContext.createGain();
-    osc.type = type; // 三角波声音比正弦波更丰富
-    osc.frequency.setValueAtTime(frequency, time);
+    const filter = this.audioContext.createBiquadFilter();
+    const lfo = this.audioContext.createOscillator();
+    const lfoGain = this.audioContext.createGain();
+
+    osc1.type = type;
+    osc1.frequency.setValueAtTime(frequency, time);
+    osc1.detune.value = -5;
+
+    osc2.type = type;
+    osc2.frequency.setValueAtTime(frequency, time);
+    osc2.detune.value = 5;
+
+    lfo.type = 'sine';
+    lfo.frequency.value = 4;
+    lfoGain.gain.value = 3;
+    lfo.connect(lfoGain);
+    lfoGain.connect(osc1.frequency);
+    lfoGain.connect(osc2.frequency);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(800, time);
+    filter.frequency.exponentialRampToValueAtTime(2000, time + 0.02);
+    filter.frequency.exponentialRampToValueAtTime(300, time + 0.35);
+    filter.Q.value = 0.8;
 
     gain.gain.setValueAtTime(0, time);
-    gain.gain.linearRampToValueAtTime(0.4, time + 0.05);      // 短暂的起音
-    gain.gain.exponentialRampToValueAtTime(0.01, time + 0.3); // 衰减
+    gain.gain.linearRampToValueAtTime(0.35, time + 0.03);
+    gain.gain.exponentialRampToValueAtTime(0.001, time + 0.35);
 
-    osc.connect(gain);
+    osc1.connect(filter);
+    osc2.connect(filter);
+    filter.connect(gain);
     gain.connect(this.audioContext.destination);
-    osc.start(time);
-    osc.stop(time + 0.3);
+
+    osc1.start(time);
+    osc2.start(time);
+    lfo.start(time);
+    osc1.stop(time + 0.4);
+    osc2.stop(time + 0.4);
+    lfo.stop(time + 0.4);
   }
 
   toggleBGM() {

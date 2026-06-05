@@ -1,5 +1,5 @@
 class HexTris {
-  constructor(containerId, hexSize = 40, gameOptions = {}) {
+  constructor(containerId, hexSize = 40, gameOptions = {}, soundEffect = null) {
     this.container = document.getElementById(containerId);
     this.hexSize = hexSize;
     this.scale = 1;
@@ -21,7 +21,7 @@ class HexTris {
       this.dropTimer = setInterval(() => this.update(), this.dropInterval);
     };
 
-    this.soundEffect = new SoundEffect(); // 初始化音效
+    this.soundEffect = soundEffect || new SoundEffect(); // 初始化音效
     this.game =
         new Game(this.updateDropInterval, this.soundEffect, gameOptions); // 初始化游戏
 
@@ -275,11 +275,6 @@ class HexTris {
     // 重置视图按钮
     document.getElementById("reset").addEventListener("click",
                                                       () => this.resetView());
-
-    // 音乐按钮
-
-    document.getElementById('settings-bgm')
-        .addEventListener('click', () => this.soundEffect.toggleBGM());
 
     // Game control buttons
     const bindBtn = (id, action) => {

@@ -40,53 +40,49 @@ class PixelTextRenderer {
    * 0).
    */
   _decodeIndexList(encoded) {
-    const result = [];
-    const base = PixelTextRenderer.ASCII_BASE;
-    const range = PixelTextRenderer.ASCII_RANGE;
-    for (let i = 0; i < encoded.length; i += 2) {
-      const hi = encoded.charCodeAt(i) - base;
-      const lo = encoded.charCodeAt(i + 1) - base;
-      result.push(hi * range + lo - 1);
-    }
-    return result;
+    return Array(encoded.length / 2)
+        .fill(null)
+        .map((_, i) =>
+                 (encoded.charCodeAt(2 * i) - PixelTextRenderer.ASCII_BASE) *
+                     PixelTextRenderer.ASCII_RANGE +
+                 encoded.charCodeAt(2 * i + 1) - PixelTextRenderer.ASCII_BASE -
+                 1);
   }
 
   /**
    * 解码 6-bit ASCII 编码的字符串 -> 二维布尔数组
    */
   _decodeGlyph(encoded, width) {
-    if (width === 0 || encoded.length === 0)
-      return [];
-
     const base = PixelTextRenderer.ASCII_BASE;
     const totalBits = encoded.length * 6;
     const height = Math.floor(totalBits / width);
-    const pixels = [];
+    const pixels = new Array(height);
 
     for (let y = 0; y < height; y++) {
-      const row = [];
-      const rowStart = y * width;
+      const row = new Array(width);
+      const rowOffset = y * width;
+
       for (let x = 0; x < width; x++) {
-        const bitIndex = rowStart + x;
-        if (bitIndex >= totalBits)
-          row.push(false);
-        else {
+        const bitIndex = rowOffset + x;
+
+        if (bitIndex >= totalBits) {
+          row[x] = false;
+        } else {
           const charIndex = (bitIndex / 6) | 0;
           const value = encoded.charCodeAt(charIndex) - base;
-          row.push(((value >> (5 - (bitIndex - charIndex * 6))) & 1) === 1);
+          row[x] = ((value >> (5 - (bitIndex - charIndex * 6))) & 1) === 1;
         }
       }
-      pixels.push(row);
+      pixels[y] = row;
     }
     return pixels;
   }
 
   _getGlyphPixels(idx) {
     const g = this.glyphs[idx];
-    if (g._pixels === null) {
-      g._pixels = this._decodeGlyph(g._encoded, g.width);
-    }
-    return g._pixels;
+    return g._pixels === null
+               ? g._pixels = this._decodeGlyph(g._encoded, g.width)
+               : g._pixels;
   }
 
   /**
@@ -103,7 +99,7 @@ class PixelTextRenderer {
         if (totalWidth > maxWidth)
           maxWidth = totalWidth;
         totalWidth = 0;
-      } else if (idx >= 0 && idx < this.glyphs.length) {
+      } else {
         totalWidth += this.glyphs[idx].width;
       }
     }
@@ -172,9 +168,6 @@ class PixelTextRenderer {
         drawn++;
         continue;
       }
-
-      if (idx < 0 || idx >= this.glyphs.length)
-        continue;
 
       if (drawn >= prevVisibleChars) {
         const glyph = this.glyphs[idx];
@@ -271,16 +264,10 @@ class PixelTextRenderer {
         const offsetX = Math.max(Math.round(targetX - size.width / 2), 12);
         const offsetY = Math.round((gridH - size.height) / 2);
 
-        const delays = [];
         let total = 0;
-        for (const idx of list) {
-          let w = 4;
-          if (idx !== -1 && idx >= 0 && idx < renderer.glyphs.length) {
-            w = renderer.glyphs[idx].width;
-          }
-          total += w * timePerPixel;
-          delays.push(total);
-        }
+        const delays = list.map(item => total +=
+                                (item == -1 ? 4 : renderer.glyphs[item].width) *
+                                timePerPixel);
 
         const start = performance.now();
         let lastCount = 0;

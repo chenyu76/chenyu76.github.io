@@ -51,6 +51,9 @@ class Matrix {
 
 let ht = null;
 
+const bgmSoundEffect = new SoundEffect();
+document.getElementById("settings-bgm").addEventListener("click", () => bgmSoundEffect.toggleBGM());
+
 // Settings sliders — game config
 
 function getGameOptions() {
@@ -65,7 +68,7 @@ function startGame() {
   document.getElementById("start-screen").classList.add("hidden");
   document.getElementById("end-screen").classList.add("hidden");
   const options = getGameOptions();
-  ht = new HexTris("grid-container", 10, options);
+  ht = new HexTris("grid-container", 10, options, bgmSoundEffect);
 }
 
 // Settings sliders — game config
@@ -88,7 +91,7 @@ document.getElementById("restart-btn").addEventListener("click", () => {
   if (ht) {
     ht.restart(options);
   } else {
-    ht = new HexTris("grid-container", 10, options);
+    ht = new HexTris("grid-container", 10, options, bgmSoundEffect);
   }
   document.getElementById("end-screen").classList.add("hidden");
 });
@@ -101,7 +104,7 @@ document.getElementById("settings-restart").addEventListener("click", () => {
   if (ht) {
     ht.restart(options);
   } else {
-    ht = new HexTris("grid-container", 10, options);
+    ht = new HexTris("grid-container", 10, options, bgmSoundEffect);
   }
 });
 

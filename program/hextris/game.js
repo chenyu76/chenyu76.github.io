@@ -246,6 +246,7 @@ class Game {
     let score = 0;
     // 消除环
     score += this.#eliminateRing();
+    this.#classifyData();
     // 消除大坨方块
     score += this.#eliminateBlocks();
     this.#classifyData();
@@ -492,44 +493,46 @@ class Game {
   // 感觉没有消除环好，不用了
   #eliminateBlocks() {
     let score = 0;
-    const maps = this.dataMap;
-    const distCache = new Map();
-    const dist = pos => {
-      const key = pos.join(",");
-      if (!distCache.has(key))
-        distCache.set(key, pos.reduce((a, b) => a + Math.abs(b), 0));
-      return distCache.get(key);
-    };
-
-    const dataByH = {};
-    let hMax = 0;
-    for (const d of maps) {
-      const h = dist(d.pos);
-      if (h > hMax) hMax = h;
-      if (!dataByH[h]) dataByH[h] = [];
-      dataByH[h].push(d);
-    }
-
+    const dist = pos => pos.reduce((a, b) => a + Math.abs(b), 0);
     const sizeCount = (size) => 1 + 3 * size * (size + 1);
-    const mapsWithDist = maps.map(d => ({ d, h: dist(d.pos) }));
 
-    for (let hexSize = Math.ceil(hMax / 4) * 2 + 2; hexSize > 2; hexSize -= 2) {
-      for (const h in dataByH) {
-        const hNum = parseInt(h);
-        if (hNum <= hMax / 2 + 2 && hNum > 6) {
-          for (const d of dataByH[hNum]) {
-            if (!d) continue;
-            let blocks = mapsWithDist.filter(
-                d2 => dist(Vector.subtract(d2.d.pos, d.pos)) <= hexSize &&
-                      d2.h > 1);
-            blocks = blocks.map(d2 => d2.d);
-            if (blocks.length >= sizeCount(hexSize / 2)) {
-              // 消除
-              this.data = this.data.filter(item => !blocks.includes(item));
-              score += blocks.length;
+    let restart = true;
+    while (restart) {
+      restart = false;
+      this.#classifyData();
+      const maps = this.dataMap;
+
+      const dataByH = {};
+      let hMax = 0;
+      for (const d of maps) {
+        const h = dist(d.pos);
+        if (h > hMax) hMax = h;
+        if (!dataByH[h]) dataByH[h] = [];
+        dataByH[h].push(d);
+      }
+
+      const mapsWithDist = maps.map(d => ({ d, h: dist(d.pos) }));
+
+      for (let hexSize = Math.ceil(hMax / 4) * 2 + 2; hexSize > 2; hexSize -= 2) {
+        for (const h in dataByH) {
+          const hNum = parseInt(h);
+          if (hNum <= hMax && hNum > 6) {
+            for (const d of dataByH[hNum]) {
+              let blocks = mapsWithDist.filter(
+                  d2 => dist(Vector.subtract(d2.d.pos, d.pos)) <= hexSize &&
+                        d2.h > 1);
+              blocks = blocks.map(d2 => d2.d);
+              if (blocks.length >= sizeCount(hexSize / 2)) {
+                this.data = this.data.filter(item => !blocks.includes(item));
+                score += blocks.length;
+                restart = true;
+                break;
+              }
             }
           }
+          if (restart) break;
         }
+        if (restart) break;
       }
     }
     return score;
