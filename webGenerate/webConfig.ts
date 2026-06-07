@@ -41,6 +41,12 @@ export const gitRepositories = {
  * 也可以只放一个字符串，默认是一个link
  */
 export const recommend = [
+  {
+    link: "program/hextris/index.html",
+    date: 20260607,
+    title: "俄罗斯方块，但是六边形往中心落",
+    info: "Tetris, but the hexagons fall towards the center.",
+  },
   "writings/copilot-key-as-input-method-switch.html",
   {
     link: "writings/matlab_behavior_test/index.html",

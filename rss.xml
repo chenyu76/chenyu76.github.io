@@ -4,6 +4,13 @@
       <title>Chen Yu's Website</title>
       <description>Welcome!</description>
 <item>
+            <title>俄罗斯方块，但是六边形往中心落</title>
+            <link>/program/hextris/index.html</link>
+            <description><![CDATA[Tetris, but the hexagons fall towards the center.]]></description>
+            <pubDate>Sun, 07 Jun 2026 00:00:00 GMT</pubDate>
+            <guid>/program/hextris/index.html</guid>
+          </item>
+<item>
             <title>Copilot 键可以用来切换中英文</title>
             <link>/writings/copilot-key-as-input-method-switch.html</link>
             <description><![CDATA[我一直苦恼该用哪个键切换中英文。键盘上全是键，但每个键都有它自己的功能。我把哪一个拿来改成中英文切换，都像是在拆东墙补西墙——直到我发现我新换的笔记本键盘上多了一个Copilot键，这个键一点用也没有，正正好用来切换中英文。]]></description>
