@@ -478,6 +478,8 @@ function draw_background_sky(w, h, pixelSize) {
   return canvas;
 }
 
+// 创建的圆的数组太大了，可以达到数千大小。
+// 先不用了
 function draw_background_sky_new(w, h, pixelSize) {
   const canvas = document.createElement("canvas");
   canvas.width = w;
@@ -491,21 +493,27 @@ function draw_background_sky_new(w, h, pixelSize) {
   const imageData = ctx.createImageData(w, h);
 
   const th = (6 - Math.abs(6 - (currentHour % 12))) / 6;
-  const ht = 1 - th;
   const y0 = 11 / 24 * h - 6 * w * w / h / 5;
-  const xc = ht * w * 2 / 3 + th * w;
-  const yc = ht * h + th * y0;
-  const r1 = ht * w / 6 + th * (h / 2 - y0);
-  const r2 = ht * w / 2 + th * (h * 4 / 5 - y0);
-  const r0 = 20;
-  const sw = 5;
+  // const xc = th <= 0.5 ? 2 * th * w + (1 - 2 * th) * w * 2 / 3 : w;
+  const xc = th <= 0.5 ? 2 * th * w + (1 - 2 * th) * w * 7 / 8 : w;
+  const yc = (1 - th) * h + th * y0;
+  const rb1 = w / 4;
+  const rb2 = w / 2;
+  const re1 = h / 6 - y0;
+  const re2 = h / 2 - y0;
+  const r1 = rb1 + th * (re1 - rb1);
+  const r2 = rb2 + th * (re2 - rb2);
+  const r0 = Math.max(20 - 100 * th, 4);
+  const sw = 2;
   const gw = 10;
 
   const bgcolors = skyColorDict.map(
       (colors) => interpolate_time_color(currentHour, colors),
   );
-  const sunColors = [ [ 255, 250, 245 ], [ 100, 75, 35 ] ];
-  const colors = sunColors.concat(bgcolors);
+  // const sunColors = [ [ 255, 250, 245 ], [ 255, 160, 80 ] ];
+  // bgcolors[0] = colorAverage(bgcolors[0], sunColors[2]);
+  // const colors = sunColors.concat(bgcolors);
+  const colors = bgcolors;
 
   const squ = x => x * x;
   const sqr = Math.sqrt;
@@ -514,66 +522,70 @@ function draw_background_sky_new(w, h, pixelSize) {
     // 给定一个整数半径，返回圆心在原点的一个圆右边的整数近似坐标集合，
     // 一个[[x1, x2, ...], [y1, y2, ...]] 包含上下两个端点
     // 通过对称性完成。
-    // 代码在小半径下会报错但我们不管它。
+    // 有时候会在对角生成重复的点但我们不管它
     if (rad <= 0)
       return [ [], [] ];
     const x0 = Math.round(rad * 0.7071067811865475);
-    const ys1 = Array(Math.max(0, x0 - 1)).fill(null).map((_, i) => i + 1);
-    const xs1 = ys1.map(v => Math.round(sqr(Math.max(0, squ(rad) - squ(v)))));
+    const ys1 = Array(x0).fill(null).map((_, i) => i + 1);
+    const xs1 = ys1.map((v) => Math.round(sqr(squ(rad) - squ(v))));
     const xsp = xs1.concat(ys1);
     const ysp = ys1.concat(xs1);
-    const xs = xsp.concat(xsp).concat([ 0, 0, x0, x0, rad ]);
-    const ys = ysp.concat(ysp.map(y => -y)).concat([ rad, -rad, x0, -x0, 0 ]);
+    const xs = xsp.concat(xsp).concat([ 0, 0, rad ]);
+    const ys = ysp.concat(ysp.map((y) => -y)).concat([ rad, -rad, 0 ]);
     return [ xs, ys ];
   };
+  const xcr = Math.round(xc);
+  const ycr = Math.round(yc);
   const shiftToCenter =
-      (coords) => [coords[0].map(v => v + xc), coords[1].map(v => v + yc)];
+      (coords) => [coords[0].map(v => v + xcr), coords[1].map(v => v + ycr)];
   const rearrangeCoords = (coords) => {
     // 给定一些坐标（这里是圆）集合，
     // 返回一个数组，索引是y高度，值是此时的x。
     // x 会被限制
-    const clip = x => Math.min(Math.max(Math.round(x), 0), w - 1);
+    const clip = x => Math.min(Math.max(x, 0), w - 1);
     const ps = Array(h).fill(-1);
     for (let i = 0; i < coords[1].length; i++) {
-      const cy = Math.round(coords[1][i]);
-      if (0 <= cy && cy < h) {
+      const cy = coords[1][i];
+      if (0 <= cy && cy < h)
         ps[cy] = clip(coords[0][i]);
-      }
     }
     return ps;
   };
   const radii = [
-    0, r0, r0 + sw, r0 + 2 * sw, r1 - 2 * gw, r1 - gw, r1, r1 + gw, r2 - 2 * gw,
-    r2 - gw, r2, r2 + gw
+    // r0 - sw, r0, r0 + sw, r0 + 2 * sw,
+    r1 - 2 * gw, r1 - gw, r1, r1 + gw, r2 - 2 * gw, r2 - gw, r2, r2 + gw
+  ].map(Math.round);
+  const clr = [
+    // 0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4
+    0, 0, 0, 0, 1, 1, 1, 1, 2
   ];
-  const clr = [ 0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4 ];
-  const typ = [ 0, 2, 0, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0 ];
-  const edges = [
-    radii.map(circleCoords)
-        .map(a1 => a1.map(a2 => a2.map(v => -v)))
-        .map(shiftToCenter)
-        .map(rearrangeCoords),
-    radii.map(circleCoords).map(shiftToCenter).map(rearrangeCoords)
+  const typ = [
+    // 0, 2, 0, 2,
+    0, 1, 2, 3, 0, 1, 2, 3, 0
   ];
+  const edgesL = radii.map(circleCoords)
+                     .map(a1 => [a1[0].map(v => -v), a1[1]])
+                     .map(shiftToCenter)
+                     .map(rearrangeCoords);
+  const edgesR =
+      radii.map(circleCoords).map(shiftToCenter).map(rearrangeCoords);
   // 复用单行缓冲区
   const rowZones = new Int8Array(w);
   const data = imageData.data;
   let pixelPtr = 0;
   for (let y = 0; y < h; y++) {
-    rowZones.fill(radii.length - 1);
+    rowZones.fill(radii.length);
 
     // 从大圆到小圆覆盖式写入当前行的区间
     for (let i = radii.length - 1; i >= 0; i--) {
-      const left = edges[0][i][y];
-      const right = edges[1][i][y];
+      const left = edgesL[i][y];
+      const right = edgesR[i][y];
       // 如果该圆在当前行存在
-      if (left !== -1 && right !== -1) {
-        for (let x = left; x <= right; x++) {
+      if (left !== -1 && right !== -1)
+        for (let x = left; x <= right; x++)
           rowZones[x] = i;
-        }
-      }
     }
-    for (let x = 0; x < w; x++) {
+    for (let x = w - 1; x >= 0; x--) {
       const idx = rowZones[x];
       let dither = false; // case 0: 纯色，不抖动
       switch (typ[idx]) {
@@ -583,7 +595,7 @@ function draw_background_sky_new(w, h, pixelSize) {
       case 2: // 50% 密度交错
         dither = (x + y) % 2 === 0;
         break;
-      case 3: // 75% 密度网格（刚好和 case 1 取反）
+      case 3: // 75% 密度网格（和 case 1 取反）
         dither = !((x + y) % 4 === 0 || ((x + y) % 4 === 2 && x % 2 === 1));
         break;
       }
