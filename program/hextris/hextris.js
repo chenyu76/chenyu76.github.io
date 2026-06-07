@@ -258,23 +258,22 @@ class HexTris {
       maxY = Math.max(maxY, y + this.hexSize);
     }
 
-    const gridW = maxX - minX;
-    const gridH = maxY - minY;
-    if (gridW <= 0 || gridH <= 0) return false;
+    const maxExtent = Math.max(
+        Math.abs(minX), Math.abs(maxX), Math.abs(minY), Math.abs(maxY));
+    if (maxExtent <= 0) return false;
 
     const cw = this.container.clientWidth;
     const ch = this.container.clientHeight;
     if (cw <= 0 || ch <= 0) return false;
 
     const padding = 20;
-    let scale = Math.min((cw - padding * 2) / gridW, (ch - padding * 2) / gridH, 3);
+    let scale = Math.min(
+        (cw - padding * 2) / (2 * maxExtent),
+        (ch - padding * 2) / (2 * maxExtent), 3);
     scale = Math.max(0.1, scale);
 
-    const cx = (minX + maxX) / 2;
-    const cy = (minY + maxY) / 2;
-
-    this.translateX = cw / 2 - cx * scale;
-    this.translateY = ch / 2 - cy * scale;
+    this.translateX = cw / 2;
+    this.translateY = ch / 2;
     this.scale = scale;
     this.setScale(scale);
 
