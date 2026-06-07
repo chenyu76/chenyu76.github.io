@@ -84,6 +84,11 @@ class GifRenderer {
 
     const light_color =
         interpolate_time_color(currentHour, this.lightColorDict);
+    // 预先缓存用得到的颜色
+    const adjustedColorList = this.colorList.map(
+        c => (c != "skip" && c != "transparent")
+                 ? rgb2hex(colorMultiply(hex2rgb(c), light_color))
+                 : c);
 
     // 维护一个 visited 数组用于流式布局定位
     // 0: 未填充, 1: 已填充
@@ -116,15 +121,13 @@ class GifRenderer {
             visited[(y + row) * this.width + x + col] = 1;
 
         // 3. 绘制
-        const rawColor = this.colorList[colorIdx];
-
-        if (rawColor !== "skip")
-          if (rawColor === "transparent") // Transparent: 需要擦除
+        const adjustedColor = adjustedColorList[colorIdx];
+        if (adjustedColor !== "skip")
+          if (adjustedColor === "transparent") // Transparent: 需要擦除
             bufferCtx.clearRect(x, y, w, h);
           else {
             // 正常颜色: 应用光照并绘制
-            bufferCtx.fillStyle =
-                rgb2hex(colorMultiply(hex2rgb(rawColor), light_color));
+            bufferCtx.fillStyle = adjustedColor;
             bufferCtx.fillRect(x, y, w, h);
           }
       }

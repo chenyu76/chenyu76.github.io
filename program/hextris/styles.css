@@ -24,6 +24,9 @@ body {
 	background: #fff;
 	overflow: hidden;
 	position: relative;
+	touch-action: none;
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 .controls {
@@ -159,6 +162,8 @@ button:active {
 	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 	max-width: 400px;
 	width: 90%;
+	max-height: 90vh;
+	overflow-y: auto;
 }
 
 .overlay-content h1 {
@@ -228,8 +233,10 @@ button:active {
 #tutorial-diagram,
 #tutorial-diagram2 {
 	margin: 0 auto 8px;
+	max-width: 100%;
 	width: 280px;
-	height: 220px;
+	height: auto;
+	aspect-ratio: 280 / 220;
 }
 
 #tutorial-diagram svg,
@@ -284,6 +291,20 @@ button:active {
 
 	.game-buttons button {
 		padding: 8px 2px;
+		font-size: 0.8rem;
+	}
+
+	.overlay-content {
+		padding: 20px 16px;
+		max-width: 95vw;
+	}
+
+	.overlay-content h1 {
+		font-size: 1.5rem;
+		margin-bottom: 12px;
+	}
+
+	.overlay-content .setting label {
 		font-size: 0.8rem;
 	}
 }

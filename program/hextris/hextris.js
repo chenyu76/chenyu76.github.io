@@ -27,6 +27,8 @@ class HexTris {
 
     this.updateDropInterval(this.game.dropInterval);
     this.updateGrid();
+
+    setTimeout(() => this.autoFit(), 50);
   }
 
   restart(gameOptions = {}) {
@@ -44,6 +46,8 @@ class HexTris {
     this.resetView();
     this.updateDropInterval(this.game.dropInterval);
     this.updateGrid();
+
+    setTimeout(() => this.autoFit(), 50);
   }
 
   update() { this.game.playerDrop() && this.updateGrid(); }
@@ -102,6 +106,12 @@ class HexTris {
 
     // 添加缩放功能
     this.svg.addEventListener('wheel', this.handleZoom.bind(this));
+
+    // 触摸事件支持
+    this.svg.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: false });
+    this.svg.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
+    this.svg.addEventListener('touchend', this.handleTouchEnd.bind(this));
+    this.svg.addEventListener('touchcancel', this.handleTouchEnd.bind(this));
   }
 
   // 将立方体坐标转换为像素坐标
@@ -233,14 +243,56 @@ class HexTris {
         `translate(${this.translateX}, ${this.translateY}) scale(${scale})`);
   }
 
+  // 自动缩放视图以适应容器
+  autoFit() {
+    if (!this.game || !this.game.data || this.game.data.length === 0) return false;
+
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+
+    for (const hex of this.game.data) {
+      const [q, r] = hex.pos;
+      const [x, y] = this.cubeToPixel(q, r);
+      minX = Math.min(minX, x - this.hexSize);
+      maxX = Math.max(maxX, x + this.hexSize);
+      minY = Math.min(minY, y - this.hexSize);
+      maxY = Math.max(maxY, y + this.hexSize);
+    }
+
+    const gridW = maxX - minX;
+    const gridH = maxY - minY;
+    if (gridW <= 0 || gridH <= 0) return false;
+
+    const cw = this.container.clientWidth;
+    const ch = this.container.clientHeight;
+    if (cw <= 0 || ch <= 0) return false;
+
+    const padding = 20;
+    let scale = Math.min((cw - padding * 2) / gridW, (ch - padding * 2) / gridH, 3);
+    scale = Math.max(0.1, scale);
+
+    const cx = (minX + maxX) / 2;
+    const cy = (minY + maxY) / 2;
+
+    this.translateX = cw / 2 - cx * scale;
+    this.translateY = ch / 2 - cy * scale;
+    this.scale = scale;
+    this.setScale(scale);
+
+    document.getElementById("settings-zoom").value = scale;
+    document.getElementById("settings-zoom-value").textContent = scale.toFixed(2);
+    return true;
+  }
+
   // 重置视图
   resetView() {
-    this.translateX = this.container.clientWidth / 2;
-    this.translateY = this.container.clientHeight / 2;
-    this.scale = 1;
-    this.setScale(1);
-    document.getElementById("settings-zoom").value = 1;
-    document.getElementById("settings-zoom-value").textContent = "1.00";
+    if (!this.autoFit()) {
+      this.translateX = this.container.clientWidth / 2;
+      this.translateY = this.container.clientHeight / 2;
+      this.scale = 1;
+      this.setScale(1);
+    }
+    document.getElementById("settings-zoom").value = this.scale;
+    document.getElementById("settings-zoom-value").textContent = this.scale.toFixed(2);
   }
 
   // 设置事件监听
@@ -392,6 +444,55 @@ class HexTris {
     // 更新UI
     document.getElementById("settings-zoom").value = newScale;
     document.getElementById("settings-zoom-value").textContent = newScale.toFixed(2);
+  }
+
+  // 触摸拖动和缩放
+  handleTouchStart(e) {
+    e.preventDefault();
+    if (e.touches.length === 1) {
+      this.isDragging = true;
+      this.lastX = e.touches[0].clientX;
+      this.lastY = e.touches[0].clientY;
+      this.svg.style.cursor = "grabbing";
+    } else if (e.touches.length === 2) {
+      this.isDragging = false;
+      this.pinchStartDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY);
+      this.pinchStartScale = this.scale;
+      this.pinchMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      this.pinchMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+    }
+  }
+
+  handleTouchMove(e) {
+    e.preventDefault();
+    if (e.touches.length === 1 && this.isDragging) {
+      const dx = e.touches[0].clientX - this.lastX;
+      const dy = e.touches[0].clientY - this.lastY;
+      this.translateX += dx;
+      this.translateY += dy;
+      this.transformGroup.setAttribute(
+          "transform",
+          `translate(${this.translateX}, ${this.translateY}) scale(${this.scale})`);
+      this.lastX = e.touches[0].clientX;
+      this.lastY = e.touches[0].clientY;
+    } else if (e.touches.length === 2 && this.pinchStartDist) {
+      const newDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY);
+      const newScale = Math.max(0.1, Math.min(3,
+          this.pinchStartScale * (newDist / this.pinchStartDist)));
+      this.setScale(newScale);
+      document.getElementById("settings-zoom").value = newScale;
+      document.getElementById("settings-zoom-value").textContent = newScale.toFixed(2);
+    }
+  }
+
+  handleTouchEnd(e) {
+    this.isDragging = false;
+    this.pinchStartDist = null;
+    this.svg.style.cursor = "grab";
   }
 
   // 绘制指向的轴

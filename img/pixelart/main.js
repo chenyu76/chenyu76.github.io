@@ -79,13 +79,27 @@ var currentHour;
 var isNight = false;
 var isPaused = false; // 全局暂停标志，
 // 目前没有会使他变为true的代码
+var currentGrass = null;
+var meteorIntervalId = null;
+var cloudIntervalId = null;
+var elBackground = null;
+var elMidground = null;
+var elForeground = null;
 
 // https://stackoverflow.com/questions/8022885/rgb-to-hsv-color-in-javascript
 // input: r,g,b in [0,1], out: h in [0,360) and s,v in [0,1]
+// Accepts either (r, g, b) or ([r, g, b]).
+/**
+ * @param {number|Array<number>} r
+ * @param {number=} g
+ * @param {number=} b
+ * @return {Array<number>}
+ */
 function rgb2hsv(r, g, b) {
-  if (g === undefined)
-    return rgb2hex(...r);
-  let v = Math.max(r, g, b), c = v - Math.min(r, g, b);
+  if (Array.isArray(r))
+    return rgb2hsv(r[0], r[1], r[2]);
+  let v = Math.max(r, /** @type {number} */ (g), /** @type {number} */ (b)),
+      c = v - Math.min(r, /** @type {number} */ (g), /** @type {number} */ (b));
   let h = c && (v == r   ? (g - b) / c
                 : v == g ? 2 + (b - r) / c
                          : 4 + (r - g) / c);
@@ -93,9 +107,19 @@ function rgb2hsv(r, g, b) {
 }
 // input: h in [0,360] and s,v in [0,1] output rgb() color// - output: r,g,b in
 // [0,1]
+// Accepts either (h, s, v) or ([h, s, v]).
+/**
+ * @param {number|Array<number>} h
+ * @param {number=} s
+ * @param {number=} v
+ * @return {Array<number>}
+ */
 function hsv2rgb(h, s, v) {
+  if (Array.isArray(h))
+    return hsv2rgb(h[0], h[1], h[2]);
   let f = (n, k = (n + h / 60) % 6) =>
-      v - v * s * Math.max(Math.min(k, 4 - k, 1), 0);
+      /** @type {number} */ (v) -
+      /** @type {number} */ (v) * s * Math.max(Math.min(k, 4 - k, 1), 0);
   return [ f(5) * 255, f(3) * 255, f(1) * 255 ];
 }
 
@@ -112,11 +136,19 @@ function hex2rgb(hex) {
   return [ r, g, b ];
 }
 // 反过来
+// Accepts either (r, g, b) or ([r, g, b]).
+/**
+ * @param {number|Array<number>} r
+ * @param {number=} g
+ * @param {number=} b
+ * @return {string}
+ */
 function rgb2hex(r, g, b) {
-  if (g === undefined)
-    return rgb2hex(...r);
+  if (Array.isArray(r))
+    return rgb2hex(r[0], r[1], r[2]);
   return `#${
-      ((1 << 24) | (r << 16) | (g << 8) | b)
+      ((1 << 24) | (r << 16) | (/** @type {number} */ (g) << 8) |
+       /** @type {number} */ (b))
           .toString(16)
           .slice(1)
           .toUpperCase()}`;
@@ -132,25 +164,34 @@ function getDecimalHour() {
 
 // params：时间（小时）
 // return: 颜色
+// 创建一个闭包缓存空间
+const interpolate_time_color_cache = new Map();
 function interpolate_time_color(hour, colorDict) {
-  if (hour < 0 || hour > 24) {
-    throw new Error("hour out of range. Must be between 0 and 24.");
+  let hourCache = interpolate_time_color_cache.get(hour);
+  if (!hourCache) {
+    hourCache = new Map();
+    interpolate_time_color_cache.set(hour, hourCache);
   }
+  if (hourCache.has(colorDict))
+    return hourCache.get(colorDict);
 
+  // 计算开始
+  // if (hour < 0 || hour > 24) {
+  //   throw new Error("hour out of range. Must be between 0 and 24.");
+  // }
   const keys = Object.keys(colorDict).map(Number);
   let lowerKey = Math.max(...keys.filter((k) => k <= hour));
   let upperKey = Math.min(...keys.filter((k) => k >= hour));
+  let result = hsv2rgb(lowerKey === upperKey
+                           ? colorDict[lowerKey]
+                           : interpolateHSV(
+                                 colorDict[lowerKey],
+                                 colorDict[upperKey],
+                                 (hour - lowerKey) / (upperKey - lowerKey),
+                                 ));
 
-  if (lowerKey === upperKey)
-    return hsv2rgb(...colorDict[lowerKey]);
-
-  let interpolatedColors = interpolateHSV(
-      colorDict[lowerKey],
-      colorDict[upperKey],
-      (hour - lowerKey) / (upperKey - lowerKey),
-  );
-
-  return hsv2rgb(...interpolatedColors);
+  hourCache.set(colorDict, result);
+  return result;
 }
 
 // HSV 插值计算，考虑色相环
@@ -246,9 +287,15 @@ async function imgInit(h = document.documentElement.clientHeight,
   if (time === null && is_first_img_init)
     time = Math.random() * 24;
   // 获取背景和前景容器
-  const background = document.getElementById("pixel-art-background");
-  const midground = document.getElementById("pixel-art-midground");
-  const foreground = document.getElementById("pixel-art-foreground");
+  const background =
+      elBackground ||
+      (elBackground = document.getElementById("pixel-art-background"));
+  const midground =
+      elMidground ||
+      (elMidground = document.getElementById("pixel-art-midground"));
+  const foreground =
+      elForeground ||
+      (elForeground = document.getElementById("pixel-art-foreground"));
   // const container = document.getElementById("pixel-art");
 
   if (time !== null)
@@ -271,9 +318,9 @@ async function imgInit(h = document.documentElement.clientHeight,
   foreground.style.height = `${h}px`;
 
   // 计算三个背景颜色
-  bgcolors = skyColorDict.map(
-      (color) => rgb2hex(interpolate_time_color(currentHour, color)),
-  );
+  // var bgcolors = skyColorDict.map(
+  //     (color) => rgb2hex(interpolate_time_color(currentHour, color)),
+  // );
   // 设置背景宽度
   background.style.width = `${widthInPixel * pixelSize}px`;
 
@@ -300,12 +347,13 @@ async function imgInit(h = document.documentElement.clientHeight,
 
       // 间隔生成流星
       midground.appendChild(generateMeteor(widthInPixel, pixelSize));
-      if (is_first_img_init)
-        setInterval(() => {
-          if (document.visibilityState !== "visible")
-            return;
-          midground.appendChild(generateMeteor(widthInPixel, pixelSize));
-        }, 7000);
+      if (meteorIntervalId)
+        clearInterval(meteorIntervalId);
+      meteorIntervalId = setInterval(() => {
+        if (document.visibilityState !== "visible")
+          return;
+        midground.appendChild(generateMeteor(widthInPixel, pixelSize));
+      }, 7000);
     } else {
       // 白天就是云
       let num_clouds = Math.floor(Math.random() * 8) + 4;
@@ -316,18 +364,19 @@ async function imgInit(h = document.documentElement.clientHeight,
         );
         midground.appendChild(cloud);
       }
-      // 每 42 秒生成一朵云
-      if (is_first_img_init)
-        setInterval(() => {
-          if (document.visibilityState !== "visible")
-            return;
-          let cloud = generateClouds(
-              widthInPixel + Math.round(Math.random() * 10),
-              -CLOUD_CANVAS_SIZE[1] +
-                  Math.round((Math.random() * GRID_HEIGHT) / 2),
-          );
-          midground.appendChild(cloud);
-        }, 42000);
+      if (cloudIntervalId)
+        clearInterval(cloudIntervalId);
+      cloudIntervalId = setInterval(() => {
+        if (document.visibilityState !== "visible")
+          return;
+        let cloud = generateClouds(
+            widthInPixel + Math.round(Math.random() * 10),
+            -CLOUD_CANVAS_SIZE[1] +
+                Math.round((Math.random() * GRID_HEIGHT) / 2),
+        );
+        midground.appendChild(cloud);
+        // 每隔一段时间ms生成一朵云
+      }, 84000);
     }
   }
 
@@ -337,7 +386,12 @@ async function imgInit(h = document.documentElement.clientHeight,
   foreground.appendChild(
       land.draw_background_land(widthInPixel, heightInPixel, pixelSize));
   // 画草地 背景蒲苇
+  if (currentGrass) {
+    currentGrass.stop_move_element_animation();
+    currentGrass = null;
+  }
   var grass = new Grass(pixelSize);
+  currentGrass = grass;
   const edgeLow = 20;
   for (let i = 30; i > -edgeLow + 2; i -= 4) {
     for (let j = 0; j < Math.ceil(widthInPixel / (150 - 2 * i)); j++) {
@@ -382,36 +436,36 @@ async function imgInit(h = document.documentElement.clientHeight,
       Math.round(widthInPixel / 3), heightInPixel, 1 - (edgeLow) / 85,
       rgb2hex(Array(3).fill(255 - (edgeLow)))));
 
-  setTimeout(() => {
+  // 耗时或者不是必须的操作可以延后再做
+  // 兼容性写法（如果浏览器不支持，降级回普通执行）
+  const runNonBlocking =
+      window.requestIdleCallback || function(cb) { return setTimeout(cb, 50); };
+  runNonBlocking(() => {
     grass.compute_offscreen_canvases();
     grass.start_move_element_animation();
-  }, 200);
-
-  foreground.appendChild(PixelTextRenderer.setupTextCycle());
+    foreground.appendChild(PixelTextRenderer.setupTextCycle());
+  });
 
   if (is_first_img_init) {
-    // 滚动事件监听器，往下滚动后暂停动画
-    // 1. 设置阈值（例如：300像素）
-    const scrollThreshold = 0.382 * window.innerHeight;
-    // 4. 用于跟踪是否已超过阈值的状态变量
     let hasPassedThreshold = false;
-    // 2. 监听页面的滚动事件
     window.addEventListener('scroll', function() {
-      // 3. 获取当前的滚动距离
+      var scrollThreshold = 0.382 * window.innerHeight;
       const currentScrollY = window.scrollY;
 
-      // 检查是否向下滚动超过了阈值
       if (currentScrollY > scrollThreshold && !hasPassedThreshold) {
-        grass.stop_move_element_animation();
-        hasPassedThreshold = true; // 更新状态，防止重复执行
-      }
-      // 检查是否向上滚动回到了阈值以内
-      else if (currentScrollY <= scrollThreshold && hasPassedThreshold) {
-        grass.start_move_element_animation();
-        hasPassedThreshold = false; // 更新状态，以便下次超过时能再次触发
+        if (currentGrass)
+          currentGrass.stop_move_element_animation();
+        hasPassedThreshold = true;
+      } else if (currentScrollY <= scrollThreshold && hasPassedThreshold) {
+        if (currentGrass)
+          currentGrass.start_move_element_animation();
+        hasPassedThreshold = false;
       }
     }, true);
   }
 
   is_first_img_init = false;
 }
+// Tell google-closure-compiler do not rename this function
+// since it is used in html
+window['imgInit'] = imgInit;

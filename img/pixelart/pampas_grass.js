@@ -11,15 +11,27 @@ class SeededRandom {
     // 如果没有提供种子，则使用当前时间戳作为默认种子
     this.seed = seed === undefined ? Date.now() : seed;
     // 初始化内部状态 a
-    this.a = this.seed;
+    this.a = (this.seed | 0) || 114514;
   }
 
   /**
-   * 生成下一个伪随机数（0 到 1 之间的浮点数，不包括 1）。
+   * Xorshift32生成下一个伪随机数（0 到 1 之间的浮点数，不包括 1）。
+   * 很垃圾但是很快的算法。
+   * 注意：Xorshift 的种子不能设置为 0！
+   *       Xorshift32 的周期是 $2^{32}-1$！
    * @returns {number} 一个在 [0, 1) 区间的浮点数。
    */
   uniform() {
-    // Mulberry32 算法核心
+    let x = this.a;
+    x ^= x << 13;
+    x ^= x >>> 17;
+    x ^= x << 5;
+    this.a = x;
+    return (x >>> 0) / 4294967296;
+  }
+
+  // 慢了些，没有必要
+  uniform_Mulberry32() {
     // 这是一系列位操作，旨在以一种确定性但看似随机的方式搅乱数字
     let t = this.a += 0x6D2B79F5;
     t = Math.imul(t ^ t >>> 15, t | 1);
@@ -28,20 +40,26 @@ class SeededRandom {
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
   }
 
-  // 生成一个符合正态分布的随机数，使用 Box-Muller 变换
-  normal(mean = 0, stdDev = 1, avoidOutliers = true) {
+  // 生成一个真的符合正态分布的随机数，使用 Box-Muller 变换，没有必要
+  normal_box_muller(mean = 0, stdDev = 1, avoidOutliers = true) {
     let u1 = this.uniform();
     let u2 = this.uniform();
     let z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
     if (avoidOutliers && Math.abs(z0) > 3) {
-      return this.normal(mean, stdDev, true);
+      return this.normal_box_muller(mean, stdDev);
     }
     return z0 * stdDev + mean;
+  }
+  // 假的正态分布，差不多但是比Box-Muller 变换快很多。
+  normal(mean = 0, stdDev = 1) {
+    return (this.uniform() + this.uniform() + this.uniform() - 1.5) * 2.0 *
+               stdDev +
+           mean;
   }
 
   setSeed(newSeed) {
     this.seed = newSeed;
-    this.a = this.seed;
+    this.a = (this.seed | 0) || 114514;
   }
 }
 
@@ -49,7 +67,7 @@ class SeededRandom {
  * 假ctx类
  * 用于计算蒲苇需要的canvas尺寸
  * 传入这个类的实例到绘制函数draw_pampas_grass中
- * 实现假的fillRect方法，记录最大/最小x和y
+ * 实现setPixel方法，记录最大/最小x和y
  */
 class FakeCtx {
   constructor() {
@@ -57,17 +75,52 @@ class FakeCtx {
     this.maxY = -Infinity;
     this.minX = Infinity;
     this.minY = Infinity;
-    this.fillStyle = "#000000"; // 没有用的
   }
-  fillRect(x, y, w, h) {
-    if (x + w > this.maxX)
-      this.maxX = x + w;
-    if (y + h > this.maxY)
-      this.maxY = y + h;
+  setColor(_hex) {} // no-op, 仅用于满足鸭子类型接口
+  setPixel(x, y) {
+    x = Math.floor(x);
+    y = Math.floor(y);
+    if (x > this.maxX)
+      this.maxX = x;
+    if (y > this.maxY)
+      this.maxY = y;
     if (x < this.minX)
       this.minX = x;
     if (y < this.minY)
       this.minY = y;
+  }
+}
+
+/**
+ * 写入 ImageData 像素缓冲区的轻量上下文
+ * 实现与 FakeCtx 相同的鸭子类型接口 (setColor + setPixel)
+ * 用于替代 CanvasRenderingContext2D 的 fillStyle/fillRect 调用
+ */
+class ImageDataContext {
+  constructor(imageData) {
+    this._data = imageData.data;
+    this._w = imageData.width;
+    this._h = imageData.height;
+    this._r = 0;
+    this._g = 0;
+    this._b = 0;
+  }
+  setColor(hex) {
+    const rgb = hex2rgb(hex);
+    this._r = rgb[0];
+    this._g = rgb[1];
+    this._b = rgb[2];
+  }
+  setPixel(x, y) {
+    x = Math.floor(x);
+    y = Math.floor(y);
+    if (x < 0 || x >= this._w || y < 0 || y >= this._h)
+      return;
+    const i = (y * this._w + x) * 4;
+    this._data[i] = this._r;
+    this._data[i + 1] = this._g;
+    this._data[i + 2] = this._b;
+    this._data[i + 3] = 255;
   }
 }
 
@@ -79,27 +132,40 @@ class Grass {
 
     // this.xCapability = 200; // x方向容量
     // this.yCapability = 30; // y方向容量
-    this.animationFrameId = null; // 动画帧ID
-    this.initialCanvasIndex = 2;  // 初始帧在离屏canvas数组中的索引
-    this.totalCanvasCount = 7;    // 最大离屏canvas总数,最小的是1
+    /** @type {?number} */ this.animationFrameId = null; // 动画帧ID
+    this.initialCanvasIndex = 2; // 初始帧在离屏canvas数组中的索引
+    this.totalCanvasCount = 7;   // 最大离屏canvas总数,最小的是1
     /**
      * 蒲苇数据
-     * @type {Array[Object{
-     *   x: number,                 在父容器中的x位置，right定位
-     *   y: number,                 在父容器中的y位置
-     *   pgd: Array                 蒲苇参数，计算不同帧时就不用再次计算了
-     *   adjustedColor              蒲苇颜色，同上
-     *   scale: number,             缩放比例
-     *   rngSeed: number,           随机数生成器种子
-     *   x3D: number,               在三维空间中的x坐标（0, 1）,
-     *                              我希望风从左到右所以0是左边
-     *   nowCanvasIndex: number,    当前显示的canvas在离屏canvas数组中的索引
-     *   bent: number,              当前蒲苇的弯曲度
-     *   bentSpeed: number,         蒲苇弯曲度变化速度
-     *   ctx: CanvasRenderingContext2D  canvasOnScreen的2D上下文
-     *   canvasOnScreen: HTMLCanvasElement  在屏幕上的canvas
-     *   canvasesOffScreen: Array[string]   离屏canvas数组
-     * }]}
+     * x: 在父容器中的x位置，right定位
+     * y: 在父容器中的y位置
+     * pgd: 蒲苇参数，计算不同帧时就不用再次计算了
+     * adjustedColor: 蒲苇颜色，同上
+     * scale: 缩放比例
+     * rngSeed: 随机数生成器种子
+     * x3D: 在三维空间中的x坐标(0到1)，我希望风从左到右所以0是左边
+     * nowCanvasIndex: 当前显示的canvas在离屏canvas数组中的索引
+     * bent: 当前蒲苇的弯曲度
+     * bentSpeed: 蒲苇弯曲度变化速度
+     * ctx: canvasOnScreen的2D上下文
+     * canvasOnScreen: 在屏幕上的canvas
+     * canvasesOffScreen: 离屏canvas数组
+     * @type {!Array<{
+     *   x: number,
+     *   y: number,
+     *   pgd: Array<number>,
+     *   adjustedColor: Array<string>,
+     *   scale: number,
+     *   rngSeed: number,
+     *   x3D: number,
+     *   jitterFrequency: number,
+     *   nowCanvasIndex: number,
+     *   bent: number,
+     *   bentSpeed: number,
+     *   ctx: CanvasRenderingContext2D,
+     *   canvasOnScreen: HTMLCanvasElement,
+     *   canvasesOffScreen: Array<HTMLCanvasElement>
+     * }>}
      */
     this.data = [];
 
@@ -144,17 +210,8 @@ class Grass {
     ];
   }
 
-  // 返回一个开口向右的抛物线函数,函数输入是局部输入y,返回全局坐标[x,y]
-  #parabola_right(start, a) {
-    return (y) => [a * y * y + start[0], -y + start[1]];
-  }
-  #parabola_right_derivative(a) {
-    let two_a = 2 * a;
-    return (y) => two_a * y;
-  }
-
   // 抛物线的近似弧长所对应的长度
-  #parabola_right_length_for_arc_length_approx(L, a) {
+  _parabola_right_length_for_arc_length_approx(L, a) {
     // 这个比较数学上正确，但是不好看
     // return Math.sqrt((Math.sqrt(1 + 64 * a * L * L) - 1) / (8 * a));
     // 这个比较好看，但是不太数学
@@ -162,89 +219,127 @@ class Grass {
            (L / 3);
   }
 
-  #homogeneous_cantilever_beam(start, k, L, EI, q = 1) {
-    let q_over_24EI = q / (24 * EI);
-    let four_L = L * 4;
-    let six_L_square = L * L * 6;
-    return (x) => [start[0] + x,
-                   start[1] +
-                       x * x * q_over_24EI *
-                           (x * x - four_L * x + six_L_square) +
-                       k * x,
-    ];
-  }
-
   // 调用多个 draw_pampas_grass
-  #draw_bunch_pampas_grass(start, ctx, p_color, pgd,
+  _draw_bunch_pampas_grass(start_x, start_y, pen, p_color, pgd,
                            rng_seed = Math.random() * 528491, wind_affect = 1) {
     this.rng.setSeed(rng_seed);
     const bunchNum = 8;
     const seeds = Array.from({length : bunchNum},
                              () => { return this.rng.uniform() * 528491; });
     for (let i = 0; i < bunchNum; i++) {
-      this.#draw_pampas_grass(
-          [
-            start[0] + Math.round(seeds[i] % pgd[16]),
-            start[1] + Math.round(i / bunchNum * pgd[17])
-          ],
-          ctx, p_color, pgd, seeds[i], wind_affect);
+      this._draw_pampas_grass(start_x + Math.round(seeds[i] % pgd[16]),
+                              start_y + Math.round(i / bunchNum * pgd[17]), pen,
+                              p_color, pgd, seeds[i], wind_affect);
     }
-    return ctx;
+    return pen;
   }
-  /*
-   * 在给定的画布ctx上，画一条芦苇，返回这个ctx
-   * start: 起始点坐标[x, y]
-   * ctx: 画布上下文
-   * p_color: 颜色数组，包含三种颜色
-   * pgd: 参数数组，包含芦苇的各种参数
-   * rng_seed: 随机数生成器的种子，默认为随机
-   * wind_affect: 风的影响程度，默认为1
+
+  /**
+   * 绘制一条芦苇
    *
-   * 为了计算需要的绘制大小，ctx可以塞入一些别的类，而不是画布上下文
+   * @param {number} start_x - 芦苇起始点在画布上的全局坐标 x
+   * @param {number} start_y - 芦苇起始点在画布上的全局坐标 y
+   * @param {Object} pen - 写入像素的上下文对象 (如 FakeCtx /
+   *     ImageDataContext)，需包含 setColor 和 setPixel 方法
+   * @param {Array<string>} p_color -
+   *     颜色数组，包含三种颜色，分别对应三个等级的分支与主干
+   * @param {Array<number>} pgd - 芦苇控制参数数组 (Pampas Grass
+   *     Data)，详细索引映射如下：
+   *   - pgd[0], pgd[1] : 苇草主干基础长度的 [均值, 标准差]
+   *   - pgd[2], pgd[3] : 苇草主干弯曲度 (bent) 的 [均值, 标准差]
+   *   - pgd[4], pgd[5] : 分支在主干上长出的起始位置比例的 [均值, 标准差]
+   *   - pgd[6], pgd[7] : 分支长出时初始斜率干扰项的 [均值, 标准差]
+   *   - pgd[8], pgd[9] : 分支物理材料抗弯刚度 (EI) 的 [均值, 标准差]
+   *   - pgd[10, 12, 14]: 分别对应 1、2、3 等级分支的基础物理长度
+   * (base_branch_length)
+   *   - pgd[11, 13, 15]: 分别对应 1、2、3 等级分支的生长密度/生成概率 (percent)
+   * @param {number} [rng_seed] -
+   *     随机数生成器种子，默认通过随机数离散放大生成，确保形态的确定性
+   * @param {number} [wind_affect=1] - 风力影响系数，乘算到主干弯曲度上，默认为
+   *     1
+   * @returns {Object} 返回传入的 pen 像素对象
    */
-  #draw_pampas_grass(start, ctx, p_color, pgd,
+  _draw_pampas_grass(start_x, start_y, pen, p_color, pgd,
                      rng_seed = Math.random() * 528491, wind_affect = 1) {
     this.rng.setSeed(rng_seed);
-    const bent = ((i) => (i > pgd[3] / 2 ? i : pgd[2]))(
-                     this.rng.normal(pgd[2], pgd[3])) *
-                 wind_affect; // 苇草弯曲度
-    const length = this.#parabola_right_length_for_arc_length_approx(
-        Math.round(this.rng.normal(pgd[0], pgd[1])), bent); // 苇草长度
-    const branch_start = Math.round(
-        length * this.rng.normal(pgd[4], pgd[5])); // 苇草分支起始位置
 
-    // start[1] += length * rng.uniform(); // 苇草起始位置偏移
+    // 计算主干弯曲度：从正态分布中抽取随机弯曲度
+    const randNormal = this.rng.normal(pgd[2], pgd[3]);
+    // 阈值安全保护：如果随机出的弯曲度过小，则强制使用均值
+    // pgd[2]，最后叠加上风力系数
+    const bent = (randNormal > pgd[3] / 2 ? randNormal : pgd[2]) * wind_affect;
 
-    let f = this.#parabola_right(start, bent); // 苇草主干
-    let df = this.#parabola_right_derivative(bent);
+    // 计算主干在纵向(y轴)上的总跨度：利用弧长近似公式，根据期望的物理长度反推抛物线纵向长度
+    const length = this._parabola_right_length_for_arc_length_approx(
+        Math.round(this.rng.normal(pgd[0], pgd[1])), bent);
 
-    let draw_branch = (color, base_branch_length, precent = 1) => {
-      ctx.fillStyle = color;
+    // 计算分支在主干上长出的起点纵向纵坐标（由长度乘以一个比例分布决定，通常长在植物中上段）
+    const branch_start = Math.round(length * this.rng.normal(pgd[4], pgd[5]));
+
+    // 预计算主干导数的常数项
+    // （对应开口向右抛物线 x = a * y^2 的导数 dx/dy = 2 * a * y 中的 2 * a）
+    const two_bent = 2 * bent;
+
+    for (let b = 0; b < 3; b++) {
+      const color = p_color[b];                   // 当前等级分支的像素颜色
+      const base_branch_length = pgd[10 + b * 2]; // 当前等级分支的基础参考长度
+      const percent =
+          pgd[11 + b * 2]; // 当前等级分支的生长密度门槛（0~1 概率值）
+
+      pen.setColor(color);
+
+      // 沿着主干生长区间 [branch_start, length]，逐像素行遍历是否长出分支
       for (let y = branch_start; y < length; y++) {
-        if (this.rng.uniform() > precent)
-          continue; // 控制分支密度
-        let branch_length = Math.round(
-            this.rng.normal(base_branch_length, base_branch_length / 2),
-        );
-        let g = this.#homogeneous_cantilever_beam(
-            f(y),
-            df(y) - this.rng.normal(pgd[6], pgd[7]), // 苇草分支起始斜率
-            base_branch_length,                      // 苇草分支长度
-            this.rng.normal(pgd[8], pgd[9]),         // 苇草分支弯曲度
-        );
-        for (let x = 0; x < branch_length; x++)
-          ctx.fillRect(...g(x).map(Math.floor), 1, 1);
+        // 控制分支密度：若生成的均匀随机数大于设定概率，则跳过当前位置不生成分支
+        if (this.rng.uniform() > percent)
+          continue;
+
+        // 正态分布随机决定当前单根分支的具体物理长度
+        const branch_length = Math.round(
+            this.rng.normal(base_branch_length, base_branch_length / 2));
+
+        // 开口向右抛物线方程：x = a*y^2 + start_x ；
+        // y轴由于向上生长取反：y_global = -y + start_y
+        const f1_y = bent * y * y + start_x;
+        const f2_y = -y + start_y;
+
+        // 计算当前 y 坐标下主干的切线斜率 (展开原 _parabola_right_derivative
+        // 逻辑)
+        const df_y = two_bent * y;
+        // 分支起始长出的基准斜率 k = 主干当前切线斜率 - 随机斜率干扰项
+        const k = df_y - this.rng.normal(pgd[6], pgd[7]);
+
+        const L = base_branch_length; // 悬臂梁的物理跨度标准
+        const EI = this.rng.normal(
+            pgd[8], pgd[9]); // 材料的抗弯刚度 (弹性模量 E * 截面惯性矩 I)
+        const q = 1;         // 分支承受的简化均布载荷 (模拟重力下垂或风载)
+
+        // 预计算材料力学悬臂梁挠度公式中与局部变量 x
+        const q_over_24EI = q / (24 * EI);
+        const four_L = L * 4;
+        const six_L_square = L * L * 6;
+
+        for (let x = 0; x < branch_length; x++) {
+          // 展开原 _homogeneous_cantilever_beam 均匀受载悬臂梁公式
+          // 横坐标全局位置：顺着主干横坐标顺势向右自然延伸
+          const g1_x = f1_y + x;
+          // 纵坐标全局位置：在主干纵坐标基础上，叠加初始斜率倾斜量以及典型的悬臂梁四次多项式下垂挠度方程：
+          // y_local = (q / 24EI) * x^2 * (x^2 - 4 * L * x + 6 * L^2) + k * x
+          const g2_x =
+              f2_y + x * x * q_over_24EI * (x * x - four_L * x + six_L_square) +
+              k * x;
+          pen.setPixel(g1_x, g2_x);
+        }
       }
-    };
-    draw_branch(p_color[0], pgd[10], pgd[11]);
-    draw_branch(p_color[1], pgd[12], pgd[13]);
-    draw_branch(p_color[2], pgd[14], pgd[15]);
+    }
 
-    ctx.fillStyle = p_color[2];
-    for (let y = 0; y < length; y++) // 主干
-      ctx.fillRect(...f(y).map(Math.floor), 1, 1);
+    // 单独绘制整条芦苇的抛物线主干
+    pen.setColor(p_color[2]);
+    for (let y = 0; y < length; y++) {
+      pen.setPixel(bent * y * y + start_x, -y + start_y);
+    }
 
-    return ctx;
+    return pen;
   }
   /*
    * 给其他模块调用的函数
@@ -261,15 +356,17 @@ class Grass {
    * 开始移动蒲苇元素的动画
    */
   start_move_element_animation() {
-    if (this.animationFrameId !== null)
-      cancelAnimationFrame(this.animationFrameId);
+    const frameId = this.animationFrameId;
+    if (frameId !== null)
+      cancelAnimationFrame(frameId);
     this.lastAnimationTime = performance.now();
     this.animationFrameId = requestAnimationFrame(
         (timestamp) => this.moveElementAnimation(timestamp));
   }
   stop_move_element_animation() {
-    if (this.animationFrameId !== null)
-      cancelAnimationFrame(this.animationFrameId);
+    const frameId = this.animationFrameId;
+    if (frameId !== null)
+      cancelAnimationFrame(frameId);
     this.animationFrameId = null;
   }
   toggle_move_element_animation() {
@@ -297,15 +394,11 @@ class Grass {
     }
 
     // 过滤掉已经结束的风
-    for (let i = this.winds.length - 1; i >= 0; i--) {
-      const wind = this.winds[i];
-      if (timestamp > wind.t) {
-        this.winds.splice(i, 1);
-      }
-    }
+    this.winds = this.winds.filter(w => timestamp <= w.t);
+
     // 创建新风
     if (timestamp - this.lastWindCreateTime > this.nextWindCreateInterval) {
-      this.winds.push(this.#create_wind_function(timestamp));
+      this.winds.push(this._create_wind_function(timestamp));
       this.nextWindCreateInterval = this.rng.normal(2000, 500);
       this.lastWindCreateTime = timestamp;
     }
@@ -367,7 +460,7 @@ class Grass {
    *             大小尽量控制在[0, 1]之间
    * 时间都是毫秒
    */
-  #create_wind_function(t_offset = 0) {
+  _create_wind_function(t_offset = 0) {
     const w = this.rng.normal(0.6, 0.2);        // 风宽度
     const h = this.rng.normal(0.3, 0.05);       // 风高度
     const v = this.rng.normal(0.0005, 0.00006); // 风速度
@@ -424,7 +517,8 @@ class Grass {
       // 线性的应该够用
       const windAffect = (i) => (i - initialCanvasIndex) / totalCanvasCount + 1;
 
-      const initalCanvas = document.createElement("canvas");
+      const initalCanvas =
+          /** @type {!HTMLCanvasElement} */ (document.createElement("canvas"));
       initalCanvas.width = d.canvasOnScreen.width;
       initalCanvas.height = d.canvasOnScreen.height;
       const ctx = initalCanvas.getContext("2d");
@@ -434,12 +528,12 @@ class Grass {
       initialCanvasIndex = Math.round(initialCanvasIndex);
       totalCanvasCount = Math.round(totalCanvasCount);
       for (let i = 0; i < initialCanvasIndex; i++)
-        d.canvasesOffScreen.push(this.#create_single_pampas_grass_canvas(
+        d.canvasesOffScreen.push(this._create_single_pampas_grass_canvas(
             d.x, d.y, d.rngSeed, windAffect(i), d.canvasOnScreen.width,
             d.canvasOnScreen.height, d.pgd, d.adjustedColor));
       d.canvasesOffScreen.push(initalCanvas);
       for (let i = initialCanvasIndex + 1; i < totalCanvasCount; i++)
-        d.canvasesOffScreen.push(this.#create_single_pampas_grass_canvas(
+        d.canvasesOffScreen.push(this._create_single_pampas_grass_canvas(
             d.x, d.y, d.rngSeed, windAffect(i), d.canvasOnScreen.width,
             d.canvasOnScreen.height, d.pgd, d.adjustedColor));
 
@@ -467,8 +561,8 @@ class Grass {
     const adjusted_color = Grass.get_adjusted_color(color_multiplyer);
     const whData =
         [ 1, 2 ].map( // 这里的1, 2 是上面的 windAffect 函数最大最小值
-            (num, i) => this.#draw_bunch_pampas_grass(
-                [ 0, 0 ], fakeCtx[i], adjusted_color, pgd, rngSeed,
+            (num, i) => this._draw_bunch_pampas_grass(
+                0, 0, fakeCtx[i], adjusted_color, pgd, rngSeed,
                 num - this.initialCanvasIndex / this.totalCanvasCount));
 
     const width =
@@ -476,7 +570,7 @@ class Grass {
     const height =
         whData.map(c => c.maxY - c.minY).reduce((a, b) => Math.max(a, b)) + 2;
 
-    const canvas = this.#create_single_pampas_grass_canvas(
+    const canvas = this._create_single_pampas_grass_canvas(
         x, y, rngSeed, 1, width, height, pgd, adjusted_color);
 
     this.data.push({
@@ -492,7 +586,7 @@ class Grass {
       rngSeed : rngSeed,
       jitterFrequency : Math.round(Math.abs(rngSeed)) % 140 + 180,
       canvasOnScreen : canvas,
-      ctx : canvas.getContext("2d"),
+      ctx : /** @type {!CanvasRenderingContext2D} */ (canvas.getContext("2d")),
       canvasesOffScreen : []
     });
     return canvas;
@@ -501,30 +595,33 @@ class Grass {
    * 创建一个包含单株蒲苇的、尺寸大致合适的独立canvas。
    * @param {number} x - canvas在父容器中的right定位值。
    * @param {number} y - canvas在父容器中的top定位值。
-   * @param {number} scale - 蒲苇的缩放比例。
-   * @param {string} [color_multiplyer="#FFFFFF"] - 用于生成蒲苇颜色的基础色。
-   * @param {number} [rng_seed=Math.random()*528491] - 随机数生成器的种子。
-   * @param {number} [wind_affect=1] - 风对蒲苇的影响程度。
-   * @param {number} [canvasWidth] - 画布宽度
-   * @param {number} [canvasHeight] - 画布高度
+   * @param {number} rng_seed - 随机数生成器的种子。
+   * @param {number} wind_affect - 风对蒲苇的影响程度。
+   * @param {number} canvasWidth - 画布宽度
+   * @param {number} canvasHeight - 画布高度
    * @param {Array<number>} pgd - 蒲苇参数数组
    * @param {Array<string>} adjusted_color - 蒲苇颜色数组
-   * @returns {HTMLCanvasElement} -
+   * @returns {!HTMLCanvasElement} -
    * 返回一个绝对定位的、包含蒲苇的canvas元素。
    */
-  #create_single_pampas_grass_canvas(x, y, rng_seed, wind_affect, canvasWidth,
+  _create_single_pampas_grass_canvas(x, y, rng_seed, wind_affect, canvasWidth,
                                      canvasHeight, pgd, adjusted_color) {
 
     // 创建画布来绘制蒲苇，避免图像被裁剪
-    const canvas = document.createElement("canvas");
+    const canvas =
+        /** @type {!HTMLCanvasElement} */ (document.createElement("canvas"));
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
     const ctx = canvas.getContext("2d");
     ctx.imageSmoothingEnabled = false;
 
-    const startPosition = [ 2, canvasHeight + 1 ];
-    this.#draw_bunch_pampas_grass(startPosition, ctx, adjusted_color, pgd,
-                                  rng_seed, wind_affect);
+    const imageData = ctx.createImageData(canvasWidth, canvasHeight);
+    const idCtx = new ImageDataContext(imageData);
+
+    this._draw_bunch_pampas_grass(2, canvasHeight + 1, idCtx, adjusted_color,
+                                  pgd, rng_seed, wind_affect);
+
+    ctx.putImageData(imageData, 0, 0);
 
     canvas.style.position = "absolute";
     canvas.style.right = `${x - canvasWidth}px`;

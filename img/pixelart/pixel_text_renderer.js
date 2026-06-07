@@ -5,10 +5,12 @@ class PixelTextRenderer {
   /**
    * @param {Object} config
    * @param {HTMLCanvasElement} config.canvas - 目标 canvas
-   * @param {number[]} [config.fillColor=[255,255,255]] - 着色像素颜色 [R,G,B]
+   * @param {Array<number>=} config.fillColor - 着色像素颜色 [R,G,B]
    * @param {number} [config.lineGap=0] - 行间额外间距（像素）
    */
+  /** @type {number} */
   static ASCII_BASE = 32;
+  /** @type {number} */
   static ASCII_RANGE = 64;
 
   constructor({canvas, fillColor = [ 255, 255, 255 ], lineGap = 0}) {
@@ -29,7 +31,9 @@ class PixelTextRenderer {
                                                        _pixels : null
                                                      }));
 
+    /** @type {!Array<number>} */ this._rgba = [ 255, 255, 255, 255 ];
     this.setFillColor(fillColor);
+    /** @type {?ImageData} */ this._imageData = null;
     this.lineBaseOffset = PIXEL_GLYPH_DATA.lineBaseOffset;
     this.lineHeight = PIXEL_GLYPH_DATA.lineRowHeight + this.lineGap;
   }
@@ -134,7 +138,7 @@ class PixelTextRenderer {
   /**
    * 增量渲染 indexList 从 prevVisibleChars 到 visibleChars
    * 首次调用（prev=0）时清除画布；后续只绘制新增字符
-   * @param {number[]} indexList
+   * @param {!Array<number>} indexList
    * @param {number} visibleChars - 要显示的字数（包含换行符 -1）
    * @param {number} [prevVisibleChars=0] - 已绘制的字数
    * @param {number} [offsetX=0] - 渲染起始 X 偏移（像素）
@@ -211,6 +215,8 @@ class PixelTextRenderer {
       canvas.width = gridW;
       canvas.height = gridH;
       canvas.style.zoom = pixelSize;
+      PixelTextRenderer._cachedGridH = gridH;
+      PixelTextRenderer._cachedGridW = gridW;
       if (PixelTextRenderer._triggerNext)
         PixelTextRenderer._triggerNext();
       return canvas;
@@ -231,6 +237,11 @@ class PixelTextRenderer {
     const renderer = new PixelTextRenderer(
         {canvas : canvas, fillColor : fillColor, lineGap : 1});
 
+    PixelTextRenderer._cachedGridH =
+        Math.ceil(document.documentElement.clientHeight / pixelSize);
+    PixelTextRenderer._cachedGridW =
+        Math.ceil(document.documentElement.clientWidth / pixelSize);
+
     const lists = PIXEL_GLYPH_DATA.indexLists;
 
     const timePerPixel = 0.02;
@@ -244,10 +255,8 @@ class PixelTextRenderer {
 
     async function cycle() {
       while (true) {
-        const gridH =
-            Math.ceil(document.documentElement.clientHeight / pixelSize);
-        const gridW =
-            Math.ceil(document.documentElement.clientWidth / pixelSize);
+        const gridH = PixelTextRenderer._cachedGridH;
+        const gridW = PixelTextRenderer._cachedGridW;
         canvas.width = gridW;
         canvas.height = gridH;
         canvas.style.zoom = pixelSize;
@@ -274,7 +283,7 @@ class PixelTextRenderer {
         await new Promise(resolve => {
           function step() {
             const elapsed = (performance.now() - start) / 1000;
-            let count = 0;
+            let count = lastCount;
             while (count < delays.length && elapsed >= delays[count])
               count++;
 
