@@ -417,21 +417,15 @@ function draw_background_sky(w, h, pixelSize) {
   canvas.style.top = `0px`;
   canvas.style.zoom = pixelSize;
 
-  const y0 = (11 / 24) * h - (6 * w * w) / (5 * h);
+  const th = (6 - Math.abs(6 - (currentHour % 12))) / 6;
+  const y0 = (11 / 24 * h - 6 * w * w / h / 5) * (th * 0.75 + 0.25);
   const r1 = h / 2 - y0;
-  const r2 = (4 * h) / 5 - y0;
+  const r2 = h * 4 / 5 - y0;
   const sw = 10; // 渐变宽度
   const pow = (x) => x * x;
   const bgcolors = skyColorDict.map(
       (colors) => interpolate_time_color(currentHour, colors),
   );
-  const fill = (x, y, color_index) => {
-    const index = (y * w + x) * 4;
-    imageData.data[index] = bgcolors[color_index][0];     // R
-    imageData.data[index + 1] = bgcolors[color_index][1]; // G
-    imageData.data[index + 2] = bgcolors[color_index][2]; // B
-    imageData.data[index + 3] = 255;                      // A
-  };
   const d2 = [
     0,
     r1 - 2 * sw,
@@ -443,35 +437,60 @@ function draw_background_sky(w, h, pixelSize) {
     r2,
     r2 + sw,
   ].map(pow);
-  const edges = Array.from(
-      {length : d2.length + 1},
-      (_, i) => i !== d2.length
-                    ? Array.from(
-                          {length : h},
-                          (_, y) => Math.max(
-                              0,
-                              Math.min(
-                                  w - 1,
-                                  Math.floor(
-                                      ((x) => (x > 0 ? Math.sqrt(x) : 0))(
-                                          d2[i] - pow(y - y0)),
-                                      ),
-                                  ),
-                              ),
-                          )
-                    : Array(h).fill(w),
-  );
 
-  const typeF = [
-    (_, __) => false,
-    (x, y) => (x + y) % 4 === 0 || ((x + y) % 4 === 2 && x % 2 === 1),
-    (x, y) => (x + y) % 2 === 0,
-    (x, y) => !typeF[1](x, y),
-  ];
-  for (let y = 0; y < h; y++)
-    for (let i = 0, j = 0; i < edges.length - 1; i++, j = Math.floor(i / 4))
-      for (let x = edges[i][y]; x < edges[i + 1][y]; x++)
-        fill(x, y, j + (typeF[i % 4](x, y) ? 1 : 0));
+  const edges = Array(d2.length).fill(null).map(
+      (_, i) => Array(h).fill(null).map(
+          (_, y) => Math.max(
+              0,
+              Math.min(
+                  w - 1,
+                  Math.floor(
+                      ((x) => (x > 0 ? Math.sqrt(x) : 0))(d2[i] - pow(y - y0)),
+                      ),
+                  ),
+              ),
+          ));
+  edges.push(Array(h).fill(w));
+
+  const data = imageData.data;
+  const rColors = bgcolors.map(c => c[0]);
+  const gColors = bgcolors.map(c => c[1]);
+  const bColors = bgcolors.map(c => c[2]);
+
+  for (let y = 0; y < h; y++) {
+    const rowOffset = y * w * 4; // 缓存行偏移量
+
+    for (let i = 0; i < edges.length - 1; i++) {
+      const startX = edges[i][y];
+      const endX = edges[i + 1][y];
+      if (startX >= endX)
+        continue; // 空区间直接跳过
+
+      const j = i >> 2;   // 代替 Math.floor(i / 4)
+      const type = i & 3; // 代替 i % 4
+
+      let index = rowOffset + startX * 4;
+
+      for (let x = startX; x < endX; x++) {
+        let cond = false;
+        if (type === 1) {
+          const sum = x + y;
+          cond = (sum & 3) === 0 || ((sum & 3) === 2 && (x & 1) === 1);
+        } else if (type === 2) {
+          cond = ((x + y) & 1) === 0;
+        } else if (type === 3) {
+          const sum = x + y;
+          cond = !((sum & 3) === 0 || ((sum & 3) === 2 && (x & 1) === 1));
+        } // type === 0 时 cond 默认为 false
+
+        data[index] = cond ? rColors[j + 1] : rColors[j];
+        data[index + 1] = cond ? gColors[j + 1] : gColors[j];
+        data[index + 2] = cond ? bColors[j + 1] : bColors[j];
+        data[index + 3] = 255;
+        index += 4;
+      }
+    }
+  }
 
   ctx.putImageData(imageData, 0, 0);
 
