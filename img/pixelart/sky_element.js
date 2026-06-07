@@ -477,3 +477,124 @@ function draw_background_sky(w, h, pixelSize) {
 
   return canvas;
 }
+
+function draw_background_sky_new(w, h, pixelSize) {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  canvas.style.position = "absolute";
+  canvas.style.right = "0px";
+  canvas.style.top = `0px`;
+  canvas.style.zoom = pixelSize;
+
+  const ctx = canvas.getContext("2d");
+  const imageData = ctx.createImageData(w, h);
+
+  const th = (6 - Math.abs(6 - (currentHour % 12))) / 6;
+  const ht = 1 - th;
+  const y0 = 11 / 24 * h - 6 * w * w / h / 5;
+  const xc = ht * w * 2 / 3 + th * w;
+  const yc = ht * h + th * y0;
+  const r1 = ht * w / 6 + th * (h / 2 - y0);
+  const r2 = ht * w / 2 + th * (h * 4 / 5 - y0);
+  const r0 = 20;
+  const sw = 5;
+  const gw = 10;
+
+  const bgcolors = skyColorDict.map(
+      (colors) => interpolate_time_color(currentHour, colors),
+  );
+  const sunColors = [ [ 255, 250, 245 ], [ 100, 75, 35 ] ];
+  const colors = sunColors.concat(bgcolors);
+
+  const squ = x => x * x;
+  const sqr = Math.sqrt;
+
+  const circleCoords = (rad) => {
+    // 给定一个整数半径，返回圆心在原点的一个圆右边的整数近似坐标集合，
+    // 一个[[x1, x2, ...], [y1, y2, ...]] 包含上下两个端点
+    // 通过对称性完成。
+    // 代码在小半径下会报错但我们不管它。
+    if (rad <= 0)
+      return [ [], [] ];
+    const x0 = Math.round(rad * 0.7071067811865475);
+    const ys1 = Array(Math.max(0, x0 - 1)).fill(null).map((_, i) => i + 1);
+    const xs1 = ys1.map(v => Math.round(sqr(Math.max(0, squ(rad) - squ(v)))));
+    const xsp = xs1.concat(ys1);
+    const ysp = ys1.concat(xs1);
+    const xs = xsp.concat(xsp).concat([ 0, 0, x0, x0, rad ]);
+    const ys = ysp.concat(ysp.map(y => -y)).concat([ rad, -rad, x0, -x0, 0 ]);
+    return [ xs, ys ];
+  };
+  const shiftToCenter =
+      (coords) => [coords[0].map(v => v + xc), coords[1].map(v => v + yc)];
+  const rearrangeCoords = (coords) => {
+    // 给定一些坐标（这里是圆）集合，
+    // 返回一个数组，索引是y高度，值是此时的x。
+    // x 会被限制
+    const clip = x => Math.min(Math.max(Math.round(x), 0), w - 1);
+    const ps = Array(h).fill(-1);
+    for (let i = 0; i < coords[1].length; i++) {
+      const cy = Math.round(coords[1][i]);
+      if (0 <= cy && cy < h) {
+        ps[cy] = clip(coords[0][i]);
+      }
+    }
+    return ps;
+  };
+  const radii = [
+    0, r0, r0 + sw, r0 + 2 * sw, r1 - 2 * gw, r1 - gw, r1, r1 + gw, r2 - 2 * gw,
+    r2 - gw, r2, r2 + gw
+  ];
+  const clr = [ 0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4 ];
+  const typ = [ 0, 2, 0, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0 ];
+  const edges = [
+    radii.map(circleCoords)
+        .map(a1 => a1.map(a2 => a2.map(v => -v)))
+        .map(shiftToCenter)
+        .map(rearrangeCoords),
+    radii.map(circleCoords).map(shiftToCenter).map(rearrangeCoords)
+  ];
+  // 复用单行缓冲区
+  const rowZones = new Int8Array(w);
+  const data = imageData.data;
+  let pixelPtr = 0;
+  for (let y = 0; y < h; y++) {
+    rowZones.fill(radii.length - 1);
+
+    // 从大圆到小圆覆盖式写入当前行的区间
+    for (let i = radii.length - 1; i >= 0; i--) {
+      const left = edges[0][i][y];
+      const right = edges[1][i][y];
+      // 如果该圆在当前行存在
+      if (left !== -1 && right !== -1) {
+        for (let x = left; x <= right; x++) {
+          rowZones[x] = i;
+        }
+      }
+    }
+    for (let x = 0; x < w; x++) {
+      const idx = rowZones[x];
+      let dither = false; // case 0: 纯色，不抖动
+      switch (typ[idx]) {
+      case 1: // 25% 密度网格
+        dither = (x + y) % 4 === 0 || ((x + y) % 4 === 2 && x % 2 === 1);
+        break;
+      case 2: // 50% 密度交错
+        dither = (x + y) % 2 === 0;
+        break;
+      case 3: // 75% 密度网格（刚好和 case 1 取反）
+        dither = !((x + y) % 4 === 0 || ((x + y) % 4 === 2 && x % 2 === 1));
+        break;
+      }
+      const color = colors[clr[idx] + (dither ? 1 : 0)];
+      data[pixelPtr++] = color[0]; // R
+      data[pixelPtr++] = color[1]; // G
+      data[pixelPtr++] = color[2]; // B
+      data[pixelPtr++] = 255;      // A
+    }
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+  return canvas;
+}
