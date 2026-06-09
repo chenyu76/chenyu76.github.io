@@ -2,10 +2,10 @@
   --bg-color: #f0f0f0;
   --card-bg-color: #ffffff;
   --right-sidebar-width: 260px;
-  --lett-sidebar-width: 60px;
+  --left-sidebar-width: 60px;
   --main-width-desktop: min(
     800px,
-    calc(100vw - var(--lett-sidebar-width) - var(--right-sidebar-width) - 100px)
+    calc(100vw - var(--left-sidebar-width) - var(--right-sidebar-width) - 100px)
   );
   --main-width-mobile: 95vw;
   --main-width: var(--main-width-desktop);
@@ -112,7 +112,7 @@ body {
 .sidebar {
   display: none;
   /* 移动端默认隐藏 */
-  width: var(left-sidebar-width);
+  width: var(--left-sidebar-width);
   /* 左侧栏宽度 */
   flex-shrink: 0;
   /* 高度由 flex stretch 自动撑开，不需要设置 height */
@@ -174,8 +174,8 @@ body {
   gap: 15px;
 }
 
-.vertical-buttons a img,
-.vertical-buttons button img {
+.vertical-buttons a svg,
+.vertical-buttons button svg {
   width: 24px;
   height: 24px;
   opacity: 0.6;
@@ -183,8 +183,8 @@ body {
   display: block;
 }
 
-.vertical-buttons a:hover img,
-.vertical-buttons button:hover img {
+.vertical-buttons a:hover svg,
+.vertical-buttons button:hover svg {
   opacity: 1;
 }
 
@@ -253,6 +253,11 @@ p {
   height: 1.5em;
   font-size: 16px;
   vertical-align: middle;
+  width: 24px; /* 或者你需要的尺寸 */
+  height: 24px;
+  fill: #1f1f1f; /* 控制大部分图标的填充颜色 */
+  stroke: #1f1f1f; /* GitHub图标需要用到描边颜色 */
+  overflow: visible;
 }
 
 /* 按钮动画 */
