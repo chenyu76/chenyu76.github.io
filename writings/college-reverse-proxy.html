@@ -711,7 +711,7 @@ LOG_FILE = __file__ + <span class="hljs-string">&quot;.log&quot;</span>
 <p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
 <p>树莓派似乎本身就不用输密码，可以跳过这一步。</p>
 </div>
-<h3 id="h3-u81eau52a8u767bu9646u6821u56edu7f51">自动登陆校园网</h3><p>如果Client无法连接广域网，那这套方案是肯定不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的<a href="https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetwork.py">这个仓库</a>里就有这样一个脚本，可以用于登陆szu宿舍区校园网。</p>
+<h3 id="h3-u81eau52a8u767bu9646u6821u56edu7f51">自动登陆校园网</h3><p>如果Client无法连接广域网，那这套方案是肯定不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的<a href="https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetworkDormArea.py">这个仓库</a>里就有这样一个脚本，可以用于登陆szu宿舍区校园网<sup><a id="footnote-ref-2" href="#footnote-2" data-footnote-ref aria-describedby="footnote-label">2</a></sup>。</p>
 <p>为了解决有时校园网需要重新登陆的问题，我们配置另一个定时脚本和对应的service。</p>
 <h4 id="h4-1-u76d1u63a7u811au672c">1. 监控脚本</h4><p>我们需要写一个简单的 Shell 脚本来执行循环检测逻辑。</p>
 <ol>
@@ -792,6 +792,9 @@ INTERVAL=300
 <ol>
 <li id="footnote-1">
 <p>我没有收他们的广告费。但是他们家甚至是免费的，我都不知道他们怎么赚钱 <a href="#footnote-ref-1" data-footnote-backref aria-label="Back to reference 1">↩</a></p>
+</li>
+<li id="footnote-2">
+<p>2026.06.27 更新：请注意这个脚本仅能登录宿舍区的校园网。教学区的是登录不了的！我在同一个仓库里放了另一个登录教学区校园网的脚本，如有需要请仔细查看。 <a href="#footnote-ref-2" data-footnote-backref aria-label="Back to reference 2">↩</a></p>
 </li>
 </ol>
 </section>

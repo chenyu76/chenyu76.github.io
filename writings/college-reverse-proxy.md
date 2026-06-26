@@ -698,7 +698,9 @@ username ALL=(ALL) NOPASSWD: /usr/sbin/shutdown
 
 ### 自动登陆校园网
 
-如果Client无法连接广域网，那这套方案是肯定不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的[这个仓库](https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetwork.py)里就有这样一个脚本，可以用于登陆szu宿舍区校园网。
+如果Client无法连接广域网，那这套方案是肯定不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的[这个仓库](https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetworkDormArea.py)里就有这样一个脚本，可以用于登陆szu宿舍区校园网[^2]。
+
+[^2]: 2026.06.27 更新：请注意这个脚本仅能登录宿舍区的校园网。教学区的是登录不了的！我在同一个仓库里放了另一个登录教学区校园网的脚本，如有需要请仔细查看。
 
 为了解决有时校园网需要重新登陆的问题，我们配置另一个定时脚本和对应的service。
 
