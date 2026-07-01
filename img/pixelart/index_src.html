@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>像素图背景</title>
+    <style>
+      STYLE_PLACEHOLDER
+    </style>
+  </head>
+
+  <body>
+    <div id="pixel-art">
+      <div id="pixel-art-background"></div>
+      <div id="pixel-art-midground"></div>
+      <div id="pixel-art-foreground"></div>
+    </div>
+    <script>
+      SCRIPT_PLACEHOLDER;
+
+      imgInit();
+      // 每隔十分钟更新背景
+      // setInterval(imgInit, 600000);
+
+      // 防抖函数
+      function debounce(func, delay = 250) {
+        let timeoutId;
+        return (...args) => {
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => {
+            func.apply(this, args);
+          }, delay);
+        };
+      }
+
+      let imgLastSeenSize = {
+        width: document.documentElement.clientWidth,
+        height: document.documentElement.clientHeight,
+      };
+      // 处理窗口大小变化
+      function handleResize() {
+        // 在开关 display:none 时，不触发重新绘制
+        if (
+          document.documentElement.clientHeight == 0 ||
+          document.documentElement.clientWidth == 0
+        )
+          return;
+        if (
+          imgLastSeenSize.width == document.documentElement.clientWidth &&
+          imgLastSeenSize.height == document.documentElement.clientHeight
+        )
+          return;
+        imgLastSeenSize.width = document.documentElement.clientWidth;
+        imgLastSeenSize.height = document.documentElement.clientHeight;
+
+        // if (typeof is_first_img_init !== "undefined") is_first_img_init = true;
+        imgInit();
+      }
+      const debouncedResize = debounce(handleResize, 300);
+      window.addEventListener("resize", debouncedResize);
+    </script>
+  </body>
+</html>
