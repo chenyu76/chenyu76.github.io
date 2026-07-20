@@ -40,9 +40,11 @@
         }
       });
 
-      imgInit();
-      // 每隔十分钟更新背景
-      // setInterval(imgInit, 600000);
+      try {
+        applyPixelArtTheme(parent.document.documentElement.getAttribute('data-theme') || 'light');
+      } catch(e) {
+        applyPixelArtTheme('light');
+      }
 
       // 防抖函数
       function debounce(func, delay = 250) {
