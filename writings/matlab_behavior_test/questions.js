@@ -379,4 +379,42 @@ Which of the following statement can print out \`missing\`?
     answer : 4,
     explanation : "Most of functions in MATLAB don't accept `missing`."
   },
+  {
+    question : `
+What is the output of the following MATLAB program?
+\`\`\`
+diff = unicode2native("A")-unicode2native("a");
+disp(char('HELLO' - diff))
+\`\`\`
+`,
+    options : [ "hello", "HELLO", "Error using  - " ],
+    answer : 2,
+    explanation :
+        `\`unicode2native\` returns a uint8 number. Use \`double(unicode2native(.))\` to convert it.`
+  },
+  {
+    question : `
+What is the output of the following MATLAB program?
+\`\`\`
+diff = double(unicode2native("A")-unicode2native("a"));
+disp(char('HELLO' - diff))
+\`\`\`
+`,
+    options : [ "hello", "HELLO", "Error using  - " ],
+    answer : 1,
+    explanation :
+        `Arithmetic operations performed directly on integer data types (here is uint8 of \`unicode2native\`) use saturation arithmetic. This means that if a result falls outside the range of the data type [0, 255], it is clipped to the nearest boundary.`
+  },
+  {
+    question : `
+What is the output of the following MATLAB program?
+\`\`\`
+disp(char('HELLO' - 'A' + 'a')) 
+\`\`\`
+`,
+    options : [ "hello", "HELLO", "Error using  - " ],
+    answer : 0,
+    explanation :
+        `MATLAB treats characters in arithmetic operations as their standard double-precision ASCII numeric values.`
+  },
 ];
