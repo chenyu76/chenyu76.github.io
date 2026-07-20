@@ -19,6 +19,18 @@
   </head>
 
   <body>
+    <script>
+      (function () {
+        var t = localStorage.getItem("theme");
+        t =
+          t === "light" || t === "dark"
+            ? t
+            : window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
     <iframe
       id="iframe-background"
       src="/img/pixelart/index.html"
@@ -81,23 +93,40 @@
         <div id="left-sidebar" class="sidebar">
           <div class="sidebar-card">
             <div class="vertical-buttons">
-              <a href="/toc.html" data-title-zh="文档索引" data-title-en="Document Index" title="" class="fade-in"
+              <a
+                href="/toc.html"
+                data-title-zh="文档索引"
+                data-title-en="Document Index"
+                title=""
+                class="fade-in"
                 ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
                   <use href="#icon-folder" /></svg
               ></a>
-              <a href="/index.html" data-title-zh="返回主页" data-title-en="Home" title="" class="fade-in"
+              <a
+                href="/index.html"
+                data-title-zh="返回主页"
+                data-title-en="Home"
+                title=""
+                class="fade-in"
                 ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
                   <use href="#icon-home" /></svg
               ></a>
-              <a href="/About.html" class="nav-lang-aware fade-in" data-href-base="/About.html"
-                data-title-zh="关于" data-title-en="About" title=""
+              <a
+                href="/About.html"
+                class="nav-lang-aware fade-in"
+                data-href-base="/About.html"
+                data-title-zh="关于"
+                data-title-en="About"
+                title=""
                 ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
                   <use href="#icon-info" /></svg
               ></a>
               <button
                 id="theme-toggle"
                 onclick="toggleTheme()"
-                data-title-zh="切换深色模式" data-title-en="Toggle Dark Mode" title=""
+                data-title-zh="切换深色模式"
+                data-title-en="Toggle Dark Mode"
+                title=""
                 class="scroll-top-btn fade-in"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon">
@@ -107,7 +136,9 @@
               
               <button
                 onclick="scrollToTop()"
-                data-title-zh="滚动到顶部" data-title-en="Scroll to Top" title=""
+                data-title-zh="滚动到顶部"
+                data-title-en="Scroll to Top"
+                title=""
                 class="scroll-top-btn fade-in"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon">
@@ -121,21 +152,38 @@
         <div>
           <div id="title-container">
             <div id="top-buttons-wrapper" class="top-buttons">
-              <a href="/toc.html" data-title-zh="文档索引" data-title-en="Document Index" title="" class="fade-in"
+              <a
+                href="/toc.html"
+                data-title-zh="文档索引"
+                data-title-en="Document Index"
+                title=""
+                class="fade-in"
                 ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
                   <use href="#icon-folder" /></svg></a
-              ><a href="/index.html" data-title-zh="返回主页" data-title-en="Home" title="" class="fade-in"
+              ><a
+                href="/index.html"
+                data-title-zh="返回主页"
+                data-title-en="Home"
+                title=""
+                class="fade-in"
                 ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
                   <use href="#icon-home" /></svg></a
-              ><a href="/About.html" class="nav-lang-aware fade-in" data-href-base="/About.html"
-                data-title-zh="关于" data-title-en="About" title=""
+              ><a
+                href="/About.html"
+                class="nav-lang-aware fade-in"
+                data-href-base="/About.html"
+                data-title-zh="关于"
+                data-title-en="About"
+                title=""
                 ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
                   <use href="#icon-info" /></svg
               ></a>
               <button
                 id="theme-toggle-mobile"
                 onclick="toggleTheme()"
-                data-title-zh="切换深色模式" data-title-en="Toggle Dark Mode" title=""
+                data-title-zh="切换深色模式"
+                data-title-en="Toggle Dark Mode"
+                title=""
                 class="scroll-top-btn fade-in"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon">
@@ -210,7 +258,12 @@
         </div>
 
         <div class="bottom-button mobile-only">
-          <button onclick="scrollToTop()" data-title-zh="滚动到顶部" data-title-en="Scroll to Top" title="">
+          <button
+            onclick="scrollToTop()"
+            data-title-zh="滚动到顶部"
+            data-title-en="Scroll to Top"
+            title=""
+          >
             <svg xmlns="http://www.w3.org/2000/svg" class="icon">
               <use href="#icon-arrow-upward" />
             </svg>
@@ -219,7 +272,9 @@
 
         <div id="right-sidebar" class="sidebar">
           <div id="toc-card" class="sidebar-card">
-            <div class="toc-header" data-text-zh="目录" data-text-en="Contents">目录</div>
+            <div class="toc-header" data-text-zh="目录" data-text-en="Contents">
+              目录
+            </div>
             <div id="toc-content"></div>
           </div>
         </div>
