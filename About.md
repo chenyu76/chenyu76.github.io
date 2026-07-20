@@ -1,21 +1,21 @@
-# 关于
+# About
 
-是学生。
+I am a student.
 
-因为没有评论区，你可以在[Github Discussions](https://github.com/chenyu76/chenyu76.github.io/discussions)留下意见。
+Since there is no comment section, you can leave feedback at [Github Discussions](https://github.com/chenyu76/chenyu76.github.io/discussions).
 
 ---
 
-## 使用的库
+## Libraries Used
 
-- Markdown文档渲染：[Marked](https://marked.js.org/), [KaTeX](https://katex.org/), [highlight.js](https://highlightjs.org/)
-- JavaScript脚本CDN: [JSDELIVR](https://cdn.jsdelivr.net)
-- 图标：[Google Fonts](https://fonts.google.com)
-- 像素字体：[缝合像素字体](https://github.com/TakWolf/fusion-pixel-font)
+- Markdown rendering: [Marked](https://marked.js.org/), [KaTeX](https://katex.org/), [highlight.js](https://highlightjs.org/)
+- JavaScript CDN: [JSDELIVR](https://cdn.jsdelivr.net)
+- Icons: [Google Fonts](https://fonts.google.com)
+- Pixel font: [Fusion Pixel Font](https://github.com/TakWolf/fusion-pixel-font)
 
-## 友情链接
+## Links
 
-- [这是 Justin King 的 Github 主页](https://jinqking.github.io/)：比我更会写东西的朋友，满满干货
-- [fangd](https://fangd.net/)（是不是挂了?）
+- [Justin King's GitHub Homepage](https://jinqking.github.io/): A friend who writes better than I do, full of quality content
+- [fangd](https://fangd.net/) (Is it down?)
 - [ZHANG Zaikun](https://www.zhangzk.net/)
 - [L'Équipe Z](https://equipez.github.io/)

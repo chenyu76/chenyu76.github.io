@@ -1,5 +1,5 @@
 # i18n test
 
-This is i18n test. Here are some English content.
+This is a i18n test. Here are some English content.
 
-20260720
+2026/07/20
