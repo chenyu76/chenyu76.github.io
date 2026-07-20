@@ -1,37 +1,86 @@
+:root {
+  --hljs-bg: #eff1f5;
+  --hljs-color: #4c4f69;
+  --hljs-comment: #6c6f85;
+  --hljs-punctuation: #7c7f93;
+  --hljs-tag-name: #4c4f69;
+  --hljs-keyword: #8839ef;
+  --hljs-deletion: #d20f39;
+  --hljs-number: #fe640b;
+  --hljs-string: #40a02b;
+  --hljs-type: #1e66f5;
+  --hljs-section: #1e66f5;
+  --hljs-link: #ab5656;
+  --hljs-literal: #179299;
+  --hljs-addition: #40a02b;
+  --hljs-meta: #209fb5;
+  --hljs-meta-string: #04a5e5;
+  --ascii-table-bg: #ffffff;
+  --copy-btn-triangle: #fff;
+  --copy-btn-bg: #777;
+  --copy-btn-hover: #000;
+  --code-inline-bg: #f0f0f0;
+  --hljs-shadow: rgba(0, 0, 0, 0.03);
+}
+
+:root[data-theme="dark"] {
+  --hljs-bg: #1e1e2e;
+  --hljs-color: #cdd6f4;
+  --hljs-comment: #6c7086;
+  --hljs-punctuation: #9399b2;
+  --hljs-tag-name: #cdd6f4;
+  --hljs-keyword: #cba6f7;
+  --hljs-deletion: #f38ba8;
+  --hljs-number: #fab387;
+  --hljs-string: #a6e3a1;
+  --hljs-type: #89b4fa;
+  --hljs-section: #89b4fa;
+  --hljs-link: #eba0ac;
+  --hljs-literal: #94e2d5;
+  --hljs-addition: #a6e3a1;
+  --hljs-meta: #89dceb;
+  --hljs-meta-string: #74c7ec;
+  --ascii-table-bg: #1e1e2e;
+  --copy-btn-triangle: #1e1e2e;
+  --copy-btn-bg: #585b70;
+  --copy-btn-hover: #cdd6f4;
+  --code-inline-bg: #181825;
+  --hljs-shadow: rgba(0, 0, 0, 0.15);
+}
+
 pre code {
-  background-color: #f0f0f0;
+  background-color: var(--code-inline-bg);
   display: block;
   overflow-x: auto;
   padding: 1em;
 }
 
-/*  Highlight.js Theme */
 .hljs {
   display: block;
   overflow-x: auto;
   padding: 1.5rem;
-  background: #eff1f5;
-  color: #4c4f69;
+  background: var(--hljs-bg);
+  color: var(--hljs-color);
   border-radius: 12px;
   font-family: "Fira Code", "Consolas", "Monaco", monospace;
   font-size: 1rem;
   line-height: 1.5;
-  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.03);
+  box-shadow: inset 0 0 15px var(--hljs-shadow);
 }
 
 .hljs-comment {
-  color: #6c6f85;
+  color: var(--hljs-comment);
   font-style: italic;
 }
 
 .hljs-punctuation,
 .hljs-tag {
-  color: #7c7f93;
+  color: var(--hljs-punctuation);
 }
 
 .hljs-tag .hljs-attr,
 .hljs-tag .hljs-name {
-  color: #4c4f69;
+  color: var(--hljs-tag-name);
 }
 
 .hljs-attribute,
@@ -40,7 +89,7 @@ pre code {
 .hljs-meta .hljs-keyword,
 .hljs-name,
 .hljs-selector-tag {
-  color: #8839ef;
+  color: var(--hljs-keyword);
   font-weight: 700;
 }
 
@@ -49,24 +98,24 @@ pre code {
 .hljs-selector-class,
 .hljs-selector-id,
 .hljs-template-tag {
-  color: #d20f39;
+  color: var(--hljs-deletion);
 }
 
 .hljs-number {
-  color: #fe640b;
+  color: var(--hljs-number);
 }
 
 .hljs-string {
-  color: #40a02b;
+  color: var(--hljs-string);
 }
 
 .hljs-type {
-  color: #1e66f5;
+  color: var(--hljs-type);
 }
 
 .hljs-section,
 .hljs-title {
-  color: #1e66f5;
+  color: var(--hljs-section);
   font-weight: 700;
 }
 
@@ -78,26 +127,26 @@ pre code {
 .hljs-symbol,
 .hljs-template-variable,
 .hljs-variable {
-  color: #ab5656;
+  color: var(--hljs-link);
 }
 
 .hljs-literal {
-  color: #179299;
+  color: var(--hljs-literal);
 }
 
 .hljs-addition,
 .hljs-built_in,
 .hljs-bullet,
 .hljs-code {
-  color: #40a02b;
+  color: var(--hljs-addition);
 }
 
 .hljs-meta {
-  color: #209fb5;
+  color: var(--hljs-meta);
 }
 
 .hljs-meta .hljs-string {
-  color: #04a5e5;
+  color: var(--hljs-meta-string);
 }
 
 .hljs-emphasis {
@@ -108,7 +157,6 @@ pre code {
   font-weight: 700;
 }
 
-/* 代码块的复制按钮*/
 .copy-btn {
   position: absolute;
   top: 0px;
@@ -123,7 +171,7 @@ pre code {
 }
 
 .copy-btn:hover {
-  color: black;
+  color: var(--copy-btn-hover);
 }
 
 .copy-btn::after {
@@ -133,15 +181,15 @@ pre code {
   right: 0;
   border-width: 0 10px 10px 0;
   border-style: solid;
-  border-color: #fff #fff transparent transparent;
-  background-color: #777;
+  border-color: var(--copy-btn-triangle) var(--copy-btn-triangle) transparent transparent;
+  background-color: var(--copy-btn-bg);
 }
 
 pre.ascii-table code {
-  font-family: "Cascadia Code", "Courier New", monospace; /* 必须使用等宽字体 */
-  letter-spacing: 0; /* 消除字间距 */
-  font-variant-ligatures: none; /* 禁用连字 */
+  font-family: "Cascadia Code", "Courier New", monospace;
+  letter-spacing: 0;
+  font-variant-ligatures: none;
   line-height: 1em !important;
-  white-space: pre; /* 确保空格不合并 */
-  background-color: #ffffff;
+  white-space: pre;
+  background-color: var(--ascii-table-bg);
 }

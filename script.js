@@ -5,7 +5,6 @@ function scrollToTop() {
     top : 0,
     behavior : "smooth",
   });
-  // 兼容 Firefox/IE
   document.documentElement.scrollTo({
     left : 0,
     top : 0,
@@ -21,31 +20,57 @@ function debounce(func, delay = 250) {
   };
 }
 
-// --- 目录与侧边栏控制逻辑 ---
+// --- Theme Management ---
 
-// 1. 初始化检查与事件绑定
+function getTheme() {
+  return localStorage.getItem('theme') ||
+         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark'
+                                                                    : 'light');
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  const toggleUses =
+      document.querySelectorAll('#theme-toggle use, #theme-toggle-mobile use');
+  toggleUses.forEach((use) => {
+    use.setAttribute('href',
+                     theme === 'dark' ? '#icon-light-mode' : '#icon-dark-mode');
+  });
+  const iframe = document.getElementById('iframe-background');
+  if (iframe && iframe.contentWindow) {
+    iframe.contentWindow.postMessage({type : 'theme', theme}, '*');
+  }
+}
+
+function toggleTheme() {
+  const next = document.documentElement.getAttribute('data-theme') === 'dark'
+                   ? 'light'
+                   : 'dark';
+  localStorage.setItem('theme', next);
+  applyTheme(next);
+}
+
+// --- TOC & Sidebar ---
+
 document.addEventListener("DOMContentLoaded", () => {
+  applyTheme(getTheme());
+
   const tocContent = document.getElementById("toc-content");
   const rightSidebar = document.getElementById("right-sidebar");
   const mobileBtn = document.getElementById("toc-mobile-btn");
   const mobileTocContent = document.getElementById("toc-content-mobile");
 
-  // 检查目录是否为空
   if (tocContent &&
       (!tocContent.innerHTML.trim() || tocContent.innerText.trim() === "")) {
-    // 隐藏 PC 端右侧栏
     if (rightSidebar)
       rightSidebar.style.display = "none";
-    // 隐藏移动端按钮
     if (mobileBtn)
       mobileBtn.style.display = "none";
 
     document.documentElement.style.setProperty('--right-sidebar-width', '0px');
   } else if (mobileTocContent && tocContent) {
-    // 同步内容到移动端目录
     mobileTocContent.innerHTML = tocContent.innerHTML;
 
-    // 移动端点击链接自动关闭目录
     mobileTocContent.querySelectorAll("a").forEach(link => {
       link.addEventListener("click", () => {
         const wrapper = document.getElementById("toc-mobile-wrapper");
@@ -56,12 +81,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// 滚动监听：
-// 控制左侧栏显示
-// 控制背景可见性
 const titleContainer = document.getElementById("title-container");
 const iframeBackground = document.getElementById("iframe-background");
-var currentTopContentScrollStatus = false; // 为真时是滚动到下方了
+var currentTopContentScrollStatus = false;
 window.addEventListener("scroll", () => {
   let newScrollStatus = titleContainer.getBoundingClientRect().bottom < 0;
   if (newScrollStatus == currentTopContentScrollStatus)
@@ -74,20 +96,24 @@ window.addEventListener("scroll", () => {
   }
 }, true);
 
-// 3. 移动端目录切换
+window.matchMedia('(prefers-color-scheme: dark)')
+    .addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        applyTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+
 function toggleToc() {
   const wrapper = document.getElementById("toc-mobile-wrapper");
   if (wrapper)
     wrapper.classList.toggle("active");
 }
 
-// 4. 点击空白处关闭移动端目录
 document.addEventListener("click", (e) => {
   const toc = document.getElementById("toc-mobile-wrapper");
   const btn = document.getElementById("toc-mobile-btn");
 
   if (window.innerWidth < 1200 && toc && toc.classList.contains("active")) {
-    // 如果点击的既不是目录面板，也不是触发按钮，则关闭
     if (!toc.contains(e.target) && !btn.contains(e.target)) {
       toc.classList.remove("active");
     }

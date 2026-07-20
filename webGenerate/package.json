@@ -15,6 +15,7 @@
   "scripts": {
     "build": "tsc",
     "start": "tsx main.ts",
+    "testpage": "tsx createTestIndex.ts",
     "clean": "tsx cleanGeneratedWebFiles.ts"
   },
   "dependencies": {
