@@ -88,7 +88,7 @@ export const recommend: RecommendItem[] = [
     info_zh:
       "（Github链接）Neovim插件。功能丰富的ASCII图表绘制工具，支持绘制方框、箭头、线条和文字，并可轻松编辑。",
     info_en:
-      "（GitHub link）Neovim plugin. A feature-rich ASCII diagramming tool for Neovim. Draw boxes, arrows, lines, and text, and edit them easily.",
+      "(GitHub link) Neovim plugin. A feature-rich ASCII diagramming tool for Neovim. Draw boxes, arrows, lines, and text, and edit them easily.",
   },
   {
     date: 20260126,
@@ -122,7 +122,7 @@ export const recommend: RecommendItem[] = [
     // info_zh:
     //   "（Github链接）一个可以将图片转换为ASCII艺术的Python程序。使用滑动窗口模板匹配算法，考虑形状和空间关系。",
     info_en:
-      "（GitHub link）A Python program that generates ASCII art from images using a sliding window template matching approach. Considers shape and spatial relationships by comparing image patches against rendered font templates using MSE.",
+      "(GitHub link) A Python program that generates ASCII art from images using a sliding window template matching approach. Considers shape and spatial relationships by comparing image patches against rendered font templates using MSE.",
   },
   {
     date: 20250715,
