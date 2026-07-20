@@ -23,9 +23,11 @@ function debounce(func, delay = 250) {
 // --- Theme Management ---
 
 function getTheme() {
-  return localStorage.getItem('theme') ||
-         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark'
-                                                                    : 'light');
+  const stored = localStorage.getItem('theme');
+  if (stored === 'light' || stored === 'dark')
+    return stored;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark'
+                                                                   : 'light';
 }
 
 function applyTheme(theme) {
@@ -43,11 +45,15 @@ function applyTheme(theme) {
 }
 
 function toggleTheme() {
-  const next = document.documentElement.getAttribute('data-theme') === 'dark'
-                   ? 'light'
-                   : 'dark';
-  localStorage.setItem('theme', next);
-  applyTheme(next);
+  const stored = localStorage.getItem('theme');
+  if (stored === 'light' || stored === 'dark') {
+    localStorage.setItem('theme', 'auto');
+  } else {
+    const systemIsDark =
+        window.matchMedia('(prefers-color-scheme: dark)').matches;
+    localStorage.setItem('theme', systemIsDark ? 'light' : 'dark');
+  }
+  applyTheme(getTheme());
 }
 
 // --- TOC & Sidebar ---
@@ -98,7 +104,8 @@ window.addEventListener("scroll", () => {
 
 window.matchMedia('(prefers-color-scheme: dark)')
     .addEventListener('change', (e) => {
-      if (!localStorage.getItem('theme')) {
+      const stored = localStorage.getItem('theme');
+      if (!stored || stored === 'auto') {
         applyTheme(e.matches ? 'dark' : 'light');
       }
     });
