@@ -285,7 +285,8 @@ function dot(v1, v2) { return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2]; }
 async function imgInit(h = document.documentElement.clientHeight,
                        // time = getDecimalHour()
                        time = null) {
-  if (time === null && is_first_img_init)
+  if (!h || h <= 0) return;
+  if (time === null)
     time = Math.random() * 24;
   // 获取背景和前景容器
   const background =
