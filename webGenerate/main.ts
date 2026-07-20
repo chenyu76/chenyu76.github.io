@@ -16,8 +16,6 @@ import type { Lang } from "./language.js";
 
 const html = String.raw;
 
-
-
 function getMdContent(filePath: string): string {
   if (!fs.existsSync(filePath)) return "";
   try {
@@ -61,23 +59,12 @@ function getMdSource(
   return null;
 }
 
-function getRepoName(url: string): string {
-  return url.split("/").pop()!.replace(".git", "");
-}
-
 const templateHTML = readTemplateHTML(path.join(__dirname, "template.html"));
 const rootPath = path.dirname(__dirname);
 
-const syncedRepoDirs: string[] = [];
-for (const [base, urls] of Object.entries(gitRepositories)) {
-  for (const url of urls) {
-    syncedRepoDirs.push(path.posix.join(base, getRepoName(url)));
-  }
-}
-
 await syncRepositories(rootPath, gitRepositories);
 
-const articles = allMarkdown2Html(rootPath, templateHTML, rootPath, syncedRepoDirs);
+const articles = allMarkdown2Html(rootPath, templateHTML, rootPath);
 
 const cardStyle = html`
   <style>
@@ -129,8 +116,16 @@ const readmeEnSource = getMdSource(rootPath, "README", "en");
 const readmeZh = readmeZhSource ? getMdContent(readmeZhSource) : "";
 const readmeEn = readmeEnSource ? getMdContent(readmeEnSource) : "";
 
-const toolsZhSource = getMdSource(path.join(rootPath, "program"), "readme", "zh");
-const toolsEnSource = getMdSource(path.join(rootPath, "program"), "readme", "en");
+const toolsZhSource = getMdSource(
+  path.join(rootPath, "program"),
+  "readme",
+  "zh",
+);
+const toolsEnSource = getMdSource(
+  path.join(rootPath, "program"),
+  "readme",
+  "en",
+);
 const toolsZh = toolsZhSource ? getMdContent(toolsZhSource) : "";
 const toolsEn = toolsEnSource ? getMdContent(toolsEnSource) : "";
 
@@ -144,11 +139,9 @@ const recommendAll = recommend
 
 const indexBody = html`
   <div data-lang="zh">
-    <h1>${UI.index_heading.zh}</h1>
     ${readmeZh}
   </div>
   <div data-lang="en">
-    <h1>${UI.index_heading.en}</h1>
     ${readmeEn}
   </div>
 </div></div>
@@ -200,11 +193,26 @@ generateHtmlFile(
   "toc",
 );
 
-fs.writeFileSync(path.join(rootPath, "rss.xml"), generateRecommend(2, articles));
-fs.writeFileSync(path.join(rootPath, "rss-zh.xml"), generateRecommend(2, articles, "zh"));
-fs.writeFileSync(path.join(rootPath, "rss-en.xml"), generateRecommend(2, articles, "en"));
-fs.writeFileSync(path.join(rootPath, "rss-zh-en.xml"), generateRecommend(2, articles, "zh-first"));
-fs.writeFileSync(path.join(rootPath, "rss-en-zh.xml"), generateRecommend(2, articles, "en-first"));
+fs.writeFileSync(
+  path.join(rootPath, "rss.xml"),
+  generateRecommend(2, articles),
+);
+fs.writeFileSync(
+  path.join(rootPath, "rss-zh.xml"),
+  generateRecommend(2, articles, "zh"),
+);
+fs.writeFileSync(
+  path.join(rootPath, "rss-en.xml"),
+  generateRecommend(2, articles, "en"),
+);
+fs.writeFileSync(
+  path.join(rootPath, "rss-zh-en.xml"),
+  generateRecommend(2, articles, "zh-first"),
+);
+fs.writeFileSync(
+  path.join(rootPath, "rss-en-zh.xml"),
+  generateRecommend(2, articles, "en-first"),
+);
 
 const notFoundZh = html`<p>${UI.page_not_found.zh}</p>
   <br /><img src="/img/404.svg" />`;

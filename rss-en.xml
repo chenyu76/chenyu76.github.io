@@ -27,7 +27,7 @@
 <item>
             <title>Draftsman.nvim</title>
             <link>https://github.com/chenyu76/draftsman.nvim</link>
-            <description><![CDATA[（GitHub link）Neovim plugin. A feature-rich ASCII diagramming tool for Neovim. Draw boxes, arrows, lines, and text, and edit them easily.]]></description>
+            <description><![CDATA[(GitHub link) Neovim plugin. A feature-rich ASCII diagramming tool for Neovim. Draw boxes, arrows, lines, and text, and edit them easily.]]></description>
             <pubDate>Fri, 13 Feb 2026 00:00:00 GMT</pubDate>
             <guid>https://github.com/chenyu76/draftsman.nvim</guid>
           </item>
@@ -41,7 +41,7 @@
 <item>
             <title>Glyph ASCII Canvas</title>
             <link>https://github.com/chenyu76/glyph-ascii-canvas</link>
-            <description><![CDATA[（GitHub link）A Python program that generates ASCII art from images using a sliding window template matching approach. Considers shape and spatial relationships by comparing image patches against rendered font templates using MSE.]]></description>
+            <description><![CDATA[(GitHub link) A Python program that generates ASCII art from images using a sliding window template matching approach. Considers shape and spatial relationships by comparing image patches against rendered font templates using MSE.]]></description>
             <pubDate>Fri, 21 Nov 2025 00:00:00 GMT</pubDate>
             <guid>https://github.com/chenyu76/glyph-ascii-canvas</guid>
           </item>

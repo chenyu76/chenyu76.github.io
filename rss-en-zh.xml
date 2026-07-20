@@ -32,7 +32,7 @@
             <title>writings/how-to-expose-ssh-to-the-internet-with-frp/index.html</title>
             <link>https://chenyu76.github.io/writings/how-to-expose-ssh-to-the-internet-with-frp/index.html</link>
             <description><![CDATA[]]></description>
-            <pubDate>----</pubDate>
+            <pubDate>Tue, 05 May 2026 00:00:00 GMT</pubDate>
             <guid>https://chenyu76.github.io/writings/how-to-expose-ssh-to-the-internet-with-frp/index.html</guid>
           </item>
 <item>
@@ -47,7 +47,7 @@
 <item>
             <title>Draftsman.nvim</title>
             <link>https://github.com/chenyu76/draftsman.nvim</link>
-            <description><![CDATA[（GitHub link）Neovim plugin. A feature-rich ASCII diagramming tool for Neovim. Draw boxes, arrows, lines, and text, and edit them easily.
+            <description><![CDATA[(GitHub link) Neovim plugin. A feature-rich ASCII diagramming tool for Neovim. Draw boxes, arrows, lines, and text, and edit them easily.
 
 （Github链接）Neovim插件。功能丰富的ASCII图表绘制工具，支持绘制方框、箭头、线条和文字，并可轻松编辑。]]></description>
             <pubDate>Fri, 13 Feb 2026 00:00:00 GMT</pubDate>
@@ -79,7 +79,7 @@
 <item>
             <title>Glyph ASCII Canvas</title>
             <link>https://github.com/chenyu76/glyph-ascii-canvas</link>
-            <description><![CDATA[（GitHub link）A Python program that generates ASCII art from images using a sliding window template matching approach. Considers shape and spatial relationships by comparing image patches against rendered font templates using MSE.]]></description>
+            <description><![CDATA[(GitHub link) A Python program that generates ASCII art from images using a sliding window template matching approach. Considers shape and spatial relationships by comparing image patches against rendered font templates using MSE.]]></description>
             <pubDate>Fri, 21 Nov 2025 00:00:00 GMT</pubDate>
             <guid>https://github.com/chenyu76/glyph-ascii-canvas</guid>
           </item>
