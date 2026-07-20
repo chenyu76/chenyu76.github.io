@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+      <rss version="2.0">
+      <channel>
+      <title>Chen Yu's Website (English)</title>
+      <description>English articles</description>
+<item>
+            <title>Tetris, but hexagons fall toward the center / 俄罗斯方块，但是六边形往中心落</title>
+            <link>https://chenyu76.github.io/program/hextris/index.html</link>
+            <description><![CDATA[A Tetris variant where blocks fall toward the center of a hexagon grid.]]></description>
+            <pubDate>Sun, 07 Jun 2026 00:00:00 GMT</pubDate>
+            <guid>https://chenyu76.github.io/program/hextris/index.html</guid>
+          </item>
+<item>
+            <title>A interesting test of MATLAB language features / 奇妙的MATLAB语言特性小测试</title>
+            <link>https://chenyu76.github.io/writings/matlab_behavior_test/index.html</link>
+            <description><![CDATA[I hate MATLAB.]]></description>
+            <pubDate>Tue, 12 May 2026 00:00:00 GMT</pubDate>
+            <guid>https://chenyu76.github.io/writings/matlab_behavior_test/index.html</guid>
+          </item>
+<item>
+            <title>4D sokoban / 4D推箱子</title>
+            <link>https://chenyu76.github.io/program/4d-sokoban/index.html</link>
+            <description><![CDATA[Everyone's played 2D Sokoban games, so let's try a 4D one. (Is this really for humans?)]]></description>
+            <pubDate>Wed, 01 Apr 2026 00:00:00 GMT</pubDate>
+            <guid>https://chenyu76.github.io/program/4d-sokoban/index.html</guid>
+          </item>
+<item>
+            <title>Draftsman.nvim</title>
+            <link>https://github.com/chenyu76/draftsman.nvim</link>
+            <description><![CDATA[（GitHub link）Neovim plugin. A feature-rich ASCII diagramming tool for Neovim. Draw boxes, arrows, lines, and text, and edit them easily.]]></description>
+            <pubDate>Fri, 13 Feb 2026 00:00:00 GMT</pubDate>
+            <guid>https://github.com/chenyu76/draftsman.nvim</guid>
+          </item>
+<item>
+            <title>Writing a README in LaTeX on GitHub / 在Github上用LaTeX写README</title>
+            <link>https://github.com/chenyu76/github-latex-readme</link>
+            <description><![CDATA[(Github link) Use GitHub Actions to automatically compile LaTeX files into SVG, thus enabling you to write README files on Github in LaTeX.]]></description>
+            <pubDate>Mon, 26 Jan 2026 00:00:00 GMT</pubDate>
+            <guid>https://github.com/chenyu76/github-latex-readme</guid>
+          </item>
+<item>
+            <title>Glyph ASCII Canvas</title>
+            <link>https://github.com/chenyu76/glyph-ascii-canvas</link>
+            <description><![CDATA[（GitHub link）A Python program that generates ASCII art from images using a sliding window template matching approach. Considers shape and spatial relationships by comparing image patches against rendered font templates using MSE.]]></description>
+            <pubDate>Fri, 21 Nov 2025 00:00:00 GMT</pubDate>
+            <guid>https://github.com/chenyu76/glyph-ascii-canvas</guid>
+          </item>
+</channel>
+      </rss>

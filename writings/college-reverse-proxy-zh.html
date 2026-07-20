@@ -1,0 +1,945 @@
+<!doctype html>
+<html lang="zh" data-page-lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>宝宝也能上手的校园网穿透教程</title>
+
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+
+    <link rel="stylesheet" href="/styles-code.css" />
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+        integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew"
+        crossorigin="anonymous"
+      />
+    
+  </head>
+
+  <body>
+    <iframe
+      id="iframe-background"
+      src="/img/pixelart/index.html"
+      title="background"
+    ></iframe>
+
+    <div id="spacer"></div>
+
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      style="position: absolute; width: 0; height: 0; visibility: hidden"
+      aria-hidden="true"
+    >
+      <symbol id="icon-folder" viewBox="0 -960 960 960">
+        <path
+          d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640v400q0 33-23.5 56.5T800-160H160Zm0-80h640v-400H447l-80-80H160v480Zm0 0v-480 480Z"
+        />
+      </symbol>
+      <symbol id="icon-home" viewBox="0 -960 960 960">
+        <path
+          d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"
+        />
+      </symbol>
+      <symbol id="icon-info" viewBox="0 -960 960 960">
+        <path
+          d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
+        />
+      </symbol>
+      <symbol id="icon-arrow-upward" viewBox="0 -960 960 960">
+        <path
+          d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"
+        />
+      </symbol>
+      <symbol id="icon-toc" viewBox="0 -960 960 960">
+        <path
+          d="M120-280v-80h560v80H120Zm0-160v-80h560v80H120Zm0-160v-80h560v80H120Zm680 320q-17 0-28.5-11.5T760-320q0-17 11.5-28.5T800-360q17 0 28.5 11.5T840-320q0 17-11.5 28.5T800-280Zm0-160q-17 0-28.5-11.5T760-480q0-17 11.5-28.5T800-520q17 0 28.5 11.5T840-480q0 17-11.5 28.5T800-440Zm0-160q-17 0-28.5-11.5T760-640q0-17 11.5-28.5T800-680q17 0 28.5 11.5T840-640q0 17-11.5 28.5T800-600Z"
+        />
+      </symbol>
+      <symbol id="icon-dark-mode" viewBox="0 -960 960 960">
+        <path
+          d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"
+        />
+      </symbol>
+      <symbol id="icon-light-mode" viewBox="0 -960 960 960">
+        <path
+          d="M565-395q35-35 35-85t-35-85q-35-35-85-35t-85 35q-35 35-35 85t35 85q35 35 85 35t85-35Zm-226.5 56.5Q280-397 280-480t58.5-141.5Q397-680 480-680t141.5 58.5Q680-563 680-480t-58.5 141.5Q563-280 480-280t-141.5-58.5ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Zm326-268Z"
+        />
+      </symbol>
+      <symbol id="icon-language" viewBox="0 -960 960 960">
+        <path
+          d="m476-80 182-480h84L924-80h-84l-43-122H603L560-80h-84ZM160-200l-56-56 202-202q-35-35-63.5-80T190-640h84q20 39 40 68t48 58q33-33 68.5-92.5T484-720H40v-80h280v-80h80v80h280v80H564q-21 72-63 148t-83 116l96 98-30 82-122-125-202 201Zm468-72h144l-72-204-72 204Z"
+        />
+      </symbol>
+    </svg>
+
+    <div class="shrinked anime-spacer"></div>
+
+    <div id="content-wrapper-bg">
+      <div id="main-grid-container">
+        <div id="left-sidebar" class="sidebar">
+          <div class="sidebar-card">
+            <div class="vertical-buttons">
+              <a href="/toc.html" data-title-zh="文档索引" data-title-en="Document Index" title="" class="fade-in"
+                ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
+                  <use href="#icon-folder" /></svg
+              ></a>
+              <a href="/index.html" data-title-zh="返回主页" data-title-en="Home" title="" class="fade-in"
+                ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
+                  <use href="#icon-home" /></svg
+              ></a>
+              <a href="/About.html" class="nav-lang-aware fade-in" data-href-base="/About.html"
+                data-title-zh="关于" data-title-en="About" title=""
+                ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
+                  <use href="#icon-info" /></svg
+              ></a>
+              <button
+                id="theme-toggle"
+                onclick="toggleTheme()"
+                data-title-zh="切换深色模式" data-title-en="Toggle Dark Mode" title=""
+                class="scroll-top-btn fade-in"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon">
+                  <use href="#icon-dark-mode" />
+                </svg>
+              </button>
+              
+              <button
+                onclick="scrollToTop()"
+                data-title-zh="滚动到顶部" data-title-en="Scroll to Top" title=""
+                class="scroll-top-btn fade-in"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon">
+                  <use href="#icon-arrow-upward" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div id="title-container">
+            <div id="top-buttons-wrapper" class="top-buttons">
+              <a href="/toc.html" data-title-zh="文档索引" data-title-en="Document Index" title="" class="fade-in"
+                ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
+                  <use href="#icon-folder" /></svg></a
+              ><a href="/index.html" data-title-zh="返回主页" data-title-en="Home" title="" class="fade-in"
+                ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
+                  <use href="#icon-home" /></svg></a
+              ><a href="/About.html" class="nav-lang-aware fade-in" data-href-base="/About.html"
+                data-title-zh="关于" data-title-en="About" title=""
+                ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
+                  <use href="#icon-info" /></svg
+              ></a>
+              <button
+                id="theme-toggle-mobile"
+                onclick="toggleTheme()"
+                data-title-zh="切换深色模式" data-title-en="Toggle Dark Mode" title=""
+                class="scroll-top-btn fade-in"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon">
+                  <use href="#icon-dark-mode" />
+                </svg>
+              </button>
+              
+            </div>
+            <div id="heading"><h3>文章</h3>
+        <h1>宝宝也能上手的校园网穿透教程</h1></div>
+          </div>
+
+          <div class="content-wrapper">
+            <div class="content"><blockquote>
+<p>给ywk宝宝写的教程</p>
+<p>本教程假定读者具备一定的计算机与网络的基础知识。</p>
+</blockquote>
+<h2 id="h2-u6211u4eecu8981u505au4ec0u4e48">我们要做什么</h2><p>我们将在校园网内计算机上使用<a href="https://github.com/fatedier/frp">frp</a>配置<a href="https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86">反向代理</a>并安装<a href="https://www.wireguard.com/">WireGuard<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow></mrow><mtext>®</mtext></msup></mrow><annotation encoding="application/x-tex">^{\text{®}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9852em;"></span><span class="mord"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9852em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord accent mtight"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8889em;"><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span class="mord mtight"><span class="mord">R</span></span></span><span style="top:-2.8944em;"><span class="pstrut" style="height:2.7em;"></span><span class="accent-body accent-full" style="left:0em;top:.2em;"><span class="mord mtight">◯</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></a>实现在校外访问校内的网络资源。</p>
+<h3 id="h3-u6211u4eecu9700u8981u4ec0u4e48">我们需要什么</h3><ul>
+<li>一台在校园网内环境运行，并可以连接公网的计算机，比如<a href="https://www.raspberrypi.com/">树莓派</a>，本文会将其称为client。</li>
+<li>可选：一台在公网上运行的服务器，本文会将其称为server。<ul>
+<li>如果没有，可以使用例如<a href="https://www.natfrp.com/">SAKURA FRP</a><sup><a id="footnote-ref-1" href="#footnote-1" data-footnote-ref aria-describedby="footnote-label">1</a></sup>的网络服务商替代。</li>
+</ul>
+</li>
+<li>可选：一个用于给client供电的<a href="https://zh.wikipedia.org/zh-hans/%E4%B8%8D%E9%97%B4%E6%96%AD%E7%94%B5%E6%BA%90">UPS</a>。<ul>
+<li>如果没有，只是会在学校断电时用不了服务。</li>
+</ul>
+</li>
+</ul>
+<h3 id="h3-u8fd9u4e9bu540du8bcdu662fu4ec0u4e48">这些名词是什么</h3><h4 id="h4-u6811u8393u6d3e">树莓派</h4><p>简单来说，它就是一台只有信用卡大小的迷你电脑。它的功耗不高，适合 24 小时守在宿舍里，帮我们转发网络信号。</p>
+<h4 id="h4-ups">UPS</h4><p>由于我们的宿舍区24:00至次日6:00断电，断电时我们的服务自然无法继续，
+如果需要在期间保持client持续运行，我们就需要给它加个电池让它可以一直跑，这就是本场景中UPS（<strong>U</strong>ninterruptible <strong>P</strong>ower <strong>S</strong>upply，不间断电源）的主要作用。</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mtable rowspacing="0.25em" columnalign="center center center center center" columnspacing="0.5em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="true"><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>220V AC</mtext></mstyle></menclose></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><munderover><mo stretchy="true" minsize="3.0em">→</mo><mpadded width="+0.6em" lspace="0.3em"><mrow></mrow></mpadded><mpadded width="+0.6em" lspace="0.3em"><mtext>AC</mtext></mpadded></munderover></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>UPS</mtext></mstyle></menclose></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><munderover><mo stretchy="true" minsize="3.0em">→</mo><mpadded width="+0.6em" lspace="0.3em"><mrow></mrow></mpadded><mpadded width="+0.6em" lspace="0.3em"><mtext>DC</mtext></mpadded></munderover></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>Client</mtext></mstyle></menclose></mstyle></mtd></mtr><mtr></mtr></mtable><annotation encoding="application/x-tex">\begin{CD}
+\fbox{220V AC}
+@&gt;\text{AC}&gt;&gt;
+\fbox{UPS}
+@&gt;\text{DC}&gt;&gt;
+\fbox{Client}
+\end{CD}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.7906em;"></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.7906em;"><span style="top:-3.7906em;"><span class="pstrut" style="height:3.1003em;"></span><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0233em;"><span style="top:-3.3633em;"><span class="pstrut" style="height:3.3633em;"></span><span class="boxpad"><span class="mord"><span class="mord">220V AC</span></span></span></span><span style="top:-3.0233em;"><span class="pstrut" style="height:3.3633em;"></span><span class="stretchy fbox" style="height:1.3633em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span></span></span></span></span></span><span class="arraycolsep" style="width:0.25em;"></span><span class="arraycolsep" style="width:0.25em;"></span><span class="col-align-c"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.7906em;"><span style="top:-3.7906em;"><span class="pstrut" style="height:3.1003em;"></span><span class="mrel x-arrow"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1003em;"><span style="top:-3.322em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight cd-arrow-pad"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">AC</span></span></span></span></span><span class="svg-align" style="top:-2.689em;"><span class="pstrut" style="height:2.7em;"></span><span class="hide-tail" style="height:0.522em;min-width:3em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-2.578em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight cd-arrow-pad"><span class="mord mtight"></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.122em;"><span></span></span></span></span></span></span></span></span></span></span><span class="arraycolsep" style="width:0.25em;"></span><span class="arraycolsep" style="width:0.25em;"></span><span class="col-align-c"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.7906em;"><span style="top:-3.7906em;"><span class="pstrut" style="height:3.1003em;"></span><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0233em;"><span style="top:-3.3633em;"><span class="pstrut" style="height:3.3633em;"></span><span class="boxpad"><span class="mord"><span class="mord">UPS</span></span></span></span><span style="top:-3.0233em;"><span class="pstrut" style="height:3.3633em;"></span><span class="stretchy fbox" style="height:1.3633em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span></span></span></span></span></span><span class="arraycolsep" style="width:0.25em;"></span><span class="arraycolsep" style="width:0.25em;"></span><span class="col-align-c"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.7906em;"><span style="top:-3.7906em;"><span class="pstrut" style="height:3.1003em;"></span><span class="mrel x-arrow"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1003em;"><span style="top:-3.322em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight cd-arrow-pad"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">DC</span></span></span></span></span><span class="svg-align" style="top:-2.689em;"><span class="pstrut" style="height:2.7em;"></span><span class="hide-tail" style="height:0.522em;min-width:3em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span><span style="top:-2.578em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight cd-arrow-pad"><span class="mord mtight"></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.122em;"><span></span></span></span></span></span></span></span></span></span></span><span class="arraycolsep" style="width:0.25em;"></span><span class="arraycolsep" style="width:0.25em;"></span><span class="col-align-c"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.7906em;"><span style="top:-3.7906em;"><span class="pstrut" style="height:3.1003em;"></span><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0344em;"><span style="top:-3.3744em;"><span class="pstrut" style="height:3.3744em;"></span><span class="boxpad"><span class="mord"><span class="mord">Client</span></span></span></span><span style="top:-3.0344em;"><span class="pstrut" style="height:3.3744em;"></span><span class="stretchy fbox" style="height:1.3744em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span>
+<p>内置电池的UPS可以在直接给client树莓派供电的同时，在宿舍区断电时自动切换到电池供电，保证设备不掉线。注意宿舍区每天断电六小时，如果树莓派的功耗按 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>15</mn><mtext>W</mtext><mo stretchy="false">(</mo><mn>5</mn><mtext>V </mtext><mn>3</mn><mtext>A</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">15\text{W}(5\text{V}\ 3\text{A})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">15</span><span class="mord text"><span class="mord">W</span></span><span class="mopen">(</span><span class="mord">5</span><span class="mord text"><span class="mord">V</span></span><span class="mspace"> </span><span class="mord">3</span><span class="mord text"><span class="mord">A</span></span><span class="mclose">)</span></span></span></span> 计算，我们至少需要</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mrow><mn>15</mn><mtext>W</mtext><mo>×</mo><mn>6</mn><mtext>h</mtext></mrow><mrow><mn>3.7</mn><mtext>V</mtext></mrow></mfrac><mo>×</mo><mn>1000</mn><mtext>mA</mtext><mi mathvariant="normal">/</mi><mtext>A</mtext><mo>≈</mo><mn>24324</mn><mtext>mAh</mtext></mrow><annotation encoding="application/x-tex">\frac{15 \text{W} \times 6 \text{h} }{3.7\text{V}} \times 1000\text{mA}/\text{A}
+\approx 24324\text{mAh}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.0574em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3.7</span><span class="mord text"><span class="mord">V</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">15</span><span class="mord text"><span class="mord">W</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">6</span><span class="mord text"><span class="mord">h</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1000</span><span class="mord text"><span class="mord">mA</span></span><span class="mord">/</span><span class="mord text"><span class="mord">A</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">24324</span><span class="mord text"><span class="mord">mAh</span></span></span></span></span></span>
+<p>的锂电池容量（以 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3.7</mn><mtext>V</mtext></mrow><annotation encoding="application/x-tex">3.7\text V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">3.7</span><span class="mord text"><span class="mord">V</span></span></span></span></span> 计算）。</p>
+<h4 id="h4-u53cdu5411u4ee3u7406">反向代理</h4><p><a href="https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86">维基百科</a>上是这样说的：</p>
+<blockquote>
+<p>反向代理（Reverse proxy）在电脑网络中是代理服务器的一种。服务器根据客户端的请求，从其关系的一组或多组后端服务器（如Web服务器）上获取资源，然后再将这些资源返回给客户端，客户端只会得知反向代理的IP地址，而不知道在代理服务器后面的服务器集群的存在。</p>
+</blockquote>
+<p>在我们的场景里，简单来说，现在你（user）想访问校内的网络资源，但是校内的网络资源不直接对外开放，所以我们可以借用client，所有校内的网络资源都通过client访问，并将获取的信息都转发给你。当然，由于很多时候user和client之间并没有直接的网络连接，所以需要server作为中转，client先将内容发送至server，然后server再将内容传回user。</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mover><mover><mrow><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>校内服务器</mtext></mstyle></menclose><mo>⟺</mo><munder><munder><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>Client</mtext></mstyle></menclose><mo stretchy="true">⏟</mo></munder><mtext>可访问公网</mtext></munder></mrow><mo stretchy="true">⏞</mo></mover><mtext>校园内部网</mtext></mover><mo>⟺</mo><munder><munder><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>Server</mtext></mstyle></menclose><mo stretchy="true">⏟</mo></munder><mtext>位于公网</mtext></munder><mo>⟺</mo><munder><munder><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>User</mtext></mstyle></menclose><mo stretchy="true">⏟</mo></munder><mtext>可访问公网</mtext></munder></mrow><annotation encoding="application/x-tex">\overbrace{
+\fbox{校内服务器}
+\Longleftrightarrow
+\underbrace{
+\fbox{Client}
+}_{可访问公网}
+}^{\text{校园内部网}}
+\Longleftrightarrow
+\underbrace{
+\fbox{Server}
+}_{\text{位于公网}}
+\Longleftrightarrow
+\underbrace{
+\fbox{User}
+}_{\text{可访问公网}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:4.0271em;vertical-align:-1.6663em;"></span><span class="minner mover"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.3608em;"><span style="top:-3.6824em;"><span class="pstrut" style="height:3.6824em;"></span><span class="minner mover"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6824em;"><span style="top:-3.0344em;"><span class="pstrut" style="height:3.0344em;"></span><span class="mord"><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0233em;"><span style="top:-3.3633em;"><span class="pstrut" style="height:3.3633em;"></span><span class="boxpad"><span class="mord"><span class="mord cjk_fallback">校内服务器</span></span></span></span><span style="top:-3.0233em;"><span class="pstrut" style="height:3.3633em;"></span><span class="stretchy fbox" style="height:1.3633em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⟺</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="minner munder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0344em;"><span style="top:-1.3681em;"><span class="pstrut" style="height:3.0344em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">可访问公网</span></span></span></span><span style="top:-3.0344em;"><span class="pstrut" style="height:3.0344em;"></span><span class="minner munder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0344em;"><span class="svg-align" style="top:-2.0464em;"><span class="pstrut" style="height:3.0344em;"></span><span class="stretchy" style="height:0.548em;min-width:1.6em;"><span class="brace-left" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMinYMin slice"><path d="M0 6l6-6h17c12.688 0 19.313.3 20 1 4 4 7.313 8.3 10 13
+ 35.313 51.3 80.813 93.8 136.5 127.5 55.688 33.7 117.188 55.8 184.5 66.5.688
+ 0 2 .3 4 1 18.688 2.7 76 4.3 172 5h399450v120H429l-6-1c-124.688-8-235-61.7
+-331-161C60.687 138.7 32.312 99.3 7 54L0 41V6z"/></svg></span><span class="brace-center" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMidYMin slice"><path d="M199572 214
+c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
+ 53.3-86.7 123.7-153 211-199 66.7-36 137.3-56.3 212-62h199568v120H200432c-178.3
+ 11.7-311.7 78.3-403 201-6 8-9.7 12-11 12-.7.7-6.7 1-18 1s-17.3-.3-18-1c-1.3 0
+-5-4-11-12-44.7-59.3-101.3-106.3-170-141s-145.3-54.3-229-60H0V214z"/></svg></span><span class="brace-right" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMaxYMin slice"><path d="M399994 0l6 6v35l-6 11c-56 104-135.3 181.3-238 232-57.3
+ 28.7-117 45-179 50H-300V214h399897c43.3-7 81-15 113-26 100.7-33 179.7-91 237
+-174 2.7-5 6-9 10-13 .7-1 7.3-1 20-1h17z"/></svg></span></span></span><span style="top:-3.0344em;"><span class="pstrut" style="height:3.0344em;"></span><span class="mord"><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0344em;"><span style="top:-3.3744em;"><span class="pstrut" style="height:3.3744em;"></span><span class="boxpad"><span class="mord"><span class="mord">Client</span></span></span></span><span style="top:-3.0344em;"><span class="pstrut" style="height:3.3744em;"></span><span class="stretchy fbox" style="height:1.3744em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.988em;"><span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.6663em;"><span></span></span></span></span></span></span></span><span class="svg-align" style="top:-4.1689em;"><span class="pstrut" style="height:3.0344em;"></span><span class="stretchy" style="height:0.548em;min-width:1.6em;"><span class="brace-left" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMinYMin slice"><path d="M6 548l-6-6v-35l6-11c56-104 135.3-181.3 238-232 57.3-28.7 117
+-45 179-50h399577v120H403c-43.3 7-81 15-113 26-100.7 33-179.7 91-237 174-2.7
+ 5-6 9-10 13-.7 1-7.3 1-20 1H6z"/></svg></span><span class="brace-center" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMidYMin slice"><path d="M200428 334
+c-100.7-8.3-195.3-44-280-108-55.3-42-101.7-93-139-153l-9-14c-2.7 4-5.7 8.7-9 14
+-53.3 86.7-123.7 153-211 199-66.7 36-137.3 56.3-212 62H0V214h199568c178.3-11.7
+ 311.7-78.3 403-201 6-8 9.7-12 11-12 .7-.7 6.7-1 18-1s17.3.3 18 1c1.3 0 5 4 11
+ 12 44.7 59.3 101.3 106.3 170 141s145.3 54.3 229 60h199572v120z"/></svg></span><span class="brace-right" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMaxYMin slice"><path d="M400000 542l
+-6 6h-17c-12.7 0-19.3-.3-20-1-4-4-7.3-8.3-10-13-35.3-51.3-80.8-93.8-136.5-127.5
+s-117.2-55.8-184.5-66.5c-.7 0-2-.3-4-1-18.7-2.7-76-4.3-172-5H0V214h399571l6 1
+c124.7 8 235 61.7 331 161 31.3 33.3 59.7 72.7 85 118l7 13v35z"/></svg></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.6663em;"><span></span></span></span></span></span></span><span style="top:-5.5649em;"><span class="pstrut" style="height:3.6824em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord cjk_fallback mtight">校园内部网</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.6663em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⟺</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.6897em;vertical-align:-1.6663em;"></span><span class="minner munder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0233em;"><span style="top:-1.357em;"><span class="pstrut" style="height:3.0233em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord cjk_fallback mtight">位于公网</span></span></span></span></span><span style="top:-3.0233em;"><span class="pstrut" style="height:3.0233em;"></span><span class="minner munder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0233em;"><span class="svg-align" style="top:-2.0353em;"><span class="pstrut" style="height:3.0233em;"></span><span class="stretchy" style="height:0.548em;min-width:1.6em;"><span class="brace-left" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMinYMin slice"><path d="M0 6l6-6h17c12.688 0 19.313.3 20 1 4 4 7.313 8.3 10 13
+ 35.313 51.3 80.813 93.8 136.5 127.5 55.688 33.7 117.188 55.8 184.5 66.5.688
+ 0 2 .3 4 1 18.688 2.7 76 4.3 172 5h399450v120H429l-6-1c-124.688-8-235-61.7
+-331-161C60.687 138.7 32.312 99.3 7 54L0 41V6z"/></svg></span><span class="brace-center" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMidYMin slice"><path d="M199572 214
+c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
+ 53.3-86.7 123.7-153 211-199 66.7-36 137.3-56.3 212-62h199568v120H200432c-178.3
+ 11.7-311.7 78.3-403 201-6 8-9.7 12-11 12-.7.7-6.7 1-18 1s-17.3-.3-18-1c-1.3 0
+-5-4-11-12-44.7-59.3-101.3-106.3-170-141s-145.3-54.3-229-60H0V214z"/></svg></span><span class="brace-right" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMaxYMin slice"><path d="M399994 0l6 6v35l-6 11c-56 104-135.3 181.3-238 232-57.3
+ 28.7-117 45-179 50H-300V214h399897c43.3-7 81-15 113-26 100.7-33 179.7-91 237
+-174 2.7-5 6-9 10-13 .7-1 7.3-1 20-1h17z"/></svg></span></span></span><span style="top:-3.0233em;"><span class="pstrut" style="height:3.0233em;"></span><span class="mord"><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0233em;"><span style="top:-3.3633em;"><span class="pstrut" style="height:3.3633em;"></span><span class="boxpad"><span class="mord"><span class="mord">Server</span></span></span></span><span style="top:-3.0233em;"><span class="pstrut" style="height:3.3633em;"></span><span class="stretchy fbox" style="height:1.3633em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.988em;"><span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.6663em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⟺</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.6897em;vertical-align:-1.6663em;"></span><span class="minner munder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0233em;"><span style="top:-1.357em;"><span class="pstrut" style="height:3.0233em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord cjk_fallback mtight">可访问公网</span></span></span></span></span><span style="top:-3.0233em;"><span class="pstrut" style="height:3.0233em;"></span><span class="minner munder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0233em;"><span class="svg-align" style="top:-2.0353em;"><span class="pstrut" style="height:3.0233em;"></span><span class="stretchy" style="height:0.548em;min-width:1.6em;"><span class="brace-left" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMinYMin slice"><path d="M0 6l6-6h17c12.688 0 19.313.3 20 1 4 4 7.313 8.3 10 13
+ 35.313 51.3 80.813 93.8 136.5 127.5 55.688 33.7 117.188 55.8 184.5 66.5.688
+ 0 2 .3 4 1 18.688 2.7 76 4.3 172 5h399450v120H429l-6-1c-124.688-8-235-61.7
+-331-161C60.687 138.7 32.312 99.3 7 54L0 41V6z"/></svg></span><span class="brace-center" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMidYMin slice"><path d="M199572 214
+c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
+ 53.3-86.7 123.7-153 211-199 66.7-36 137.3-56.3 212-62h199568v120H200432c-178.3
+ 11.7-311.7 78.3-403 201-6 8-9.7 12-11 12-.7.7-6.7 1-18 1s-17.3-.3-18-1c-1.3 0
+-5-4-11-12-44.7-59.3-101.3-106.3-170-141s-145.3-54.3-229-60H0V214z"/></svg></span><span class="brace-right" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMaxYMin slice"><path d="M399994 0l6 6v35l-6 11c-56 104-135.3 181.3-238 232-57.3
+ 28.7-117 45-179 50H-300V214h399897c43.3-7 81-15 113-26 100.7-33 179.7-91 237
+-174 2.7-5 6-9 10-13 .7-1 7.3-1 20-1h17z"/></svg></span></span></span><span style="top:-3.0233em;"><span class="pstrut" style="height:3.0233em;"></span><span class="mord"><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0233em;"><span style="top:-3.3633em;"><span class="pstrut" style="height:3.3633em;"></span><span class="boxpad"><span class="mord"><span class="mord">User</span></span></span></span><span style="top:-3.0233em;"><span class="pstrut" style="height:3.3633em;"></span><span class="stretchy fbox" style="height:1.3633em;border-style:solid;border-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34em;"><span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.988em;"><span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.6663em;"><span></span></span></span></span></span></span></span></span></span>
+<h4 id="h4-frp">frp</h4><p><a href="https://github.com/fatedier/frp">frp的GitHub仓库</a></p>
+<p>在仓库中，<a href="https://github.com/fatedier/">fatedier</a>是这样描述frp的：</p>
+<blockquote>
+<p>frp 是一个专注于内网穿透的高性能的反向代理应用，支持 TCP、UDP、HTTP、HTTPS 等多种协议，且支持 P2P 通信。可以将内网服务以安全、便捷的方式通过具有公网 IP 节点的中转暴露到公网。</p>
+</blockquote>
+<p>总而言之，他就是我们实现反向代理的软件。</p>
+<p>frp分为两部分：</p>
+<ol>
+<li><code>frps</code>（frp <strong>S</strong>erver，服务端）运行在公网服务器上，</li>
+<li><code>frpc</code>（frp <strong>C</strong>lient，客户端）运行在校园网内你的计算机（树莓派）上。</li>
+</ol>
+<p>两者配合，就能打通一条从外网到内网的隧道。</p>
+<h4 id="h4-wireguard">WireGuard</h4><p>WireGuard 是一个非常简单、快速、现代化的虚拟专用网协议。在我们的场景中，我们可以用 WireGuard 把user设备和client设备连接在同一个虚拟局域网里，这样你就可以像在宿舍里一样直接访问校园网资源了。</p>
+<p>配置好后的网络结构大概会是这个样子：</p>
+<pre class="ascii-table" lang="en"><code>┌────────────────────────────────────────────────────┐
+│ WAN                                                │
+│┌────────────────────────┐                          │
+││ School LAN             │   ┌────────┐             │
+││┌──────────┐  ┌────────┐│   │ Server │   ┌────────┐│
+│││ School   │  │        └┴───┴────────┴───┘┌──────┐││
+│││ Internal │  │ Client                    │ User │││
+│││ Computer │  │        ┌┬───┬────────┬───┐└──────┘││
+││└──────────┘  └────────┘│   └────────┘   └────────┘│
+│└────────────────────────┘                          │
+└────────────────────────────────────────────────────┘
+</code></pre>
+<h2 id="h2-u6211u4eecu8981u600eu4e48u505a">我们要怎么做</h2><p>需要安装并配置的软件一览：</p>
+<table>
+<thead>
+<tr>
+<th>设备</th>
+<th>软件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>frp客户端， WireGuard（作为服务端）</td>
+</tr>
+<tr>
+<td>Server</td>
+<td>frp服务端</td>
+</tr>
+<tr>
+<td>User</td>
+<td>WireGuard（作为客户端）</td>
+</tr>
+</tbody></table>
+<h3 id="h3-u914du7f6eserveru4e0au7684frps">配置server上的frps</h3><div class="markdown-alert markdown-alert-note">
+<p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>如果没有，使用例如<a href="https://www.natfrp.com/">SAKURA FRP</a>的网络服务商替代时，可以直接跳过这一步，并直接参照<a href="https://doc.natfrp.com/app/http.html">它们的教程</a>配置。</p>
+</div>
+<p>我们先从公网服务器（server）开始，因为它要负责在外面“接应”校内的 client。</p>
+<h4 id="h4-1-u4e0bu8f7d-frp">1. 下载 frp</h4><p>在server上下载frps对应架构的压缩包并解压。</p>
+<h4 id="h4-2-u7f16u5199u914du7f6eu6587u4ef6">2. 编写配置文件</h4><p>新建一个名为 <code>frps.toml</code> 的文件，写入以下内容：</p>
+<pre><code class="language-toml"><span class="hljs-attr">bindPort</span> = <span class="hljs-number">7000</span>           <span class="hljs-comment"># frp 服务端监听的端口</span>
+<span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;你的加密口令&quot;</span>  <span class="hljs-comment"># 只有拿着正确密码的 client 才能连接</span>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>这里的“加密口令”可以是你自定义的任意文本</p>
+<h4 id="h4-3-u542fu52a8u670du52a1u7aef">3. 启动服务端</h4><pre><code class="language-bash">./frps -c ./frps.toml
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<h3 id="h3-u914du7f6eclientu4e0au7684frpc">配置client上的frpc</h3><p>现在回到宿舍里的client，我们要告诉它如何找到外面的服务器。</p>
+<div class="markdown-alert markdown-alert-note">
+<p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>如果使用<a href="https://www.natfrp.com/">SAKURA FRP</a>，他们fork并修改了frpc，使其支持通过命令行的<code>-f</code>参数直接启动而不用编写配置文件，你可以在<a href="https://www.natfrp.com/tunnel/download">这里</a>下载并参照他们的教程运行。</p>
+</div>
+<h4 id="h4-1-u7f16u5199u914du7f6eu6587u4ef6">1. 编写配置文件</h4><p>新建 <code>frpc.toml</code>，这是实现穿透的关键：</p>
+<pre><code class="language-toml"><span class="hljs-attr">serverAddr</span> = <span class="hljs-string">&quot;你的服务器公网IP&quot;</span>
+<span class="hljs-attr">serverPort</span> = <span class="hljs-number">7000</span>
+<span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;你的加密口令&quot;</span>
+
+<span class="hljs-section">[[proxies]]</span>
+<span class="hljs-attr">name</span> = <span class="hljs-string">&quot;wireguard-tunnel&quot;</span>
+<span class="hljs-attr">type</span> = <span class="hljs-string">&quot;udp&quot;</span>              <span class="hljs-comment"># WireGuard 使用的是 UDP 协议</span>
+<span class="hljs-attr">localIP</span> = <span class="hljs-string">&quot;127.0.0.1&quot;</span>
+<span class="hljs-attr">localPort</span> = <span class="hljs-number">51820</span>         <span class="hljs-comment"># 树莓派上 WireGuard 的默认端口</span>
+<span class="hljs-attr">remotePort</span> = <span class="hljs-number">51820</span>        <span class="hljs-comment"># 映射到服务器上的端口</span>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>这样配置后，外网用户可以通过 <code>server_ip:7000</code> 连接到 client 的服务。</p>
+<h4 id="h4-2-u542fu52a8u5ba2u6237u7aef">2. 启动客户端</h4><p>使用以下命令</p>
+<pre><code class="language-bash">./frpc -c ./frpc.toml
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<h3 id="h3-u5b89u88c5u5e76u914du7f6e-wireguard-u5b9eu73b0u5c40u57dfu7f51u5168u8bbfu95ee">安装并配置 WireGuard：实现局域网全访问</h3><p>当你通过 <code>frp</code> 穿透了 WireGuard 的 UDP 端口后，你不仅可以连接到这台服务器本身，还可以通过它作为跳板，访问其所在的整个校园网/局域网资源。</p>
+<h4 id="h4-1-u5b89u88c5-wireguard-client-u7aef">1. 安装 WireGuard (Client 端)</h4><p>在Client上安装WireGuard，例如如果使用debian系的发行版：</p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> apt update
+<span class="hljs-built_in">sudo</span> apt install wireguard
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<h4 id="h4-2-u5f00u542fu5185u6838u8f6cu53d1">2. 开启内核转发</h4><p>这是实现局域网访问的关键。你需要让 Linux 内核允许数据包在不同网卡间转发。</p>
+<p>可以通过命令在临时修改，测试配置：</p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> sysctl -w net.ipv4.ip_forward=1
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>如果想重启后仍生效，需要设置配置文件。如果<code>/etc/sysctl.conf</code>存在，可以将<code>net.ipv4.ip_forward=1</code>添加到文件中：</p>
+<pre><code class="language-bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;net.ipv4.ip_forward=1&quot;</span> | <span class="hljs-built_in">sudo</span> <span class="hljs-built_in">tee</span> -a /etc/sysctl.conf
+<span class="hljs-built_in">sudo</span> sysctl -p
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>不同发行版可能具有不同配置，<code>/etc/sysctl.conf</code>可能不存在，这时也可以考虑将配置添加到<code>/etc/sysctl.d</code>文件夹中的一个新的文件中，如</p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;net.ipv4.ip_forward=1&quot;</span> &gt; /etc/sysctl.d/9999-ip-forward.conf
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<h4 id="h4-3-u751fu6210u5bc6u94a5u5bf9">3. 生成密钥对</h4><p>在 Client 和 User 端各执行一次，并记录下各自的公钥和私钥，我们需要在接下来的配置文件中输入它们。</p>
+<p>下面命令可以快速的完成这个步骤，它会将公钥和私钥保存为当前目录下的文件<code>publickey</code>与<code>privatekey</code>。</p>
+<pre><code class="language-bash">wg genkey | <span class="hljs-built_in">tee</span> privatekey | wg pubkey &gt; publickey
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<h4 id="h4-4-u914du7f6e-client-u7aef-u5185u7f51u670du52a1u5668">4. 配置 Client 端 (内网服务器)</h4><p>编辑 <code>/etc/wireguard/wg0.conf</code>。为了让 User 能访问局域网，我们需要在接口启动时添加 <code>iptables</code> 规则来进行 NAT 伪装。</p>
+<pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
+<span class="hljs-attr">Address</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.1</span>/<span class="hljs-number">24</span>
+<span class="hljs-attr">ListenPort</span> = <span class="hljs-number">51820</span>
+<span class="hljs-attr">PrivateKey</span> = &lt;Client的私钥&gt;
+
+<span class="hljs-attr">PostUp</span> = iptables -A FORWARD -i wg0 -j ACCEPT<span class="hljs-comment">; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE</span>
+<span class="hljs-attr">PostDown</span> = iptables -D FORWARD -i wg0 -j ACCEPT<span class="hljs-comment">; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE</span>
+
+<span class="hljs-section">[Peer]</span>
+<span class="hljs-attr">PublicKey</span> = &lt;User的公钥&gt;
+<span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.2</span>/<span class="hljs-number">32</span>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<div class="markdown-alert markdown-alert-note">
+<p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>如果不加 <code>PostUp</code> 里的 iptables 规则，局域网内的其他设备收到你的请求后，不知道要把回包发给 <code>10.0.0.2</code>。通过 NAT 伪装，所有从 User 发出的请求在进入局域网时，都会被伪装成 Client 的本地 IP。</p>
+</div>
+<div class="markdown-alert markdown-alert-important">
+<p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p>请务必在 Client 执行 <code>ip addr</code> 查看主网卡名称，如果是 <code>ens33</code> 或 <code>eno1</code>，请将配置中的 <code>eth0</code> 相应替换。</p>
+</div>
+<div class="markdown-alert markdown-alert-important">
+<p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p>请务必修改配置文件其中的<code>&lt;Client的私钥&gt;</code>和<code>&lt;User的公钥&gt;</code>为实际密钥。</p>
+</div>
+<h4 id="h4-5-u914du7f6e-user-u7aef-u7528u6237u7535u8111">5. 配置 User 端 (用户电脑)</h4><p>先在User的电脑中也安装一个WireGuard。</p>
+<p>在 User 的 WireGuard 客户端中新建配置。关键点在于 <code>AllowedIPs</code> 的设置。</p>
+<pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
+<span class="hljs-attr">PrivateKey</span> = &lt;User的私钥&gt;
+<span class="hljs-attr">Address</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.2</span>/<span class="hljs-number">32</span>
+<span class="hljs-attr">DNS</span> = <span class="hljs-number">114.114</span>.<span class="hljs-number">114.114</span>
+
+<span class="hljs-section">[Peer]</span>
+<span class="hljs-attr">PublicKey</span> = &lt;Client的公钥&gt;
+<span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">24</span>, <span class="hljs-number">172.16</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">12</span>, ...&lt;你需要访问的IP，逗号分隔&gt;
+<span class="hljs-attr">Endpoint</span> = &lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;
+<span class="hljs-comment"># 保持连接，防止因长时间无流量导致穿透失效</span>
+<span class="hljs-attr">PersistentKeepalive</span> = <span class="hljs-number">25</span>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<div class="markdown-alert markdown-alert-note">
+<p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>在 User 端配置中，<code>AllowedIPs</code> 决定了哪些流量会走 WireGuard 隧道。如果你希望访问校园网，必须把校园网的网段（如 <code>172.16.0.0/12</code> 或 <code>10.0.0.0/8</code>）加进去。</p>
+<div class="markdown-alert markdown-alert-tip">
+<p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p>如果不确定有哪些IP需要访问，可以将<code>0.0.0.0/0</code>（全部IP）添加到<code>AllowedIPs</code>，但注意此时你的所有网络流量都会被路由。</p>
+</div>
+</div>
+<div class="markdown-alert markdown-alert-note">
+<p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>在 User 端配置中<code>[Interface]</code>的<code>Address</code>与Client 端<code>[Peer]</code>的<code>AllowedIPs</code>一致。</p>
+</div>
+<div class="markdown-alert markdown-alert-important">
+<p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p>请务必修改配置文件其中的<code>&lt;Client的私钥&gt;</code>和<code>&lt;User的公钥&gt;</code>为实际密钥；修改<code>&lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;</code>为实际地址和端口。</p>
+</div>
+<h4 id="h4-6-u542fu52a8wireguard">6. 启动WireGuard</h4><p>配置完成后，在 Client 执行</p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> wg-quick up wg0
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>启动WireGuard服务。</p>
+<p>在 User 端点击“连接”，测试是否能连接上。</p>
+<div class="markdown-alert markdown-alert-tip">
+<p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p>我们在Client的配置中设置了<code>Address = 10.0.0.1</code>，这意味着我们可以在连接上后通过10.0.0.1这个地址访问Client自身的网络服务，例如ssh。</p>
+</div>
+<div class="markdown-alert markdown-alert-note">
+<p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>我们现在配置的WireGuard只支持同时一个用户使用，若需要多个用户使用，参加后面的“多用户同时连接”章节</p>
+</div>
+<h3 id="h3-u914du7f6eu5404u4e2au670du52a1u7684u81eau542fu52a8">配置各个服务的自启动</h3><p>我们需要配置frps, frpc, WireGuard三个服务的自动启动，让他们在开机或意外退出后可以自动重新启动。</p>
+<p>下面以frpc为例说明如何配置，其他服务是类似的。</p>
+<p>在 Linux 系统里，<a href="https://en.wikipedia.org/wiki/Systemd"><code>systemd</code></a> 就像是一个大管家，我们可以写一张“任务清单”交给它，让它负责 <code>frpc</code> 的日常维护。</p>
+<h4 id="h4-1-u521bu5efaservice-u6587u4ef6">1. 创建Service 文件</h4><p>我们需要在系统中新建一个服务文件。请在终端输入：</p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> nano /etc/systemd/system/frpc.service
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>以创建<code>/etc/systemd/system/frpc.service</code>文件并编辑。</p>
+<h4 id="h4-2-u544au8bc9systemdu8be5u505au4ec0u4e48">2. 告诉systemd该做什么</h4><p>在打开的空白编辑器里，粘贴下面这段内容：</p>
+<pre><code class="language-ini"><span class="hljs-section">[Unit]</span>
+<span class="hljs-attr">Description</span>=frp client for campus network
+<span class="hljs-attr">After</span>=network.target
+
+<span class="hljs-section">[Service]</span>
+<span class="hljs-attr">Type</span>=simple
+<span class="hljs-attr">ExecStart</span>=/path/to/your/frpc -c /path/to/your/frpc.toml
+<span class="hljs-attr">Restart</span>=<span class="hljs-literal">on</span>-failure
+<span class="hljs-attr">RestartSec</span>=<span class="hljs-number">5</span>s
+
+<span class="hljs-section">[Install]</span>
+<span class="hljs-attr">WantedBy</span>=multi-user.target
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<div class="markdown-alert markdown-alert-important">
+<p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p>要把 <code>ExecStart</code> 里的 <code>/path/to/your/</code> 换成你实际的文件夹路径（比如 <code>/home/pi/frp/</code>）！</p>
+</div>
+<h4 id="h4-3-u8ba9u6e05u5355u6b63u5f0fu751fu6548">3. 让清单正式生效</h4><p>写好后，按 <code>Ctrl + O</code> 保存，再按 <code>Ctrl + X</code> 退出。然后执行下面这几条命令：</p>
+<ol>
+<li><strong>刷新清单</strong>：
+<code>sudo systemctl daemon-reload</code></li>
+<li><strong>设置开机自动启动</strong>：
+<code>sudo systemctl enable frpc</code></li>
+<li><strong>现在立刻帮我启动</strong>：
+<code>sudo systemctl start frpc</code></li>
+</ol>
+<h4 id="h4-4-u68c0u67e5u670du52a1u72b6u6001">4. 检查服务状态</h4><p>执行下面的命令查看状态：</p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> systemctl status frpc
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>如果你看到绿色的 <span style="color:#06C762;"><code>active (running)</code></span>，那就说明我们的 <code>frpc</code> 已经成功穿透校园网，开始为你工作。</p>
+<h2 id="h2-u9700u8981u6ce8u610fu7684u4e8bu9879">需要注意的事项</h2><h3 id="h3-wireguard-u7684u81eau542fu52a8u7ba1u7406">WireGuard 的自启动管理</h3><p>WireGuard的.service有些许不同，在此附上如下。</p>
+<pre><code class="language-ini"><span class="hljs-section">[Unit]</span>
+<span class="hljs-attr">Description</span>=WireGuard via wg-quick(<span class="hljs-number">8</span>) for %I
+<span class="hljs-attr">After</span>=network.target
+<span class="hljs-attr">Wants</span>=network-<span class="hljs-literal">on</span>line.target
+
+<span class="hljs-section">[Service]</span>
+<span class="hljs-attr">Type</span>=<span class="hljs-literal">on</span>eshot
+<span class="hljs-attr">RemainAfterExit</span>=<span class="hljs-literal">yes</span>
+<span class="hljs-attr">ExecStart</span>=/usr/bin/wg-quick up %i
+<span class="hljs-attr">ExecStop</span>=/usr/bin/wg-quick down %i
+<span class="hljs-attr">Environment</span>=WG_ENDPOINT_RESOLUTION_RETRIES=infinity
+
+<span class="hljs-section">[Install]</span>
+<span class="hljs-attr">WantedBy</span>=multi-user.target
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>将以上内容保存为<code>/etc/systemd/system/wg-quick@.service</code>。</p>
+<p>控制方法如下：</p>
+<pre><code class="language-bash"><span class="hljs-comment"># 启用服务（开机自启）</span>
+<span class="hljs-built_in">sudo</span> systemctl <span class="hljs-built_in">enable</span> wg-quick@wg0
+
+<span class="hljs-comment"># 立即启动服务</span>
+<span class="hljs-built_in">sudo</span> systemctl start wg-quick@wg0
+
+<span class="hljs-comment"># 查看服务状态</span>
+<span class="hljs-built_in">sudo</span> systemctl status wg-quick@wg0
+
+<span class="hljs-comment"># 查看日志</span>
+<span class="hljs-built_in">sudo</span> journalctl -u wg-quick@wg0 -f
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<h3 id="h3-u591au7528u6237-u591au8bbeu5907-u63a5u5165u914du7f6e">多用户（多设备）接入配置</h3><p>在 WireGuard 的架构中，<strong>身份验证与 IP 路由是绑定的</strong>。每一个连接端（User）都必须拥有独一无二的公私钥对，且在中心节点中被分配唯一的内网 IP 地址。</p>
+<p>如果你直接将 User A 的配置文件复制给 User B 使用，不仅会导致密钥冲突，还会因为 IP 地址重复而导致路由混乱，最终造成两个设备互相顶号、掉线或无法联网。</p>
+<p>因此，接入多个用户（或设备）时，需要遵循以下三个步骤：</p>
+<ol>
+<li><strong>生成密钥</strong>：为每一个新用户生成独立的公私钥对。</li>
+<li><strong>分配 IP</strong>：为每一个新用户规划一个不重复的内网 IP（如 <code>10.0.0.2</code>, <code>10.0.0.3</code>）。</li>
+<li><strong>双向注册</strong>：在中心节点（Client）注册所有用户的公钥；在各用户设备上填入自己的私钥和中心节点的公钥。</li>
+</ol>
+<h4 id="h4-1-u8be6u7ec6u914du7f6eu903bu8f91">1. 详细配置逻辑</h4><p><strong>中心节点 (Client) 的变化：</strong></p>
+<ul>
+<li><code>[Interface]</code> 部分保持不变（它定义了中心节点自己的地址和监听端口）。</li>
+<li>需要为每一个新用户增加一个独立的 <code>[Peer]</code> 区块。</li>
+<li>每个 <code>[Peer]</code> 区块中，<code>PublicKey</code> 填写该用户的公钥，<code>AllowedIPs</code> 填写分配给该用户的具体 IP（通常使用 <code>/32</code>掩码，表示仅允许该特定 IP 流量）。</li>
+</ul>
+<p><strong>用户端 (User) 的变化：</strong></p>
+<ul>
+<li>每个用户拥有独立的配置文件。</li>
+<li><code>[Interface]</code> 中填写自己的私钥 (<code>PrivateKey</code>) 和分配到的唯一 IP (<code>Address</code>)。</li>
+<li><code>[Peer]</code> 指向中心节点，所有用户的 <code>[Peer]</code> 部分基本相同（都指向同一个中心节点的公钥和 Endpoint）。</li>
+</ul>
+<h4 id="h4-2-u4feeu6539u540eu7684u914du7f6eu793au4f8b">2. 修改后的配置示例</h4><p>假设我们将中心节点定义为 Client（作为网关/服务器），并接入三个用户设备（User_A, User_B, User_C）。</p>
+<h5 id="h5-a-u4e2du5fc3u8282u70b9u914du7f6e-client">A. 中心节点配置 (Client)</h5><p>该文件位于中心节点设备上。注意观察 <code>[Peer]</code> 区块是如何一一对应用户的。</p>
+<pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
+<span class="hljs-comment"># 中心节点的内网 IP，使用 /24 表示它属于该子网</span>
+<span class="hljs-attr">Address</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.1</span>/<span class="hljs-number">24</span>
+<span class="hljs-attr">ListenPort</span> = <span class="hljs-number">51820</span>
+<span class="hljs-attr">PrivateKey</span> = &lt;Client 的私钥&gt;
+
+<span class="hljs-comment"># 启动/关闭时的防火墙规则 (保持原样)</span>
+<span class="hljs-attr">PostUp</span> = iptables -A FORWARD -i wg0 -j ACCEPT<span class="hljs-comment">; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE</span>
+<span class="hljs-attr">PostDown</span> = iptables -D FORWARD -i wg0 -j ACCEPT<span class="hljs-comment">; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE</span>
+
+<span class="hljs-comment"># -------------------------------------------------</span>
+<span class="hljs-comment"># 用户 A (User_A)</span>
+<span class="hljs-comment"># -------------------------------------------------</span>
+<span class="hljs-section">[Peer]</span>
+<span class="hljs-attr">PublicKey</span> = &lt;User_A 的公钥&gt;
+<span class="hljs-comment"># 指定 User_A 只能使用 10.0.0.2 这个 IP 通信</span>
+<span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.2</span>/<span class="hljs-number">32</span>
+
+<span class="hljs-comment"># -------------------------------------------------</span>
+<span class="hljs-comment"># 用户 B (User_B)</span>
+<span class="hljs-comment"># -------------------------------------------------</span>
+<span class="hljs-section">[Peer]</span>
+<span class="hljs-attr">PublicKey</span> = &lt;User_B 的公钥&gt;
+<span class="hljs-comment"># 指定 User_B 只能使用 10.0.0.3 这个 IP 通信</span>
+<span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.3</span>/<span class="hljs-number">32</span>
+
+<span class="hljs-comment"># -------------------------------------------------</span>
+<span class="hljs-comment"># 用户 C (User_C)</span>
+<span class="hljs-comment"># -------------------------------------------------</span>
+<span class="hljs-section">[Peer]</span>
+<span class="hljs-attr">PublicKey</span> = &lt;User_C 的公钥&gt;
+<span class="hljs-comment"># 指定 User_C 只能使用 10.0.0.4 这个 IP 通信</span>
+<span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.4</span>/<span class="hljs-number">32</span>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<h5 id="h5-b-u7528u6237u7aefu914du7f6e-user_a">B. 用户端配置 (User_A)</h5><ul>
+<li><strong>身份</strong>：User A</li>
+<li><strong>IP</strong>：10.0.0.2</li>
+</ul>
+<pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
+<span class="hljs-comment"># 这里必须填 User_A 独有的私钥</span>
+<span class="hljs-attr">PrivateKey</span> = &lt;User_A 的私钥&gt;
+<span class="hljs-comment"># 这里必须填分配给 User_A 的唯一 IP</span>
+<span class="hljs-attr">Address</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.2</span>/<span class="hljs-number">32</span>
+<span class="hljs-attr">DNS</span> = <span class="hljs-number">114.114</span>.<span class="hljs-number">114.114</span>
+
+<span class="hljs-section">[Peer]</span>
+<span class="hljs-comment"># 指向中心节点的公钥</span>
+<span class="hljs-attr">PublicKey</span> = &lt;Client 的公钥&gt;
+<span class="hljs-comment"># 允许访问的网段：包括 VPN 内网(10.0.0.0/24) 和其他目标网段</span>
+<span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">24</span>, <span class="hljs-number">172.16</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">12</span>
+<span class="hljs-comment"># 通过 FRP 中转的连接地址</span>
+<span class="hljs-attr">Endpoint</span> = &lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;
+<span class="hljs-comment"># NAT 保持活跃心跳（防止连接中断）</span>
+<span class="hljs-attr">PersistentKeepalive</span> = <span class="hljs-number">25</span>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<h5 id="h5-c-u7528u6237u7aefu914du7f6e-user_b">C. 用户端配置 (User_B)</h5><ul>
+<li><strong>身份</strong>：User B</li>
+<li><strong>IP</strong>：10.0.0.3</li>
+</ul>
+<pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
+<span class="hljs-comment"># 注意：使用 User_B 的私钥</span>
+<span class="hljs-attr">PrivateKey</span> = &lt;User_B 的私钥&gt;
+<span class="hljs-comment"># 注意：IP 变为 10.0.0.3</span>
+<span class="hljs-attr">Address</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.3</span>/<span class="hljs-number">32</span>
+<span class="hljs-attr">DNS</span> = <span class="hljs-number">114.114</span>.<span class="hljs-number">114.114</span>
+
+<span class="hljs-section">[Peer]</span>
+<span class="hljs-comment"># 指向同一个中心节点</span>
+<span class="hljs-attr">PublicKey</span> = &lt;Client 的公钥&gt;
+<span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">24</span>, <span class="hljs-number">172.16</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">12</span>
+<span class="hljs-attr">Endpoint</span> = &lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;
+<span class="hljs-attr">PersistentKeepalive</span> = <span class="hljs-number">25</span>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<h5 id="h5-d-u7528u6237u7aefu914du7f6e-user_c">D. 用户端配置 (User_C)</h5><ul>
+<li><strong>身份</strong>：User C</li>
+<li><strong>IP</strong>：10.0.0.4</li>
+</ul>
+<pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
+<span class="hljs-comment"># 注意：使用 User_C 的私钥</span>
+<span class="hljs-attr">PrivateKey</span> = &lt;User_C 的私钥&gt;
+<span class="hljs-comment"># 注意：IP 变为 10.0.0.4</span>
+<span class="hljs-attr">Address</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.4</span>/<span class="hljs-number">32</span>
+<span class="hljs-attr">DNS</span> = <span class="hljs-number">114.114</span>.<span class="hljs-number">114.114</span>
+
+<span class="hljs-section">[Peer]</span>
+<span class="hljs-attr">PublicKey</span> = &lt;Client 的公钥&gt;
+<span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">24</span>, <span class="hljs-number">172.16</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">12</span>
+<span class="hljs-attr">Endpoint</span> = &lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;
+<span class="hljs-attr">PersistentKeepalive</span> = <span class="hljs-number">25</span>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<h4 id="h4-3-u5173u952eu6ce8u610fu4e8bu9879">3. 关键注意事项</h4><ol>
+<li><strong>公钥与私钥的配对</strong>：<ul>
+<li>切记：<strong>Client 配置文件</strong>中填写的 <code>[Peer] PublicKey</code>，必须是对应 <strong>User 配置文件</strong>中 <code>[Interface] PrivateKey</code> 生成的公钥。</li>
+</ul>
+</li>
+<li><strong>AllowedIPs 的唯一性</strong>：<ul>
+<li>在中心节点（Client）的配置文件中，每个 Peer 的 <code>AllowedIPs</code> 必须互不冲突（例如 <code>10.0.0.2/32</code> 和 <code>10.0.0.3/32</code>）。</li>
+<li>原理：当中心节点收到一个发往 <code>10.0.0.2</code> 的数据包时，它会根据 <code>AllowedIPs</code> 列表查找，发现它属于 User_A，于是使用 User_A 的公钥加密并发送。如果 IP 重复，WireGuard 将无法判断数据包该发给谁。</li>
+</ul>
+</li>
+<li><strong>心跳包 (PersistentKeepalive)</strong>：<ul>
+<li>由于你是通过 FRP 进行内网穿透或处于 NAT 环境后，<strong>务必</strong>在所有客户端（User 端）保留 <code>PersistentKeepalive = 25</code> 配置。这能强制每 25 秒发送一个空包，防止路由器或防火墙关闭 UDP 连接映射。</li>
+</ul>
+</li>
+</ol>
+<h3 id="h3-ups-u7684u7535u6c60u5bb9u91cf">UPS 的电池容量</h3><p>树莓派低功耗待机不需要15W的功耗，不一定需要这么大电池容量，但具体功耗我也没测试过。</p>
+<h3 id="h3-u5728u6bcfu65e5u65adu7535u524du81eau52a8u5173u673a">在每日断电前自动关机</h3><p>如果不配备UPS，并且不想Client树莓派在宿舍断电时直接掉电的话，我们就需要在将要掉电前将树莓派关机。但是手动关机显然不太现实，可以编写脚本实现这点。</p>
+<p>学校的断电规则比较规律：在每天二十四点出头时，如果第二天要上课，就会断电直到早上六点。完全根据调休执行，但问题是调休规则并不规律。幸运的是，有<a href="https://timor.tech">好心人</a>提供了一个联网API，我可以每天查询明天是否放假，从而决定是否关机。</p>
+<h4 id="h4-1-u4e0du653eu5047u5c31u5173u673au7684u811au672c">1. 不放假就关机的脚本</h4><p>编写python脚本如下：</p>
+<pre><code class="language-python"><span class="hljs-keyword">import</span> datetime
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> time
+
+<span class="hljs-keyword">import</span> requests
+
+LOG_FILE = __file__ + <span class="hljs-string">&quot;.log&quot;</span>
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">log</span>(<span class="hljs-params">message</span>):
+    now = datetime.datetime.now().strftime(<span class="hljs-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)
+    t_msg = <span class="hljs-string">f&quot;[<span class="hljs-subst">{now}</span>] <span class="hljs-subst">{message}</span>&quot;</span>
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(LOG_FILE, <span class="hljs-string">&quot;a&quot;</span>, encoding=<span class="hljs-string">&quot;utf-8&quot;</span>) <span class="hljs-keyword">as</span> f:
+        f.write(t_msg + <span class="hljs-string">&quot;\n&quot;</span>)
+    <span class="hljs-built_in">print</span>(t_msg)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">get_tomorrow_status</span>():
+    tomorrow_str = (datetime.date.today() + datetime.timedelta(days=<span class="hljs-number">1</span>)).strftime(
+        <span class="hljs-string">&quot;%Y-%m-%d&quot;</span>
+    )
+    url = <span class="hljs-string">f&quot;https://timor.tech/api/holiday/info/<span class="hljs-subst">{tomorrow_str}</span>&quot;</span>
+    headers = {
+        <span class="hljs-string">&quot;User-Agent&quot;</span>: <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36&quot;</span>
+    }
+
+    <span class="hljs-keyword">try</span>:
+        response = requests.get(url, headers=headers, timeout=<span class="hljs-number">15</span>)
+
+        <span class="hljs-comment"># 如果返回状态码不是 200，说明 API 服务出问题了</span>
+        <span class="hljs-keyword">if</span> response.status_code != <span class="hljs-number">200</span>:
+            log(<span class="hljs-string">f&quot;API 服务器返回错误码: <span class="hljs-subst">{response.status_code}</span>&quot;</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+
+        <span class="hljs-comment"># 检查返回内容是否为空</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> response.text.strip():
+            log(<span class="hljs-string">&quot;API 返回内容为空&quot;</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+
+        data = response.json()
+        <span class="hljs-keyword">if</span> data.get(<span class="hljs-string">&quot;code&quot;</span>) == <span class="hljs-number">0</span>:
+            type_code = data.get(<span class="hljs-string">&quot;type&quot;</span>, {}).get(<span class="hljs-string">&quot;type&quot;</span>)
+            <span class="hljs-keyword">return</span> type_code <span class="hljs-keyword">in</span> [<span class="hljs-number">0</span>, <span class="hljs-number">3</span>]
+        <span class="hljs-keyword">else</span>:
+            log(<span class="hljs-string">f&quot;API 逻辑报错: <span class="hljs-subst">{data.get(<span class="hljs-string">&#x27;msg&#x27;</span>)}</span>&quot;</span>)
+
+    <span class="hljs-keyword">except</span> requests.exceptions.JSONDecodeError:
+        log(<span class="hljs-string">&quot;API 返回了非 JSON 格式的内容（可能是 HTML 错误页）&quot;</span>)
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        log(<span class="hljs-string">f&quot;请求发生异常: <span class="hljs-subst">{e}</span>&quot;</span>)
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">shutdown</span>():
+    <span class="hljs-comment"># 延迟1分钟关机</span>
+    os.system(<span class="hljs-string">&#x27;sudo shutdown +1 &quot;明天是工作日，关机&quot;&#x27;</span>)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
+    <span class="hljs-comment"># 第一次尝试</span>
+    log(<span class="hljs-string">&quot;开始检查明天是否是假期...&quot;</span>)
+    is_workday = get_tomorrow_status()
+
+    <span class="hljs-keyword">if</span> is_workday <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        log(<span class="hljs-string">&quot;第一次检查失败，10分钟后进行最终尝试...&quot;</span>)
+        time.sleep(<span class="hljs-number">600</span>)  <span class="hljs-comment"># 等待 600 秒</span>
+
+        log(<span class="hljs-string">&quot;开始第二次检查...&quot;</span>)
+        is_workday = get_tomorrow_status()
+
+        <span class="hljs-keyword">if</span> is_workday <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            log(<span class="hljs-string">&quot;第二次检查依然失败。直接关机。&quot;</span>)
+            is_workday = <span class="hljs-literal">True</span>  <span class="hljs-comment"># 强制判定为工作日，触发关机</span>
+
+    <span class="hljs-keyword">if</span> is_workday:
+        log(<span class="hljs-string">&quot;明天是工作日，准备关机...&quot;</span>)
+        shutdown()
+    <span class="hljs-keyword">else</span>:
+        log(<span class="hljs-string">&quot;明天是假期，今晚不关机。&quot;</span>)
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    main()
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>这个脚本会在执行后联网检查明天放不放假，如果不放假就关机，放假则不做任何事。为了防止刚好网络掉线情况，如果第一次检查失败，脚本会在十分钟后检查第二次。</p>
+<h4 id="h4-2-u6bcfu5929u8fd0u884cu5173u673au68c0u67e5">2. 每天运行关机检查</h4><p>接着，我们配置每天晚上23:40通过crontab自动运行这个脚本。通过命令</p>
+<pre><code class="language-bash">crontab -e
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>编辑Cron 定时任务。在文件末尾添加一行：</p>
+<pre><code class="language-bash">40 23 * * * /usr/bin/python3 /home/username/scripts/holiday_shutdown.py
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<div class="markdown-alert markdown-alert-important">
+<p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p>请确保 <code>python3</code> 和 <code>脚本</code> 的路径都是绝对路径。</p>
+</div>
+<h4 id="h4-3-u7ed9-shutdown-u8bbeu7f6eu514du5bc6">3. 给`shutdown`设置免密</h4><p>由于关机命令 <code>shutdown</code> 需要 root 权限，而定时任务自动运行时无法手动输入密码，我们需要为 <code>shutdown</code> 命令设置免密。</p>
+<ol>
+<li>在终端输入：<code>sudo visudo</code></li>
+<li>在文件末尾添加以下内容（将 <code>username</code> 替换为你的实际用户名）：</li>
+</ol>
+<pre><code class="language-bash">username ALL=(ALL) NOPASSWD: /usr/sbin/shutdown
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<div class="markdown-alert markdown-alert-tip">
+<p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p>树莓派似乎本身就不用输密码，可以跳过这一步。</p>
+</div>
+<h3 id="h3-u81eau52a8u767bu9646u6821u56edu7f51">自动登陆校园网</h3><p>如果Client无法连接广域网，那这套方案是肯定不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的<a href="https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetworkDormArea.py">这个仓库</a>里就有这样一个脚本，可以用于登陆szu宿舍区校园网<sup><a id="footnote-ref-2" href="#footnote-2" data-footnote-ref aria-describedby="footnote-label">2</a></sup>。</p>
+<p>为了解决有时校园网需要重新登陆的问题，我们配置另一个定时脚本和对应的service。</p>
+<h4 id="h4-1-u76d1u63a7u811au672c">1. 监控脚本</h4><p>我们需要写一个简单的 Shell 脚本来执行循环检测逻辑。</p>
+<ol>
+<li>在目录下（假设是 <code>/home/user/scripts</code>）创建一个文件 <code>auto_login_monitor.sh</code>：</li>
+<li>写入以下内容：</li>
+</ol>
+<pre><code class="language-bash"><span class="hljs-meta">#!/bin/bash</span>
+
+<span class="hljs-comment"># --- 配置区域 ---</span>
+<span class="hljs-comment"># 校园网登录脚本的绝对路径</span>
+LOGIN_SCRIPT=<span class="hljs-string">&quot;/home/user/scripts/login.py&quot;</span>
+<span class="hljs-comment"># 目标IP</span>
+CHECK_IP=<span class="hljs-string">&quot;223.5.5.5&quot;</span> <span class="hljs-comment"># 阿里的 DNS</span>
+<span class="hljs-comment"># 检查间隔（秒）</span>
+INTERVAL=300
+
+<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Campus network monitor started...&quot;</span>
+
+<span class="hljs-keyword">while</span> <span class="hljs-literal">true</span>; <span class="hljs-keyword">do</span>
+    <span class="hljs-comment"># ping 1个包，超时时间5秒</span>
+    ping -c 1 -W 5 <span class="hljs-variable">$CHECK_IP</span> &gt; /dev/null 2&gt;&amp;1
+
+    <span class="hljs-keyword">if</span> [ $? -ne 0 ]; <span class="hljs-keyword">then</span>
+        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-subst">$(date)</span>: Network is down. Attempting to login...&quot;</span>
+        <span class="hljs-comment"># 执行登录脚本</span>
+        python <span class="hljs-variable">$LOGIN_SCRIPT</span>
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-subst">$(date)</span>: Network is OK.&quot;</span>
+    <span class="hljs-keyword">fi</span>
+
+    <span class="hljs-built_in">sleep</span> <span class="hljs-variable">$INTERVAL</span>
+<span class="hljs-keyword">done</span>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<ol start="3">
+<li>执行命令赋予脚本执行权限：</li>
+</ol>
+<pre><code class="language-bash"><span class="hljs-built_in">chmod</span> +x /home/user/scripts/auto_login_monitor.sh
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<h4 id="h4-2-u521bu5efa-systemd-u670du52a1">2. 创建 Systemd 服务</h4><p>为了让这个脚本像系统服务一样在后台运行，并随开机启动，我们需要创建一个 <code>.service</code> 文件。</p>
+<ol>
+<li>创建服务文件：
+<code>sudo nano /etc/systemd/system/auto-login.service</code></li>
+<li>使用以下配置：</li>
+</ol>
+<pre><code class="language-ini"><span class="hljs-section">[Unit]</span>
+<span class="hljs-attr">Description</span>=Campus Network Auto-Login Service
+<span class="hljs-attr">After</span>=network.target
+
+<span class="hljs-section">[Service]</span>
+<span class="hljs-attr">User</span>=your_username
+<span class="hljs-attr">ExecStart</span>=/bin/bash /home/user/scripts/auto_login_monitor.sh
+<span class="hljs-attr">Restart</span>=always
+<span class="hljs-attr">RestartSec</span>=<span class="hljs-number">5</span>
+<span class="hljs-attr">WorkingDirectory</span>=/home/user/scripts/
+
+<span class="hljs-section">[Install]</span>
+<span class="hljs-attr">WantedBy</span>=multi-user.target
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<div class="markdown-alert markdown-alert-important">
+<p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p>请将 <code>your_username</code>、<code>user</code> 和 <code>ExecStart</code> 路径替换为你实际的用户名和路径。</p>
+</div>
+<h4 id="h4-3-u542fu52a8u5e76u6fc0u6d3bu670du52a1">3. 启动并激活服务</h4><p>执行以下命令让服务生效：</p>
+<pre><code class="language-bash"><span class="hljs-comment"># 重新加载系统服务配置</span>
+<span class="hljs-built_in">sudo</span> systemctl daemon-reload
+<span class="hljs-comment"># 设置开机自启</span>
+<span class="hljs-built_in">sudo</span> systemctl <span class="hljs-built_in">enable</span> auto-login.service
+<span class="hljs-comment"># 立即启动服务</span>
+<span class="hljs-built_in">sudo</span> systemctl start auto-login.service
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<h4 id="h4-u5982u4f55u7ba1u7406u670du52a1">如何管理服务</h4><ul>
+<li><strong>查看运行状态</strong>：<code>sudo systemctl status auto-login.service</code></li>
+<li><strong>查看实时日志</strong>（排查是否成功 ping 通）：<code>journalctl -u auto-login.service -f</code></li>
+<li><strong>停止服务</strong>：<code>sudo systemctl stop auto-login.service</code></li>
+</ul>
+<section class="footnotes" data-footnotes>
+<h2 id="footnote-label" class="sr-only">Footnotes</h2>
+<ol>
+<li id="footnote-1">
+<p>我没有收他们的广告费。但是他们家甚至是免费的，我都不知道他们怎么赚钱 <a href="#footnote-ref-1" data-footnote-backref aria-label="Back to reference 1">↩</a></p>
+</li>
+<li id="footnote-2">
+<p>2026.06.27 更新：请注意这个脚本仅能登录宿舍区的校园网。教学区的是登录不了的！我在同一个仓库里放了另一个登录教学区校园网的脚本，如有需要请仔细查看。 <a href="#footnote-ref-2" data-footnote-backref aria-label="Back to reference 2">↩</a></p>
+</li>
+</ol>
+</section>
+</div>
+            <div id="footnote">2025/12/21</div>
+          </div>
+        </div>
+
+        <div class="bottom-button mobile-only">
+          <button onclick="scrollToTop()" data-title-zh="滚动到顶部" data-title-en="Scroll to Top" title="">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon">
+              <use href="#icon-arrow-upward" />
+            </svg>
+          </button>
+        </div>
+
+        <div id="right-sidebar" class="sidebar">
+          <div id="toc-card" class="sidebar-card">
+            <div class="toc-header" data-text-zh="目录" data-text-en="Contents">目录</div>
+            <div id="toc-content"><div class="toc">
+    <ul></ul>
+  </div> <ul>
+<li><a href="#h2-u6211u4eecu8981u505au4ec0u4e48">我们要做什么</a></li>
+<ul>
+<li><a href="#h3-u6211u4eecu9700u8981u4ec0u4e48">我们需要什么</a></li>
+<li><a href="#h3-u8fd9u4e9bu540du8bcdu662fu4ec0u4e48">这些名词是什么</a></li>
+<ul>
+<li><a href="#h4-u6811u8393u6d3e">树莓派</a></li>
+<li><a href="#h4-ups">UPS</a></li>
+<li><a href="#h4-u53cdu5411u4ee3u7406">反向代理</a></li>
+<li><a href="#h4-frp">frp</a></li>
+<li><a href="#h4-wireguard">WireGuard</a></li>
+</ul>
+</ul>
+<li><a href="#h2-u6211u4eecu8981u600eu4e48u505a">我们要怎么做</a></li>
+<ul>
+<li><a href="#h3-u914du7f6eserveru4e0au7684frps">配置server上的frps</a></li>
+<ul>
+<li><a href="#h4-1-u4e0bu8f7d-frp">1. 下载 frp</a></li>
+<li><a href="#h4-2-u7f16u5199u914du7f6eu6587u4ef6">2. 编写配置文件</a></li>
+<li><a href="#h4-3-u542fu52a8u670du52a1u7aef">3. 启动服务端</a></li>
+</ul>
+<li><a href="#h3-u914du7f6eclientu4e0au7684frpc">配置client上的frpc</a></li>
+<ul>
+<li><a href="#h4-1-u7f16u5199u914du7f6eu6587u4ef6">1. 编写配置文件</a></li>
+<li><a href="#h4-2-u542fu52a8u5ba2u6237u7aef">2. 启动客户端</a></li>
+</ul>
+<li><a href="#h3-u5b89u88c5u5e76u914du7f6e-wireguard-u5b9eu73b0u5c40u57dfu7f51u5168u8bbfu95ee">安装并配置 WireGuard：实现局域网全访问</a></li>
+<ul>
+<li><a href="#h4-1-u5b89u88c5-wireguard-client-u7aef">1. 安装 WireGuard (Client 端)</a></li>
+<li><a href="#h4-2-u5f00u542fu5185u6838u8f6cu53d1">2. 开启内核转发</a></li>
+<li><a href="#h4-3-u751fu6210u5bc6u94a5u5bf9">3. 生成密钥对</a></li>
+<li><a href="#h4-4-u914du7f6e-client-u7aef-u5185u7f51u670du52a1u5668">4. 配置 Client 端 (内网服务器)</a></li>
+<li><a href="#h4-5-u914du7f6e-user-u7aef-u7528u6237u7535u8111">5. 配置 User 端 (用户电脑)</a></li>
+<li><a href="#h4-6-u542fu52a8wireguard">6. 启动WireGuard</a></li>
+</ul>
+<li><a href="#h3-u914du7f6eu5404u4e2au670du52a1u7684u81eau542fu52a8">配置各个服务的自启动</a></li>
+<ul>
+<li><a href="#h4-1-u521bu5efaservice-u6587u4ef6">1. 创建Service 文件</a></li>
+<li><a href="#h4-2-u544au8bc9systemdu8be5u505au4ec0u4e48">2. 告诉systemd该做什么</a></li>
+<li><a href="#h4-3-u8ba9u6e05u5355u6b63u5f0fu751fu6548">3. 让清单正式生效</a></li>
+<li><a href="#h4-4-u68c0u67e5u670du52a1u72b6u6001">4. 检查服务状态</a></li>
+</ul>
+</ul>
+<li><a href="#h2-u9700u8981u6ce8u610fu7684u4e8bu9879">需要注意的事项</a></li>
+<ul>
+<li><a href="#h3-wireguard-u7684u81eau542fu52a8u7ba1u7406">WireGuard 的自启动管理</a></li>
+<li><a href="#h3-u591au7528u6237-u591au8bbeu5907-u63a5u5165u914du7f6e">多用户（多设备）接入配置</a></li>
+<ul>
+<li><a href="#h4-1-u8be6u7ec6u914du7f6eu903bu8f91">1. 详细配置逻辑</a></li>
+<li><a href="#h4-2-u4feeu6539u540eu7684u914du7f6eu793au4f8b">2. 修改后的配置示例</a></li>
+<ul>
+<li><a href="#h5-a-u4e2du5fc3u8282u70b9u914du7f6e-client">A. 中心节点配置 (Client)</a></li>
+<li><a href="#h5-b-u7528u6237u7aefu914du7f6e-user_a">B. 用户端配置 (User_A)</a></li>
+<li><a href="#h5-c-u7528u6237u7aefu914du7f6e-user_b">C. 用户端配置 (User_B)</a></li>
+<li><a href="#h5-d-u7528u6237u7aefu914du7f6e-user_c">D. 用户端配置 (User_C)</a></li>
+</ul>
+<li><a href="#h4-3-u5173u952eu6ce8u610fu4e8bu9879">3. 关键注意事项</a></li>
+</ul>
+<li><a href="#h3-ups-u7684u7535u6c60u5bb9u91cf">UPS 的电池容量</a></li>
+<li><a href="#h3-u5728u6bcfu65e5u65adu7535u524du81eau52a8u5173u673a">在每日断电前自动关机</a></li>
+<ul>
+<li><a href="#h4-1-u4e0du653eu5047u5c31u5173u673au7684u811au672c">1. 不放假就关机的脚本</a></li>
+<li><a href="#h4-2-u6bcfu5929u8fd0u884cu5173u673au68c0u67e5">2. 每天运行关机检查</a></li>
+<li><a href="#h4-3-u7ed9-shutdown-u8bbeu7f6eu514du5bc6">3. 给`shutdown`设置免密</a></li>
+</ul>
+<li><a href="#h3-u81eau52a8u767bu9646u6821u56edu7f51">自动登陆校园网</a></li>
+<ul>
+<li><a href="#h4-1-u76d1u63a7u811au672c">1. 监控脚本</a></li>
+<li><a href="#h4-2-u521bu5efa-systemd-u670du52a1">2. 创建 Systemd 服务</a></li>
+<li><a href="#h4-3-u542fu52a8u5e76u6fc0u6d3bu670du52a1">3. 启动并激活服务</a></li>
+<li><a href="#h4-u5982u4f55u7ba1u7406u670du52a1">如何管理服务</a></li>
+</ul>
+</ul>
+</ul>
+</ul>
+</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/script.js"></script>
+
+    <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon">
+        <use href="#icon-toc" />
+      </svg>
+    </button>
+
+    <div id="toc-mobile-wrapper">
+      <div class="toc-header-mobile">
+        <span data-text-zh="目录" data-text-en="Contents">目录</span>
+        <button onclick="toggleToc()" class="toc-close-btn">×</button>
+      </div>
+      <div id="toc-content-mobile"></div>
+    </div>
+
+    
+      <script>
+        document.querySelectorAll(".copy-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const pre = btn.parentElement;
+            const code = pre.querySelector("code");
+            try {
+              await navigator.clipboard.writeText(code.innerText);
+              btn.textContent = " ✓ ";
+              setTimeout(() => (btn.textContent = "📋"), 1500);
+            } catch (err) {
+              console.error(err);
+            }
+          });
+        });
+      </script>
+    
+  </body>
+</html>

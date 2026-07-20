@@ -8,136 +8,225 @@ import {
   readTemplateHTML,
 } from "./convert2HTML.js";
 import { syncRepositories } from "./syncRepositories.js";
-import { __dirname, __filename, tocGen } from "./toc.js";
+import { __dirname, tocGen } from "./toc.js";
 import { generateRecommend } from "./generateRecommend.js";
-import { gitRepositories } from "./webConfig.js";
+import { gitRepositories, recommend } from "./webConfig.js";
+import { detectLanguage, UI } from "./language.js";
+import type { Lang } from "./language.js";
 
 const html = String.raw;
 
-const tocStyle = html`
-  <style>
-    .hiddenContent {
-      transition:
-        opacity 0.3s ease,
-        transform 0.3s ease;
-      opacity: 0;
-      display: none;
-    }
-    .hiddenContent.show {
-      opacity: 1;
-      display: inline-block;
-    }
-  </style>
-`;
-const foldingFuncForTOC = html`
-  <script>
-    function toggleNextNextVis(self) {
-      var content = self.nextElementSibling.nextElementSibling;
 
-      if (!content.classList.contains("show")) {
-        // 开始显示内容，添加类名 'show' 以触发动画
-        content.style.display = "inline-block";
-        setTimeout(function () {
-          content.classList.add("show");
-        }, 10);
-        self.textContent = "显示更少";
-      } else {
-        // 删除类名 'show' 并设置过渡动画
-        content.classList.remove("show");
-        setTimeout(function () {
-          content.style.display = "none"; // 在动画结束后设置 display: none
-        }, 310);
-        self.textContent = "显示全部";
-      }
+
+function getMdContent(filePath: string): string {
+  if (!fs.existsSync(filePath)) return "";
+  try {
+    return convertMarkdown(filePath).html;
+  } catch {
+    return "";
+  }
+}
+
+function getMdSource(
+  dirPath: string,
+  baseName: string,
+  lang: Lang,
+): string | null {
+  const zhPath = path.join(dirPath, `${baseName}-zh.md`);
+  const enPath = path.join(dirPath, `${baseName}-en.md`);
+  const unsuffixedPath = path.join(dirPath, `${baseName}.md`);
+
+  if (lang === "zh") {
+    if (fs.existsSync(zhPath)) return zhPath;
+    if (!fs.existsSync(enPath) && fs.existsSync(unsuffixedPath)) {
+      const content = fs.readFileSync(unsuffixedPath, "utf8");
+      if (detectLanguage(content) === "zh") return unsuffixedPath;
     }
-  </script>
-`;
+    if (fs.existsSync(enPath) && fs.existsSync(unsuffixedPath)) {
+      const content = fs.readFileSync(unsuffixedPath, "utf8");
+      if (detectLanguage(content) === "zh") return unsuffixedPath;
+    }
+    return null;
+  }
+
+  if (fs.existsSync(enPath)) return enPath;
+  if (!fs.existsSync(zhPath) && fs.existsSync(unsuffixedPath)) {
+    const content = fs.readFileSync(unsuffixedPath, "utf8");
+    if (detectLanguage(content) === "en") return unsuffixedPath;
+  }
+  if (fs.existsSync(zhPath) && fs.existsSync(unsuffixedPath)) {
+    const content = fs.readFileSync(unsuffixedPath, "utf8");
+    if (detectLanguage(content) === "en") return unsuffixedPath;
+  }
+  return null;
+}
+
+function getRepoName(url: string): string {
+  return url.split("/").pop()!.replace(".git", "");
+}
+
+const templateHTML = readTemplateHTML(path.join(__dirname, "template.html"));
+const rootPath = path.dirname(__dirname);
+
+const syncedRepoDirs: string[] = [];
+for (const [base, urls] of Object.entries(gitRepositories)) {
+  for (const url of urls) {
+    syncedRepoDirs.push(path.posix.join(base, getRepoName(url)));
+  }
+}
+
+await syncRepositories(rootPath, gitRepositories);
+
+const articles = allMarkdown2Html(rootPath, templateHTML, rootPath, syncedRepoDirs);
+
 const cardStyle = html`
   <style>
-    /* 卡片整体容器 */
     .card {
       box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
       display: flex;
-      flex-direction: column; /* 让子元素上下排列 */
+      flex-direction: column;
       font-family: sans-serif;
       width: auto;
       flex-grow: 1;
-      /* 占据剩余空间 */
       max-width: var(--main-width);
       margin: 40px auto;
     }
-
-    /* 上半部分：白色内容区 */
     .card-top {
-      flex: 1; /* 占据剩余的所有垂直空间 */
-      background-color: #ffffff; /* 白色背景 */
+      flex: 1;
+      background-color: #ffffff;
       padding: 40px;
       color: #333333;
     }
-
-    /* 下半部分：灰色日期区 */
     .card-bottom {
-      height: 50px; /* 固定底部高度 */
-      background-color: #f7f7f9; /* 浅灰色背景 */
-      border-top: 1px solid #eaeaea; /* 可选：加一条淡淡的分割线 */
+      height: 50px;
+      background-color: #f7f7f9;
+      border-top: 1px solid #eaeaea;
       padding: 0 40px;
       display: flex;
-      align-items: center; /* 垂直居中日期 */
+      align-items: center;
       justify-content: flex-start;
-      color: #888888; /* 日期文字使用较淡的颜色 */
+      color: #888888;
       font-size: 14px;
+    }
+    :root[data-theme="dark"] .card-top {
+      background-color: #252535;
+      color: #cdd6f4;
+    }
+    :root[data-theme="dark"] .card-bottom {
+      background-color: #1a1a28;
+      border-top-color: #313244;
+      color: #6c7086;
     }
   </style>
 `;
 
-// 遍历文件夹，处理其中的 .md 文件,生成html文件
-const templateHTML = readTemplateHTML(path.join(__dirname, "template.html"));
-// 获取项目根目录，即脚本目录的上一级目录
-const rootPath = path.dirname(__dirname);
-// 同步git仓库
-await syncRepositories(rootPath, gitRepositories);
-// 生成makdown文件对应的html文件
-const articles = allMarkdown2Html(rootPath, templateHTML);
-// 文件生成完成后生成目录
-generateHtmlFile(
-  path.join(rootPath, "toc.html"),
-  templateHTML,
-  "文档索引",
-  tocStyle,
-  html`<h1>文档索引</h1>`,
-  tocGen(rootPath, articles),
-  "",
-  foldingFuncForTOC,
-);
-// 生成主页
+const tocStyle = "";
+
+const treeHtml = tocGen(rootPath, articles);
+
+const readmeZhSource = getMdSource(rootPath, "README", "zh");
+const readmeEnSource = getMdSource(rootPath, "README", "en");
+const readmeZh = readmeZhSource ? getMdContent(readmeZhSource) : "";
+const readmeEn = readmeEnSource ? getMdContent(readmeEnSource) : "";
+
+const toolsZhSource = getMdSource(path.join(rootPath, "program"), "readme", "zh");
+const toolsEnSource = getMdSource(path.join(rootPath, "program"), "readme", "en");
+const toolsZh = toolsZhSource ? getMdContent(toolsZhSource) : "";
+const toolsEn = toolsEnSource ? getMdContent(toolsEnSource) : "";
+
+const recommendAll = recommend
+  .flatMap((item) => {
+    const zh = generateRecommend(1, articles, "zh", [item]);
+    const en = generateRecommend(1, articles, "en", [item]);
+    return [zh, en].filter((s) => s.trim() !== "");
+  })
+  .join("");
+
+const indexBody = html`
+  <div data-lang="zh">
+    <h1>${UI.index_heading.zh}</h1>
+    ${readmeZh}
+  </div>
+  <div data-lang="en">
+    <h1>${UI.index_heading.en}</h1>
+    ${readmeEn}
+  </div>
+</div></div>
+${recommendAll}
+<div class="content-wrapper"><div class="content">
+  <div data-lang="zh">
+    <h2>${UI.tools_heading.zh}</h2>
+    ${toolsZh}
+  </div>
+  <div data-lang="en">
+    <h2>${UI.tools_heading.en}</h2>
+    ${toolsEn}
+  </div>
+`;
+
 generateHtmlFile(
   path.join(rootPath, "index.html"),
   templateHTML,
-  "chenyu的主页",
+  "chenyu",
   cardStyle,
-  html`<h1>首页</h1>`,
-  `${convertMarkdown(path.join(rootPath, "README.md")).html}<br> 
-${generateRecommend(1, articles)}<h2>小工具</h2>
-${convertMarkdown(path.join(rootPath, "program", "readme.md")).html}`,
+  "",
+  indexBody,
   "",
   "",
+  "",
+  "index",
 );
 
-// 生成 RSS 文件
-fs.writeFileSync(
-  path.join(rootPath, "rss.xml"),
-  generateRecommend(2, articles),
+const tocBody = html`
+  <div data-lang="zh">
+    <h1>${UI.toc_heading_main.zh}</h1>
+  </div>
+  <div data-lang="en">
+    <h1>${UI.toc_heading_main.en}</h1>
+  </div>
+  ${treeHtml}
+`;
+
+generateHtmlFile(
+  path.join(rootPath, "toc.html"),
+  templateHTML,
+  UI.toc_heading_main.zh,
+  tocStyle,
+  "",
+  tocBody,
+  "",
+  "",
+  "",
+  "toc",
 );
 
-// 生成404页面
+fs.writeFileSync(path.join(rootPath, "rss.xml"), generateRecommend(2, articles));
+fs.writeFileSync(path.join(rootPath, "rss-zh.xml"), generateRecommend(2, articles, "zh"));
+fs.writeFileSync(path.join(rootPath, "rss-en.xml"), generateRecommend(2, articles, "en"));
+fs.writeFileSync(path.join(rootPath, "rss-zh-en.xml"), generateRecommend(2, articles, "zh-first"));
+fs.writeFileSync(path.join(rootPath, "rss-en-zh.xml"), generateRecommend(2, articles, "en-first"));
+
+const notFoundZh = html`<p>${UI.page_not_found.zh}</p>
+  <br /><img src="/img/404.svg" />`;
+const notFoundEn = html`<p>${UI.page_not_found.en}</p>
+  <br /><img src="/img/404.svg" />`;
+
+const notFoundBody = html`
+  <h1 data-lang="zh">404 Not Found</h1>
+  <h1 data-lang="en">404 Not Found</h1>
+  <div data-lang="zh">${notFoundZh}</div>
+  <div data-lang="en">${notFoundEn}</div>
+`;
+
 generateHtmlFile(
   path.join(rootPath, "404.html"),
   templateHTML,
   "404 not found",
   "",
-  html`<h1>404 Not Found</h1>`,
-  html`<p>你访问的页面不存在，可能是因为链接错误或者页面已被移动或删除。</p>
-    <br /><img src="/img/404.svg" />`,
+  "",
+  notFoundBody,
   "",
   "",
+  "",
+  "index",
 );

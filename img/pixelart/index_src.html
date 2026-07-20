@@ -18,6 +18,28 @@
     <script>
       SCRIPT_PLACEHOLDER;
 
+      var currentPixelTheme = null;
+      function applyPixelArtTheme(theme) {
+        if (currentPixelTheme === theme) return;
+        currentPixelTheme = theme;
+        var isDark = theme === 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+        var bg = document.getElementById('pixel-art-background');
+        if (bg) bg.style.backgroundColor = isDark ? '#1e1e2e' : '#f0f0f0';
+        if (isDark) {
+          imgInit(document.documentElement.clientHeight,
+                  Math.random() < 0.5 ? Math.random() * 5 : 20 + Math.random() * 4);
+        } else {
+          imgInit();
+        }
+      }
+
+      window.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'theme') {
+          applyPixelArtTheme(event.data.theme);
+        }
+      });
+
       imgInit();
       // 每隔十分钟更新背景
       // setInterval(imgInit, 600000);

@@ -217,6 +217,10 @@ class PixelTextRenderer {
       canvas.style.zoom = pixelSize;
       PixelTextRenderer._cachedGridH = gridH;
       PixelTextRenderer._cachedGridW = gridW;
+      const fillColor =
+          colorAverage(isNight ? [ 255, 255, 255 ] : [ 0, 0, 0 ],
+                       interpolate_time_color(currentHour, skyColorDict[0]));
+      PixelTextRenderer._renderer.setFillColor(fillColor);
       if (PixelTextRenderer._triggerNext)
         PixelTextRenderer._triggerNext();
       return canvas;
@@ -236,6 +240,7 @@ class PixelTextRenderer {
                      interpolate_time_color(currentHour, skyColorDict[0]));
     const renderer = new PixelTextRenderer(
         {canvas : canvas, fillColor : fillColor, lineGap : 1});
+    PixelTextRenderer._renderer = renderer;
 
     PixelTextRenderer._cachedGridH =
         Math.ceil(document.documentElement.clientHeight / pixelSize);

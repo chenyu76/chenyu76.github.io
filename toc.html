@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,20 +9,6 @@
     <link rel="icon" href="/favicon.png" type="image/png" />
 
     
-  <style>
-    .hiddenContent {
-      transition:
-        opacity 0.3s ease,
-        transform 0.3s ease;
-      opacity: 0;
-      display: none;
-    }
-    .hiddenContent.show {
-      opacity: 1;
-      display: inline-block;
-    }
-  </style>
-
   </head>
 
   <body>
@@ -59,23 +45,24 @@
           d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"
         />
       </symbol>
-      <symbol id="icon-github" viewBox="0 0 1024 1024">
-        <path
-          d="M 511.9999,99.276488 C 398.61282,98.124285 289.40727,142.03846 208.38378,221.36784 127.36028,300.69721 81.148647,408.95058 79.904993,522.33669 80.801334,706.17368 200.10651,868.47314 375.30079,924.18496 c 21.60474,3.92814 29.46101,-9.03471 29.46101,-20.4263 0,-89.84107 -1.2383,-74.63146 -1.2383,-120.36632 2.19611,-21.51117 14.35402,-58.66858 29.91369,-73.68358 -95.84651,-10.60597 -196.40678,-46.74481 -196.40678,-208.97681 -0.85711,-42.31861 14.77932,-83.31142 43.60231,-114.30875 -13.12676,-36.33257 -11.57677,-76.35067 4.32095,-111.55905 0,0 36.53166,-11.39159 117.84407,43.20949 70.78084,-18.86139 145.26661,-18.86139 216.04745,0 82.49085,-54.60108 117.84407,-43.20949 117.84407,-43.20949 15.89772,35.20838 17.44771,75.22648 4.32095,111.55905 29.49252,30.42919 45.97685,71.1469 45.95918,113.52312 0,162.62481 -101.34589,198.37085 -196.40677,208.97681 21.07648,20.46305 31.8854,49.28684 29.46101,78.56271 v 115.88 c 0,13.74848 7.85627,24.74726 29.46102,20.42631 C 824.15543,867.74328 943.01553,705.77658 944.09482,522.33669 942.85117,408.95058 896.63954,300.69721 815.61603,221.36783 734.59253,142.03846 625.38698,98.124282 511.9999,99.276488"
-          style="fill: none; stroke-width: 74.6668"
-        />
-        <path
-          style="
-            stroke-width: 74.6668;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-          "
-          d="m 222.67155,709.86426 c 67.1173,41.8496 70.82917,67.31297 85.27846,81.33039 31.48258,30.54161 78.2646,45.03286 78.2646,45.03286"
-        />
-      </symbol>
       <symbol id="icon-toc" viewBox="0 -960 960 960">
         <path
           d="M120-280v-80h560v80H120Zm0-160v-80h560v80H120Zm0-160v-80h560v80H120Zm680 320q-17 0-28.5-11.5T760-320q0-17 11.5-28.5T800-360q17 0 28.5 11.5T840-320q0 17-11.5 28.5T800-280Zm0-160q-17 0-28.5-11.5T760-480q0-17 11.5-28.5T800-520q17 0 28.5 11.5T840-480q0 17-11.5 28.5T800-440Zm0-160q-17 0-28.5-11.5T760-640q0-17 11.5-28.5T800-680q17 0 28.5 11.5T840-640q0 17-11.5 28.5T800-600Z"
+        />
+      </symbol>
+      <symbol id="icon-dark-mode" viewBox="0 -960 960 960">
+        <path
+          d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"
+        />
+      </symbol>
+      <symbol id="icon-light-mode" viewBox="0 -960 960 960">
+        <path
+          d="M565-395q35-35 35-85t-35-85q-35-35-85-35t-85 35q-35 35-35 85t35 85q35 35 85 35t85-35Zm-226.5 56.5Q280-397 280-480t58.5-141.5Q397-680 480-680t141.5 58.5Q680-563 680-480t-58.5 141.5Q563-280 480-280t-141.5-58.5ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Zm326-268Z"
+        />
+      </symbol>
+      <symbol id="icon-language" viewBox="0 -960 960 960">
+        <path
+          d="m476-80 182-480h84L924-80h-84l-43-122H603L560-80h-84ZM160-200l-56-56 202-202q-35-35-63.5-80T190-640h84q20 39 40 68t48 58q33-33 68.5-92.5T484-720H40v-80h280v-80h80v80h280v80H564q-21 72-63 148t-83 116l96 98-30 82-122-125-202 201Zm468-72h144l-72-204-72 204Z"
         />
       </symbol>
     </svg>
@@ -87,29 +74,68 @@
         <div id="left-sidebar" class="sidebar">
           <div class="sidebar-card">
             <div class="vertical-buttons">
-              <a href="/toc.html" title="文档索引"
+              <a href="/toc.html" data-title-zh="文档索引" data-title-en="Document Index" title="" class="fade-in"
                 ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
                   <use href="#icon-folder" /></svg
               ></a>
-              <a href="/index.html" title="返回主页"
+              <a href="/index.html" data-title-zh="返回主页" data-title-en="Home" title="" class="fade-in"
                 ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
                   <use href="#icon-home" /></svg
               ></a>
-              <a
-                href="https://github.com/chenyu76"
-                target="_blank"
-                title="跳转到 GitHub"
-                ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
-                  <use href="#icon-github" /></svg
-              ></a>
-              <a href="/About.html" title="关于"
+              <a href="/About.html" class="nav-lang-aware fade-in" data-href-base="/About.html"
+                data-title-zh="关于" data-title-en="About" title=""
                 ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
                   <use href="#icon-info" /></svg
               ></a>
               <button
+                id="theme-toggle"
+                onclick="toggleTheme()"
+                data-title-zh="切换深色模式" data-title-en="Toggle Dark Mode" title=""
+                class="scroll-top-btn fade-in"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon">
+                  <use href="#icon-dark-mode" />
+                </svg>
+              </button>
+               <button
+      class="lang-toggle scroll-top-btn fade-in"
+      data-title-zh="语言"
+      data-title-en="Language"
+      title=""
+      aria-haspopup="true"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon">
+        <use href="#icon-language" />
+      </svg>
+    </button>
+    <div class="lang-dropdown">
+      <div class="lang-options">
+        <label class="lang-option">
+          <input type="radio" value="auto" class="lang-radio" />
+          <span>跟随系统 / Follow system</span>
+        </label>
+        <label class="lang-option">
+          <input type="radio" value="zh" class="lang-radio" />
+          <span>中文</span>
+        </label>
+        <label class="lang-option">
+          <input type="radio" value="en" class="lang-radio" />
+          <span>English</span>
+        </label>
+      </div>
+      <label class="show-both-label">
+        <input type="checkbox" class="lang-show-both" />
+        <span
+          class="show-both-text"
+          data-text-zh="此外，也展示英文内容"
+          data-text-en="Also show Chinese content"
+        ></span>
+      </label>
+    </div>
+              <button
                 onclick="scrollToTop()"
-                title="滚动到顶部"
-                class="scroll-top-btn"
+                data-title-zh="滚动到顶部" data-title-en="Scroll to Top" title=""
+                class="scroll-top-btn fade-in"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon">
                   <use href="#icon-arrow-upward" />
@@ -122,404 +148,394 @@
         <div>
           <div id="title-container">
             <div id="top-buttons-wrapper" class="top-buttons">
-              <a href="/toc.html" title="文档索引" class="fade-in"
+              <a href="/toc.html" data-title-zh="文档索引" data-title-en="Document Index" title="" class="fade-in"
                 ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
                   <use href="#icon-folder" /></svg></a
-              ><a href="/index.html" title="返回主页" class="fade-in"
+              ><a href="/index.html" data-title-zh="返回主页" data-title-en="Home" title="" class="fade-in"
                 ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
                   <use href="#icon-home" /></svg></a
-              ><a
-                href="https://github.com/chenyu76"
-                target="_blank"
-                title="跳转到 GitHub"
-                class="fade-in"
-                ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
-                  <use href="#icon-github" /></svg></a
-              ><a href="/About.html" title="关于" class="fade-in"
+              ><a href="/About.html" class="nav-lang-aware fade-in" data-href-base="/About.html"
+                data-title-zh="关于" data-title-en="About" title=""
                 ><svg xmlns="http://www.w3.org/2000/svg" class="icon">
                   <use href="#icon-info" /></svg
               ></a>
+              <button
+                id="theme-toggle-mobile"
+                onclick="toggleTheme()"
+                data-title-zh="切换深色模式" data-title-en="Toggle Dark Mode" title=""
+                class="scroll-top-btn fade-in"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon">
+                  <use href="#icon-dark-mode" />
+                </svg>
+              </button>
+               <button
+      class="lang-toggle scroll-top-btn fade-in"
+      data-title-zh="语言"
+      data-title-en="Language"
+      title=""
+      aria-haspopup="true"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon">
+        <use href="#icon-language" />
+      </svg>
+    </button>
+    <div class="lang-dropdown">
+      <div class="lang-options">
+        <label class="lang-option">
+          <input type="radio" value="auto" class="lang-radio" />
+          <span>跟随系统 / Follow system</span>
+        </label>
+        <label class="lang-option">
+          <input type="radio" value="zh" class="lang-radio" />
+          <span>中文</span>
+        </label>
+        <label class="lang-option">
+          <input type="radio" value="en" class="lang-radio" />
+          <span>English</span>
+        </label>
+      </div>
+      <label class="show-both-label">
+        <input type="checkbox" class="lang-show-both" />
+        <span
+          class="show-both-text"
+          data-text-zh="此外，也展示英文内容"
+          data-text-en="Also show Chinese content"
+        ></span>
+      </label>
+    </div>
             </div>
-            <div id="heading"><h1>文档索引</h1></div>
+            <div id="heading"></div>
           </div>
 
           <div class="content-wrapper">
             <div class="content">
-  <p style="text-indent:0;line-height:70%">
-    /root<br />
-    <code style="color:gray">│<br>
-</code><code style="color:gray">├──</code><a href="About.html">关于</a><br>
-<code style="color:gray">│<br>
-</code><code style="color:gray">├──</code><a href="README.html">欢迎来到chenyu的主页</a><br>
-<code style="color:gray">│<br>
-</code><code style="color:gray">├──</code>摘录<br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="excerpts/C99-does-not-need-function-bodies.html">C99 doesn't need function bodies, or 'VLAs are Turing complete’</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="excerpts/face-and-rule-of-law.html">脸与法治</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="excerpts/four-thousand-three-hundred-years.html">四千三百年</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="excerpts/greatest-sci-fi-novel.html">最伟大的科幻小说</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="excerpts/had-i-not-seen-the-sun.html">Had I not seen the Sun</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="excerpts/hot-wind-episode-41.html">《热风》随感录四十一</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="excerpts/imagination.html">想象</a><br>
-<code style="color:gray">│　　</code><a
-                  href="javascript:void(0);"
-                  style="font-size:80%;line-height:100%"
-                  onclick="toggleNextNextVis(this)"
-                  >显示全部</a
-                ><br />
-                <span class="hiddenContent" style="display: none;">
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="excerpts/latex-introduction.html">一份其实很短的 LaTeX 入门文档</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="excerpts/my-smoking-cessation.html">我的戒烟</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="excerpts/never-abandon-scholarship.html">不要抛弃学问</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="excerpts/nightfall.html">日暮</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="excerpts/on-good-people.html">善人</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="excerpts/reflections-at-100.html">一百岁感言</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="excerpts/saji.html">琐事</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="excerpts/software-disenchantment.html">软件幻灭</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="excerpts/the-syndrome-of-over-eloquence.html">雄辩症</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="excerpts/to-the-restless-you.html">给不安的你</a><br>
-</span>
-<code style="color:gray">│<br>
-</code><code style="color:gray">├──</code>图片<br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">└──</code>pixelart<br>
-<code style="color:gray">│　　</code><code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">　　　</code><code style="color:gray">├──</code><a href="img/pixelart/TODO.html">TODO</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">　　　</code><code style="color:gray">├──</code><a href="img/pixelart/index.html">index</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">　　　</code><code style="color:gray">└──</code><a href="img/pixelart/index_src.html">index_src</a><br>
-<code style="color:gray">│<br>
-</code><code style="color:gray">├──</code>程序<br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>15s-Jan-ken<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="program/15s-Jan-ken/README.html">README</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="program/15s-Jan-ken/jan-ken.html">jan-ken</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>4d-sokoban<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="program/4d-sokoban/index.html">index</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>7-piece-puzzle<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="program/7-piece-puzzle/Readme and solution.html">README</a><br>
-<code style="color:gray">│　　</code><a
-                  href="javascript:void(0);"
-                  style="font-size:80%;line-height:100%"
-                  onclick="toggleNextNextVis(this)"
-                  >显示全部</a
-                ><br />
-                <span class="hiddenContent" style="display: none;">
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="program/7-piece-puzzle/puzzle.html">puzzle</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>TractorBattle3D<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="program/TractorBattle3D/readme.html">Tractor Battle 3D</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="program/TractorBattle3D/tb.html">tb</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>WheelOfFortune<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="program/WheelOfFortune/WheelOfFortune.html">WheelOfFortune</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="program/WheelOfFortune/readme.html">一个选项可点击的godot幸运转盘</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>colliding_balls<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="program/colliding_balls/cb.html">cb</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>color_sequence_game<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="program/color_sequence_game/index.html">index</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="program/color_sequence_game/readme.html">Color Sequence Game</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>color_wars<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="program/color_wars/index.html">index</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="program/counter.html">counter</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>draw-n-pointed-star<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="program/draw-n-pointed-star/index.html">index</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="program/draw-n-pointed-star/readme.html">多角星的生成</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>guitar-sight-reading-trainer-web<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="program/guitar-sight-reading-trainer-web/index.html">index</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="program/guitar-sight-reading-trainer-web/readme.html">Guitar Sight-Reading Trainer  吉他五线谱识谱训练器</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>hextris<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="program/hextris/index.html">index</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="program/hextris/readme.html">HexTris</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>metronome<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="program/metronome/index.html">index</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>oooo<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="program/oooo/index.html">index</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>pdf2ppt<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="program/pdf2ppt/index.html">index</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="program/readme.html">小工具汇总</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>rune_reconstruction_vibe_demo<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="program/rune_reconstruction_vibe_demo/demo.html">demo</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="program/rune_reconstruction_vibe_demo/index.html">index</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>skipping-classes-for-introduction-to-entrepreneurship-for-the-future<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="program/skipping-classes-for-introduction-to-entrepreneurship-for-the-future/index.html">index</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>tetris<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="program/tetris/index.html">index</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="program/tetris/readme.html">由算法控制难度的俄罗斯方块</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">└──</code>turntable-web<br>
-<code style="color:gray">│　　</code><code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">　　　</code><code style="color:gray">├──</code><a href="program/turntable-web/index.html">index</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">　　　</code><code style="color:gray">└──</code><a href="program/turntable-web/readme.html">Turntable web</a><br>
-</span>
-<code style="color:gray">│<br>
-</code><code style="color:gray">├──</code>速查<br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>LaTeX<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>TikZ<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/LaTeX/TikZ/a-complex-flowchart.html">一个复杂的流程图</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/LaTeX/TikZ/common-TikZ-commands.html">一些常用的TikZ命令</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="quick-references/LaTeX/TikZ/interesting-examples.html">一些有趣的实例</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>beamer-theme-matrix<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="quick-references/LaTeX/beamer-theme-matrix/index.html">index</a><br>
-<code style="color:gray">│　　</code><a
-                  href="javascript:void(0);"
-                  style="font-size:80%;line-height:100%"
-                  onclick="toggleNextNextVis(this)"
-                  >显示全部</a
-                ><br />
-                <span class="hiddenContent" style="display: none;">
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/LaTeX/font-sizes-families-and-styles.html">Font sizes, families, and styles</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="quick-references/LaTeX/table.html">LaTeX 表格速查</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>MATLAB<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/MATLAB/MATALB-engine-cannot-enable-executable-stack.html">MATLAB Engine for Python cannot enable executable stack as shared object requires: Invalid argument</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/MATLAB/install-matlab-with-mpm.html">通过matlab package manager安装 matlab</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="quick-references/MATLAB/loglog-no-use.html">MATLAB 调用 loglog 函数绘图但图像却没有使用对数坐标轴</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>QNAP<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="quick-references/QNAP/QNAP-TS-216-autorun-sh-configuration.html">autorun.sh 配置</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>archlinux<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/archlinux/auto-disable-avahi.html">连接学校公共 Wi-Fi 时，avahi-daemon 占用 CPU 高</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/archlinux/clear-pacman-yay-cache.html">pacman和yay清除缓存</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/archlinux/gnome-xwayland-fractional-scaling.html">Gnome let scaling-aware Xwayland clients scale themselves with "scale-monitor-framebuffers". It should fix blurry for fractional scaling for HiDPI monitors</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/archlinux/install-matlab-with-mpm.html">通过matlab package manager安装 matlab</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/archlinux/minecraft-java-nvidia-gpu.html">Running Minecraft Java with the Nvidia GPU</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/archlinux/miscellaneous-configuration.html">Access to keyboard with VIA does not work</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/archlinux/reinstall-kernel-via-chroot.html">修复Arch Linux启动问题</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/archlinux/using-via-on-linux.html">Using Via / Keychron Launcher on Linux</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="quick-references/archlinux/win-linux-time-different.html">Linux + Windows 双系统时间差了八个小时</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/fydetab-duo.html">Fydetab Duo 折腾</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code>mathematica<br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/mathematica/MMA-Hirota-D-operators.html">A Mathematica program for calculating Hirota bilinear D-operator.</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/mathematica/conjugate-through-the-derivative.html">使 Mathematica 中共轭的导数等于导数的共轭</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="quick-references/mathematica/jet-colormap.html">Jet Colormap</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="quick-references/my-syncthing-config.html">我的Syncthing 配置</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="quick-references/reMarkable.html">reMarkable 各种折腾的备忘录</a><br>
-</span>
-<code style="color:gray">│<br>
-</code><code style="color:gray">├──</code>测试页面<br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">├──</code><a href="test-pages/equationtest.html">Hello, Markdown!</a><br>
-<code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="test-pages/一失足成千古恨.html">來　捨　再　一</a><br>
-<code style="color:gray">│<br>
-</code><code style="color:gray">└──</code>文章<br>
-<code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">　　　</code><code style="color:gray">├──</code><a href="writings/Add-citation-in-LaTeX.html">在LaTeX中添加参考文献</a><br>
-<code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">　　　</code><code style="color:gray">├──</code><a href="writings/Beijing-Bicycle.html">《十七岁的单车》的复杂主题</a><br>
-<code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">　　　</code><code style="color:gray">├──</code><a href="writings/about-the-website.html">关于这个网站</a><br>
-<code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">　　　</code><code style="color:gray">├──</code><a href="writings/college-reverse-proxy.html">宝宝也能上手的校园网穿透教程</a><br>
-<code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">　　　</code><code style="color:gray">├──</code><a href="writings/copilot-key-as-input-method-switch.html">Copilot 键可以用来切换输入法</a><br>
-<code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">　　　</code><code style="color:gray">├──</code><a href="writings/deans-office-latex.html">那些由一个又一个表格组成的Word文档</a><br>
-<code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">　　　</code><code style="color:gray">├──</code>how-to-expose-ssh-to-the-internet-with-frp<br>
-<code style="color:gray">│　　</code><a
-                  href="javascript:void(0);"
-                  style="font-size:80%;line-height:100%"
-                  onclick="toggleNextNextVis(this)"
-                  >显示全部</a
-                ><br />
-                <span class="hiddenContent" style="display: none;">
-<code style="color:gray">　　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">　　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="writings/how-to-expose-ssh-to-the-internet-with-frp/index.html">内网穿透：使用frp远程访问SSH</a><br>
-<code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">　　　</code><code style="color:gray">├──</code><a href="writings/julia-set-art.html">Julia集的计算机艺术</a><br>
-<code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">　　　</code><code style="color:gray">├──</code><a href="writings/latex-with-inkscape.html">使用Inkscape给LaTeX文档绘图时在其中插入公式</a><br>
-<code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">　　　</code><code style="color:gray">├──</code>matlab_behavior_test<br>
-<code style="color:gray">　　　</code><code style="color:gray">│　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">　　　</code><code style="color:gray">│　　</code><code style="color:gray">└──</code><a href="writings/matlab_behavior_test/index.html">index</a><br>
-<code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">　　　</code><code style="color:gray">├──</code><a href="writings/new-year-new-theme.html">新年新主题！</a><br>
-<code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">　　　</code><code style="color:gray">├──</code><a href="writings/plot-mathmatica-function-in-matlab.html">使用Matlab绘制Mathematica中二元函数的热力图</a><br>
-<code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">　　　</code><code style="color:gray">├──</code><a href="writings/remarkable_cover.html">给reMarkable 1做的保护套</a><br>
-<code style="color:gray">　　　</code><code style="color:gray">│<br>
-</code><code style="color:gray">　　　</code><code style="color:gray">└──</code><a href="writings/some-szu-LaTeX-template.html">some SZU LaTeX templates</a><br>
-</span>
-  </p>
-  <hr>
-  <ul>
-<li>
-          <a href="/program/hextris/index.html">俄罗斯方块，但是六边形往中心落</a> <small>(2026年6月07日)</small>
-        </li>
-<li>
-          <a href="/writings/copilot-key-as-input-method-switch.html">Copilot 键可以用来切换输入法</a> <small>(2026年5月25日)</small>
-        </li>
-<li>
-          <a href="/writings/matlab_behavior_test/index.html">奇妙的MATLAB语言特性小测试</a> <small>(2026年5月12日)</small>
-        </li>
-<li>
-          <a href="/writings/how-to-expose-ssh-to-the-internet-with-frp/index.html">内网穿透：使用frp远程访问SSH</a> <small>(2026年5月05日)</small>
-        </li>
-<li>
-          <a href="/program/4d-sokoban/index.html">4D推箱子</a> <small>(2026年4月01日)</small>
-        </li>
-<li>
-          <a href="https://github.com/chenyu76/draftsman.nvim">Draftsman.nvim</a> <small>(2026年2月13日)</small>
-        </li>
-<li>
-          <a href="https://github.com/chenyu76/github-latex-readme">在Github上用LaTeX写README</a> <small>(2026年1月26日)</small>
-        </li>
-<li>
-          <a href="/writings/new-year-new-theme.html">本网页背景上的元素现在随风摆动</a> <small>(2026年1月09日)</small>
-        </li>
-<li>
-          <a href="/writings/college-reverse-proxy.html">宝宝也能上手的校园网穿透教程</a> <small>(2025年12月21日)</small>
-        </li>
-<li>
-          <a href="/writings/deans-office-latex.html">那些由一个又一个表格组成的Word文档</a> <small>(2025年12月07日)</small>
-        </li>
-<li>
-          <a href="https://github.com/chenyu76/glyph-ascii-canvas">Glyph ASCII Canvas</a> <small>(2025年11月21日)</small>
-        </li>
-<li>
-          <a href="/program/draw-n-pointed-star/readme.html">多角星的生成</a> <small>(2025年7月15日)</small>
-        </li>
-<li>
-          <a href="/program/color_wars/index.html">颜色战争 · 改</a> <small>(2025年6月14日)</small>
-        </li>
-<li>
-          <a href="/program/tetris/readme.html">由算法控制难度的俄罗斯方块</a> <small>(2025年6月07日)</small>
-        </li>
-<li>
-          <a href="/writings/remarkable_cover.html">给reMarkable 1做的保护套</a> <small>(2025年4月12日)</small>
-        </li>
-<li>
-          <a href="/writings/latex-with-inkscape.html">使用Inkscape给LaTeX文档绘图时在其中插入公式</a> <small>(2025年3月11日)</small>
-        </li>
-<li>
-          <a href="/writings/Add-citation-in-LaTeX.html">在LaTeX中添加参考文献</a> <small>(2025年2月20日)</small>
-        </li>
-<li>
-          <a href="/writings/new-year-new-theme.html">新年新主题！</a> <small>(2025年2月06日)</small>
-        </li>
-<li>
-          <a href="/writings/julia-set.pdf">Julia集的计算机艺术</a> <small>(2024年12月15日)</small>
-        </li>
-<li>
-          <a href="https://github.com/chenyu76/MMA-Hirota-D-operators">Hirota D 算子的 Mathematica 实现</a> <small>(2024年11月17日)</small>
-        </li>
-<li>
-          <a href="/program/7-piece-puzzle/Readme%20and%20solution.html">一个拼图游戏</a> <small>(2024年9月09日)</small>
-        </li>
-<li>
-          <a href="/program/TractorBattle3D/readme.html">一个对抗游戏</a> <small>(2024年8月)</small>
-        </li>
-<li>
-          <a href="/writings/some-szu-LaTeX-template.html">some SZU LaTeX templates</a> <small>(2024年8月)</small>
-        </li>
-<li>
-          <a href="https://github.com/chenyu76/MatrixGraphViewer">以网格形式批量查看有命名规范的图片的Qt程序</a> <small>(2024年8月26日)</small>
-        </li>
-<li>
-          <a href="/writings/about-the-website.html">关于本站</a> <small>(2024年6月20日)</small>
-        </li>
-</ul></div>
+  <div data-lang="zh">
+    <h1>文档索引</h1>
+  </div>
+  <div data-lang="en">
+    <h1>Document Index</h1>
+  </div>
+  <ul class="file-tree">
+    <li class="tree-root">
+      <span class="tree-folder" data-lang="zh">/root</span>
+      <span class="tree-folder" data-lang="en">/root</span>
+      <ul>
+        <li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">摘录</span>
+        <span class="tree-folder" data-lang="en">Excerpts</span>
+        <ul>
+          <li data-lang="en" data-fallback="true">
+            <a href="/excerpts/C99-does-not-need-function-bodies-en.html">C99 doesn't need function bodies, or 'VLAs are Turing complete’</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/excerpts/face-and-rule-of-law-zh.html">脸与法治</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/excerpts/four-thousand-three-hundred-years-zh.html">四千三百年</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/excerpts/greatest-sci-fi-novel-zh.html">最伟大的科幻小说</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/excerpts/had-i-not-seen-the-sun-zh.html">Had I not seen the Sun</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/excerpts/hot-wind-episode-41-zh.html">《热风》随感录四十一</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/excerpts/imagination-zh.html">想象</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/excerpts/latex-introduction-zh.html">一份其实很短的 LaTeX 入门文档</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/excerpts/my-smoking-cessation-zh.html">我的戒烟</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/excerpts/never-abandon-scholarship-zh.html">不要抛弃学问</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/excerpts/nightfall-zh.html">日暮</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/excerpts/on-good-people-zh.html">善人</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/excerpts/reflections-at-100-zh.html">一百岁感言</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/excerpts/saji-zh.html">琐事</a>
+          </li><li data-lang="en" data-fallback="true">
+            <a href="/excerpts/software-disenchantment-en.html">软件幻灭</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/excerpts/the-syndrome-of-over-eloquence-zh.html">雄辩症</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/excerpts/to-the-restless-you-zh.html">给不安的你</a>
+          </li>
+        </ul>
+      </li><li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">图片</span>
+        <span class="tree-folder" data-lang="en">Images</span>
+        <ul>
+          <li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">pixelart</span>
+        <span class="tree-folder" data-lang="en">pixelart</span>
+        <ul>
+          <li>
+            <a href="/img/pixelart/index.html">index</a>
+          </li><li>
+            <a href="/img/pixelart/index_src.html">index_src</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/img/pixelart/TODO-zh.html">TODO</a>
+          </li>
+        </ul>
+      </li>
+        </ul>
+      </li><li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">程序</span>
+        <span class="tree-folder" data-lang="en">Programs</span>
+        <ul>
+          <li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">15s-Jan-ken</span>
+        <span class="tree-folder" data-lang="en">15s-Jan-ken</span>
+        <ul>
+          <li>
+            <a href="/program/15s-Jan-ken/jan-ken.html">jan-ken</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/program/15s-Jan-ken/README-zh.html">README</a>
+          </li>
+        </ul>
+      </li><li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">4d-sokoban</span>
+        <span class="tree-folder" data-lang="en">4d-sokoban</span>
+        <ul>
+          <li>
+            <a href="/program/4d-sokoban/index.html">index</a>
+          </li>
+        </ul>
+      </li><li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">7-piece-puzzle</span>
+        <span class="tree-folder" data-lang="en">7-piece-puzzle</span>
+        <ul>
+          <li>
+            <a href="/program/7-piece-puzzle/puzzle.html">puzzle</a>
+          </li><li data-lang="en" data-fallback="true">
+            <a href="/program/7-piece-puzzle/Readme and solution-en.html">README</a>
+          </li>
+        </ul>
+      </li><li>
+            <a href="/program/colliding_balls/cb.html">colliding_balls / cb</a>
+          </li><li>
+            <a href="/program/color_sequence_game/index.html">color_sequence_game</a>
+          </li><li>
+            <a href="/program/color_wars/index.html">color_wars</a>
+          </li><li>
+            <a href="/program/draw-n-pointed-star/index.html">draw-n-pointed-star</a>
+          </li><li>
+            <a href="/program/guitar-sight-reading-trainer-web/index.html">guitar-sight-reading-trainer-web</a>
+          </li><li>
+            <a href="/program/hextris/index.html">hextris</a>
+          </li><li>
+            <a href="/program/metronome/index.html">metronome</a>
+          </li><li>
+            <a href="/program/oooo/index.html">oooo</a>
+          </li><li>
+            <a href="/program/pdf2ppt/index.html">pdf2ppt</a>
+          </li><li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">rune_reconstruction_vibe_demo</span>
+        <span class="tree-folder" data-lang="en">rune_reconstruction_vibe_demo</span>
+        <ul>
+          <li>
+            <a href="/program/rune_reconstruction_vibe_demo/demo.html">demo</a>
+          </li><li>
+            <a href="/program/rune_reconstruction_vibe_demo/index.html">index</a>
+          </li>
+        </ul>
+      </li><li>
+            <a href="/program/skipping-classes-for-introduction-to-entrepreneurship-for-the-future/index.html">skipping-classes-for-introduction-to-entrepreneurship-for-the-future</a>
+          </li><li>
+            <a href="/program/tetris/index.html">tetris</a>
+          </li><li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">TractorBattle3D</span>
+        <span class="tree-folder" data-lang="en">TractorBattle3D</span>
+        <ul>
+          <li data-lang="zh" data-fallback="true">
+            <a href="/program/TractorBattle3D/readme-zh.html">Tractor Battle 3D</a>
+          </li><li>
+            <a href="/program/TractorBattle3D/tb.html">tb</a>
+          </li>
+        </ul>
+      </li><li>
+            <a href="/program/turntable-web/index.html">turntable-web</a>
+          </li><li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">WheelOfFortune</span>
+        <span class="tree-folder" data-lang="en">WheelOfFortune</span>
+        <ul>
+          <li data-lang="zh" data-fallback="true">
+            <a href="/program/WheelOfFortune/readme-zh.html">一个选项可点击的godot幸运转盘</a>
+          </li><li>
+            <a href="/program/WheelOfFortune/WheelOfFortune.html">WheelOfFortune</a>
+          </li>
+        </ul>
+      </li><li>
+            <a href="/program/counter.html">counter</a>
+          </li><li data-lang="zh">
+            <a href="/program/readme-zh.html">小工具汇总</a>
+          </li><li data-lang="en">
+            <a href="/program/readme-en.html">Tools</a>
+          </li>
+        </ul>
+      </li><li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">速查</span>
+        <span class="tree-folder" data-lang="en">Quick References</span>
+        <ul>
+          <li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">archlinux</span>
+        <span class="tree-folder" data-lang="en">archlinux</span>
+        <ul>
+          <li data-lang="zh" data-fallback="true">
+            <a href="/quick-references/archlinux/auto-disable-avahi-zh.html">连接学校公共 Wi-Fi 时，avahi-daemon 占用 CPU 高</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/quick-references/archlinux/clear-pacman-yay-cache-zh.html">pacman和yay清除缓存</a>
+          </li><li data-lang="en" data-fallback="true">
+            <a href="/quick-references/archlinux/gnome-xwayland-fractional-scaling-en.html">Gnome let scaling-aware Xwayland clients scale themselves with "scale-monitor-framebuffers". It should fix blurry for fractional scaling for HiDPI monitors</a>
+          </li><li data-lang="en" data-fallback="true">
+            <a href="/quick-references/archlinux/install-matlab-with-mpm-en.html">通过matlab package manager安装 matlab</a>
+          </li><li data-lang="en" data-fallback="true">
+            <a href="/quick-references/archlinux/minecraft-java-nvidia-gpu-en.html">Running Minecraft Java with the Nvidia GPU</a>
+          </li><li data-lang="en" data-fallback="true">
+            <a href="/quick-references/archlinux/miscellaneous-configuration-en.html">Access to keyboard with VIA does not work</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/quick-references/archlinux/reinstall-kernel-via-chroot-zh.html">修复Arch Linux启动问题</a>
+          </li><li data-lang="en" data-fallback="true">
+            <a href="/quick-references/archlinux/using-via-on-linux-en.html">Using Via / Keychron Launcher on Linux</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/quick-references/archlinux/win-linux-time-different-zh.html">Linux + Windows 双系统时间差了八个小时</a>
+          </li>
+        </ul>
+      </li><li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">LaTeX</span>
+        <span class="tree-folder" data-lang="en">LaTeX</span>
+        <ul>
+          <li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">beamer-theme-matrix</span>
+        <span class="tree-folder" data-lang="en">beamer-theme-matrix</span>
+        <ul>
+          <li>
+            <a href="/quick-references/LaTeX/beamer-theme-matrix/index.html">index</a>
+          </li>
+        </ul>
+      </li><li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">TikZ</span>
+        <span class="tree-folder" data-lang="en">TikZ</span>
+        <ul>
+          <li data-lang="en" data-fallback="true">
+            <a href="/quick-references/LaTeX/TikZ/a-complex-flowchart-en.html">一个复杂的流程图</a>
+          </li><li data-lang="en" data-fallback="true">
+            <a href="/quick-references/LaTeX/TikZ/common-TikZ-commands-en.html">一些常用的TikZ命令</a>
+          </li><li data-lang="en" data-fallback="true">
+            <a href="/quick-references/LaTeX/TikZ/interesting-examples-en.html">一些有趣的实例</a>
+          </li>
+        </ul>
+      </li><li data-lang="en" data-fallback="true">
+            <a href="/quick-references/LaTeX/font-sizes-families-and-styles-en.html">Font sizes, families, and styles</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/quick-references/LaTeX/table-zh.html">LaTeX 表格速查</a>
+          </li>
+        </ul>
+      </li><li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">mathematica</span>
+        <span class="tree-folder" data-lang="en">mathematica</span>
+        <ul>
+          <li data-lang="en" data-fallback="true">
+            <a href="/quick-references/mathematica/conjugate-through-the-derivative-en.html">使 Mathematica 中共轭的导数等于导数的共轭</a>
+          </li><li data-lang="en" data-fallback="true">
+            <a href="/quick-references/mathematica/jet-colormap-en.html">Jet Colormap</a>
+          </li><li data-lang="en" data-fallback="true">
+            <a href="/quick-references/mathematica/MMA-Hirota-D-operators-en.html">A Mathematica program for calculating Hirota bilinear D-operator.</a>
+          </li>
+        </ul>
+      </li><li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">MATLAB</span>
+        <span class="tree-folder" data-lang="en">MATLAB</span>
+        <ul>
+          <li data-lang="en" data-fallback="true">
+            <a href="/quick-references/MATLAB/install-matlab-with-mpm-en.html">通过matlab package manager安装 matlab</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/quick-references/MATLAB/loglog-no-use-zh.html">MATLAB 调用 loglog 函数绘图但图像却没有使用对数坐标轴</a>
+          </li><li data-lang="en" data-fallback="true">
+            <a href="/quick-references/MATLAB/MATALB-engine-cannot-enable-executable-stack-en.html">MATLAB Engine for Python cannot enable executable stack as shared object requires: Invalid argument</a>
+          </li>
+        </ul>
+      </li><li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">QNAP</span>
+        <span class="tree-folder" data-lang="en">QNAP</span>
+        <ul>
+          <li data-lang="en" data-fallback="true">
+            <a href="/quick-references/QNAP/QNAP-TS-216-autorun-sh-configuration-en.html">autorun.sh 配置</a>
+          </li>
+        </ul>
+      </li><li data-lang="zh" data-fallback="true">
+            <a href="/quick-references/fydetab-duo-zh.html">Fydetab Duo 折腾</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/quick-references/my-syncthing-config-zh.html">我的Syncthing 配置</a>
+          </li><li data-lang="en" data-fallback="true">
+            <a href="/quick-references/reMarkable-en.html">reMarkable 各种折腾的备忘录</a>
+          </li>
+        </ul>
+      </li><li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">测试页面</span>
+        <span class="tree-folder" data-lang="en">Test Pages</span>
+        <ul>
+          <li data-lang="en" data-fallback="true">
+            <a href="/test-pages/equationtest-en.html">Hello, Markdown!</a>
+          </li><li data-lang="zh">
+            <a href="/test-pages/test-i18n-zh.html">i18n 测试</a>
+          </li><li data-lang="en">
+            <a href="/test-pages/test-i18n-en.html">i18n test</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/test-pages/一失足成千古恨-zh.html">來　捨　再　一</a>
+          </li>
+        </ul>
+      </li><li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">文章</span>
+        <span class="tree-folder" data-lang="en">Writings</span>
+        <ul>
+          <li>
+            <a href="/writings/matlab_behavior_test/index.html">matlab_behavior_test</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/writings/about-the-website-zh.html">关于这个网站</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/writings/Add-citation-in-LaTeX-zh.html">在LaTeX中添加参考文献</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/writings/Beijing-Bicycle-zh.html">《十七岁的单车》的复杂主题</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/writings/college-reverse-proxy-zh.html">宝宝也能上手的校园网穿透教程</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/writings/copilot-key-as-input-method-switch-zh.html">Copilot 键可以用来切换输入法</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/writings/deans-office-latex-zh.html">那些由一个又一个表格组成的Word文档</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/writings/julia-set-art-zh.html">Julia集的计算机艺术</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/writings/latex-with-inkscape-zh.html">使用Inkscape给LaTeX文档绘图时在其中插入公式</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/writings/new-year-new-theme-zh.html">新年新主题！</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/writings/plot-mathmatica-function-in-matlab-zh.html">使用Matlab绘制Mathematica中二元函数的热力图</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/writings/remarkable_cover-zh.html">给reMarkable 1做的保护套</a>
+          </li><li data-lang="zh" data-fallback="true">
+            <a href="/writings/some-szu-LaTeX-template-zh.html">some SZU LaTeX templates</a>
+          </li>
+        </ul>
+      </li><li data-lang="zh">
+            <a href="/About-zh.html">关于</a>
+          </li><li data-lang="en">
+            <a href="/About-en.html">关于</a>
+          </li><li data-lang="zh">
+            <a href="/README-zh.html">欢迎来到chenyu的主页</a>
+          </li><li data-lang="en">
+            <a href="/README-en.html">Welcome to chenyu's Homepage</a>
+          </li>
+      </ul>
+    </li>
+  </ul>
+</div>
             <div id="footnote"></div>
           </div>
         </div>
 
         <div class="bottom-button mobile-only">
-          <button onclick="scrollToTop()" title="滚动到顶部">
+          <button onclick="scrollToTop()" data-title-zh="滚动到顶部" data-title-en="Scroll to Top" title="">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon">
               <use href="#icon-arrow-upward" />
             </svg>
@@ -528,7 +544,7 @@
 
         <div id="right-sidebar" class="sidebar">
           <div id="toc-card" class="sidebar-card">
-            <div class="toc-header">目录</div>
+            <div class="toc-header" data-text-zh="目录" data-text-en="Contents">目录</div>
             <div id="toc-content"></div>
           </div>
         </div>
@@ -545,34 +561,12 @@
 
     <div id="toc-mobile-wrapper">
       <div class="toc-header-mobile">
-        <span>目录</span>
+        <span data-text-zh="目录" data-text-en="Contents">目录</span>
         <button onclick="toggleToc()" class="toc-close-btn">×</button>
       </div>
       <div id="toc-content-mobile"></div>
     </div>
 
     
-  <script>
-    function toggleNextNextVis(self) {
-      var content = self.nextElementSibling.nextElementSibling;
-
-      if (!content.classList.contains("show")) {
-        // 开始显示内容，添加类名 'show' 以触发动画
-        content.style.display = "inline-block";
-        setTimeout(function () {
-          content.classList.add("show");
-        }, 10);
-        self.textContent = "显示更少";
-      } else {
-        // 删除类名 'show' 并设置过渡动画
-        content.classList.remove("show");
-        setTimeout(function () {
-          content.style.display = "none"; // 在动画结束后设置 display: none
-        }, 310);
-        self.textContent = "显示全部";
-      }
-    }
-  </script>
-
   </body>
 </html>

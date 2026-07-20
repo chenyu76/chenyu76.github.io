@@ -2,195 +2,192 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import { generateRecommend, type ArticlesMap } from "./generateRecommend.js";
+import { type ArticlesMap } from "./generateRecommend.js";
+import { tr } from "./language.js";
 
 const html = String.raw;
 
-// 获取当前文件的路径
 export const __filename = fileURLToPath(import.meta.url);
-// 获取当前文件所在的目录
 export const __dirname = path.dirname(__filename);
 
-// 这些文件会在目录里显示
 const clickableExtension = [".html"];
-// 这些后缀的文件会在按钮链接中加上 #
 const hashExtension = [".js"];
-// 始终不显示的文件夹
 const folderBlackList = ["node_modules", "webGenerate"];
-// 文件路径含有这些的js文件将不会被显示
 const jsFolderBlackList = ["webGenerate", "program", "img", "libs"];
 
-// 翻译函数，将一些目录的英文翻译成中文
-export function tr(str: string) {
-  const dict: Record<string, string> = {
-    node_modules: "依赖包",
-    program: "程序",
-    writings: "文章",
-    img: "图片",
-    docs: "文档",
-    "test-pages": "测试页面",
-    excerpts: "摘录",
-    webGenerate: "网站生成",
-    "quick-references": "速查",
-  };
-  return str in dict ? dict[str] : str;
-}
+function folderTreeHtml(
+  dir: string,
+  articles: ArticlesMap,
+): string {
+  function visit(currentPath: string, relativePath: string): string {
+    let entries: fs.Dirent[];
+    try {
+      entries = fs.readdirSync(currentPath, { withFileTypes: true });
+    } catch {
+      return "";
+    }
 
-// 创建文件目录树
-function folderTreeHtml(dir: string, articles: ArticlesMap) {
-  // 递归文件夹，生成目录树
-  function folderTree(
-    currentPath: string,
-    depth = 0,
-    startPath: string | null = null,
-    lineD = 0,
-  ): string[] {
-    const table: string[] = [];
-    const items = fs
-      .readdirSync(currentPath)
-      .filter((item) => {
-        const fullPath = path.join(currentPath, item);
-        const isDir = fs.statSync(fullPath).isDirectory();
-        return (
-          (isDir && !item.startsWith(".")) ||
-          (!isDir && clickableExtension.some((ext) => item.endsWith(ext)))
-        );
-      })
-      .filter((item) => {
-        return !(
-          path.extname(item) === ".js" &&
+    const folderBlackListFull = folderBlackList.map((b) =>
+      path.join(dir, b),
+    );
+    if (folderBlackListFull.some((b) => currentPath.startsWith(b))) return "";
+
+    const subdirs: fs.Dirent[] = [];
+    const files: { name: string; baseName: string }[] = [];
+
+    for (const entry of entries) {
+      const full = path.join(currentPath, entry.name);
+      if (entry.isDirectory() && !entry.name.startsWith(".")) {
+        subdirs.push(entry);
+      } else if (
+        entry.isFile() &&
+        clickableExtension.some((ext) => entry.name.endsWith(ext))
+      ) {
+        if (
+          entry.name.endsWith(".js") &&
           jsFolderBlackList.some((item) => currentPath.includes(item))
-        );
-        // 排除掉 program 等 文件夹里的 js
-      })
-      .filter(() => {
-        return !folderBlackList.some((item) => currentPath.includes(item));
-      }); // 去掉 node_modules 等
-
-    function createItemButton(item: string, relativePath: string) {
-      // 文档的文件名,去掉后缀
-      const baseName = path.basename(item, path.extname(item));
-      // 如果是 md 文件，尝试读取第一行作为标题
-      // 文件的完整路径，没有后缀
-      // const articlePath = path.join(currentPath, baseName);
-
-      const relativePathWithoutExt = relativePath.replace(/\.html$/, "");
-      let articleTitle =
-        relativePathWithoutExt in articles
-          ? articles[relativePathWithoutExt]?.title
-          : undefined;
-      return (
-        (hashExtension.some((ext) => item.endsWith(ext))
-          ? `<a href="#`
-          : `<a href="`) +
-        `${relativePath}">${
-          articleTitle === undefined ? baseName : articleTitle
-        }</a><br>`
-      );
-    }
-    // 改变文本颜色的函数
-    function col(str: string, color = "gray", label = "code") {
-      return `<${label} style="color:${color}">${str}</${label}>`;
+        )
+          continue;
+        const baseName = path.basename(entry.name, path.extname(entry.name));
+        files.push({ name: entry.name, baseName });
+      }
     }
 
-    items.forEach((item: string, index: number) => {
-      const isLast = index === items.length - 1;
-      let prefix = "";
-      let line = lineD;
+    subdirs.sort((a, b) => a.name.localeCompare(b.name));
+    files.sort((a, b) => a.baseName.localeCompare(b.baseName));
 
-      for (let i = 0; i < depth; i++) {
-        prefix += line & 1 ? col("│　　") : col("　　　");
-        line >>= 1;
+    if (subdirs.length === 0 && files.length === 0) return "";
+
+    let result = "";
+
+    for (const sub of subdirs) {
+      const subPath = path.join(currentPath, sub.name);
+      const subRel = path.posix.join(relativePath, sub.name);
+
+      let subEntries: fs.Dirent[];
+      try {
+        subEntries = fs.readdirSync(subPath, { withFileTypes: true });
+      } catch {
+        continue;
+      }
+      const subSubdirs = subEntries.filter((e) => e.isDirectory() && !e.name.startsWith("."));
+      const subFiles = subEntries.filter((e) => e.isFile() && clickableExtension.some((ext) => e.name.endsWith(ext)));
+
+      const folderZh = tr(sub.name, "zh");
+      const folderEn = tr(sub.name, "en");
+
+      if (subSubdirs.length === 0 && subFiles.length === 1) {
+        const singleFile = subFiles[0]!;
+        const singleBase = path.basename(singleFile.name, path.extname(singleFile.name));
+        const isIndexOrReadme = singleBase === "index" || singleBase === "readme";
+        const href = path.posix.join("/", subRel, singleFile.name);
+        const articleKey = path.posix.join(subRel, singleBase);
+        const article = articles[articleKey];
+
+        if (article) {
+          if (article.lang === "both" || article.lang === "zh") {
+            const zhHref = article.url_zh || href;
+            const zhTitle = article.title_zh || singleBase;
+            const isFallback = article.lang === "zh" ? ' data-fallback="true"' : "";
+            result += html`<li data-lang="zh"${isFallback}>
+              <a href="${zhHref}">${isIndexOrReadme ? folderZh : `${folderZh} / ${zhTitle}`}</a>
+            </li>`;
+          }
+          if (article.lang === "both" || article.lang === "en") {
+            const enHref = article.url_en || href;
+            const enTitle = article.title_en || singleBase;
+            const isFallback = article.lang === "en" ? ' data-fallback="true"' : "";
+            result += html`<li data-lang="en"${isFallback}>
+              <a href="${enHref}">${isIndexOrReadme ? folderEn : `${folderEn} / ${enTitle}`}</a>
+            </li>`;
+          }
+        } else {
+          result += html`<li>
+            <a href="${href}">${isIndexOrReadme ? folderZh : `${folderZh} / ${singleBase}`}</a>
+          </li>`;
+        }
+        continue;
       }
 
-      const style =
-        prefix + col("│<br>\n") + prefix + col(isLast ? "└──" : "├──");
-      const fullPath = path.join(currentPath, item);
-      const isDirectory = fs.statSync(fullPath).isDirectory();
+      const children = visit(subPath, subRel);
+      if (!children) continue;
 
-      if (isDirectory) {
-        const children = folderTree(
-          fullPath,
-          depth + 1,
-          startPath || currentPath,
-          (isLast ? 0 : 1 << depth) + lineD,
-        );
-        if (children.length > 0) {
-          table.push(`${style}${tr(item)}<br>`);
-          if (children.length > 10 && lineD === 0) {
-            children.splice(
-              7,
-              0,
-              `${prefix}${col("│　　")}<a
-                  href="javascript:void(0);"
-                  style="font-size:80%;line-height:100%"
-                  onclick="toggleNextNextVis(this)"
-                  >显示全部</a
-                ><br />
-                <span class="hiddenContent" style="display: none;">`,
-            );
-            children.push("</span>");
-          }
-          table.push(...children);
+      result += html`<li class="tree-branch tree-collapsed">
+        <span class="tree-folder" data-lang="zh">${folderZh}</span>
+        <span class="tree-folder" data-lang="en">${folderEn}</span>
+        <ul>
+          ${children}
+        </ul>
+      </li>`;
+    }
+
+    const fileGroups: Map<string, { name: string; baseName: string }[]> = new Map();
+    for (const f of files) {
+      const stem = f.baseName.replace(/-(zh|en)$/, "");
+      let group = fileGroups.get(stem);
+      if (!group) {
+        group = [];
+        fileGroups.set(stem, group);
+      }
+      group.push(f);
+    }
+
+    const processedStems = new Set<string>();
+
+    for (const [stem, group] of fileGroups) {
+      if (processedStems.has(stem)) continue;
+      processedStems.add(stem);
+
+      const articleKey = path.posix.join(relativePath, stem);
+      const article = articles[articleKey];
+
+      if (article) {
+        if (article.lang === "both" || article.lang === "zh") {
+          const zhFile = group.find((g) => g.baseName === stem || g.baseName === `${stem}-zh`);
+          const zhHref = article.url_zh || (zhFile ? path.posix.join("/", relativePath, zhFile.name) : "");
+          const zhTitle = article.title_zh || stem;
+          const isFallback = article.lang === "zh" ? ' data-fallback="true"' : "";
+          result += html`<li data-lang="zh"${isFallback}>
+            <a href="${zhHref}">${zhTitle}</a>
+          </li>`;
+        }
+        if (article.lang === "both" || article.lang === "en") {
+          const enFile = group.find((g) => g.baseName === stem || g.baseName === `${stem}-en`);
+          const enHref = article.url_en || (enFile ? path.posix.join("/", relativePath, enFile.name) : "");
+          const enTitle = article.title_en || stem;
+          const isFallback = article.lang === "en" ? ' data-fallback="true"' : "";
+          result += html`<li data-lang="en"${isFallback}>
+            <a href="${enHref}">${enTitle}</a>
+          </li>`;
         }
       } else {
-        const relativePath = path
-          .relative(startPath || currentPath, fullPath)
-          .split(path.sep)
-          .join("/");
-        table.push(style + createItemButton(item, relativePath));
+        for (const f of group) {
+          const hrefBase = path.posix.join("/", relativePath, f.name);
+          const isJsHash = hashExtension.some((ext) => f.name.endsWith(ext));
+          result += html`<li>
+            ${isJsHash ? `<a href="#">` : `<a href="${hrefBase}">`}${f.baseName}</a>
+          </li>`;
+        }
       }
-    });
-
-    return table;
-  }
-  return html`<p style="text-indent:0;line-height:70%">
-    /root<br />
-    ${
-      folderTree(dir)
-        .join("\n")
-        .replace(
-          /<\/span><span style="color:gray">/g,
-          "",
-        ) /* 删掉重复的颜色设置 */
     }
-  </p>`;
+
+    return result;
+  }
+
+  const tree = visit(dir, "");
+
+  return html`<ul class="file-tree">
+    <li class="tree-root">
+      <span class="tree-folder" data-lang="zh">/root</span>
+      <span class="tree-folder" data-lang="en">/root</span>
+      <ul>
+        ${tree}
+      </ul>
+    </li>
+  </ul>`;
 }
 
-/* function randomArticleJsGen(jsPath, dirPath) {
-  const content = fs.readFileSync(jsPath, "utf8");
-  const startTag = "//begin";
-  const endTag = "//end";
-
-  const articles = [];
-  const baseDir = path.dirname(jsPath);
-
-  function walk(dir) {
-    fs.readdirSync(dir).forEach((item) => {
-      const fullPath = path.join(dir, item);
-      if (fs.statSync(fullPath).isDirectory()) {
-        if (!item.startsWith(".")) walk(fullPath);
-      } else if (item.endsWith(".md") && !item.startsWith(".")) {
-        articles.push(`"#${dirPath}${item}"`);
-      }
-    });
-  }
-
-  walk(baseDir);
-
-  const newContent = content.replace(
-    /\/\/begin[\s\S]*?\/\/end/,
-    `${startTag}\n${articles.join(",\n")}\n${endTag}`,
-  );
-  fs.writeFileSync(jsPath, newContent);
-} */
-
-export function tocGen(dir: string, articles: ArticlesMap) {
+export function tocGen(dir: string, articles: ArticlesMap): string {
   const tree = folderTreeHtml(dir, articles);
-  const recommendation = generateRecommend(0, articles);
-
-  return `
-  ${tree}
-  <hr>
-  ${recommendation}`;
+  return tree;
 }

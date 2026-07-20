@@ -1,7 +1,7 @@
-# 欢迎来到chenyu的主页
+# Welcome to chenyu's Homepage
 
-欢迎来到chenyu的主页！
+Welcome to chenyu's homepage!
 
-[文档索引](/toc.html)
+[Document Index](/toc.html)
 
-[RSS订阅](https://chenyu76.github.io/rss.xml)
+[RSS Feed](https://chenyu76.github.io/rss.xml)
