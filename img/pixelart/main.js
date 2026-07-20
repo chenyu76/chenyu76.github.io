@@ -85,6 +85,7 @@ var cloudIntervalId = null;
 var elBackground = null;
 var elMidground = null;
 var elForeground = null;
+var elRenderer = null;
 
 // https://stackoverflow.com/questions/8022885/rgb-to-hsv-color-in-javascript
 // input: r,g,b in [0,1], out: h in [0,360) and s,v in [0,1]
@@ -311,10 +312,10 @@ async function imgInit(h = document.documentElement.clientHeight,
   const heightInPixel = Math.ceil(h / pixelSize);
   // 清空背景容器
   clearContainer(background);
-  if (is_first_img_init)
-    clearContainer(midground);
+  clearContainer(midground);
   clearContainer(foreground);
   background.style.height = `${h}px`;
+  midground.style.height = `${h}px`;
   foreground.style.height = `${h}px`;
 
   // 计算三个背景颜色
@@ -334,28 +335,29 @@ async function imgInit(h = document.documentElement.clientHeight,
     isNight = false;
   }
 
-  if (is_first_img_init) {
+  if (time !== null) {
+    if (meteorIntervalId) {
+      clearInterval(meteorIntervalId);
+      meteorIntervalId = null;
+    }
+    if (cloudIntervalId) {
+      clearInterval(cloudIntervalId);
+      cloudIntervalId = null;
+    }
     if (isNight) {
-      // 如果是晚上就生成多个星星
-      // 星星
       let ss = document.createElement("div");
       ss.style.right = ss.style.top = "0px";
       ss.style.position = "absolute";
       for (let i = 0; i < 42; i++)
         ss.appendChild(createStar());
       midground.appendChild(ss);
-
-      // 间隔生成流星
       midground.appendChild(generateMeteor(widthInPixel, pixelSize));
-      if (meteorIntervalId)
-        clearInterval(meteorIntervalId);
       meteorIntervalId = setInterval(() => {
         if (document.visibilityState !== "visible")
           return;
         midground.appendChild(generateMeteor(widthInPixel, pixelSize));
       }, 7000);
     } else {
-      // 白天就是云
       let num_clouds = Math.floor(Math.random() * 8) + 4;
       for (let i = 0; i < num_clouds; i++) {
         let cloud = generateClouds(
@@ -364,8 +366,6 @@ async function imgInit(h = document.documentElement.clientHeight,
         );
         midground.appendChild(cloud);
       }
-      if (cloudIntervalId)
-        clearInterval(cloudIntervalId);
       cloudIntervalId = setInterval(() => {
         if (document.visibilityState !== "visible")
           return;
@@ -375,7 +375,6 @@ async function imgInit(h = document.documentElement.clientHeight,
                 Math.round((Math.random() * GRID_HEIGHT) / 2),
         );
         midground.appendChild(cloud);
-        // 每隔一段时间ms生成一朵云
       }, 84000);
     }
   }
@@ -404,6 +403,9 @@ async function imgInit(h = document.documentElement.clientHeight,
   // 画atri像素图 102x125
   // 位于 character.js
   const totalFrames = gifMatrix.length;
+  if (elRenderer) {
+    elRenderer.stop();
+  }
   const renderer = new GifRenderer({
     startX : Math.floor(widthInPixel / 3 - gifMatrixWidth),
     startY : heightInPixel - 84,
@@ -418,6 +420,7 @@ async function imgInit(h = document.documentElement.clientHeight,
                  : (totalFrames - 1) - (wind % totalFrames);
     }
   });
+  elRenderer = renderer;
   foreground.appendChild(renderer.getElement());
   // 开始播放
   renderer.start();
