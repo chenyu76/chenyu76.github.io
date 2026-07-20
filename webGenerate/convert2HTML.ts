@@ -1,4 +1,3 @@
-// import readline from "readline";
 import fs from "fs";
 import hljs from "highlight.js";
 import { Marked } from "marked";
@@ -8,10 +7,11 @@ import { markedHighlight } from "marked-highlight";
 import markedKatex from "marked-katex-extension";
 import path from "path";
 
+import { tr, translatePath, detectLanguage, UI } from "./language.js";
+import type { Lang } from "./language.js";
+
 const html = String.raw;
 
-// 引入翻译函数
-import { tr } from "./toc.js";
 export interface TocItem {
   depth: number;
   text: string;
@@ -19,15 +19,23 @@ export interface TocItem {
 }
 
 export interface ArticleInfo {
-  title: string;
-  html?: string;
+  title?: string;
+  title_zh?: string;
+  title_en?: string;
   footnote?: string;
-  toc?: TocItem[];
   redirect?: string;
+  lang: Lang | "both";
+  url_zh?: string;
+  url_en?: string;
   [key: string]: unknown;
 }
 
-// 设置 marked 的渲染器
+export interface MdGroup {
+  zh?: string;
+  en?: string;
+  unsuffixed?: string;
+}
+
 const marked = new Marked(
   markedHighlight({
     emptyLangClass: "hljs",
@@ -38,43 +46,32 @@ const marked = new Marked(
     },
   }),
 );
-// 启用 marked-katex-extension 自动处理数学公式
 marked.use(
   markedKatex({
     throwOnError: false,
     nonStandard: true,
   }),
 );
-// 启用 marked-alert 插件处理警告框
 marked.use(markedAlert());
-// 启用 marked-footnote 插件处理脚注
 marked.use(markedFootnote());
 
 export function readTemplateHTML(inputPath: string) {
   try {
-    const data = fs.readFileSync(inputPath, "utf8");
-    return data;
+    return fs.readFileSync(inputPath, "utf8");
   } catch (err) {
     console.error(`读取文件 ${inputPath} 失败：`, err);
     return null;
   }
 }
 
-/**
- * 检测 Markdown 是否只包含一个可选标题和一个链接
- * @param {string} md - 输入的 Markdown 文本
- * @returns {string|null} - 如果匹配则返回链接，否则返回 null
- */
 function getSingleLinkFromMarkdown(md: string) {
   const len = md.length;
   let i = 0;
 
-  // 辅助函数：跳过水平空白符（空格/制表符/回车）
   function skipHorizontal() {
     while (i < len && (md[i] === " " || md[i] === "\t" || md[i] === "\r")) i++;
   }
 
-  // 辅助函数：计算并跳过连续换行
   function consumeNewlines() {
     let count = 0;
     while (i < len) {
@@ -82,7 +79,7 @@ function getSingleLinkFromMarkdown(md: string) {
         count++;
         i++;
       } else if (md[i] === " " || md[i] === "\t" || md[i] === "\r") {
-        i++; // 换行间的空格也视为间隔
+        i++;
       } else {
         break;
       }
@@ -90,24 +87,19 @@ function getSingleLinkFromMarkdown(md: string) {
     return count;
   }
 
-  // 处理可选标题
   skipHorizontal();
   if (md[i] === "#" && md[i + 1] === " ") {
     i += 2;
-    // 寻找标题行结束
     while (i < len && md[i] !== "\n") i++;
   }
 
-  // 检查标题后的换行
   const nlAfterTitle = consumeNewlines();
-  if (nlAfterTitle > 2) return null; // 超过两个换行，直接短路
+  if (nlAfterTitle > 2) return null;
 
-  // 检测链接主体
   let link = null;
   skipHorizontal();
 
   if (md[i] === "[") {
-    // 匹配 [alt](url)
     const endBracket = md.indexOf("]", i + 1);
     if (endBracket === -1 || md[endBracket + 1] !== "(") return null;
     const endParen = md.indexOf(")", endBracket + 2);
@@ -115,7 +107,6 @@ function getSingleLinkFromMarkdown(md: string) {
     link = md.substring(endBracket + 2, endParen);
     i = endParen + 1;
   } else if (md.substring(i, i + 4) === "http") {
-    // 匹配 http... (直到空格或换行)
     const start = i;
     while (
       i < len &&
@@ -127,57 +118,58 @@ function getSingleLinkFromMarkdown(md: string) {
       i++;
     link = md.substring(start, i);
   } else {
-    // 既不是标题，也不是指定的链接格式，短路
     return null;
   }
 
-  // 检查链接后的尾部内容
-  if (len - i > 3) return null; // 链接后如果还有超过3个字符，短路
+  if (len - i > 3) return null;
 
   return link;
 }
 
-export function convertMarkdown(inputPath: string): ArticleInfo {
-  // 读取 Markdown 文件
+export function convertMarkdown(inputPath: string): {
+  title: string;
+  html: string;
+  footnote: string;
+  toc: TocItem[];
+  redirect?: string;
+} {
   const data = fs.readFileSync(inputPath, "utf8");
 
-  // 检查这个文件是不是单独的一个链接，如果是的话，就可以直接跳转过去了
   const maybeLink = getSingleLinkFromMarkdown(data);
   if (maybeLink) {
     let firstLineEndIndex = data.indexOf("\n");
     let firstLine = data.substring(0, firstLineEndIndex).trim();
-    // 检查第一行是否以 "# " 开头
     if (data.startsWith("# ")) {
-      firstLine = data.substring(1, firstLineEndIndex).trim(); // 去掉#
+      firstLine = data.substring(1, firstLineEndIndex).trim();
     }
-    return { title: firstLine, redirect: maybeLink };
+    return {
+      title: firstLine,
+      html: "",
+      footnote: "",
+      toc: [],
+      redirect: maybeLink,
+    };
   }
 
-  // 划分内容为 [标题, 正文, 脚注]
   const content = ((str) => {
     let firstLineEndIndex = str.indexOf("\n");
     let firstLine = str.substring(0, firstLineEndIndex).trim();
 
-    // 检查第一行是否以 "# " 开头
     if (str.startsWith("# ")) {
-      firstLine = str.substring(1, firstLineEndIndex).trim(); // 去掉#
+      firstLine = str.substring(1, firstLineEndIndex).trim();
       str = str.substring(firstLineEndIndex + 1);
     }
 
-    // 从字符串末尾开始查找最后一个换行符
     let lastIndex = str.length - 1;
     while (lastIndex >= 0 && str[lastIndex] !== "\n") {
       lastIndex--;
     }
-    // 提取最后一行
     const lastLine = str.substring(lastIndex + 1).trim();
-    // 检查最后一行的长度是否是日期
     if (
       lastLine.length < 50 &&
       ((lastLine.includes("月") && lastLine.includes("日")) ||
         (lastLine.match(/\//g) || []).length === 2)
     ) {
-      // 去除正文最后的分割线（支持 ---, ***, ___, 以及带空格或多于3个字符的非标准写法）
       let mainContent = str
         .substring(0, lastIndex)
         .trim()
@@ -185,31 +177,24 @@ export function convertMarkdown(inputPath: string): ArticleInfo {
         .trim();
       return [firstLine, mainContent, lastLine];
     }
-    // 去除正文最后的分割线
     let mainContent = str.replace(/(?:\n|^)\s*(?:[-_*]\s*){3,}$/, "").trim();
-    // 如果不满足条件，返回空
     return [firstLine, mainContent, ""];
   })(data.trim());
 
-  // 生成目录
   const toc: TocItem[] = [];
   const renderer = new marked.Renderer();
   function createSlug(str: string) {
-    return (
-      str
-        // 将汉字转换为 Unicode 编码（保留原汉字作为后备）
-        .replace(
-          /[\u4e00-\u9fa5]/g,
-          (char: string) =>
-            `u${char.charCodeAt(0).toString(16).padStart(4, "0")}`,
-        )
-        // 处理其他字符
-        .toLowerCase()
-        .replace(/[^\w\u4e00-\u9fa5-]+/g, "-") // 替换非字母数字汉字为-
-        .replace(/-+/g, "-") // 合并连续的-
-        .replace(/^-+/, "") // 去除开头的-
-        .replace(/-+$/, "")
-    ); // 去除结尾的-
+    return str
+      .replace(
+        /[\u4e00-\u9fa5]/g,
+        (char: string) =>
+          `u${char.charCodeAt(0).toString(16).padStart(4, "0")}`,
+      )
+      .toLowerCase()
+      .replace(/[^\w\u4e00-\u9fa5-]+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-+/, "")
+      .replace(/-+$/, "");
   }
 
   renderer.heading = function (c) {
@@ -219,47 +204,186 @@ export function convertMarkdown(inputPath: string): ArticleInfo {
   };
 
   marked.setOptions({ renderer: renderer });
-  const html = marked.parse(content[1] || "") as string;
+  const htmlContent = marked.parse(content[1] || "") as string;
 
   console.log(`${inputPath} -> markdown`);
   return {
     title: content[0] || "",
-    html: html,
-    footnote: content[2],
+    html: htmlContent,
+    footnote: content[2] || "",
     toc: toc,
   };
 }
 
+function generateLangButtonHtml(
+  pageType: "article" | "index" | "toc" | "redirect",
+  lang?: Lang,
+  altLangUrl?: string,
+): string {
+  if (pageType === "article" && altLangUrl) {
+    return html`<a
+      href="${altLangUrl}"
+      class="lang-btn scroll-top-btn"
+      data-title-zh="切换到中文"
+      data-title-en="Switch to English"
+      title=""
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon">
+        <use href="#icon-language" />
+      </svg>
+    </a>`;
+  }
+  if (pageType === "article" && !altLangUrl) {
+    return ``;
+  }
+  return langButtonDropdownHtml();
+}
+
+function langButtonDropdownHtml(): string {
+  return html` <button
+      class="lang-toggle scroll-top-btn fade-in"
+      data-title-zh="语言"
+      data-title-en="Language"
+      title=""
+      aria-haspopup="true"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon">
+        <use href="#icon-language" />
+      </svg>
+    </button>
+    <div class="lang-dropdown">
+      <div class="lang-options">
+        <label class="lang-option">
+          <input type="radio" value="auto" class="lang-radio" />
+          <span>${UI.follow_system.zh} / ${UI.follow_system.en}</span>
+        </label>
+        <label class="lang-option">
+          <input type="radio" value="zh" class="lang-radio" />
+          <span>${UI.chinese.zh}</span>
+        </label>
+        <label class="lang-option">
+          <input type="radio" value="en" class="lang-radio" />
+          <span>${UI.english.en}</span>
+        </label>
+      </div>
+      <label class="show-both-label">
+        <input type="checkbox" class="lang-show-both" />
+        <span
+          class="show-both-text"
+          data-text-zh="${UI.show_both_zh}"
+          data-text-en="${UI.show_both_en}"
+        ></span>
+      </label>
+    </div>`;
+}
+
+function generateRedirectHtml(
+  outputPath: string,
+  title: string,
+  availableLangs: { url: string; lang: Lang }[],
+): void {
+  const isBilingual = availableLangs.length >= 2;
+
+  const links = availableLangs
+    .map((a) => html`<a href="${a.url}">${a.url}</a>`)
+    .join(" / ");
+
+  if (!isBilingual) {
+    const targetUrl = availableLangs[0]?.url || "/index.html";
+    const page = html`<!doctype html>
+      <html lang="zh">
+        <head>
+          <meta charset="UTF-8" />
+          <meta http-equiv="refresh" content="0;url=${targetUrl}" />
+          <title>${title}</title>
+        </head>
+        <body>
+          <p>${UI.redirecting_to.en} ${links}</p>
+        </body>
+      </html>`;
+    fs.writeFileSync(outputPath, page, "utf8");
+    console.log(`  -> ${outputPath}`);
+    return;
+  }
+
+  const urlsObj = availableLangs
+    .map((a) => `${a.lang}: "${a.url}"`)
+    .join(",\n");
+
+  const page = html`<!doctype html>
+    <html lang="zh">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>${title}</title>
+        <link rel="stylesheet" href="/styles.css" />
+        <style>
+          .redirect-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background: var(--card-bg-color);
+            padding: 40px;
+            box-shadow: 0 0 1px var(--shadow);
+            max-width: 500px;
+          }
+          .redirect-box h1 {
+            margin: 0 0 1em;
+          }
+          .redirect-box a {
+            color: var(--link-color);
+          }
+        </style>
+        <script>
+          (function () {
+            var urls = { ${urlsObj} };
+            var browserLang = (navigator.language || "").startsWith("zh")
+              ? "zh"
+              : "en";
+            var target = urls[browserLang] || urls[Object.keys(urls)[0]];
+            window.location.replace(target);
+          })();
+        </script>
+      </head>
+      <body>
+        <div class="redirect-box">
+          <h1>${title}</h1>
+          <p>${UI.redirecting_to.zh} / ${UI.redirecting_to.en}</p>
+          <p>${links}</p>
+        </div>
+      </body>
+    </html>`;
+
+  fs.writeFileSync(outputPath, page, "utf8");
+  console.log(`  -> ${outputPath}`);
+}
+
 export function generateHtmlFile(
-  outputPath = "", // 输出路径
-  templateHTML: string | null = "", // HTML 模板字符串
-  titleContent = "", // 标题内容
-  headContent = "", // <head> 额外内容
-  headingContent = "", // 文档标题内容
-  htmlContent = "", // 正文内容
-  footnoteContent = "", // 脚注内容
-  extraBodyContent = "", // <body> 结尾额外内容
-  tocContent = "", // 目录内容
+  outputPath = "",
+  templateHTML: string | null = "",
+  titleContent = "",
+  headContent = "",
+  headingContent = "",
+  htmlContent = "",
+  footnoteContent = "",
+  extraBodyContent = "",
+  tocContent = "",
+  pageType: "article" | "index" | "toc" | "redirect" = "article",
+  lang?: Lang,
+  altLangUrl?: string,
 ) {
-  // 处理代码块，注入复制按钮或识别为 ASCII 表格
-  const tableCharRegex = /[┌┐└┘─│]/g;
-  //  检查是否存在代码块
   if (/<pre><code\b/.test(htmlContent)) {
+    const tableCharRegex = /[┌┐└┘─│]/g;
     htmlContent = htmlContent.replace(
       /<pre>([\s\S]*?<code[^>]*>([\s\S]*?)<\/code>[\s\S]*?)<\/pre>/g,
       (_match, fullContent, codeInnerHtml) => {
-        // 统计制表符出现的次数
         const matches = codeInnerHtml.match(tableCharRegex);
         const count = matches ? matches.length : 0;
-
         if (count >= 10) {
-          // 制表/示意图
-          // 添加类名 ascii-table 以便通过 CSS 控制样式
-          // 这种块不需要复制按钮
           return html`<pre class="ascii-table" lang="en">${fullContent}</pre>`;
         } else {
-          // 普通代码块
-          // 注入复制按钮
           return html`<pre>${fullContent}<button class="copy-btn" title="Copy">📋</button></pre>`;
         }
       },
@@ -267,7 +391,6 @@ export function generateHtmlFile(
 
     headContent += html`<link rel="stylesheet" href="/styles-code.css" />`;
 
-    // 客户端脚本（仅针对有 copy-btn 的块）
     extraBodyContent += html`
       <script>
         document.querySelectorAll(".copy-btn").forEach((btn) => {
@@ -287,8 +410,6 @@ export function generateHtmlFile(
     `;
   }
 
-  // 检查是否存在公式，marked-katex-extension 渲染后的公式标签中包含 "katex" 类
-  // 仅当存在数学公式时引入 KaTeX 样式
   if (/class="katex"/.test(htmlContent)) {
     headContent += html`
       <link
@@ -300,9 +421,11 @@ export function generateHtmlFile(
     `;
   }
 
-  // 将 <hr> 标签替换为指定的 div 结构
-  // htmlContent = transformHrTags(htmlContent);
-  // 创建替换映射
+  const langMeta = lang
+    ? html`lang="${lang}" data-page-lang="${lang}"`
+    : html`lang="zh"`;
+  const langButtonHtml = generateLangButtonHtml(pageType, lang, altLangUrl);
+
   const replacements: Record<string, string> = {
     TITLE_PLACEHOLDER: titleContent,
     HEAD_PLACEHOLDER: headContent,
@@ -311,6 +434,8 @@ export function generateHtmlFile(
     FOOTNOTE_PLACEHOLDER: footnoteContent,
     EXTRA_BODY_PLACEHOLDER: extraBodyContent,
     TOC_PLACEHOLDER: tocContent,
+    LANG_META_PLACEHOLDER: langMeta,
+    LANG_BUTTON_PLACEHOLDER: langButtonHtml,
   };
 
   const regex = new RegExp(Object.keys(replacements).join("|"), "g");
@@ -323,103 +448,237 @@ export function generateHtmlFile(
   console.log(`  -> ${outputPath}`);
 }
 
+function groupMdFiles(dirPath: string): Map<string, MdGroup> {
+  const groupMap = new Map<string, MdGroup>();
+  let files: string[];
+  try {
+    files = fs.readdirSync(dirPath);
+  } catch {
+    return groupMap;
+  }
+
+  for (const file of files) {
+    if (!file.endsWith(".md")) continue;
+    const filePath = path.join(dirPath, file);
+
+    const zhMatch = file.match(/^(.+)-zh\.md$/);
+    const enMatch = file.match(/^(.+)-en\.md$/);
+
+    if (zhMatch) {
+      const base = zhMatch[1]!;
+      if (!groupMap.has(base)) groupMap.set(base, {});
+      groupMap.get(base)!.zh = filePath;
+    } else if (enMatch) {
+      const base = enMatch[1]!;
+      if (!groupMap.has(base)) groupMap.set(base, {});
+      groupMap.get(base)!.en = filePath;
+    } else {
+      const base = file.replace(/\.md$/, "");
+      if (!groupMap.has(base)) groupMap.set(base, {});
+      groupMap.get(base)!.unsuffixed = filePath;
+    }
+  }
+
+  return groupMap;
+}
+
+function processMdGroup(
+  dirPath: string,
+  base: string,
+  sources: MdGroup,
+  templateHTML: string,
+  rootPath: string,
+  articles: Record<string, ArticleInfo>,
+): void {
+  let zhSource: string | undefined = sources.zh;
+  let enSource: string | undefined = sources.en;
+
+  if (sources.unsuffixed) {
+    if (!zhSource && !enSource) {
+      const content = fs.readFileSync(sources.unsuffixed, "utf8");
+      const detected = detectLanguage(content);
+      if (detected === "zh") zhSource = sources.unsuffixed;
+      else enSource = sources.unsuffixed;
+    } else if (!zhSource && enSource) {
+      zhSource = sources.unsuffixed;
+    } else if (zhSource && !enSource) {
+      enSource = sources.unsuffixed;
+    }
+  }
+
+  if (!zhSource && !enSource) return;
+
+  const relativeDir = path.relative(rootPath, dirPath);
+  const relativeDirTranslatedZh = translatePath(relativeDir, "zh");
+  const relativeDirTranslatedEn = translatePath(relativeDir, "en");
+
+  let zhContent: ReturnType<typeof convertMarkdown> | null = null;
+  let enContent: ReturnType<typeof convertMarkdown> | null = null;
+  let zhArticleTitle = base;
+  let enArticleTitle = base;
+
+  if (zhSource) {
+    zhContent = convertMarkdown(zhSource);
+    zhArticleTitle = zhContent.title || base;
+  }
+  if (enSource) {
+    enContent = convertMarkdown(enSource);
+    enArticleTitle = enContent.title || base;
+  }
+
+  const zhHtmlPath = path.join(dirPath, `${base}-zh.html`);
+  const enHtmlPath = path.join(dirPath, `${base}-en.html`);
+  const unsuffixedPath = path.join(dirPath, `${base}.html`);
+
+  if (zhContent && !zhContent.redirect) {
+    const toc = generateTOC(zhContent.toc || []);
+    generateHtmlFile(
+      zhHtmlPath,
+      templateHTML,
+      zhContent.title,
+      "",
+      html`<h3>${relativeDirTranslatedZh}</h3>
+        <h1>${zhContent.title}</h1>`,
+      zhContent.html,
+      zhContent.footnote,
+      "",
+      toc,
+      "article",
+      "zh",
+      enSource ? path.relative(dirPath, enHtmlPath) : undefined,
+    );
+  } else if (zhContent?.redirect) {
+    generateHtmlFile(
+      zhHtmlPath,
+      templateHTML,
+      zhContent.title,
+      html`<meta http-equiv="refresh" content="3;url=${zhContent.redirect}" />`,
+      html`<h3>${relativeDirTranslatedZh}</h3>
+        <h1>Redirecting to ${zhContent.title}</h1>`,
+      html`<p>
+        Redirecting to
+        <a href="${zhContent.redirect}">${zhContent.redirect}</a> in 3
+        seconds...
+      </p>`,
+      "",
+      "",
+      "",
+      "article",
+      "zh",
+      enSource ? path.relative(dirPath, enHtmlPath) : undefined,
+    );
+  }
+
+  if (enContent && !enContent.redirect) {
+    const toc = generateTOC(enContent.toc || []);
+    generateHtmlFile(
+      enHtmlPath,
+      templateHTML,
+      enContent.title,
+      "",
+      html`<h3>${relativeDirTranslatedEn}</h3>
+        <h1>${enContent.title}</h1>`,
+      enContent.html,
+      enContent.footnote,
+      "",
+      toc,
+      "article",
+      "en",
+      zhSource ? path.relative(dirPath, zhHtmlPath) : undefined,
+    );
+  } else if (enContent?.redirect) {
+    generateHtmlFile(
+      enHtmlPath,
+      templateHTML,
+      enContent.title,
+      html`<meta http-equiv="refresh" content="3;url=${enContent.redirect}" />`,
+      html`<h3>${relativeDirTranslatedEn}</h3>
+        <h1>Redirecting to ${enContent.title}</h1>`,
+      html`<p>
+        Redirecting to
+        <a href="${enContent.redirect}">${enContent.redirect}</a> in 3
+        seconds...
+      </p>`,
+      "",
+      "",
+      "",
+      "article",
+      "en",
+      zhSource ? path.relative(dirPath, zhHtmlPath) : undefined,
+    );
+  }
+
+  const zhUrl = "/" + path.posix.join(relativeDir, `${base}-zh.html`);
+  const enUrl = "/" + path.posix.join(relativeDir, `${base}-en.html`);
+
+  const availableLangs: { url: string; lang: Lang }[] = [];
+  if (zhContent) availableLangs.push({ url: zhUrl, lang: "zh" });
+  if (enContent) availableLangs.push({ url: enUrl, lang: "en" });
+  generateRedirectHtml(unsuffixedPath, base, availableLangs);
+
+  const isBilingual = !!(zhContent && enContent);
+  const primaryContent = zhContent || enContent;
+
+  const articleKey = path.posix.join(relativeDir, base);
+  articles[articleKey] = {
+    title: primaryContent?.title || base,
+    title_zh: zhContent?.title || enContent?.title || base,
+    title_en: enContent?.title || zhContent?.title || base,
+    footnote: primaryContent?.footnote,
+    lang: isBilingual ? "both" : zhContent ? "zh" : "en",
+    url_zh: zhContent ? zhUrl : undefined,
+    url_en: enContent ? enUrl : undefined,
+  };
+}
+
+const DIR_BLACKLIST = new Set(["node_modules", "webGenerate", ".git"]);
+
 export function allMarkdown2Html(
   dir: string,
   templateHTML: string | null,
   rootPath = dir,
+  excludeDirs: string[] = [],
 ) {
-  let articles: Record<string, ArticleInfo> = {};
-  let traverseDirectory = (dirPath: string) => {
-    // 读取目录内容
-    let files = fs.readdirSync(dirPath);
-    files.forEach((file) => {
-      const filePath = path.join(dirPath, file);
+  const articles: Record<string, ArticleInfo> = {};
 
-      // 获取文件或文件夹的状态
-      let stats = fs.statSync(filePath);
-      if (stats.isDirectory() && !file.startsWith(".")) {
-        // 如果是文件夹且不以 . 开头，递归调用
-        traverseDirectory(filePath);
-      } else if (stats.isFile() && file.endsWith(".md")) {
-        // 如果是 .md 文件，调用处理函数
+  function shouldSkip(fullPath: string): boolean {
+    const name = path.basename(fullPath);
+    if (name.startsWith(".")) return true;
+    if (DIR_BLACKLIST.has(name)) return true;
+    const rel = path.relative(rootPath, fullPath);
+    return excludeDirs.some((d) => rel === d || rel.startsWith(d + path.sep));
+  }
 
-        // 获取文件相对于网站根目录的路径
-        const relativePath = path.dirname(path.relative(rootPath, filePath));
-        const relativePathTranslated = (
-          "/" +
-          relativePath.split(path.sep).map(tr).join("/") +
-          "/"
-        ).replace("/./", "/");
-        // 将文件的后缀换成 .html 的完整路径
-        const htmlFilePath = path.format({
-          dir: path.dirname(filePath),
-          name: path.basename(filePath, path.extname(filePath)),
-          ext: ".html",
-        });
-        // 创建html文件
-        const content = convertMarkdown(filePath);
-        if (content.hasOwnProperty("redirect")) {
-          // 如果 content 中有 redirect 属性，说明这是一个重定向页面
-          generateHtmlFile(
-            htmlFilePath,
-            templateHTML,
-            content.title,
-            html`<meta
-              http-equiv="refresh"
-              content="3;url=${content.redirect}"
-            />`,
-            html`<h3>${relativePathTranslated}</h3>
-              <h1>Redirecting to ${content.title}</h1>`,
-            html`<p>
-              Redirecting to
-              <a href="${content.redirect}">${content.redirect}</a> in 3
-              seconds...
-            </p>`,
-            "",
-            "",
-            "",
-          );
-        } else {
-          const htmlContent = content.html;
-          const tocContent = generateTOC(content.toc || []);
-          generateHtmlFile(
-            htmlFilePath,
-            templateHTML,
-            content.title,
-            "",
-            html`<h3>${relativePathTranslated}</h3>
-              <h1>${content.title}</h1>`,
-            htmlContent,
-            content.footnote,
-            "",
-            tocContent,
-          );
+  function traverseAndProcess(dirPath: string) {
+    if (shouldSkip(dirPath)) return;
+
+    const groupMap = groupMdFiles(dirPath);
+
+    for (const [base, sources] of groupMap) {
+      processMdGroup(dirPath, base, sources, templateHTML!, rootPath, articles);
+    }
+
+    let entries: fs.Dirent[];
+    try {
+      entries = fs.readdirSync(dirPath, { withFileTypes: true });
+    } catch {
+      return;
+    }
+
+    for (const entry of entries) {
+      if (entry.isDirectory()) {
+        const fullPath = path.join(dirPath, entry.name);
+        if (!shouldSkip(fullPath)) {
+          traverseAndProcess(fullPath);
         }
-        // 记录已经有的文章的信息
-        articles[
-          path.join(
-            relativePath,
-            path.basename(filePath, path.extname(filePath)),
-          )
-        ] = {
-          title: content.title,
-          footnote: content.footnote,
-        };
       }
-    });
-  };
-  traverseDirectory(dir);
+    }
+  }
+
+  traverseAndProcess(dir);
   return articles;
 }
 
-/* 生成TOC的HTML
-传入的tocItems是一个数组，每个元素包含id, text和depth属性
-{
-        depth: 标题级别（1-6，对应h1-h6）,
-        text: 标题文本,
-        id: 标题的锚点ID
-}
-*/
 function generateTOC(tocItems: TocItem[]) {
   if (tocItems.length < 3) return "";
 
@@ -429,7 +688,6 @@ function generateTOC(tocItems: TocItem[]) {
   let lastLevel = 1;
 
   tocItems.forEach((item: TocItem) => {
-    // 处理层级关系
     while (lastLevel < item.depth) {
       htmlContent += "<ul>\n";
       lastLevel++;
@@ -438,10 +696,9 @@ function generateTOC(tocItems: TocItem[]) {
       htmlContent += "</ul>\n";
       lastLevel--;
     }
-
     htmlContent += `<li><a href="#${item.id}">${item.text}</a></li>\n`;
   });
-  // 关闭所有未闭合的ul标签
+
   while (lastLevel > 1) {
     htmlContent += "</ul>\n";
     lastLevel--;
