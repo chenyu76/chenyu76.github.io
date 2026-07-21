@@ -300,13 +300,13 @@
   <div data-lang="zh">
     <p>欢迎来到chenyu的主页！</p>
 <p><a href="/toc.html">文档索引</a></p>
-<p><a href="https://chenyu76.github.io/rss.xml">RSS订阅</a></p>
+<p><a href="https://chenyu76.github.io/rss-zh-en.xml">RSS订阅</a></p>
 
   </div>
   <div data-lang="en">
     <p>Welcome to chenyu&#39;s homepage!</p>
 <p><a href="/toc.html">Document Index</a></p>
-<p><a href="https://chenyu76.github.io/rss.xml">RSS Feed</a></p>
+<p><a href="https://chenyu76.github.io/rss-en-zh.xml">RSS Feed</a></p>
 
   </div>
 </div></div>
@@ -444,7 +444,7 @@
 
             <div class="card content" data-lang="zh" data-fallback="true">
               <div class="card-top">
-                <h2><a href="/program/draw-n-pointed-star/readme-zh.html">多角星的生成</a></h2>
+                <h2><a href="/program/draw-n-pointed-star/readme.html">program/draw-n-pointed-star/readme.html</a></h2>
                 <p>我们都知道，正五角星只有一种画法（除去平凡的正五边形情形），但当点数增大时，画法就有很多了。我感觉当点数增加时，绘制的形状应该会很好看。</p>
               </div>
               <div class="card-bottom">2025年7月15日</div>
@@ -464,7 +464,7 @@
 
             <div class="card content" data-lang="zh" data-fallback="true">
               <div class="card-top">
-                <h2><a href="/program/tetris/readme-zh.html">由算法控制难度的俄罗斯方块</a></h2>
+                <h2><a href="/program/tetris/readme.html">program/tetris/readme.html</a></h2>
                 <p>如果一个俄罗斯方块每次给你的方块不是随机的，而是暗中由算法控制，或是帮助你，或是阻止你。<br>将难度调到1享受要啥没啥的狗屎版俄罗斯方块；还附带一个可以自己玩俄罗斯方块的AI，也许你可以看着它玩用于解闷。</p>
               </div>
               <div class="card-bottom">2025年6月07日</div>
@@ -640,5 +640,138 @@
     </div>
 
     
+  <script>
+    const LANG_KEY = "lang";
+    const SHOW_BOTH_KEY = "showBoth";
+
+    function getLang() {
+      const stored = localStorage.getItem(LANG_KEY);
+      if (stored === "zh" || stored === "en") return stored;
+      return "auto";
+    }
+
+    function getEffectiveLang() {
+      const lang = getLang();
+      if (lang === "auto") {
+        return (
+          navigator.languages
+            ?.find((l) => l.startsWith("zh"))
+            ?.startsWith("zh") ||
+          navigator.language?.startsWith("zh")
+        )
+          ? "zh"
+          : "en";
+      }
+      return lang;
+    }
+
+    function getShowBoth() {
+      const stored = localStorage.getItem(SHOW_BOTH_KEY);
+      if (stored === null) return true;
+      return stored === "true";
+    }
+
+    function applyLanguage() {
+      const mode = getLang();
+      const elang = getEffectiveLang();
+      const showBoth = getShowBoth();
+
+      document.documentElement.lang = elang;
+
+      document.querySelectorAll("[data-lang]").forEach((el) => {
+        const itemLang = el.dataset.lang;
+        if (itemLang === elang) {
+          el.style.display = "block";
+        } else if (showBoth && el.dataset.fallback === "true") {
+          el.style.display = "block";
+        } else {
+          el.style.display = "none";
+        }
+      });
+
+      updateTitlesAndTexts(elang);
+      updateNavLinks(elang);
+
+      document.querySelectorAll(".lang-radio").forEach((r) => {
+        r.checked = r.value === getLang();
+      });
+
+      document.querySelectorAll(".lang-show-both").forEach((cb) => {
+        cb.disabled = false;
+        cb.checked = showBoth;
+      });
+
+      const showBothSpans = document.querySelectorAll(".show-both-text");
+      showBothSpans.forEach((span) => {
+        span.textContent =
+          elang === "zh" ? span.dataset.textZh : span.dataset.textEn;
+      });
+
+      const showBothLabels = document.querySelectorAll(".show-both-label");
+      showBothLabels.forEach((label) => {
+        label.style.display = "flex";
+      });
+    }
+
+    function closeAllLangDropdowns() {
+      document.querySelectorAll(".lang-dropdown").forEach((dd) => {
+        dd.classList.remove("active");
+      });
+    }
+
+    function toggleLangDropdown(e) {
+      e.stopPropagation();
+      const btn = e.currentTarget;
+      const dropdown = btn.parentElement.querySelector(".lang-dropdown");
+      if (!dropdown) return;
+
+      const isActive = dropdown.classList.contains("active");
+      closeAllLangDropdowns();
+      if (!isActive) {
+        const rect = btn.getBoundingClientRect();
+        dropdown.style.left = Math.min(rect.right + 4, window.innerWidth - 240) + "px";
+        dropdown.style.top = Math.min(rect.top, window.innerHeight - 160) + "px";
+        dropdown.classList.add("active");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      applyLanguage();
+
+      document.querySelectorAll(".lang-toggle").forEach((btn) => {
+        btn.addEventListener("click", toggleLangDropdown);
+      });
+
+      document.querySelectorAll(".lang-radio").forEach((radio) => {
+        radio.addEventListener("change", (e) => {
+          if (!e.target.checked) return;
+          const val = e.target.value;
+          document.querySelectorAll(".lang-radio").forEach((r) => {
+            r.checked = r.value === val;
+          });
+          localStorage.setItem(LANG_KEY, val);
+          applyLanguage();
+        });
+      });
+
+      document.querySelectorAll(".lang-show-both").forEach((cb) => {
+        cb.addEventListener("change", (e) => {
+          const checked = e.target.checked;
+          document.querySelectorAll(".lang-show-both").forEach((c) => {
+            c.checked = checked;
+          });
+          localStorage.setItem(SHOW_BOTH_KEY, checked ? "true" : "false");
+          applyLanguage();
+        });
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".lang-toggle") && !e.target.closest(".lang-dropdown")) {
+          closeAllLangDropdowns();
+        }
+      });
+    });
+  </script>
+
   </body>
 </html>
