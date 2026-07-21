@@ -4,6 +4,13 @@
       <title>Chen Yu's Website (Chinese)</title>
       <description>Chinese articles</description>
 <item>
+            <title>在LaTeX中模仿那些由一个又一个表格组成的Word文档</title>
+            <link>https://chenyu76.github.io/writings/deans-office-latex.html</link>
+            <description><![CDATA[]]></description>
+            <pubDate>Wed, 22 Jul 2026 00:00:00 GMT</pubDate>
+            <guid>https://chenyu76.github.io/writings/deans-office-latex.html</guid>
+          </item>
+<item>
             <title>俄罗斯方块，但是六边形往中心落 / Tetris, but hexagons fall toward the center</title>
             <link>https://chenyu76.github.io/program/hextris/index.html</link>
             <description><![CDATA[六边形向中心坠落的俄罗斯方块变体。]]></description>
@@ -65,13 +72,6 @@
             <description><![CDATA[我们将在校园网内计算机上使用frp配置反向代理并安装WireGuard实现在校外访问校内的网络资源。以及一些相关的注意事项。]]></description>
             <pubDate>Sun, 21 Dec 2025 00:00:00 GMT</pubDate>
             <guid>https://chenyu76.github.io/writings/college-reverse-proxy.html</guid>
-          </item>
-<item>
-            <title>在LaTeX中模仿那些由一个又一个表格组成的Word文档</title>
-            <link>https://chenyu76.github.io/writings/deans-office-latex.html</link>
-            <description><![CDATA[]]></description>
-            <pubDate>Sun, 07 Dec 2025 00:00:00 GMT</pubDate>
-            <guid>https://chenyu76.github.io/writings/deans-office-latex.html</guid>
           </item>
 <item>
             <title>多角星的生成</title>

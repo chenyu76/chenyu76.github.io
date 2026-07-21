@@ -204,4 +204,7 @@ xelatex yourfile.tex
 > [!TIP]
 > 如果你只修改了正文文字，只需运行一遍 xelatex；只有当你**新增/删除引用**或**修改了 bib 文件**时，才需要完整跑这一套流程。
 
+> [!TIP]
+> 可以使用 [latexmk](https://mgeier.github.io/latexmk.html) 或别的自动化工具减少手动重复编译的次数。
+
 2025/02/20

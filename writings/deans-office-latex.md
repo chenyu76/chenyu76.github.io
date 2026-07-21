@@ -6,18 +6,14 @@
 
 下面来看看这个模板的效果：
 
-![p1](./assets/deans-office-latex/1.webp)
+[这里下载查看PDF](https://github.com/user-attachments/files/30235446/main.pdf)，或者直接预览下面的图片
 
-![p2](./assets/deans-office-latex/2.webp)
+![Page 1](https://github.com/user-attachments/assets/3d369d2e-323e-4d40-ba00-58b56ad23a45)
 
-![p3](./assets/deans-office-latex/3.webp)
+![Page 2](https://github.com/user-attachments/assets/f6c4465e-ad3f-4035-8462-82a4d69f39b5)
 
-![p4](./assets/deans-office-latex/4.webp)
+![Page 3](https://github.com/user-attachments/assets/3e78c110-35a5-484c-8c22-b4a0e968b368)
 
-![p5](./assets/deans-office-latex/5.webp)
+![Page 4](https://github.com/user-attachments/assets/a9ebf1a1-d041-4025-9208-5749cfaf5504)
 
-
-
-
-
-2025/12/7
+2025/12/7: v1.0.  2026/07/22: v2.0

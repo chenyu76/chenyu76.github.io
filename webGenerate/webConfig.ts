@@ -52,6 +52,10 @@ export type RecommendItem =
  */
 export const recommend: RecommendItem[] = [
   {
+    link: "writings/deans-office-latex.html",
+    date: 20260722,
+  },
+  {
     link: "program/hextris/index.html",
     date: 20260607,
     title_zh: "俄罗斯方块，但是六边形往中心落",
@@ -113,7 +117,6 @@ export const recommend: RecommendItem[] = [
     info_zh:
       "我们将在校园网内计算机上使用frp配置反向代理并安装WireGuard实现在校外访问校内的网络资源。以及一些相关的注意事项。",
   },
-  "writings/deans-office-latex.html",
   {
     date: 20251121,
     link: "https://github.com/chenyu76/glyph-ascii-canvas",
