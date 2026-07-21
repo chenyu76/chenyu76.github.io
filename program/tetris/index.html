@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>俄罗斯方块</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="game-container">
+        <div class="game-board" id="game-board">
+          <canvas id="game-canvas" width="300" height="600"></canvas>
+          <canvas id="player-canvas" width="120" height="120"></canvas>
+          <div class="game-overlay" id="game-overlay">
+            <h2 class="overlay-title">俄罗斯方块</h2>
+            <p class="overlay-text">
+              使用方向键移动和旋转方块，填满整行即可消除
+            </p>
+            <button class="btn" id="start-btn">开始游戏</button>
+          </div>
+        </div>
+
+        <div class="game-info">
+          <div class="info-panel">
+            <p style="text-align: center; color: #616161">分数</p>
+            <div class="panel-content" id="score">0</div>
+          </div>
+
+          <div class="info-panel">
+            <p style="text-align: center; color: #616161">等级</p>
+            <div class="panel-content" id="level">1</div>
+            <p style="text-align: center; color: #616161">速度随等级提升</p>
+          </div>
+
+          <div class="info-panel">
+            <p style="text-align: center; color: #616161">下一个方块</p>
+            <div class="next-piece">
+              <canvas id="next-piece-canvas" width="120" height="120"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="game-info">
+          <div class="info-panel">
+            <h3 class="panel-title">控制</h3>
+            <div class="controls">
+              <div class="key-item">
+                <button class="control-btn" id="drop-btn">
+                  <span class="control-emoji">⏬</span>
+                </button>
+                <div class="key-label">space</div>
+              </div>
+              <div class="key-item">
+                <button class="control-btn" id="rotate-btn">
+                  <span class="control-emoji">🔄</span>
+                </button>
+                <div class="key-label">↑</div>
+              </div>
+              <div class="key-item">
+                <button class="control-btn" id="pause-btn">
+                  <span class="control-emoji">⏸️</span>
+                </button>
+                <div class="key-label">P</div>
+              </div>
+              <div class="key-item">
+                <button class="control-btn" id="left-btn">
+                  <span class="control-emoji">⬅️</span>
+                </button>
+                <div class="key-label">←</div>
+              </div>
+              <div class="key-item">
+                <button class="control-btn" id="down-btn">
+                  <span class="control-emoji">⬇️</span>
+                </button>
+                <div class="key-label">↓</div>
+              </div>
+              <div class="key-item">
+                <button class="control-btn" id="right-btn">
+                  <span class="control-emoji">➡️</span>
+                </button>
+                <div class="key-label">→</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-panel">
+            <p style="color: #616161">自动进行游戏</p>
+            <br />
+            <div style="text-align: center">
+              <label class="switch">
+                <input type="checkbox" id="algorithmSwitch" />
+                <span class="slider round"></span>
+              </label>
+              <div style="color: #616161" class="status-text" id="statusText">
+                关闭
+              </div>
+            </div>
+          </div>
+
+          <div class="info-panel">
+            <div style="color: #616161">
+              难度: <span id="sliderValue">0</span>
+            </div>
+            <div class="slider-container">
+              <input
+                type="range"
+                id="difficultySlider"
+                class="slider"
+                min="-1"
+                max="1"
+                step="0.2"
+                value="0"
+              />
+
+              <div class="tick-marks">
+                <div class="tick" data-value="易"></div>
+                <div class="tick" data-value="中"></div>
+                <div class="tick" data-value="难"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./script.js" defer></script>
+    <script src="./algorithm.js" defer></script>
+    <script>
+      // 获取算法开关元素
+      const algorithmSwitch = document.getElementById("algorithmSwitch");
+      algorithmSwitch.checked = false; // 默认关闭
+      // 获取状态显示文本
+      const statusText = document.getElementById("statusText");
+
+      // 添加事件监听器
+      algorithmSwitch.addEventListener("change", function () {
+        algorithmActive = this.checked;
+        statusText.textContent = algorithmActive ? "开启" : "关闭";
+      });
+
+      // 难度滑块
+      const slider = document.getElementById("difficultySlider");
+      const sliderValue = document.getElementById("sliderValue");
+
+      // 初始难度值
+      slider.value = "0";
+
+      // 显示初始值
+      sliderValue.textContent = slider.value;
+
+      // 监听滑条变化
+      slider.addEventListener("input", function () {
+        // 由于设置了step="0.2"，浏览器会自动吸附到最近的0.2倍数
+        sliderValue.textContent = this.value;
+        difficulty = parseFloat(this.value);
+      });
+    </script>
+  </body>
+</html>

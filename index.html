@@ -444,7 +444,7 @@
 
             <div class="card content" data-lang="zh" data-fallback="true">
               <div class="card-top">
-                <h2><a href="/program/draw-n-pointed-star/readme.html">program/draw-n-pointed-star/readme.html</a></h2>
+                <h2><a href="/program/draw-n-pointed-star/readme-zh.html">多角星的生成</a></h2>
                 <p>我们都知道，正五角星只有一种画法（除去平凡的正五边形情形），但当点数增大时，画法就有很多了。我感觉当点数增加时，绘制的形状应该会很好看。</p>
               </div>
               <div class="card-bottom">2025年7月15日</div>
@@ -464,7 +464,7 @@
 
             <div class="card content" data-lang="zh" data-fallback="true">
               <div class="card-top">
-                <h2><a href="/program/tetris/readme.html">program/tetris/readme.html</a></h2>
+                <h2><a href="/program/tetris/readme-zh.html">由算法控制难度的俄罗斯方块</a></h2>
                 <p>如果一个俄罗斯方块每次给你的方块不是随机的，而是暗中由算法控制，或是帮助你，或是阻止你。<br>将难度调到1享受要啥没啥的狗屎版俄罗斯方块；还附带一个可以自己玩俄罗斯方块的AI，也许你可以看着它玩用于解闷。</p>
               </div>
               <div class="card-bottom">2025年6月07日</div>
@@ -653,12 +653,9 @@
     function getEffectiveLang() {
       const lang = getLang();
       if (lang === "auto") {
-        return (
-          navigator.languages
-            ?.find((l) => l.startsWith("zh"))
-            ?.startsWith("zh") ||
-          navigator.language?.startsWith("zh")
-        )
+        return navigator.languages
+          ?.find((l) => l.startsWith("zh"))
+          ?.startsWith("zh") || navigator.language?.startsWith("zh")
           ? "zh"
           : "en";
       }
@@ -729,8 +726,10 @@
       closeAllLangDropdowns();
       if (!isActive) {
         const rect = btn.getBoundingClientRect();
-        dropdown.style.left = Math.min(rect.right + 4, window.innerWidth - 240) + "px";
-        dropdown.style.top = Math.min(rect.top, window.innerHeight - 160) + "px";
+        dropdown.style.left =
+          Math.min(rect.right + 4, window.innerWidth - 240) + "px";
+        dropdown.style.top =
+          Math.min(rect.top, window.innerHeight - 160) + "px";
         dropdown.classList.add("active");
       }
     }
@@ -766,7 +765,10 @@
       });
 
       document.addEventListener("click", (e) => {
-        if (!e.target.closest(".lang-toggle") && !e.target.closest(".lang-dropdown")) {
+        if (
+          !e.target.closest(".lang-toggle") &&
+          !e.target.closest(".lang-dropdown")
+        ) {
           closeAllLangDropdowns();
         }
       });

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>吉他识谱练习</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="favicon.svg">
+</head>
+
+<body>
+
+  <div id="staff-area">
+    <button class="settings-btn" onclick="openSettings()">
+      <div id="completed-number-badge">
+        <span id="completed-number">0</span>
+      </div>
+      <svg class="settings-icon gear-icon" viewBox="0 0 12.7 12.7" version="1.1" transform="scale(0.6)"
+        xmlns="http://www.w3.org/2000/svg">
+        <path style="fill:none;stroke:#000000;stroke-width:0.9;stroke-linecap:round"
+          d="m 5.6,0.46 c -0.37,0 -0.66,0.3 -0.66,0.67 V 2.13 A 4.46,4.46 0 0 0 4.36,2.36 L 3.66,1.66 c -0.26,-0.26 -0.68,-0.26 -0.94,0 l -1.06,1.06 c -0.26,0.26 -0.26,0.68 0,0.94 L 2.36,4.36 A 4.46,4.46 0 0 0 2.13,4.94 H 1.13 c -0.37,0 -0.67,0.3 -0.67,0.67 v 1.49 c 0,0.37 0.3,0.67 0.67,0.67 H 2.13 A 4.46,4.46 0 0 0 2.36,8.34 L 1.66,9.04 c -0.26,0.26 -0.26,0.68 0,0.94 l 1.06,1.06 c 0.26,0.26 0.68,0.26 0.94,0 l 0.7,-0.7 a 4.46,4.46 0 0 0 0.57,0.24 v 1 c 0,0.37 0.3,0.67 0.67,0.67 H 7.1 c 0.37,0 0.67,-0.3 0.67,-0.67 v -1 a 4.46,4.46 0 0 0 0.57,-0.24 l 0.7,0.7 c 0.26,0.26 0.68,0.26 0.94,0 L 11.04,9.98 c 0.26,-0.26 0.26,-0.68 0,-0.94 L 10.34,8.34 a 4.46,4.46 0 0 0 0.24,-0.57 h 1 c 0.37,0 0.67,-0.3 0.67,-0.67 V 5.6 c 0,-0.37 -0.3,-0.67 -0.67,-0.67 H 10.58 A 4.46,4.46 0 0 0 10.34,4.36 l 0.7,-0.7 c 0.26,-0.26 0.26,-0.68 0,-0.94 L 9.98,1.66 c -0.26,-0.26 -0.68,-0.26 -0.94,0 L 8.34,2.36 A 4.46,4.46 0 0 0 7.76,2.12 V 1.13 c 0,-0.37 -0.3,-0.67 -0.67,-0.67 z M 6.35,3.94 A 2.4,2.4 0 0 1 8.76,6.35 2.4,2.4 0 0 1 6.35,8.76 2.4,2.4 0 0 1 3.94,6.35 2.4,2.4 0 0 1 6.35,3.94 Z" />
+      </svg>
+    </button>
+    <div id="staff-container">
+      <svg id="staff-svg" viewBox="0 0 350 140" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+  </div>
+
+  <div id="mode-picker-container">
+    <div id="status-area">
+      <div class="hint-text">当前选择</div>
+      <div class="hint-values">
+        <span id="disp-string">1弦</span>
+        <span id="disp-fret">0品</span>
+        <span id="disp-note" class="note-badge">E4</span>
+      </div>
+    </div>
+
+    <div id="picker-wrapper">
+      <div class="picker-mask"></div>
+      <div class="picker-highlight"></div>
+
+      <ul class="picker-col" id="col-string"></ul>
+      <div class="col-label" style="left: 35%">弦</div>
+
+      <ul class="picker-col" id="col-fret"></ul>
+      <div class="col-label" style="right: 15%">品</div>
+    </div>
+
+    <div id="action-area">
+      <button id="btn-check" onclick="checkAnswerPicker()">确 认</button>
+    </div>
+  </div>
+
+  <div id="mode-fretboard-container" style="display: none;">
+    <div id="info-bar">请直接点击指板上的音</div>
+    <div id="fretboard-viewport">
+      <div id="fretboard-inner"></div>
+    </div>
+  </div>
+
+  <div id="modal-overlay">
+    <div class="modal">
+      <h3>⚙️ 练习设置</h3>
+
+      <div class="setting-row">
+        <label>已完成组数</label>
+        <div id="completed-number-badge-2">
+          <span id="completed-number-2">0</span>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <label>输入模式</label>
+        <select id="set-mode" class="form-select">
+          <option value="picker">滚轮选择 (Picker)</option>
+          <option value="fretboard">指板直选 (Fretboard)</option>
+        </select>
+      </div>
+
+      <div class="setting-row">
+        <label>最低品 (Min Fret)</label>
+        <input type="number" id="set-min" value="0" min="0" max="12">
+      </div>
+
+      <div class="setting-row">
+        <label>最高品 (Max Fret)</label>
+        <input type="number" id="set-max" value="3" min="0" max="15">
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-text" onclick="saveSettings()">保存并刷新</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

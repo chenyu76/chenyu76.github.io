@@ -30,12 +30,9 @@ const langJs = html`
     function getEffectiveLang() {
       const lang = getLang();
       if (lang === "auto") {
-        return (
-          navigator.languages
-            ?.find((l) => l.startsWith("zh"))
-            ?.startsWith("zh") ||
-          navigator.language?.startsWith("zh")
-        )
+        return navigator.languages
+          ?.find((l) => l.startsWith("zh"))
+          ?.startsWith("zh") || navigator.language?.startsWith("zh")
           ? "zh"
           : "en";
       }
@@ -106,8 +103,10 @@ const langJs = html`
       closeAllLangDropdowns();
       if (!isActive) {
         const rect = btn.getBoundingClientRect();
-        dropdown.style.left = Math.min(rect.right + 4, window.innerWidth - 240) + "px";
-        dropdown.style.top = Math.min(rect.top, window.innerHeight - 160) + "px";
+        dropdown.style.left =
+          Math.min(rect.right + 4, window.innerWidth - 240) + "px";
+        dropdown.style.top =
+          Math.min(rect.top, window.innerHeight - 160) + "px";
         dropdown.classList.add("active");
       }
     }
@@ -143,7 +142,10 @@ const langJs = html`
       });
 
       document.addEventListener("click", (e) => {
-        if (!e.target.closest(".lang-toggle") && !e.target.closest(".lang-dropdown")) {
+        if (
+          !e.target.closest(".lang-toggle") &&
+          !e.target.closest(".lang-dropdown")
+        ) {
           closeAllLangDropdowns();
         }
       });
@@ -197,7 +199,7 @@ function getMdSource(
 const templateHTML = readTemplateHTML(path.join(__dirname, "template.html"));
 const rootPath = path.dirname(__dirname);
 
-// await syncRepositories(rootPath, gitRepositories);
+await syncRepositories(rootPath, gitRepositories);
 
 const articles = allMarkdown2Html(rootPath, templateHTML, rootPath);
 
@@ -364,25 +366,19 @@ fs.writeFileSync(
   generateRecommend(2, articles, "en-first"),
 );
 
-const notFoundZh = html`<p>${UI.page_not_found.zh}</p>
-  <br /><img src="/img/404.svg" />`;
-const notFoundEn = html`<p>${UI.page_not_found.en}</p>
-  <br /><img src="/img/404.svg" />`;
-
-const notFoundBody = html`
-  <h1 data-lang="zh">404 Not Found</h1>
-  <h1 data-lang="en">404 Not Found</h1>
-  <div data-lang="zh">${notFoundZh}</div>
-  <div data-lang="en">${notFoundEn}</div>
-`;
-
 generateHtmlFile(
   path.join(rootPath, "404.html"),
   templateHTML,
   "404 not found",
   "",
   "",
-  notFoundBody,
+  html`
+    <h1>404 Not Found</h1>
+    <div>
+      <p>${UI.page_not_found.en}</p>
+      <br /><img src="/img/404.svg" />
+    </div>
+  `,
   "",
   "",
   "",

@@ -1,0 +1,85 @@
+<!doctype html>
+<!doctype html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <title>Color War</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="top-left-controls">
+        <button id="restartButton" class="control-button" title="重玩">
+          🔄
+        </button>
+        <button id="settingsButton" class="control-button" title="设置">
+          ⚙️
+        </button>
+      </div>
+    </header>
+    <main>
+      <div id="game-board">
+        <div id="game-board-visual"></div>
+        <div id="game-board-interactive"></div>
+      </div>
+    </main>
+    <footer></footer>
+
+    <div id="settingsModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>⚙</h2>
+
+        <div class="modal-section">
+          <label for="playerCount">🅯</label>
+          <select id="playerCount">
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select>
+        </div>
+
+        <div class="modal-section">
+          <label for="gameMap">🗺</label>
+          <select id="gameMap">
+            <option value="random">?</option>
+            <option value="square">□</option>
+            <option value="hexgon">⬡</option>
+            <option value="triangle">△</option>
+            <option value="hextri">⬡, ∃⬡ ↦ 6△</option>
+            <option value="octagon">⯄ ∪ ▪</option>
+            <option value="square_triangle">□ △</option>
+            <option value="partial_square">∂□</option>
+            <option value="rhombihexadeltille">⬡□△</option>
+          </select>
+        </div>
+
+        <div class="modal-section">
+          <label for="edgeLen">🗚</label>
+          <input type="range" id="edgeLen" min="20" max="100" value="50" />
+          <div class="range-value">= <span id="edgeLenValue">50</span></div>
+        </div>
+
+        <div class="modal-section">
+          <label for="mapSize">⟷</label>
+          <input type="range" id="mapSize" min="2" max="20" value="6" />
+          <div class="range-value">= <span id="mapSizeValue">6</span></div>
+        </div>
+
+        <button id="saveSettings" class="save-settings-button">✓</button>
+      </div>
+    </div>
+
+    <script src="./game_boards.js" defer></script>
+    <script src="./block.js" defer></script>
+    <script src="./script.js" defer></script>
+  </body>
+</html>
