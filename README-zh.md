@@ -4,4 +4,4 @@
 
 [文档索引](/toc.html)
 
-[RSS订阅](https://chenyu76.github.io/rss.xml)
+[RSS订阅](https://chenyu76.github.io/rss-zh-en.xml)
