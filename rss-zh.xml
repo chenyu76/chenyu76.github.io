@@ -11,11 +11,25 @@
             <guid>https://chenyu76.github.io/program/hextris/index.html</guid>
           </item>
 <item>
+            <title>Copilot 键可以用来切换输入法</title>
+            <link>https://chenyu76.github.io/writings/copilot-key-as-input-method-switch.html</link>
+            <description><![CDATA[]]></description>
+            <pubDate>Mon, 25 May 2026 00:00:00 GMT</pubDate>
+            <guid>https://chenyu76.github.io/writings/copilot-key-as-input-method-switch.html</guid>
+          </item>
+<item>
             <title>奇妙的MATLAB语言特性小测试 / A interesting test of MATLAB language features</title>
             <link>https://chenyu76.github.io/writings/matlab_behavior_test/index.html</link>
             <description><![CDATA[我讨厌MATLAB。]]></description>
             <pubDate>Tue, 12 May 2026 00:00:00 GMT</pubDate>
             <guid>https://chenyu76.github.io/writings/matlab_behavior_test/index.html</guid>
+          </item>
+<item>
+            <title>内网穿透：使用frp远程访问SSH</title>
+            <link>https://chenyu76.github.io/writings/how-to-expose-ssh-to-the-internet-with-frp/index.html</link>
+            <description><![CDATA[]]></description>
+            <pubDate>Tue, 05 May 2026 00:00:00 GMT</pubDate>
+            <guid>https://chenyu76.github.io/writings/how-to-expose-ssh-to-the-internet-with-frp/index.html</guid>
           </item>
 <item>
             <title>4D推箱子 / 4D sokoban</title>
@@ -39,21 +53,28 @@
             <guid>https://github.com/chenyu76/github-latex-readme</guid>
           </item>
 <item>
-            <title>本网页背景上的元素现在随风摆动</title>
+            <title>本网页背景上的元素现在随风摆动 / 新年新主题！</title>
             <link>https://chenyu76.github.io/writings/new-year-new-theme.html</link>
             <description><![CDATA[可能需要稍等一会才会有风吹来。<br>也许会对您的设备有些许性能影响（虽然我已经尽量优化了）。]]></description>
             <pubDate>Fri, 09 Jan 2026 00:00:00 GMT</pubDate>
             <guid>https://chenyu76.github.io/writings/new-year-new-theme.html</guid>
           </item>
 <item>
-            <title>writings/college-reverse-proxy.html</title>
+            <title>宝宝也能上手的校园网穿透教程</title>
             <link>https://chenyu76.github.io/writings/college-reverse-proxy.html</link>
             <description><![CDATA[我们将在校园网内计算机上使用frp配置反向代理并安装WireGuard实现在校外访问校内的网络资源。以及一些相关的注意事项。]]></description>
             <pubDate>Sun, 21 Dec 2025 00:00:00 GMT</pubDate>
             <guid>https://chenyu76.github.io/writings/college-reverse-proxy.html</guid>
           </item>
 <item>
-            <title>program/draw-n-pointed-star/readme.html</title>
+            <title>在LaTeX中模仿那些由一个又一个表格组成的Word文档</title>
+            <link>https://chenyu76.github.io/writings/deans-office-latex.html</link>
+            <description><![CDATA[]]></description>
+            <pubDate>Sun, 07 Dec 2025 00:00:00 GMT</pubDate>
+            <guid>https://chenyu76.github.io/writings/deans-office-latex.html</guid>
+          </item>
+<item>
+            <title>多角星的生成</title>
             <link>https://chenyu76.github.io/program/draw-n-pointed-star/readme.html</link>
             <description><![CDATA[我们都知道，正五角星只有一种画法（除去平凡的正五边形情形），但当点数增大时，画法就有很多了。我感觉当点数增加时，绘制的形状应该会很好看。]]></description>
             <pubDate>Tue, 15 Jul 2025 00:00:00 GMT</pubDate>
@@ -67,35 +88,35 @@
             <guid>https://chenyu76.github.io/program/color_wars/index.html</guid>
           </item>
 <item>
-            <title>program/tetris/readme.html</title>
+            <title>由算法控制难度的俄罗斯方块</title>
             <link>https://chenyu76.github.io/program/tetris/readme.html</link>
             <description><![CDATA[如果一个俄罗斯方块每次给你的方块不是随机的，而是暗中由算法控制，或是帮助你，或是阻止你。<br>将难度调到1享受要啥没啥的狗屎版俄罗斯方块；还附带一个可以自己玩俄罗斯方块的AI，也许你可以看着它玩用于解闷。]]></description>
             <pubDate>Sat, 07 Jun 2025 00:00:00 GMT</pubDate>
             <guid>https://chenyu76.github.io/program/tetris/readme.html</guid>
           </item>
 <item>
-            <title>writings/remarkable_cover.html</title>
+            <title>给reMarkable 1做的保护套</title>
             <link>https://chenyu76.github.io/writings/remarkable_cover.html</link>
             <description><![CDATA[便宜实用手感好，避免屏幕被划伤，但是不耐脏？]]></description>
             <pubDate>Sat, 12 Apr 2025 00:00:00 GMT</pubDate>
             <guid>https://chenyu76.github.io/writings/remarkable_cover.html</guid>
           </item>
 <item>
-            <title>writings/latex-with-inkscape.html</title>
+            <title>使用Inkscape给LaTeX文档绘图时在其中插入公式</title>
             <link>https://chenyu76.github.io/writings/latex-with-inkscape.html</link>
             <description><![CDATA[没有附带一个Inkscape教程]]></description>
             <pubDate>Tue, 11 Mar 2025 00:00:00 GMT</pubDate>
             <guid>https://chenyu76.github.io/writings/latex-with-inkscape.html</guid>
           </item>
 <item>
-            <title>writings/Add-citation-in-LaTeX.html</title>
+            <title>在LaTeX中添加参考文献</title>
             <link>https://chenyu76.github.io/writings/Add-citation-in-LaTeX.html</link>
             <description><![CDATA[有同学问我怎么引用文章，就有了这一篇基础的LaTeX引用方法]]></description>
             <pubDate>Thu, 20 Feb 2025 00:00:00 GMT</pubDate>
             <guid>https://chenyu76.github.io/writings/Add-citation-in-LaTeX.html</guid>
           </item>
 <item>
-            <title>writings/new-year-new-theme.html</title>
+            <title>新年新主题！</title>
             <link>https://chenyu76.github.io/writings/new-year-new-theme.html</link>
             <description><![CDATA[蛇年的全新网站样式！动态随机生成的js背景！]]></description>
             <pubDate>Thu, 06 Feb 2025 00:00:00 GMT</pubDate>
@@ -116,18 +137,25 @@
             <guid>https://github.com/chenyu76/MMA-Hirota-D-operators</guid>
           </item>
 <item>
-            <title>一个拼图游戏</title>
+            <title>一个拼图游戏 / README</title>
             <link>https://chenyu76.github.io/program/7-piece-puzzle/Readme and solution.html</link>
             <description><![CDATA[关卡随机生成的拼图游戏]]></description>
             <pubDate>Mon, 09 Sep 2024 00:00:00 GMT</pubDate>
             <guid>https://chenyu76.github.io/program/7-piece-puzzle/Readme and solution.html</guid>
           </item>
 <item>
-            <title>一个对抗游戏</title>
+            <title>一个对抗游戏 / Tractor Battle 3D</title>
             <link>https://chenyu76.github.io/program/TractorBattle3D/readme.html</link>
             <description><![CDATA[生成障碍阻碍对手的多人本地游戏，Godot练习]]></description>
             <pubDate>Thu, 01 Aug 2024 00:00:00 GMT</pubDate>
             <guid>https://chenyu76.github.io/program/TractorBattle3D/readme.html</guid>
+          </item>
+<item>
+            <title>some SZU LaTeX templates</title>
+            <link>https://chenyu76.github.io/writings/some-szu-LaTeX-template.html</link>
+            <description><![CDATA[]]></description>
+            <pubDate>Thu, 01 Aug 2024 00:00:00 GMT</pubDate>
+            <guid>https://chenyu76.github.io/writings/some-szu-LaTeX-template.html</guid>
           </item>
 <item>
             <title>以网格形式批量查看有命名规范的图片的Qt程序</title>
@@ -137,7 +165,7 @@
             <guid>https://github.com/chenyu76/MatrixGraphViewer</guid>
           </item>
 <item>
-            <title>关于本站</title>
+            <title>关于本站 / 关于这个网站</title>
             <link>https://chenyu76.github.io/writings/about-the-website.html</link>
             <description><![CDATA[第一篇文章]]></description>
             <pubDate>Thu, 20 Jun 2024 00:00:00 GMT</pubDate>
