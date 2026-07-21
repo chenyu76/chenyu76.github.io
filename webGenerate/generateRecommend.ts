@@ -25,34 +25,79 @@ export type ArticlesMap = Record<
 
 export type FeedMode = Lang | "zh-first" | "en-first" | undefined;
 
-function cardHasLang(item: RecommendItem, lang: Lang): boolean {
+function cardHasLang(
+  item: RecommendItem,
+  lang: Lang,
+  articles: ArticlesMap,
+): boolean {
   if (typeof item === "string") {
     return true;
   }
   if (lang === "zh") {
     if (item.title_zh || item.info_zh) return true;
     if (item.title && !item.title_en) return true;
+    if (
+      !item.title_zh &&
+      !item.title_en &&
+      !item.title &&
+      !item.info_zh &&
+      !item.info_en
+    ) {
+      const key = item.link
+        .replace(/\.html$/, "")
+        .replace(/\.md$/, "")
+        .replace(/^\//, "");
+      const article = articles[key];
+      if (!article) return false;
+      return article.lang === "zh" || article.lang === "both";
+    }
     return false;
   }
   if (lang === "en") {
     if (item.title_en || item.info_en) return true;
     if (item.title && !item.title_zh) return true;
+    if (
+      !item.title_zh &&
+      !item.title_en &&
+      !item.title &&
+      !item.info_zh &&
+      !item.info_en
+    ) {
+      const key = item.link
+        .replace(/\.html$/, "")
+        .replace(/\.md$/, "")
+        .replace(/^\//, "");
+      const article = articles[key];
+      if (!article) return false;
+      return article.lang === "en" || article.lang === "both";
+    }
     return false;
   }
   return false;
 }
 
-function getCardTitle(item: RecommendItem, lang: Lang, articles: ArticlesMap): string {
+function getCardTitle(
+  item: RecommendItem,
+  lang: Lang,
+  articles: ArticlesMap,
+): string {
   if (typeof item === "string") return item;
   const link = item.link;
-  const key = link.replace(/\.html$/, "").replace(/\.md$/, "").replace(/^\//, "");
+  const key = link
+    .replace(/\.html$/, "")
+    .replace(/\.md$/, "")
+    .replace(/^\//, "");
   const article = articles[key];
 
   if (lang === "zh") {
-    return item.title_zh || item.title || article?.title_zh || article?.title || link;
+    return (
+      item.title_zh || item.title || article?.title_zh || article?.title || link
+    );
   }
   if (lang === "en") {
-    return item.title_en || item.title || article?.title_en || article?.title || link;
+    return (
+      item.title_en || item.title || article?.title_en || article?.title || link
+    );
   }
   return item.title || article?.title || link;
 }
@@ -64,11 +109,18 @@ function getCardInfo(item: RecommendItem, lang: Lang): string {
   return item.info || "";
 }
 
-function getLangVersionUrl(link: string, lang: Lang, articles: ArticlesMap): string {
+function getLangVersionUrl(
+  link: string,
+  lang: Lang,
+  articles: ArticlesMap,
+): string {
   if (link.startsWith("http")) return link;
   const ext = path.extname(link);
   if (ext === ".pdf" || ext === ".xml") return link;
-  const base = link.replace(/\.html$/, "").replace(/\.md$/, "").replace(/^\//, "");
+  const base = link
+    .replace(/\.html$/, "")
+    .replace(/\.md$/, "")
+    .replace(/^\//, "");
   const article = articles[base];
   if (lang === "zh" && article?.url_zh) return article.url_zh;
   if (lang === "en" && article?.url_en) return article.url_en;
@@ -152,10 +204,17 @@ function getRssTitle(
   item: RecommendItem,
   effectiveLang: Lang,
   mode: FeedMode,
+  articles: ArticlesMap,
 ): string {
   if (typeof item === "string") return item;
-  const zh = item.title_zh || item.title;
-  const en = item.title_en || item.title;
+  const link = item.link;
+  const key = link
+    .replace(/\.html$/, "")
+    .replace(/\.md$/, "")
+    .replace(/^\//, "");
+  const article = articles[key];
+  const zh = item.title_zh || item.title || article?.title_zh || article?.title;
+  const en = item.title_en || item.title || article?.title_en || article?.title;
 
   if (mode === "zh" || mode === "zh-first") {
     if (zh && en && zh !== en) return `${zh} / ${en}`;
@@ -169,9 +228,19 @@ function getRssTitle(
   return zh || en || item.link;
 }
 
-function getRssInfo(item: RecommendItem, mode: FeedMode): string {
+function getRssInfo(
+  item: RecommendItem,
+  mode: FeedMode,
+  articles: ArticlesMap,
+): string {
   if (typeof item === "string") return "";
   const effectiveLang = resolveEffectiveLang(mode);
+  const link = item.link;
+  const key = link
+    .replace(/\.html$/, "")
+    .replace(/\.md$/, "")
+    .replace(/^\//, "");
+  const article = articles[key];
 
   if (mode === "zh-first" || mode === "en-first") {
     const primary = getCardInfo(item, effectiveLang);
@@ -199,8 +268,35 @@ export function generateRecommend(
 
   let items = source || recommend;
 
+  for (const item of items) {
+    const linkRaw = typeof item === "string" ? item : item.link;
+    if (!linkRaw.startsWith("http")) {
+      const base = linkRaw
+        .replace(/\.html$/, "")
+        .replace(/\.md$/, "")
+        .replace(/^\//, "");
+      const article = articles[base];
+      const resolvedUrl = !article
+        ? linkRaw
+        : linkRaw.endsWith(".html")
+          ? article.url_zh || linkRaw
+          : linkRaw;
+      const filePath = path.join(
+        rootPath,
+        resolvedUrl.startsWith("/")
+          ? resolvedUrl.replace(/^\//, "")
+          : resolvedUrl,
+      );
+      if (!fs.existsSync(filePath) && !article) {
+        console.error(
+          `[ERROR] Recommend item "${linkRaw}" has no generated file at "${filePath}" and no article data.`,
+        );
+      }
+    }
+  }
+
   if (filterLang) {
-    items = items.filter((item) => cardHasLang(item, filterLang));
+    items = items.filter((item) => cardHasLang(item, filterLang, articles));
   }
 
   if (mode === "zh-first" || mode === "en-first") {
@@ -230,17 +326,21 @@ export function generateRecommend(
           : undefined;
     const date = getDateString(itemDate, type === 2, effectiveLang);
 
+    const langUrl = getLangVersionUrl(linkRaw, effectiveLang, articles);
+
     const title = getCardTitle(item, effectiveLang, articles);
 
     let info = getCardInfo(item, effectiveLang);
     if (!info && !linkRaw.startsWith("http")) {
-      const filePath = path.join(rootPath, linkRaw);
-      if (fs.existsSync(filePath)) {
-        const content = fs.readFileSync(filePath, "utf-8");
-        if (linkRaw.endsWith(".html")) {
+      const infoFilePath = langUrl.startsWith("/")
+        ? path.join(rootPath, langUrl.replace(/^\//, ""))
+        : path.join(rootPath, linkRaw);
+      if (fs.existsSync(infoFilePath)) {
+        const content = fs.readFileSync(infoFilePath, "utf-8");
+        if (infoFilePath.endsWith(".html")) {
           const match = content.match(/<p>(.*?)<\/p>/i);
           if (match && match[1]) info = match[1];
-        } else if (linkRaw.endsWith(".md")) {
+        } else if (infoFilePath.endsWith(".md")) {
           const lines = content.split("\n");
           for (const line of lines) {
             const trimmed = line.trim();
@@ -253,12 +353,10 @@ export function generateRecommend(
       }
     }
 
-    const langUrl = getLangVersionUrl(linkRaw, effectiveLang, articles);
-
     const isFallback =
       effectiveLang === "zh"
-        ? !cardHasLang(item, "en")
-        : !cardHasLang(item, "zh");
+        ? !cardHasLang(item, "en", articles)
+        : !cardHasLang(item, "zh", articles);
     const fallbackAttr = isFallback ? ' data-fallback="true"' : "";
 
     switch (type) {
@@ -266,19 +364,24 @@ export function generateRecommend(
         return html`<li>
           <a href="${langUrl}">${title}</a> <small>(${date})</small>
         </li>`;
-        case 1:
-          return html`
-            <div class="card content" data-lang="${effectiveLang}"${fallbackAttr}>
-              <div class="card-top">
-                <h2><a href="${langUrl}">${title}</a></h2>
-                <p>${info}</p>
-              </div>
-              <div class="card-bottom">${date}</div>
+      case 1:
+        return html`
+          <div
+            class="card content"
+            data-lang="${effectiveLang}"
+            ${fallbackAttr}
+          >
+            <div class="card-top">
+              <h2><a href="${langUrl}">${title}</a></h2>
+              <p>${info}</p>
             </div>
-          `;
+            <div class="card-bottom">${date}</div>
+          </div>
+        `;
       case 2: {
-        const rssItemTitle = getRssTitle(item, effectiveLang, mode);
-        const rssItemInfo = type === 2 ? getRssInfo(item, mode) : info;
+        const rssItemTitle = getRssTitle(item, effectiveLang, mode, articles);
+        const rssItemInfo =
+          type === 2 ? getRssInfo(item, mode, articles) : info;
         const rawLink = linkRaw.startsWith("https")
           ? linkRaw
           : `https://chenyu76.github.io/${linkRaw.replace(/^\//, "")}`;
@@ -295,18 +398,24 @@ export function generateRecommend(
     }
   });
 
-  const rssChannelTitle =
-    !mode ? "Chen Yu's Website" :
-    mode === "zh" ? "Chen Yu's Website (Chinese)" :
-    mode === "en" ? "Chen Yu's Website (English)" :
-    mode === "zh-first" ? "Chen Yu's Website (中文 / English)" :
-    "Chen Yu's Website (English / 中文)";
-  const rssChannelDesc =
-    !mode ? "Welcome!" :
-    mode === "zh" ? "Chinese articles" :
-    mode === "en" ? "English articles" :
-    mode === "zh-first" ? "Chinese first" :
-    "English first";
+  const rssChannelTitle = !mode
+    ? "Chen Yu's Website"
+    : mode === "zh"
+      ? "Chen Yu's Website (Chinese)"
+      : mode === "en"
+        ? "Chen Yu's Website (English)"
+        : mode === "zh-first"
+          ? "Chen Yu's Website (中文 / English)"
+          : "Chen Yu's Website (English / 中文)";
+  const rssChannelDesc = !mode
+    ? "Welcome!"
+    : mode === "zh"
+      ? "Chinese articles"
+      : mode === "en"
+        ? "English articles"
+        : mode === "zh-first"
+          ? "Chinese first"
+          : "English first";
 
   const wrap: string[][] = [
     ["<ul>", "</ul>"],
