@@ -199,7 +199,9 @@ function getMdSource(
 const templateHTML = readTemplateHTML(path.join(__dirname, "template.html"));
 const rootPath = path.dirname(__dirname);
 
-await syncRepositories(rootPath, gitRepositories);
+if (!process.env.SKIP_SYNC) {
+  await syncRepositories(rootPath, gitRepositories);
+}
 
 const articles = allMarkdown2Html(rootPath, templateHTML, rootPath);
 

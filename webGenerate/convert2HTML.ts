@@ -7,7 +7,7 @@ import { markedHighlight } from "marked-highlight";
 import markedKatex from "marked-katex-extension";
 import path from "path";
 
-import { tr, translatePath, detectLanguage, UI } from "./language.js";
+import { translatePath, detectLanguage, UI } from "./language.js";
 import type { Lang } from "./language.js";
 
 const html = String.raw;
@@ -168,7 +168,7 @@ export function convertMarkdown(inputPath: string): {
     if (
       lastLine.length < 50 &&
       ((lastLine.includes("月") && lastLine.includes("日")) ||
-        (lastLine.match(/\//g) || []).length === 2)
+        (lastLine.match(/\//g) || []).length >= 2)
     ) {
       let mainContent = str
         .substring(0, lastIndex)
@@ -217,7 +217,6 @@ export function convertMarkdown(inputPath: string): {
 
 function generateLangButtonHtml(
   pageType: "article" | "index" | "toc" | "redirect",
-  lang?: Lang,
   altLangUrl?: string,
 ): string {
   if (pageType === "article" && altLangUrl) {
@@ -424,7 +423,7 @@ export function generateHtmlFile(
   const langMeta = lang
     ? html`lang="${lang}" data-page-lang="${lang}"`
     : html`lang="zh"`;
-  const langButtonHtml = generateLangButtonHtml(pageType, lang, altLangUrl);
+  const langButtonHtml = generateLangButtonHtml(pageType, altLangUrl);
 
   const replacements: Record<string, string> = {
     TITLE_PLACEHOLDER: titleContent,

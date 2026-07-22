@@ -3,7 +3,6 @@ import path from "path";
 
 import { recommend, type RecommendItem } from "./webConfig.js";
 import { __dirname, __filename } from "./toc.js";
-import { detectLanguage } from "./language.js";
 import type { Lang } from "./language.js";
 
 const xml = String.raw;
@@ -202,7 +201,6 @@ function itemPriority(item: RecommendItem, mode: FeedMode): number {
 
 function getRssTitle(
   item: RecommendItem,
-  effectiveLang: Lang,
   mode: FeedMode,
   articles: ArticlesMap,
 ): string {
@@ -231,16 +229,9 @@ function getRssTitle(
 function getRssInfo(
   item: RecommendItem,
   mode: FeedMode,
-  articles: ArticlesMap,
 ): string {
   if (typeof item === "string") return "";
   const effectiveLang = resolveEffectiveLang(mode);
-  const link = item.link;
-  const key = link
-    .replace(/\.html$/, "")
-    .replace(/\.md$/, "")
-    .replace(/^\//, "");
-  const article = articles[key];
 
   if (mode === "zh-first" || mode === "en-first") {
     const primary = getCardInfo(item, effectiveLang);
@@ -288,9 +279,15 @@ export function generateRecommend(
           : resolvedUrl,
       );
       if (!fs.existsSync(filePath) && !article) {
-        console.error(
-          `[ERROR] Recommend item "${linkRaw}" has no generated file at "${filePath}" and no article data.`,
-        );
+        if (process.env.SKIP_SYNC) {
+          console.warn(
+            `[WARNING] Recommend item "${linkRaw}" has no generated file.`,
+          );
+        } else {
+          console.error(
+            `[ERROR] Recommend item "${linkRaw}" has no generated file.`,
+          );
+        }
       }
     }
   }
@@ -307,11 +304,6 @@ export function generateRecommend(
 
   const listItems = items.map((item) => {
     const linkRaw = typeof item === "string" ? item : item.link;
-    const link = encodeURI(
-      linkRaw.startsWith("/") || linkRaw.startsWith("https")
-        ? linkRaw
-        : "/" + linkRaw,
-    );
 
     const relativePathWithoutExt = linkRaw
       .replace(/\.html$/, "")
@@ -379,9 +371,9 @@ export function generateRecommend(
           </div>
         `;
       case 2: {
-        const rssItemTitle = getRssTitle(item, effectiveLang, mode, articles);
+        const rssItemTitle = getRssTitle(item, mode, articles);
         const rssItemInfo =
-          type === 2 ? getRssInfo(item, mode, articles) : info;
+          type === 2 ? getRssInfo(item, mode) : info;
         const rawLink = linkRaw.startsWith("https")
           ? linkRaw
           : `https://chenyu76.github.io/${linkRaw.replace(/^\//, "")}`;

@@ -52,7 +52,7 @@ export type RecommendItem =
  */
 export const recommend: RecommendItem[] = [
   {
-    link: "writings/deans-office-latex.html",
+    link: "writings/deans-office-latex",
     date: 20260722,
   },
   {
@@ -64,7 +64,7 @@ export const recommend: RecommendItem[] = [
     info_en:
       "A Tetris variant where blocks fall toward the center of a hexagon grid.",
   },
-  "writings/copilot-key-as-input-method-switch.html",
+  "writings/copilot-key-as-input-method-switch",
   {
     link: "writings/matlab_behavior_test/index.html",
     date: "20260512",
@@ -106,14 +106,14 @@ export const recommend: RecommendItem[] = [
   },
   {
     date: 20260109,
-    link: "writings/new-year-new-theme.html",
+    link: "writings/new-year-new-theme",
     title_zh: "本网页背景上的元素现在随风摆动",
     info_zh:
       "可能需要稍等一会才会有风吹来。<br>也许会对您的设备有些许性能影响（虽然我已经尽量优化了）。",
   },
   {
     date: 20251221,
-    link: "writings/college-reverse-proxy.html",
+    link: "writings/college-reverse-proxy",
     info_zh:
       "我们将在校园网内计算机上使用frp配置反向代理并安装WireGuard实现在校外访问校内的网络资源。以及一些相关的注意事项。",
   },
