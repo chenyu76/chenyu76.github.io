@@ -4,11 +4,11 @@
       <title>Chen Yu's Website (English / 中文)</title>
       <description>English first</description>
 <item>
-            <title>在LaTeX中模仿那些由一个又一个表格组成的Word文档</title>
-            <link>https://chenyu76.github.io/writings/deans-office-latex.html</link>
+            <title>Mimicking Word Documents Made of Nested Tables in LaTeX / 在LaTeX中模仿那些由一个又一个表格组成的Word文档</title>
+            <link>https://chenyu76.github.io/writings/deans-office-latex</link>
             <description><![CDATA[]]></description>
             <pubDate>Wed, 22 Jul 2026 00:00:00 GMT</pubDate>
-            <guid>https://chenyu76.github.io/writings/deans-office-latex.html</guid>
+            <guid>https://chenyu76.github.io/writings/deans-office-latex</guid>
           </item>
 <item>
             <title>Tetris, but hexagons fall toward the center / 俄罗斯方块，但是六边形往中心落</title>
@@ -21,10 +21,10 @@
           </item>
 <item>
             <title>Copilot 键可以用来切换输入法</title>
-            <link>https://chenyu76.github.io/writings/copilot-key-as-input-method-switch.html</link>
+            <link>https://chenyu76.github.io/writings/copilot-key-as-input-method-switch</link>
             <description><![CDATA[]]></description>
             <pubDate>Mon, 25 May 2026 00:00:00 GMT</pubDate>
-            <guid>https://chenyu76.github.io/writings/copilot-key-as-input-method-switch.html</guid>
+            <guid>https://chenyu76.github.io/writings/copilot-key-as-input-method-switch</guid>
           </item>
 <item>
             <title>A interesting test of MATLAB language features / 奇妙的MATLAB语言特性小测试</title>
@@ -71,10 +71,10 @@
           </item>
 <item>
             <title>宝宝也能上手的校园网穿透教程</title>
-            <link>https://chenyu76.github.io/writings/college-reverse-proxy.html</link>
+            <link>https://chenyu76.github.io/writings/college-reverse-proxy</link>
             <description><![CDATA[我们将在校园网内计算机上使用frp配置反向代理并安装WireGuard实现在校外访问校内的网络资源。以及一些相关的注意事项。]]></description>
             <pubDate>Sun, 21 Dec 2025 00:00:00 GMT</pubDate>
-            <guid>https://chenyu76.github.io/writings/college-reverse-proxy.html</guid>
+            <guid>https://chenyu76.github.io/writings/college-reverse-proxy</guid>
           </item>
 <item>
             <title>Glyph ASCII Canvas</title>
@@ -134,10 +134,10 @@
           </item>
 <item>
             <title>新年新主题！ / 本网页背景上的元素现在随风摆动</title>
-            <link>https://chenyu76.github.io/writings/new-year-new-theme.html</link>
+            <link>https://chenyu76.github.io/writings/new-year-new-theme</link>
             <description><![CDATA[可能需要稍等一会才会有风吹来。<br>也许会对您的设备有些许性能影响（虽然我已经尽量优化了）。]]></description>
             <pubDate>Fri, 09 Jan 2026 00:00:00 GMT</pubDate>
-            <guid>https://chenyu76.github.io/writings/new-year-new-theme.html</guid>
+            <guid>https://chenyu76.github.io/writings/new-year-new-theme</guid>
           </item>
 <item>
             <title>颜色战争 · 改</title>

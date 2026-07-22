@@ -4,6 +4,13 @@
       <title>Chen Yu's Website (English)</title>
       <description>English articles</description>
 <item>
+            <title>Mimicking Word Documents Made of Nested Tables in LaTeX / 在LaTeX中模仿那些由一个又一个表格组成的Word文档</title>
+            <link>https://chenyu76.github.io/writings/deans-office-latex</link>
+            <description><![CDATA[]]></description>
+            <pubDate>Wed, 22 Jul 2026 00:00:00 GMT</pubDate>
+            <guid>https://chenyu76.github.io/writings/deans-office-latex</guid>
+          </item>
+<item>
             <title>Tetris, but hexagons fall toward the center / 俄罗斯方块，但是六边形往中心落</title>
             <link>https://chenyu76.github.io/program/hextris/index.html</link>
             <description><![CDATA[A Tetris variant where blocks fall toward the center of a hexagon grid.]]></description>
