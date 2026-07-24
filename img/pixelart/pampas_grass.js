@@ -64,36 +64,8 @@ class SeededRandom {
 }
 
 /**
- * 假ctx类
- * 用于计算蒲苇需要的canvas尺寸
- * 传入这个类的实例到绘制函数draw_pampas_grass中
- * 实现setPixel方法，记录最大/最小x和y
- */
-class FakeCtx {
-  constructor() {
-    this.maxX = -Infinity;
-    this.maxY = -Infinity;
-    this.minX = Infinity;
-    this.minY = Infinity;
-  }
-  setColor(_hex) {} // no-op, 仅用于满足鸭子类型接口
-  setPixel(x, y) {
-    x = Math.floor(x);
-    y = Math.floor(y);
-    if (x > this.maxX)
-      this.maxX = x;
-    if (y > this.maxY)
-      this.maxY = y;
-    if (x < this.minX)
-      this.minX = x;
-    if (y < this.minY)
-      this.minY = y;
-  }
-}
-
-/**
  * 写入 ImageData 像素缓冲区的轻量上下文
- * 实现与 FakeCtx 相同的鸭子类型接口 (setColor + setPixel)
+ * 实现绘制函数需要的鸭子类型接口 (setColor + setPixel)
  * 用于替代 CanvasRenderingContext2D 的 fillStyle/fillRect 调用
  */
 class ImageDataContext {
@@ -235,12 +207,64 @@ class Grass {
   }
 
   /**
+   * 根据蒲苇参数和随机种子估算单株蒲苇组所需的canvas尺寸。
+   * 这里只复现决定主干边界的随机数，分支使用最大外扩余量估算，避免为了量尺寸完整绘制两遍。
+   * @param {Array<number>} pgd - 蒲苇参数数组
+   * @param {number} rng_seed - 随机数生成器的种子
+   * @returns {{width: number, height: number}} 估算出的canvas尺寸
+   */
+  _estimate_single_pampas_grass_canvas_size(pgd, rng_seed) {
+    const rng = new SeededRandom(rng_seed);
+    const bunchNum = 8;
+    const seeds = Array.from({length : bunchNum},
+                             () => { return rng.uniform() * 528491; });
+
+    const minWindAffect =
+        Math.max(0.25,
+                 1 - this.initialCanvasIndex / this.totalCanvasCount);
+    const maxWindAffect =
+        2 - this.initialCanvasIndex / this.totalCanvasCount;
+    const branchReach = 2.5 * Math.max(pgd[10], pgd[12], pgd[14]);
+
+    let maxX = 0;
+    let minY = 0;
+    let maxY = 0;
+
+    for (let i = 0; i < bunchNum; i++) {
+      const stemRng = new SeededRandom(seeds[i]);
+
+      const randNormal = stemRng.normal(pgd[2], pgd[3]);
+      const bentBase = randNormal > pgd[3] / 2 ? randNormal : pgd[2];
+      const stemArcLength = Math.max(
+          1, Math.round(stemRng.normal(pgd[0], pgd[1])));
+
+      const offsetX = Math.round(seeds[i] % pgd[16]);
+      const offsetY = Math.round(i / bunchNum * pgd[17]);
+      const maxBent = Math.max(0.000001, bentBase * maxWindAffect);
+      const minBent = Math.max(0.000001, bentBase * minWindAffect);
+      const xLength = this._parabola_right_length_for_arc_length_approx(
+          stemArcLength, maxBent);
+      const yLength = this._parabola_right_length_for_arc_length_approx(
+          stemArcLength, minBent);
+
+      maxX = Math.max(maxX, offsetX + maxBent * xLength * xLength +
+                                branchReach);
+      minY = Math.min(minY, offsetY - yLength - branchReach);
+      maxY = Math.max(maxY, offsetY + branchReach);
+    }
+
+    return {
+      width : Math.max(1, Math.ceil(maxX + 24)),
+      height : Math.max(1, Math.ceil(maxY - minY + 28)),
+    };
+  }
+
+  /**
    * 绘制一条芦苇
    *
    * @param {number} start_x - 芦苇起始点在画布上的全局坐标 x
    * @param {number} start_y - 芦苇起始点在画布上的全局坐标 y
-   * @param {Object} pen - 写入像素的上下文对象 (如 FakeCtx /
-   *     ImageDataContext)，需包含 setColor 和 setPixel 方法
+   * @param {Object} pen - 写入像素的上下文对象，需包含 setColor 和 setPixel 方法
    * @param {Array<string>} p_color -
    *     颜色数组，包含三种颜色，分别对应三个等级的分支与主干
    * @param {Array<number>} pgd - 芦苇控制参数数组 (Pampas Grass
@@ -554,24 +578,16 @@ class Grass {
                                       color_multiplyer = "#FFFFFF") {
     const rngSeed = Math.floor(Math.random() * 528491);
 
-    const fakeCtx = [ new FakeCtx(), new FakeCtx() ];
     const pgd = Array.from({length : this.pgd.length},
                            (_, i) => this.pgd[i] *
                                      Math.pow(scale, this.pgd_scale_factor[i]));
     const adjusted_color = Grass.get_adjusted_color(color_multiplyer);
-    const whData =
-        [ 1, 2 ].map( // 这里的1, 2 是上面的 windAffect 函数最大最小值
-            (num, i) => this._draw_bunch_pampas_grass(
-                0, 0, fakeCtx[i], adjusted_color, pgd, rngSeed,
-                num - this.initialCanvasIndex / this.totalCanvasCount));
-
-    const width =
-        whData.map(c => c.maxX - c.minX).reduce((a, b) => Math.max(a, b)) + 20;
-    const height =
-        whData.map(c => c.maxY - c.minY).reduce((a, b) => Math.max(a, b)) + 2;
+    const canvasSize =
+        this._estimate_single_pampas_grass_canvas_size(pgd, rngSeed);
 
     const canvas = this._create_single_pampas_grass_canvas(
-        x, y, rngSeed, 1, width, height, pgd, adjusted_color);
+        x, y, rngSeed, 1, canvasSize.width, canvasSize.height, pgd,
+        adjusted_color);
 
     this.data.push({
       x : x,

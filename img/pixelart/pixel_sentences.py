@@ -79,7 +79,13 @@ class PixelFont:
     def __init__(self, font_path: str, size: int = 16):
         self.font_path = font_path
         self.size = size
-        self.font = ImageFont.truetype(font_path, size)
+        layout_engine = getattr(getattr(ImageFont, "Layout", None), "BASIC", None)
+        if layout_engine is None:
+            self.font = ImageFont.truetype(font_path, size)
+        else:
+            self.font = ImageFont.truetype(
+                font_path, size, layout_engine=layout_engine
+            )
         metrics = self.font.getmetrics()
         self._ascent = metrics[0] if metrics else 0
 
@@ -189,6 +195,8 @@ class PixelFont:
         result = {}
 
         for char in unique_chars:
+            if char == "\n":
+                continue
             custom = load_custom_glyph(char)
             if custom is not None:
                 array_2d, baseline = custom

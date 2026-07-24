@@ -394,7 +394,7 @@ async function imgInit(h = document.documentElement.clientHeight,
   currentGrass = grass;
   const edgeLow = 20;
   for (let i = 30; i > -edgeLow + 2; i -= 4) {
-    for (let j = 0; j < Math.ceil(widthInPixel / (150 - 2 * i)); j++) {
+    for (let j = 0; j < Math.ceil(widthInPixel / (100 - 2 * i)); j++) {
       foreground.appendChild(grass.register_single_pampas_grass_canvas(
           Math.round(Math.random() * (widthInPixel + 20) + 30),
           heightInPixel - i, 1 - (i + edgeLow) / 85,
@@ -427,8 +427,8 @@ async function imgInit(h = document.documentElement.clientHeight,
   renderer.start();
 
   // 画草地 前景蒲苇
-  for (let i = -edgeLow + 2; i > -edgeLow; i -= 3) {
-    for (let j = 0; j < Math.ceil(widthInPixel / (150 - 2 * i)); j++) {
+  for (let i = -edgeLow + 2; i > -edgeLow; i -= 3) { // <-- 垃圾代码
+    for (let j = 0; j < Math.ceil(widthInPixel / (100 - 2 * i)); j++) {
       foreground.appendChild(grass.register_single_pampas_grass_canvas(
           Math.round(Math.random() * (widthInPixel + 20) + 30),
           heightInPixel - i, 1 - (i + edgeLow) / 85,
