@@ -8,13 +8,22 @@
 
 旋转屏幕可以使用[Rotation](https://play.google.com/store/apps/details?id=com.pranavpandey.rotation)
 
+### Magisk + GMS
+
+[Installing Android AOSP 12 + Magisk + Google Apps](https://github.com/LinuxDroidMaster/Fydetab-Duo-DroidMaster-wiki/blob/main/Documentation/Android/Installing_AOSP.md)
+
+这篇文章也适用于AOSP 14：
+
+- [Magisk v28.1 patched boot.img](https://wwavv.lanzouu.com/iDcms42q2wsf) 适用于 md5sum 为 `b1fff5e0059505408352c16816a2bab2` 的 `fydetab-android-r15.img`
+- 在[MindTheGApps 14](https://github.com/MindTheGapps/14.0.0-arm64/releases) 下载Gapp然后通过[MagiskGAppsMaker](https://magiskgapps.com/)得到一个可以通过Magisk刷的包
+
 ## ArchLinux
 
 [Arch Linux](https://wiki.fydetabduo.com/Available-OS/ArchLinux/arch-intro)如wiki上写的开箱即用。
 
 ### 换源
 
-[清华大学开源软件镜像站  Arch Linux ARM 软件仓库](https://mirrors.tuna.tsinghua.edu.cn/help/archlinuxarm/)
+[清华大学开源软件镜像站 Arch Linux ARM 软件仓库](https://mirrors.tuna.tsinghua.edu.cn/help/archlinuxarm/)
 
 ### 输入法
 
@@ -108,8 +117,8 @@ StartupNotify=true
 
 使用触控笔时gnome不会阻止手继续戳屏幕，所以可以编写一个脚本让检测到笔悬浮时禁用触摸屏。
 
-
 脚本有依赖：
+
 ```bash
 sudo pacman -S python-evdev
 ```
@@ -133,6 +142,7 @@ stylus_device = None
 restore_timer = None
 is_grabbed = False
 
+
 def find_devices():
     """自动查找触控屏和手写笔"""
     devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
@@ -146,14 +156,15 @@ def find_devices():
             t_dev = dev
         elif "stylus" in name:
             s_dev = dev
-    
+
     return t_dev, s_dev
+
 
 def enable_touch():
     global is_grabbed
     if not is_grabbed or touch_device is None:
         return
-    
+
     try:
         # 解除独占，恢复触控
         touch_device.ungrab()
@@ -162,9 +173,10 @@ def enable_touch():
     except Exception as e:
         print(f"Error ungrabbing: {e}")
 
+
 def disable_touch():
     global is_grabbed, restore_timer
-    
+
     # 如果有恢复计时器在跑，取消它
     if restore_timer:
         restore_timer.cancel()
@@ -182,6 +194,7 @@ def disable_touch():
         # 设备可能被拔出或正被其他程序独占
         print(f"Error grabbing: {e}")
 
+
 def schedule_restore():
     global restore_timer
     if restore_timer:
@@ -189,6 +202,7 @@ def schedule_restore():
     # 启动定时器
     restore_timer = threading.Timer(RESTORE_DELAY, enable_touch)
     restore_timer.start()
+
 
 def main():
     global touch_device, stylus_device
@@ -221,18 +235,22 @@ def main():
                 for event in stylus_device.read():
                     # BTN_TOOL_PEN (code 320) 是标准的笔接近信号
                     # value 1 = 进入感应区, value 0 = 离开感应区
-                    if event.type == evdev.ecodes.EV_KEY and event.code == evdev.ecodes.BTN_TOOL_PEN:
+                    if (
+                        event.type == evdev.ecodes.EV_KEY
+                        and event.code == evdev.ecodes.BTN_TOOL_PEN
+                    ):
                         if event.value == 1:
                             disable_touch()
                         elif event.value == 0:
                             schedule_restore()
-                            
+
     except KeyboardInterrupt:
         print("\nStopping...")
         if is_grabbed:
             enable_touch()
     except OSError as e:
         print(f"\n设备连接丢失: {e}")
+
 
 if __name__ == "__main__":
     main()
@@ -254,9 +272,8 @@ Restart=on-failure
 WantedBy=multi-user.target
 ```
 
-将service文件放到 `/etc/systemd/system/palm_rejection.service` 。 
+将service文件放到 `/etc/systemd/system/palm_rejection.service` 。
 然后启用它：`sudo systemctl enable --now palm_rejection.service`
-
 
 ## Fyde OS
 
@@ -291,12 +308,15 @@ WantedBy=multi-user.target
 [Arch Wiki](https://wiki.archlinux.org/title/Fcitx)
 
 似乎需要在`~/.sommelierrc`内设置
+
 ```
 /usr/bin/fcitx-autostart
 ```
+
 但我的`/usr/bin`下没看到`fcitx-autostart`
 
 自动启动，并配置环境变量
+
 ```
 GTK_IM_MODULE=fcitx
 QT_IM_MODULE=fcitx

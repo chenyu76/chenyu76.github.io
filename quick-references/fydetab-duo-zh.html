@@ -193,8 +193,14 @@
             <div class="content"><p>买了一台 Fydetab Duo 折腾，配到哪写到哪，完全没有逻辑。</p>
 <h2 id="h2-android">Android</h2><p>如果能从sd卡启动android就好了</p>
 <p>旋转屏幕可以使用<a href="https://play.google.com/store/apps/details?id=com.pranavpandey.rotation">Rotation</a></p>
+<h3 id="h3-magisk-gms">Magisk + GMS</h3><p><a href="https://github.com/LinuxDroidMaster/Fydetab-Duo-DroidMaster-wiki/blob/main/Documentation/Android/Installing_AOSP.md">Installing Android AOSP 12 + Magisk + Google Apps</a></p>
+<p>这篇文章也适用于AOSP 14：</p>
+<ul>
+<li><a href="https://wwavv.lanzouu.com/iDcms42q2wsf">Magisk v28.1 patched boot.img</a> 适用于 md5sum 为 <code>b1fff5e0059505408352c16816a2bab2</code> 的 <code>fydetab-android-r15.img</code></li>
+<li>在<a href="https://github.com/MindTheGapps/14.0.0-arm64/releases">MindTheGApps 14</a> 下载Gapp然后通过<a href="https://magiskgapps.com/">MagiskGAppsMaker</a>得到一个可以通过Magisk刷的包</li>
+</ul>
 <h2 id="h2-archlinux">ArchLinux</h2><p><a href="https://wiki.fydetabduo.com/Available-OS/ArchLinux/arch-intro">Arch Linux</a>如wiki上写的开箱即用。</p>
-<h3 id="h3-u6362u6e90">换源</h3><p><a href="https://mirrors.tuna.tsinghua.edu.cn/help/archlinuxarm/">清华大学开源软件镜像站  Arch Linux ARM 软件仓库</a></p>
+<h3 id="h3-u6362u6e90">换源</h3><p><a href="https://mirrors.tuna.tsinghua.edu.cn/help/archlinuxarm/">清华大学开源软件镜像站 Arch Linux ARM 软件仓库</a></p>
 <h3 id="h3-u8f93u5165u6cd5">输入法</h3><p>gnome使用<a href="https://wiki.archlinux.org/title/IBus">iBus</a></p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> pacman -S ibus-rime
 </code><button class="copy-btn" title="Copy">📋</button></pre>
@@ -268,6 +274,7 @@ stylus_device = <span class="hljs-literal">None</span>
 restore_timer = <span class="hljs-literal">None</span>
 is_grabbed = <span class="hljs-literal">False</span>
 
+
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">find_devices</span>():
     <span class="hljs-string">&quot;&quot;&quot;自动查找触控屏和手写笔&quot;&quot;&quot;</span>
     devices = [evdev.InputDevice(path) <span class="hljs-keyword">for</span> path <span class="hljs-keyword">in</span> evdev.list_devices()]
@@ -281,14 +288,15 @@ is_grabbed = <span class="hljs-literal">False</span>
             t_dev = dev
         <span class="hljs-keyword">elif</span> <span class="hljs-string">&quot;stylus&quot;</span> <span class="hljs-keyword">in</span> name:
             s_dev = dev
-    
+
     <span class="hljs-keyword">return</span> t_dev, s_dev
+
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">enable_touch</span>():
     <span class="hljs-keyword">global</span> is_grabbed
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> is_grabbed <span class="hljs-keyword">or</span> touch_device <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
         <span class="hljs-keyword">return</span>
-    
+
     <span class="hljs-keyword">try</span>:
         <span class="hljs-comment"># 解除独占，恢复触控</span>
         touch_device.ungrab()
@@ -297,9 +305,10 @@ is_grabbed = <span class="hljs-literal">False</span>
     <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
         <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Error ungrabbing: <span class="hljs-subst">{e}</span>&quot;</span>)
 
+
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">disable_touch</span>():
     <span class="hljs-keyword">global</span> is_grabbed, restore_timer
-    
+
     <span class="hljs-comment"># 如果有恢复计时器在跑，取消它</span>
     <span class="hljs-keyword">if</span> restore_timer:
         restore_timer.cancel()
@@ -317,6 +326,7 @@ is_grabbed = <span class="hljs-literal">False</span>
         <span class="hljs-comment"># 设备可能被拔出或正被其他程序独占</span>
         <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Error grabbing: <span class="hljs-subst">{e}</span>&quot;</span>)
 
+
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">schedule_restore</span>():
     <span class="hljs-keyword">global</span> restore_timer
     <span class="hljs-keyword">if</span> restore_timer:
@@ -324,6 +334,7 @@ is_grabbed = <span class="hljs-literal">False</span>
     <span class="hljs-comment"># 启动定时器</span>
     restore_timer = threading.Timer(RESTORE_DELAY, enable_touch)
     restore_timer.start()
+
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
     <span class="hljs-keyword">global</span> touch_device, stylus_device
@@ -356,18 +367,22 @@ is_grabbed = <span class="hljs-literal">False</span>
                 <span class="hljs-keyword">for</span> event <span class="hljs-keyword">in</span> stylus_device.read():
                     <span class="hljs-comment"># BTN_TOOL_PEN (code 320) 是标准的笔接近信号</span>
                     <span class="hljs-comment"># value 1 = 进入感应区, value 0 = 离开感应区</span>
-                    <span class="hljs-keyword">if</span> event.<span class="hljs-built_in">type</span> == evdev.ecodes.EV_KEY <span class="hljs-keyword">and</span> event.code == evdev.ecodes.BTN_TOOL_PEN:
+                    <span class="hljs-keyword">if</span> (
+                        event.<span class="hljs-built_in">type</span> == evdev.ecodes.EV_KEY
+                        <span class="hljs-keyword">and</span> event.code == evdev.ecodes.BTN_TOOL_PEN
+                    ):
                         <span class="hljs-keyword">if</span> event.value == <span class="hljs-number">1</span>:
                             disable_touch()
                         <span class="hljs-keyword">elif</span> event.value == <span class="hljs-number">0</span>:
                             schedule_restore()
-                            
+
     <span class="hljs-keyword">except</span> KeyboardInterrupt:
         <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nStopping...&quot;</span>)
         <span class="hljs-keyword">if</span> is_grabbed:
             enable_touch()
     <span class="hljs-keyword">except</span> OSError <span class="hljs-keyword">as</span> e:
         <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;\n设备连接丢失: <span class="hljs-subst">{e}</span>&quot;</span>)
+
 
 <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
     main()
@@ -385,7 +400,7 @@ is_grabbed = <span class="hljs-literal">False</span>
 <span class="hljs-section">[Install]</span>
 <span class="hljs-attr">WantedBy</span>=multi-user.target
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<p>将service文件放到 <code>/etc/systemd/system/palm_rejection.service</code> 。 
+<p>将service文件放到 <code>/etc/systemd/system/palm_rejection.service</code> 。
 然后启用它：<code>sudo systemctl enable --now palm_rejection.service</code></p>
 <h2 id="h2-fyde-os">Fyde OS</h2><h3 id="h3-android-u5b50u7cfbu7edf">Android 子系统</h3><p>似乎在<a href="chrome://flags"><code>chrome://flags</code></a>里打开<code>Enable custom ARCVM memory size</code>可以优化某些占内存软件的体验</p>
 <ul>
@@ -439,6 +454,9 @@ XMODIFIERS=@im=fcitx
     <ul></ul>
   </div> <ul>
 <li><a href="#h2-android">Android</a></li>
+<ul>
+<li><a href="#h3-magisk-gms">Magisk + GMS</a></li>
+</ul>
 <li><a href="#h2-archlinux">ArchLinux</a></li>
 <ul>
 <li><a href="#h3-u6362u6e90">换源</a></li>
