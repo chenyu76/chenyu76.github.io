@@ -2,6 +2,12 @@
 
 买了一台 Fydetab Duo 折腾，配到哪写到哪，完全没有逻辑。
 
+进入recovery mode只需要
+
+1. 按住音量上
+2. 按一下电源键
+3. 松开音量上
+
 ## Android
 
 如果能从sd卡启动android就好了
