@@ -191,18 +191,18 @@
 
           <div class="content-wrapper">
             <div class="content"><p><a href="https://inkscape.org/">Inkscape</a>是矢量图形编辑器，以自由软件许可发布与使用。该软件的开发目标是成为强大的绘图软件，且能完全遵循与支持XML、SVG及CSS等开放性的标准格式。</p>
-<h2 id="h2-1-inkscapeu4e2du63d2u5165u6587u672cu65f6u76f4u63a5u4f7fu7528latexu683cu5f0f">1.Inkscape中插入文本时直接使用LaTeX格式</h2><p>像这样：</p>
+<h2 id="h2-1-inkscapezhong-cha-ru-wen-ben-shi-zhi-jie-shi-yonglatexge-shi">1.Inkscape中插入文本时直接使用LaTeX格式</h2><p>像这样：</p>
 <img src="./assets/inkscape_draw.png" style="width:90%;" /><p>文字的大小与字体在导出时会被忽略，文字内容将会直接交给LaTeX处理，最后呈现的内容将与LaTeX中输入同样内容所编译出来的文字效果相同。因此你可以直接输入任何LaTeX代码。</p>
-<h2 id="h2-2-u5bfcu51fapdf">2. 导出PDF</h2><p>在Inkscape中选择导出，格式选择PDF，并使用“忽略PDF中的文本并创建LaTeX文件”选项。</p>
-<img src="./assets/inkscape_draw_export.png" style="zoom: 67%;" /><h2 id="h2-3-u5728latexu63d2u5165u7ed8u5236u597du7684u6587u4ef6">3. 在LaTeX插入绘制好的文件</h2><p>Inkscape会在你选择的路径下生成一个与pdf名称相同的<code>.pdf_tex</code>文件，将这个文件和pdf一起移动到你的LaTeX代码能访问到地方，然后使用</p>
+<h2 id="h2-2-dao-chupdf">2. 导出PDF</h2><p>在Inkscape中选择导出，格式选择PDF，并使用“忽略PDF中的文本并创建LaTeX文件”选项。</p>
+<img src="./assets/inkscape_draw_export.png" style="zoom: 67%;" /><h2 id="h2-3-zailatexcha-ru-hui-zhi-hao-de-wen-jian">3. 在LaTeX插入绘制好的文件</h2><p>Inkscape会在你选择的路径下生成一个与pdf名称相同的<code>.pdf_tex</code>文件，将这个文件和pdf一起移动到你的LaTeX代码能访问到地方，然后使用</p>
 <pre><code class="language-latex"><span class="hljs-keyword">\input</span>{&lt;filename&gt;.pdf<span class="hljs-built_in">_</span>tex}
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>插入绘制好的图片。（如有需要，你也可以在外围套上figure环境并附上<code>\caption</code>）</p>
-<h3 id="h3-u5bfcu51fau6548u679cu4e00u4f8b">导出效果一例</h3><img src="./assets/inkscape_output.svg" style="width: 50%;" /><h2 id="h2-u6ce8u610fu4e8bu9879">注意事项</h2><h3 id="h3-u5b8fu5305u8981u6c42">宏包要求</h3><p>导言区需要包含以下两个宏包：</p>
+<h3 id="h3-dao-chu-xiao-guo-yi-li">导出效果一例</h3><img src="./assets/inkscape_output.svg" style="width: 50%;" /><h2 id="h2-zhu-yi-shi-xiang">注意事项</h2><h3 id="h3-hong-bao-yao-qiu">宏包要求</h3><p>导言区需要包含以下两个宏包：</p>
 <pre><code class="language-latex"><span class="hljs-keyword">\usepackage</span>{xcolor}
 <span class="hljs-keyword">\usepackage</span>{graphicx}
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h3 id="h3-u8defu5f84u8981u6c42">路径要求</h3><p>如果<code>.pdf</code>和<code>.pdf_tex</code>文件不与编译使用的<code>.tex</code>在同一目录下，需要包含以下宏包：</p>
+<h3 id="h3-lu-jing-yao-qiu">路径要求</h3><p>如果<code>.pdf</code>和<code>.pdf_tex</code>文件不与编译使用的<code>.tex</code>在同一目录下，需要包含以下宏包：</p>
 <pre><code class="language-latex"><span class="hljs-keyword">\usepackage</span>{import}
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>并使用</p>
@@ -212,7 +212,7 @@
 <pre><code class="language-latex"><span class="hljs-keyword">\input</span>{&lt;filename&gt;.pdf<span class="hljs-built_in">_</span>tex}
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>插入图片。</p>
-<h3 id="h3-u7f29u653eu56feu7247">缩放图片</h3><p>默认情况下，插入的图片大小与inkscape中定义的文档属性大小相同：</p>
+<h3 id="h3-suo-fang-tu-pian">缩放图片</h3><p>默认情况下，插入的图片大小与inkscape中定义的文档属性大小相同：</p>
 <img src="./assets/inkscape_prop.png" style="zoom: 67%;" /><p>如果需要缩放图片，使用</p>
 <pre><code class="language-latex"><span class="hljs-keyword">\def</span><span class="hljs-keyword">\svgwidth</span>{&lt;desired width&gt;}
 <span class="hljs-keyword">\input</span>{&lt;filename&gt;.pdf<span class="hljs-built_in">_</span>tex}
@@ -221,7 +221,7 @@
 <pre><code class="language-latex"><span class="hljs-keyword">\resizebox</span>{&lt;desired width&gt;}{!}{<span class="hljs-keyword">\input</span>{&lt;filename&gt;.pdf<span class="hljs-built_in">_</span>tex}}
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>代替。</p>
-<h3 id="h3-u4f7fu7528figureu73afu5883">使用figure环境</h3><p>也可以嵌套figure环境，给图片添加caption、居中</p>
+<h3 id="h3-shi-yongfigurehuan-jing">使用figure环境</h3><p>也可以嵌套figure环境，给图片添加caption、居中</p>
 <pre><code class="language-latex"><span class="hljs-keyword">\begin</span>{figure}[htbp]
 	<span class="hljs-keyword">\begin</span>{center}
 		<span class="hljs-keyword">\input</span>{&lt;filename&gt;.pdf<span class="hljs-built_in">_</span>tex}
@@ -229,7 +229,7 @@
 	<span class="hljs-keyword">\caption</span>{带有caption的图片}
 <span class="hljs-keyword">\end</span>{figure}
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h2 id="h2-u5b8cu6574u793au4f8b">完整示例</h2><p>本示例项目有如下文件树结构：</p>
+<h2 id="h2-wan-zheng-shi-li">完整示例</h2><p>本示例项目有如下文件树结构：</p>
 <pre class="ascii-table" lang="en"><code>./
 ├── example.tex
 ├── fig2.pdf
@@ -302,20 +302,20 @@ figure环境:
             <div id="toc-content"><div class="toc">
     <ul></ul>
   </div> <ul>
-<li><a href="#h2-1-inkscapeu4e2du63d2u5165u6587u672cu65f6u76f4u63a5u4f7fu7528latexu683cu5f0f">1.Inkscape中插入文本时直接使用LaTeX格式</a></li>
-<li><a href="#h2-2-u5bfcu51fapdf">2. 导出PDF</a></li>
-<li><a href="#h2-3-u5728latexu63d2u5165u7ed8u5236u597du7684u6587u4ef6">3. 在LaTeX插入绘制好的文件</a></li>
+<li><a href="#h2-1-inkscapezhong-cha-ru-wen-ben-shi-zhi-jie-shi-yonglatexge-shi">1.Inkscape中插入文本时直接使用LaTeX格式</a></li>
+<li><a href="#h2-2-dao-chupdf">2. 导出PDF</a></li>
+<li><a href="#h2-3-zailatexcha-ru-hui-zhi-hao-de-wen-jian">3. 在LaTeX插入绘制好的文件</a></li>
 <ul>
-<li><a href="#h3-u5bfcu51fau6548u679cu4e00u4f8b">导出效果一例</a></li>
+<li><a href="#h3-dao-chu-xiao-guo-yi-li">导出效果一例</a></li>
 </ul>
-<li><a href="#h2-u6ce8u610fu4e8bu9879">注意事项</a></li>
+<li><a href="#h2-zhu-yi-shi-xiang">注意事项</a></li>
 <ul>
-<li><a href="#h3-u5b8fu5305u8981u6c42">宏包要求</a></li>
-<li><a href="#h3-u8defu5f84u8981u6c42">路径要求</a></li>
-<li><a href="#h3-u7f29u653eu56feu7247">缩放图片</a></li>
-<li><a href="#h3-u4f7fu7528figureu73afu5883">使用figure环境</a></li>
+<li><a href="#h3-hong-bao-yao-qiu">宏包要求</a></li>
+<li><a href="#h3-lu-jing-yao-qiu">路径要求</a></li>
+<li><a href="#h3-suo-fang-tu-pian">缩放图片</a></li>
+<li><a href="#h3-shi-yongfigurehuan-jing">使用figure环境</a></li>
 </ul>
-<li><a href="#h2-u5b8cu6574u793au4f8b">完整示例</a></li>
+<li><a href="#h2-wan-zheng-shi-li">完整示例</a></li>
 </ul>
 </ul>
 </div></div>

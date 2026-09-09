@@ -201,10 +201,10 @@
 <p>笔者<strong>不建议</strong>在读者不具备网络安全知识的情况下尝试内网穿透。</p>
 <p>附案例一则：<a href="https://www.v2ex.com/t/692012">“把公司内网穿透 然后被勒索了 我得付多大责任”</a></p>
 </div>
-<h2 id="h2-u5fc5u5907u77e5u8bc6">必备知识</h2><p>本文假定读者具备一定的Linux知识，如果你知道下面奇怪的字母组合都是什么意思大概就足够了：</p>
+<h2 id="h2-bi-bei-zhi-shi">必备知识</h2><p>本文假定读者具备一定的Linux知识，如果你知道下面奇怪的字母组合都是什么意思大概就足够了：</p>
 <pre><code class="language-text">ls, cp, mv, ssh, scp, wget, bash, ip
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h2 id="h2-u5f15u5165">引入</h2><p>假设你有一台部署在办公室的工作站（Workstation）。在办公室时，你可以通过局域网 IP 轻松连接；但当你回到家或在外出差时，连接就会中断。</p>
+<h2 id="h2-yin-ru">引入</h2><p>假设你有一台部署在办公室的工作站（Workstation）。在办公室时，你可以通过局域网 IP 轻松连接；但当你回到家或在外出差时，连接就会中断。</p>
 <p>这是因为工作站处于办公室的局域网（LAN）内部，没有公网 IP，外网用户（User）无法直接定位并访问它。</p>
 <pre class="ascii-table" lang="en"><code class="language-text"> ┌──  ──  ──  ──  ──  ──  ──  ───┐
  │                   Office LAN
@@ -233,7 +233,7 @@
 <li><strong>Client</strong>：局域网内负责连接 Server 的设备（也可以是 Workstation 本身）。</li>
 </ul>
 <p>此外，我们假定这些计算机都运行着GNU/Linux，后文的命令都基于此编写。</p>
-<h2 id="h2-u914du7f6e">配置</h2><h3 id="h3-u4e0bu8f7du4e0eu67b6u6784u5339u914du7684u4e8cu8fdbu5236u7a0bu5e8f">下载与架构匹配的二进制程序</h3><p>在下载前，我们需要确认 Server 与 Client 各自的硬件架构，否则会由于指令集不兼容导致无法运行。</p>
+<h2 id="h2-pei-zhi">配置</h2><h3 id="h3-xia-zai-yu-jia-gou-pi-pei-de-er-jin-zhi-cheng-xu">下载与架构匹配的二进制程序</h3><p>在下载前，我们需要确认 Server 与 Client 各自的硬件架构，否则会由于指令集不兼容导致无法运行。</p>
 <p>你可以通过 <code>lscpu</code> 命令中的Architecture信息进行判断：</p>
 <ul>
 <li>若为 <code>x86_64</code>，请下载带 <code>amd64</code> 字样对应系统的发布包。</li>
@@ -278,7 +278,7 @@ tar -zxvf frp_0.68.1_linux_amd64.tar.gz
 </tr>
 </tbody></table>
 <p>我们接下来将修改这两个toml文件并启动两个frp二进制程序完成我们的目标。</p>
-<h3 id="h3-server-u7aefu914du7f6e">Server 端配置</h3><p>在 Server 端下载frp后，我们为其配置服务端程序 <code>frps</code>（frp server）。它的任务是监听一个公网端口，作为与 Client 通信的入口。</p>
+<h3 id="h3-server-duan-pei-zhi">Server 端配置</h3><p>在 Server 端下载frp后，我们为其配置服务端程序 <code>frps</code>（frp server）。它的任务是监听一个公网端口，作为与 Client 通信的入口。</p>
 <p>首先使用读者喜欢的编辑器修改配置文件 <code>frps.toml</code>。井号（<code>#</code>）开头的是注释内容，可以删去且不影响配置。</p>
 <pre><code class="language-toml"><span class="hljs-comment"># bindPort 是服务端监听的基础端口，用于接收来自 Client 的隧道连接请求</span>
 <span class="hljs-attr">bindPort</span> = <span class="hljs-number">7000</span>
@@ -287,7 +287,7 @@ tar -zxvf frp_0.68.1_linux_amd64.tar.gz
 <span class="hljs-comment"># 只有当客户端提供的 Token 与此处一致时，才能成功建立隧道。</span>
 <span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;请替换为一段随机复杂的字符串&quot;</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h4 id="h4-u914du7f6eu81eau52a8u542fu52a8">配置自动启动</h4><p>在 Linux 环境下，直接运行程序无法保证其在终端退出或系统重启后继续工作。因此，笔者建议将其注册为 <code>systemd</code> 服务。这不仅能实现后台常驻，还能在程序异常崩溃时自动重启，由系统内核直接管理其生命周期。</p>
+<h4 id="h4-pei-zhi-zi-dong-qi-dong">配置自动启动</h4><p>在 Linux 环境下，直接运行程序无法保证其在终端退出或系统重启后继续工作。因此，笔者建议将其注册为 <code>systemd</code> 服务。这不仅能实现后台常驻，还能在程序异常崩溃时自动重启，由系统内核直接管理其生命周期。</p>
 <p>创建服务文件 <code>/etc/systemd/system/frps.service</code>。注意写入这个目录需要root权限。</p>
 <pre><code class="language-ini"><span class="hljs-section">[Unit]</span>
 <span class="hljs-comment"># 自定义的描述</span>
@@ -319,7 +319,7 @@ tar -zxvf frp_0.68.1_linux_amd64.tar.gz
 <span class="hljs-comment"># 现在立刻启动</span>
 <span class="hljs-built_in">sudo</span> systemctl start frps
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h3 id="h3-client-u7aefu914du7f6e">Client 端配置</h3><p>在 Client 端下载 frp 后，我们为其配置客户端程序 <code>frpc</code>（frp client）。它会主动向 Server 发起连接，并约定好流量的转发规则。</p>
+<h3 id="h3-client-duan-pei-zhi">Client 端配置</h3><p>在 Client 端下载 frp 后，我们为其配置客户端程序 <code>frpc</code>（frp client）。它会主动向 Server 发起连接，并约定好流量的转发规则。</p>
 <p>修改配置文件 <code>frpc.toml</code>：</p>
 <pre><code class="language-toml"><span class="hljs-comment"># 你的 Server 公网 IP 或域名</span>
 <span class="hljs-attr">serverAddr</span> = <span class="hljs-string">&quot;x.x.x.x&quot;</span>
@@ -340,7 +340,7 @@ tar -zxvf frp_0.68.1_linux_amd64.tar.gz
 <span class="hljs-attr">remotePort</span> = <span class="hljs-number">6000</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>同样地，为了保证隧道的稳定性，我们也为 <code>frpc</code> 配置 <code>systemd</code> 服务。内容可参考上文，仅需将程序名改为 <code>frpc</code> 并指向其对应的配置文件。</p>
-<h3 id="h3-u8bbfu95ee-ssh">访问 SSH</h3><p>配置完成后，我们便可以在User端访问Workstation。整体的流量流向为：User 访问 <code>Server:6000</code> -&gt; Server 通过隧道转发至 Client -&gt; Client 转发至 Workstation 的 <code>22</code> 端口。</p>
+<h3 id="h3-fang-wen-ssh">访问 SSH</h3><p>配置完成后，我们便可以在User端访问Workstation。整体的流量流向为：User 访问 <code>Server:6000</code> -&gt; Server 通过隧道转发至 Client -&gt; Client 转发至 Workstation 的 <code>22</code> 端口。</p>
 <p>User 在外部网络下执行：</p>
 <pre><code class="language-bash"><span class="hljs-comment"># -p 端口参数指定我们刚才约定的 remotePort</span>
 ssh -p 6000 &lt;Workstation用户名&gt;@&lt;Server公网IP&gt;
@@ -349,16 +349,16 @@ ssh -p 6000 &lt;Workstation用户名&gt;@&lt;Server公网IP&gt;
 <pre><code class="language-bash"><span class="hljs-comment"># 注意scp的端口参数使用大写的 `-P`</span>
 scp -P 6000 ./test.txt &lt;用户名&gt;@&lt;IP&gt;:~/
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h2 id="h2-u9644u6ce8">附注</h2><h3 id="h3-client-u975eu5fc5u987b">Client 非必须</h3><p>在实际搭建中，Client不是必须的，你可以将上述在Client中进行的操作都在Workstation中进行。不过将两种服务解耦在实际使用时具有以下优势：</p>
+<h2 id="h2-fu-zhu">附注</h2><h3 id="h3-client-fei-bi-xu">Client 非必须</h3><p>在实际搭建中，Client不是必须的，你可以将上述在Client中进行的操作都在Workstation中进行。不过将两种服务解耦在实际使用时具有以下优势：</p>
 <ul>
 <li>支持远程唤醒：你可以额外配置一个 Wake-on-LAN (WOL) 隧道，让功耗低的 Client 24 小时在线。当你需要Workstation时，通过 Client 发送 WOL 指令唤醒工作站，用完再关掉，省电又静音。</li>
 <li>系统解耦： 即使 Workstation 意外崩溃或重启，Client 的隧道依然在线。</li>
 </ul>
-<h3 id="h3-u4e91u670du52a1u5668u7684u8bbfu95eeu63a7u5236">云服务器的访问控制</h3><p>部分租赁的云服务器须在服务器设置中手动放行使用的端口，否则外部流量会被云服务商的防火墙拦截。</p>
-<h3 id="h3-u73b0u6210u7684frpu670du52a1u5546">现成的frp服务商</h3><p>互联网上有许多内网穿透服务提供商，使用他们的服务往往比单独购入一个云服务器的性价比高很多，并且可能具有更方便的配置流程。</p>
+<h3 id="h3-yun-fu-wu-qi-de-fang-wen-kong-zhi">云服务器的访问控制</h3><p>部分租赁的云服务器须在服务器设置中手动放行使用的端口，否则外部流量会被云服务商的防火墙拦截。</p>
+<h3 id="h3-xian-cheng-defrpfu-wu-shang">现成的frp服务商</h3><p>互联网上有许多内网穿透服务提供商，使用他们的服务往往比单独购入一个云服务器的性价比高很多，并且可能具有更方便的配置流程。</p>
 <p>笔者目前使用的是<a href="https://www.natfrp.com/">Sakura frp</a>（我没有收他们的广告费），他们的教程可以在<a href="https://doc.natfrp.com/">这里</a>查看。
 使用他们的服务可以省去配置frps的步骤。</p>
-<h3 id="h3-u540cu65f6u7a7fu900fu8bb8u591au670du52a1">同时穿透许多服务</h3><p>如果除了远程SSH外，还需要访问别的服务，可以考虑直接<a href="https://chenyu76.github.io/writings/college-reverse-proxy.html">穿透一个VPN</a>。</p>
+<h3 id="h3-tong-shi-chuan-tou-xu-duo-fu-wu">同时穿透许多服务</h3><p>如果除了远程SSH外，还需要访问别的服务，可以考虑直接<a href="https://chenyu76.github.io/writings/college-reverse-proxy.html">穿透一个VPN</a>。</p>
 </div>
             <div id="footnote">2026年5月5日</div>
           </div>
@@ -385,24 +385,24 @@ scp -P 6000 ./test.txt &lt;用户名&gt;@&lt;IP&gt;:~/
             <div id="toc-content"><div class="toc">
     <ul></ul>
   </div> <ul>
-<li><a href="#h2-u5fc5u5907u77e5u8bc6">必备知识</a></li>
-<li><a href="#h2-u5f15u5165">引入</a></li>
-<li><a href="#h2-u914du7f6e">配置</a></li>
+<li><a href="#h2-bi-bei-zhi-shi">必备知识</a></li>
+<li><a href="#h2-yin-ru">引入</a></li>
+<li><a href="#h2-pei-zhi">配置</a></li>
 <ul>
-<li><a href="#h3-u4e0bu8f7du4e0eu67b6u6784u5339u914du7684u4e8cu8fdbu5236u7a0bu5e8f">下载与架构匹配的二进制程序</a></li>
-<li><a href="#h3-server-u7aefu914du7f6e">Server 端配置</a></li>
+<li><a href="#h3-xia-zai-yu-jia-gou-pi-pei-de-er-jin-zhi-cheng-xu">下载与架构匹配的二进制程序</a></li>
+<li><a href="#h3-server-duan-pei-zhi">Server 端配置</a></li>
 <ul>
-<li><a href="#h4-u914du7f6eu81eau52a8u542fu52a8">配置自动启动</a></li>
+<li><a href="#h4-pei-zhi-zi-dong-qi-dong">配置自动启动</a></li>
 </ul>
-<li><a href="#h3-client-u7aefu914du7f6e">Client 端配置</a></li>
-<li><a href="#h3-u8bbfu95ee-ssh">访问 SSH</a></li>
+<li><a href="#h3-client-duan-pei-zhi">Client 端配置</a></li>
+<li><a href="#h3-fang-wen-ssh">访问 SSH</a></li>
 </ul>
-<li><a href="#h2-u9644u6ce8">附注</a></li>
+<li><a href="#h2-fu-zhu">附注</a></li>
 <ul>
-<li><a href="#h3-client-u975eu5fc5u987b">Client 非必须</a></li>
-<li><a href="#h3-u4e91u670du52a1u5668u7684u8bbfu95eeu63a7u5236">云服务器的访问控制</a></li>
-<li><a href="#h3-u73b0u6210u7684frpu670du52a1u5546">现成的frp服务商</a></li>
-<li><a href="#h3-u540cu65f6u7a7fu900fu8bb8u591au670du52a1">同时穿透许多服务</a></li>
+<li><a href="#h3-client-fei-bi-xu">Client 非必须</a></li>
+<li><a href="#h3-yun-fu-wu-qi-de-fang-wen-kong-zhi">云服务器的访问控制</a></li>
+<li><a href="#h3-xian-cheng-defrpfu-wu-shang">现成的frp服务商</a></li>
+<li><a href="#h3-tong-shi-chuan-tou-xu-duo-fu-wu">同时穿透许多服务</a></li>
 </ul>
 </ul>
 </ul>

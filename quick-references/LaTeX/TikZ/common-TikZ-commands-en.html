@@ -190,11 +190,11 @@
           </div>
 
           <div class="content-wrapper">
-            <div class="content"><h2 id="h2-u96f6u7ef4u5f62u72b6">零维形状</h2><pre><code class="language-LaTeX"><span class="hljs-comment">% 绘制一个点，位置为 (2, 3)</span>
+            <div class="content"><h2 id="h2-ling-wei-xing-zhuang">零维形状</h2><pre><code class="language-LaTeX"><span class="hljs-comment">% 绘制一个点，位置为 (2, 3)</span>
 <span class="hljs-keyword">\node</span> at (2, 3) [circle, fill=black, inner sep=1pt] {}; 
 <span class="hljs-keyword">\fill</span> (2, 3) circle (2pt);
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h2 id="h2-u4e00u7ef4u5f62u72b6">一维形状</h2><pre><code class="language-LaTeX"><span class="hljs-comment">% 画一条从 (0,0) 到 (3,3) 的直线</span>
+<h2 id="h2-yi-wei-xing-zhuang">一维形状</h2><pre><code class="language-LaTeX"><span class="hljs-comment">% 画一条从 (0,0) 到 (3,3) 的直线</span>
 <span class="hljs-keyword">\draw</span> (0, 0) -- (3, 3);
 <span class="hljs-comment">% 画一个从 (0,0) 到 (3,0) 的箭头</span>
 <span class="hljs-keyword">\draw</span>[-&gt;] (0, 0) -- (3, 0);
@@ -262,7 +262,7 @@
        transform="matrix(1.3333333,0,0,1.3333333,60.778667,20.502667)" />
   </g>
 </svg></p>
-<h2 id="h2-u4e8cu7ef4u5f62u72b6">二维形状</h2><pre><code class="language-LaTeX">
+<h2 id="h2-er-wei-xing-zhuang">二维形状</h2><pre><code class="language-LaTeX">
 <span class="hljs-comment">% 画一个半径为2cm的圆</span>
 <span class="hljs-keyword">\draw</span> (0, 0) circle (2cm);
 <span class="hljs-comment">% 画一个横向半径为3cm，纵向半径为1.5cm的椭圆</span>
@@ -274,7 +274,7 @@
 <span class="hljs-comment">% 画一个填充为红色的圆</span>
 <span class="hljs-keyword">\draw</span>[fill=red] (0, 0) circle (2cm);
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h2 id="h2-node-u5b9au4f4d">node 定位</h2><pre><code class="language-LaTeX"><span class="hljs-keyword">\node</span>[anchor=north] (A) at (0, 0) {Node A};  <span class="hljs-comment">% Node A 的顶部对齐 (0,0)</span>
+<h2 id="h2-node-ding-wei">node 定位</h2><pre><code class="language-LaTeX"><span class="hljs-keyword">\node</span>[anchor=north] (A) at (0, 0) {Node A};  <span class="hljs-comment">% Node A 的顶部对齐 (0,0)</span>
 <span class="hljs-keyword">\node</span>[anchor=south] at (A.north) {Node B};   <span class="hljs-comment">% Node B 的顶部对齐 Node A 的顶部</span>
 <span class="hljs-keyword">\node</span>[below=1cm of A] {Node C};  <span class="hljs-comment">% Node C 放在 Node A 下方 1cm</span>
 <span class="hljs-keyword">\node</span> at (0, 0) {Node D};
@@ -290,7 +290,7 @@
 <li><strong>常见用法</strong>：例如，<code>below=1cm of A</code> 表示节点位于节点 A 下方 1cm，<code>right=2cm of A</code> 表示节点位于节点 A 右侧 2cm。</li>
 <li><strong>用法</strong>：这类关键字通过简单的相对偏移来布局节点，通常与 <code>of</code> 搭配使用。</li>
 </ul>
-<h2 id="h2-u7f29u653eu56feu5f62">缩放图形</h2><pre><code class="language-LaTeX"><span class="hljs-comment">% 文字、线条的绝对大小、粗细不变</span>
+<h2 id="h2-suo-fang-tu-xing">缩放图形</h2><pre><code class="language-LaTeX"><span class="hljs-comment">% 文字、线条的绝对大小、粗细不变</span>
 <span class="hljs-keyword">\begin</span>{tikzpicture}[scale=1.5]
     ...
 <span class="hljs-keyword">\end</span>{tikzpicture}
@@ -309,7 +309,7 @@
 <span class="hljs-keyword">\end</span>{tikzpicture}
 }
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h2 id="h2-u5168u5c40u7ebfu6bb5u7c97u7ec6-u989cu8272">全局线段粗细、颜色</h2><pre><code class="language-LaTeX"><span class="hljs-keyword">\begin</span>{tikzpicture}[line width=1mm, draw=red]  
+<h2 id="h2-quan-ju-xian-duan-cu-xi-yan-se">全局线段粗细、颜色</h2><pre><code class="language-LaTeX"><span class="hljs-keyword">\begin</span>{tikzpicture}[line width=1mm, draw=red]  
     <span class="hljs-comment">% 设置全局线条粗细为 1mm, 红色</span>
     ...
 <span class="hljs-keyword">\end</span>{tikzpicture}
@@ -340,16 +340,16 @@
             <div id="toc-content"><div class="toc">
     <ul></ul>
   </div> <ul>
-<li><a href="#h2-u96f6u7ef4u5f62u72b6">零维形状</a></li>
-<li><a href="#h2-u4e00u7ef4u5f62u72b6">一维形状</a></li>
-<li><a href="#h2-u4e8cu7ef4u5f62u72b6">二维形状</a></li>
-<li><a href="#h2-node-u5b9au4f4d">node 定位</a></li>
+<li><a href="#h2-ling-wei-xing-zhuang">零维形状</a></li>
+<li><a href="#h2-yi-wei-xing-zhuang">一维形状</a></li>
+<li><a href="#h2-er-wei-xing-zhuang">二维形状</a></li>
+<li><a href="#h2-node-ding-wei">node 定位</a></li>
 <ul>
 <li><a href="#h3-1-anchor">1. `anchor`</a></li>
 <li><a href="#h3-2-below-above-left-right">2. `below`、`above`、`left`、`right`</a></li>
 </ul>
-<li><a href="#h2-u7f29u653eu56feu5f62">缩放图形</a></li>
-<li><a href="#h2-u5168u5c40u7ebfu6bb5u7c97u7ec6-u989cu8272">全局线段粗细、颜色</a></li>
+<li><a href="#h2-suo-fang-tu-xing">缩放图形</a></li>
+<li><a href="#h2-quan-ju-xian-duan-cu-xi-yan-se">全局线段粗细、颜色</a></li>
 </ul>
 </ul>
 </div></div>

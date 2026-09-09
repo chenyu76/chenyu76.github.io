@@ -206,8 +206,8 @@
 <li>在<a href="https://github.com/MindTheGapps/14.0.0-arm64/releases">MindTheGApps 14</a> 下载Gapp然后通过<a href="https://magiskgapps.com/">MagiskGAppsMaker</a>得到一个可以通过Magisk刷的包</li>
 </ul>
 <h2 id="h2-archlinux">ArchLinux</h2><p><a href="https://wiki.fydetabduo.com/Available-OS/ArchLinux/arch-intro">Arch Linux</a>如wiki上写的开箱即用。</p>
-<h3 id="h3-u6362u6e90">换源</h3><p><a href="https://mirrors.tuna.tsinghua.edu.cn/help/archlinuxarm/">清华大学开源软件镜像站 Arch Linux ARM 软件仓库</a></p>
-<h3 id="h3-u8f93u5165u6cd5">输入法</h3><p>gnome使用<a href="https://wiki.archlinux.org/title/IBus">iBus</a></p>
+<h3 id="h3-huan-yuan">换源</h3><p><a href="https://mirrors.tuna.tsinghua.edu.cn/help/archlinuxarm/">清华大学开源软件镜像站 Arch Linux ARM 软件仓库</a></p>
+<h3 id="h3-shu-ru-fa">输入法</h3><p>gnome使用<a href="https://wiki.archlinux.org/title/IBus">iBus</a></p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> pacman -S ibus-rime
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>重启后去gnome系统设置里配置键盘即可。</p>
@@ -218,12 +218,12 @@
     states: [&quot;漢字&quot;, &quot;汉字&quot;]
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <h3 id="h3-yay">YAY</h3><p>See <a href="https://wiki.archlinuxcn.org/zh-cn/Yay">arch wiki yay</a></p>
-<h3 id="h3-u4e2du6587u5b57u4f53">中文字体</h3><p>刚安装好时缺字体，从<a href="https://arch.icekylin.online/guide/rookie/desktop-env-and-app.html">这里</a>抄一份字体清单。</p>
+<h3 id="h3-zhong-wen-zi-ti">中文字体</h3><p>刚安装好时缺字体，从<a href="https://arch.icekylin.online/guide/rookie/desktop-env-and-app.html">这里</a>抄一份字体清单。</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> pacman -S --needed adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h3 id="h3-u8f6fu4ef6u5305">软件包</h3><pre><code class="language-bash"> <span class="hljs-built_in">sudo</span> pacman -S --needed git firefox syncthing nvim vim neovim-qt wl-clipboard inkscape gimp fish ibus ibus-rime eog evince texlive texlive-lang
+<h3 id="h3-ruan-jian-bao">软件包</h3><pre><code class="language-bash"> <span class="hljs-built_in">sudo</span> pacman -S --needed git firefox syncthing nvim vim neovim-qt wl-clipboard inkscape gimp fish ibus ibus-rime eog evince texlive texlive-lang
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h3 id="h3-gnome-u63d2u4ef6">Gnome 插件</h3><p>安装</p>
+<h3 id="h3-gnome-cha-jian">Gnome 插件</h3><p>安装</p>
 <pre><code class="language-bash">pacman -S gnome-browser-connector
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>在Firefox打开<a href="https://extensions.gnome.org/">Gnome Extensions</a>，安装对应firefox插件。</p>
@@ -258,7 +258,7 @@
 <span class="hljs-attr">StartupNotify</span>=<span class="hljs-literal">true</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>命名为<code>Mathematica.desktop</code>然后放到<code>/usr/share/applications</code>中。</p>
-<h3 id="h3-u8ba9u89e6u63a7u7b14u9632u8befu89e6">让触控笔防误触</h3><p>使用触控笔时gnome不会阻止手继续戳屏幕，所以可以编写一个脚本让检测到笔悬浮时禁用触摸屏。</p>
+<h3 id="h3-rang-chu-kong-bi-fang-wu-chu">让触控笔防误触</h3><p>使用触控笔时gnome不会阻止手继续戳屏幕，所以可以编写一个脚本让检测到笔悬浮时禁用触摸屏。</p>
 <p>脚本有依赖：</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> pacman -S python-evdev
 </code><button class="copy-btn" title="Copy">📋</button></pre>
@@ -408,7 +408,7 @@ is_grabbed = <span class="hljs-literal">False</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>将service文件放到 <code>/etc/systemd/system/palm_rejection.service</code> 。
 然后启用它：<code>sudo systemctl enable --now palm_rejection.service</code></p>
-<h2 id="h2-fyde-os">Fyde OS</h2><h3 id="h3-android-u5b50u7cfbu7edf">Android 子系统</h3><p>似乎在<a href="chrome://flags"><code>chrome://flags</code></a>里打开<code>Enable custom ARCVM memory size</code>可以优化某些占内存软件的体验</p>
+<h2 id="h2-fyde-os">Fyde OS</h2><h3 id="h3-android-zi-xi-tong">Android 子系统</h3><p>似乎在<a href="chrome://flags"><code>chrome://flags</code></a>里打开<code>Enable custom ARCVM memory size</code>可以优化某些占内存软件的体验</p>
 <ul>
 <li>其下面的小猫猫代理可以系统范围的使用，包括Crostini</li>
 <li>通过KDE connect 可以和电脑互联</li>
@@ -418,10 +418,10 @@ is_grabbed = <span class="hljs-literal">False</span>
 <li>共享的文件夹在<code>/mnt/chromeos</code>下，通过<code>ln -s</code>可以方便的访问</li>
 </ul>
 <h4 id="h4-debian">Debian</h4><p>包都太老了不好用</p>
-<h4 id="h4-archlinux">Archlinux</h4><h5 id="h5-u5b89u88c5">安装</h5><p><a href="https://gist.github.com/baldrailers/09ba52a17219ca1e8fbf233dc8a4b375/">安装A</a></p>
+<h4 id="h4-archlinux">Archlinux</h4><h5 id="h5-an-zhuang">安装</h5><p><a href="https://gist.github.com/baldrailers/09ba52a17219ca1e8fbf233dc8a4b375/">安装A</a></p>
 <p><a href="https://wiki.archlinux.org/title/Chrome_OS_devices/Crostini">安装B</a></p>
 <p>注意需要好的互联网连接！</p>
-<h5 id="h5-u4e2du6587u8f93u5165u6cd5-fcitx5">中文输入法 Fcitx5</h5><p><a href="https://wiki.archlinux.org/title/Fcitx">Arch Wiki</a></p>
+<h5 id="h5-zhong-wen-shu-ru-fa-fcitx5">中文输入法 Fcitx5</h5><p><a href="https://wiki.archlinux.org/title/Fcitx">Arch Wiki</a></p>
 <p>似乎需要在<code>~/.sommelierrc</code>内设置</p>
 <pre><code>/usr/bin/fcitx-autostart
 </code><button class="copy-btn" title="Copy">📋</button></pre>
@@ -465,25 +465,25 @@ XMODIFIERS=@im=fcitx
 </ul>
 <li><a href="#h2-archlinux">ArchLinux</a></li>
 <ul>
-<li><a href="#h3-u6362u6e90">换源</a></li>
-<li><a href="#h3-u8f93u5165u6cd5">输入法</a></li>
+<li><a href="#h3-huan-yuan">换源</a></li>
+<li><a href="#h3-shu-ru-fa">输入法</a></li>
 <li><a href="#h3-yay">YAY</a></li>
-<li><a href="#h3-u4e2du6587u5b57u4f53">中文字体</a></li>
-<li><a href="#h3-u8f6fu4ef6u5305">软件包</a></li>
-<li><a href="#h3-gnome-u63d2u4ef6">Gnome 插件</a></li>
+<li><a href="#h3-zhong-wen-zi-ti">中文字体</a></li>
+<li><a href="#h3-ruan-jian-bao">软件包</a></li>
+<li><a href="#h3-gnome-cha-jian">Gnome 插件</a></li>
 <li><a href="#h3-mathematica-arm">Mathematica ARM</a></li>
-<li><a href="#h3-u8ba9u89e6u63a7u7b14u9632u8befu89e6">让触控笔防误触</a></li>
+<li><a href="#h3-rang-chu-kong-bi-fang-wu-chu">让触控笔防误触</a></li>
 </ul>
 <li><a href="#h2-fyde-os">Fyde OS</a></li>
 <ul>
-<li><a href="#h3-android-u5b50u7cfbu7edf">Android 子系统</a></li>
+<li><a href="#h3-android-zi-xi-tong">Android 子系统</a></li>
 <li><a href="#h3-crostini">Crostini</a></li>
 <ul>
 <li><a href="#h4-debian">Debian</a></li>
 <li><a href="#h4-archlinux">Archlinux</a></li>
 <ul>
-<li><a href="#h5-u5b89u88c5">安装</a></li>
-<li><a href="#h5-u4e2du6587u8f93u5165u6cd5-fcitx5">中文输入法 Fcitx5</a></li>
+<li><a href="#h5-an-zhuang">安装</a></li>
+<li><a href="#h5-zhong-wen-shu-ru-fa-fcitx5">中文输入法 Fcitx5</a></li>
 </ul>
 </ul>
 </ul>

@@ -52,6 +52,10 @@ export type RecommendItem =
  */
 export const recommend: RecommendItem[] = [
   {
+    link: "writings/solver-preview",
+    date: 20260909,
+  },
+  {
     link: "writings/deans-office-latex",
     date: 20260722,
   },

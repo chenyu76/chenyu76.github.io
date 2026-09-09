@@ -193,14 +193,14 @@
             <div class="content"><blockquote>
 <p>BibTeX是一套用于管理文献、产生文献目录的格式。 使用上通常与LaTeX一起使用。(摘自<a href="https://zh.wikipedia.org/zh-cn/BibTeX">WikiPedia</a>)</p>
 </blockquote>
-<h2 id="h2-0-u5185u5bb9u4e0eu683cu5f0fu7684u5206u79bb">0. 内容与格式的分离</h2><p>在 Word 中，你手动写下“[1] 王小明. 论文标题...”，一旦要调整格式（比如要把作者变斜体，或者按年份排序），你需要手动修改几十处。而LaTeX的逻辑是数据库思维：</p>
+<h2 id="h2-0-nei-rong-yu-ge-shi-de-fen-li">0. 内容与格式的分离</h2><p>在 Word 中，你手动写下“[1] 王小明. 论文标题...”，一旦要调整格式（比如要把作者变斜体，或者按年份排序），你需要手动修改几十处。而LaTeX的逻辑是数据库思维：</p>
 <ol>
 <li><strong><code>.bib</code> 文件（数据库）：</strong> 只管存储数据（作者是谁、哪年发的），不关心长什么样。</li>
 <li><strong><code>.tex</code> 文件（逻辑）：</strong> 只管引用数据（这里引用了这篇文章），不关心具体内容。</li>
 <li><strong>样式命令（渲染）：</strong> 决定最终长什么样（是 <code>[1]</code> 还是 <code>(Wang, 2025)</code>）。</li>
 </ol>
 <p>有了BibTeX，我们可以方便的在一个文件中收集需要的文献，并在LaTeX文件中引用它。</p>
-<h2 id="h2-1-u521bu5efau5305u542bu53c2u8003u6587u732eu6761u76ee-bib-u6587u4ef6">1. 创建包含参考文献条目 `.bib` 文件</h2><p>首先，我们需要创建一个后缀为 <code>.bib</code> 的文件（例如 <code>references.bib</code>），并在其中添加参考文献条目。每个参考文献条目都需要遵循BibTeX格式，通常包括如作者、标题、出版年份等信息。</p>
+<h2 id="h2-1-chuang-jian-bao-han-can-kao-wen-xian-tiao-mu-bib-wen-jian">1. 创建包含参考文献条目 `.bib` 文件</h2><p>首先，我们需要创建一个后缀为 <code>.bib</code> 的文件（例如 <code>references.bib</code>），并在其中添加参考文献条目。每个参考文献条目都需要遵循BibTeX格式，通常包括如作者、标题、出版年份等信息。</p>
 <p>一个bib文件中可以包含多个条目，下面我们来看一下一个典型的参考文献条目格式是怎么样的：</p>
 <pre><code class="language-bibtex">@book{latexguide,
     author    = {Leslie Lamport},
@@ -267,11 +267,11 @@
 <p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
 <p>不同网站上获取的条目之间可能存在格式差异，例如同样名为Xiao Ming的作者可能在A处叫“Xiao M.” ，在另一个地方又叫“Ming Xiao”之类的，请注意。这需要手动修改统一。</p>
 </div>
-<h2 id="h2-2-u5f15u7528u53c2u8003u6587u732e">2. 引用参考文献</h2><p>在LaTeX文件中，使用 <code>\cite{}</code> 命令引用参考文献。例如：</p>
+<h2 id="h2-2-yin-yong-can-kao-wen-xian">2. 引用参考文献</h2><p>在LaTeX文件中，使用 <code>\cite{}</code> 命令引用参考文献。例如：</p>
 <pre><code class="language-latex">This is a reference to the LaTeX guide <span class="hljs-keyword">\cite</span>{latexguide}.
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>这里的<code>latexguide</code>是上面的例子中定义的引用标签。</p>
-<h2 id="h2-3-u63d2u5165u53c2u8003u6587u732eu5217u8868">3. 插入参考文献列表</h2><p>在文档任意位置插入使用的参考文献列表（通常是文末，<code>\end{document}</code>前）。只有使用了<code>\cite{}</code>命令插入的文献才会出现。</p>
+<h2 id="h2-3-cha-ru-can-kao-wen-xian-lie-biao">3. 插入参考文献列表</h2><p>在文档任意位置插入使用的参考文献列表（通常是文末，<code>\end{document}</code>前）。只有使用了<code>\cite{}</code>命令插入的文献才会出现。</p>
 <p>使用 <code>\bibliographystyle{}</code> 命令指定参考文献的格式，并使用 <code>\bibliography{}</code> 命令指定 <code>.bib</code> 文件的路径。在编译好的文档中，参考文献列表会出现在<code>\bibliography{}</code>命令调用处。</p>
 <pre><code class="language-latex"><span class="hljs-keyword">\bibliographystyle</span>{plain}  <span class="hljs-comment">% 参考文献的样式</span>
 <span class="hljs-keyword">\bibliography</span>{references.bib}  <span class="hljs-comment">% 引用.bib文件</span>
@@ -280,7 +280,7 @@
 <p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
 <p>在这个示例中，我们之前创建的<code>references.bib</code>与<code>.tex</code>文件位于同一目录，所以可以直接使用<code>\bibliography{references.bib}</code>引用bib文件。但是如果bib文件与tex文件不在同一个目录下，就需要在<code>{ }</code>内填写其位置。</p>
 </div>
-<h3 id="h3-u5e38u7528u6837u5f0fu4e00u89c8">常用样式一览</h3><p>修改 <code>\bibliographystyle{...}</code> 中的参数，可以瞬间改变所有文献的格式：</p>
+<h3 id="h3-chang-yong-yang-shi-yi-lan">常用样式一览</h3><p>修改 <code>\bibliographystyle{...}</code> 中的参数，可以瞬间改变所有文献的格式：</p>
 <table>
 <thead>
 <tr>
@@ -340,7 +340,7 @@
 </ul>
 </li>
 </ol>
-<h2 id="h2-4-u5b8cu6574u793au4f8b">4. 完整示例</h2><pre><code class="language-latex"><span class="hljs-keyword">\documentclass</span>{article}
+<h2 id="h2-4-wan-zheng-shi-li">4. 完整示例</h2><pre><code class="language-latex"><span class="hljs-keyword">\documentclass</span>{article}
 
 <span class="hljs-keyword">\begin</span>{document}
 
@@ -352,8 +352,8 @@ This is a reference to the LaTeX guide <span class="hljs-keyword">\cite</span>{l
 <span class="hljs-keyword">\end</span>{document}
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>你可以在<a href="./Add-citation-in-LaTeX.zip">这里</a>下载这个示例。</p>
-<h2 id="h2-5-u7f16u8bd1u6d41u7a0b">5. 编译流程</h2><p>在 LaTeX 中正确处理参考文献通常需要编译 4 次。如果你使用 Overleaf，它会自动处理；但在本地使用命令行或编辑器时，了解原理很重要。</p>
-<h3 id="h3-u4e3au4ec0u4e48u9700u8981u8fd9u4e48u591au6b21">为什么需要这么多次？</h3><p>LaTeX 处理参考文献不是一次性完成的，它需要一个“信使”—— <strong>.aux (辅助) 文件</strong>。</p>
+<h2 id="h2-5-bian-yi-liu-cheng">5. 编译流程</h2><p>在 LaTeX 中正确处理参考文献通常需要编译 4 次。如果你使用 Overleaf，它会自动处理；但在本地使用命令行或编辑器时，了解原理很重要。</p>
+<h3 id="h3-wei-shen-me-xu-yao-zhe-me-duo-ci">为什么需要这么多次？</h3><p>LaTeX 处理参考文献不是一次性完成的，它需要一个“信使”—— <strong>.aux (辅助) 文件</strong>。</p>
 <ol>
 <li><strong><code>xelatex</code> (第1遍 - 抄录)</strong>：LaTeX 读一遍正文，看到 <code>\cite{latexguide}</code>，它在 <code>.aux</code> 小本本上记下：“这里引用了 <code>latexguide</code>”。此时文档中显示为 <code>[?]</code>。</li>
 <li><strong><code>bibtex</code> (第2遍 - 搬运)</strong>：BibTeX 程序读取 <code>.aux</code>，去 <code>.bib</code> 数据库里找对应条目，按样式整理好，生成 <code>.bbl</code> 文件（真正的列表代码）。</li>
@@ -400,18 +400,18 @@ xelatex yourfile.tex
             <div id="toc-content"><div class="toc">
     <ul></ul>
   </div> <ul>
-<li><a href="#h2-0-u5185u5bb9u4e0eu683cu5f0fu7684u5206u79bb">0. 内容与格式的分离</a></li>
-<li><a href="#h2-1-u521bu5efau5305u542bu53c2u8003u6587u732eu6761u76ee-bib-u6587u4ef6">1. 创建包含参考文献条目 `.bib` 文件</a></li>
-<li><a href="#h2-2-u5f15u7528u53c2u8003u6587u732e">2. 引用参考文献</a></li>
-<li><a href="#h2-3-u63d2u5165u53c2u8003u6587u732eu5217u8868">3. 插入参考文献列表</a></li>
+<li><a href="#h2-0-nei-rong-yu-ge-shi-de-fen-li">0. 内容与格式的分离</a></li>
+<li><a href="#h2-1-chuang-jian-bao-han-can-kao-wen-xian-tiao-mu-bib-wen-jian">1. 创建包含参考文献条目 `.bib` 文件</a></li>
+<li><a href="#h2-2-yin-yong-can-kao-wen-xian">2. 引用参考文献</a></li>
+<li><a href="#h2-3-cha-ru-can-kao-wen-xian-lie-biao">3. 插入参考文献列表</a></li>
 <ul>
-<li><a href="#h3-u5e38u7528u6837u5f0fu4e00u89c8">常用样式一览</a></li>
+<li><a href="#h3-chang-yong-yang-shi-yi-lan">常用样式一览</a></li>
 <li><a href="#h3-tips">Tips</a></li>
 </ul>
-<li><a href="#h2-4-u5b8cu6574u793au4f8b">4. 完整示例</a></li>
-<li><a href="#h2-5-u7f16u8bd1u6d41u7a0b">5. 编译流程</a></li>
+<li><a href="#h2-4-wan-zheng-shi-li">4. 完整示例</a></li>
+<li><a href="#h2-5-bian-yi-liu-cheng">5. 编译流程</a></li>
 <ul>
-<li><a href="#h3-u4e3au4ec0u4e48u9700u8981u8fd9u4e48u591au6b21">为什么需要这么多次？</a></li>
+<li><a href="#h3-wei-shen-me-xu-yao-zhe-me-duo-ci">为什么需要这么多次？</a></li>
 </ul>
 </ul>
 </ul>

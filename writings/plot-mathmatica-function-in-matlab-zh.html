@@ -194,7 +194,7 @@
 <p>给wxf写的</p>
 </blockquote>
 <p>当然你也可以直接使用Mathematica画图，但那样会比较慢，见<a href="/quick-references/mathematica/jet-colormap.html">此处</a></p>
-<h2 id="h2-u5c06mathematica-u7a0bu5e8fu5bfcu51fau5230matlab">将Mathematica 程序导出到Matlab</h2><p>你可以用很多种方法导出，我写了个简陋的脚本，粘到程序里就行：</p>
+<h2 id="h2-jiangmathematica-cheng-xu-dao-chu-daomatlab">将Mathematica 程序导出到Matlab</h2><p>你可以用很多种方法导出，我写了个简陋的脚本，粘到程序里就行：</p>
 <pre><code class="language-Mathematica"><span class="hljs-built_in">SetDirectory</span><span class="hljs-punctuation">[</span><span class="hljs-built_in">NotebookDirectory</span><span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">]</span><span class="hljs-operator">;</span>
 <span class="hljs-variable">ToMATLAB</span><span class="hljs-punctuation">[</span><span class="hljs-type">f_</span><span class="hljs-operator">,</span> <span class="hljs-type">name_</span><span class="hljs-punctuation">]</span> <span class="hljs-operator">:=</span> 
   <span class="hljs-built_in">Export</span><span class="hljs-punctuation">[</span><span class="hljs-variable">name</span> <span class="hljs-operator">&lt;&gt;</span> <span class="hljs-string">&quot;.m&quot;</span><span class="hljs-operator">,</span> 
@@ -211,7 +211,7 @@
 <pre><code>ToMATLAB[ v1[x,t] , &quot;v1&quot; ]
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>记得给参数赋值！</p>
-<h2 id="h2-u5728-matlab-u91ccu9762u753bu56fe">在 Matlab 里面画图</h2><p>在与你导出的函数文件的同一目录下，创建任意合法名称的matlab脚本，包含以下内容，根据自己需求修改</p>
+<h2 id="h2-zai-matlab-li-mian-hua-tu">在 Matlab 里面画图</h2><p>在与你导出的函数文件的同一目录下，创建任意合法名称的matlab脚本，包含以下内容，根据自己需求修改</p>
 <pre><code class="language-matlab"><span class="hljs-comment">% 调用函数</span>
 draw_wave(<span class="hljs-number">-3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">-0.4</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">500</span>, <span class="hljs-string">&#x27;plot title&#x27;</span>, {<span class="hljs-string">&#x27;u1&#x27;</span>, <span class="hljs-string">&#x27;u2&#x27;</span>, <span class="hljs-string">&#x27;v&#x27;</span>});
 

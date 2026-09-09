@@ -201,8 +201,8 @@
 <p>给ywk宝宝写的教程</p>
 <p>本教程假定读者具备一定的计算机与网络的基础知识。</p>
 </blockquote>
-<h2 id="h2-u6211u4eecu8981u505au4ec0u4e48">我们要做什么</h2><p>我们将在校园网内计算机上使用<a href="https://github.com/fatedier/frp">frp</a>配置<a href="https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86">反向代理</a>并安装<a href="https://www.wireguard.com/">WireGuard<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow></mrow><mtext>®</mtext></msup></mrow><annotation encoding="application/x-tex">^{\text{®}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9852em;"></span><span class="mord"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9852em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord accent mtight"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8889em;"><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span class="mord mtight"><span class="mord">R</span></span></span><span style="top:-2.8944em;"><span class="pstrut" style="height:2.7em;"></span><span class="accent-body accent-full" style="left:0em;top:.2em;"><span class="mord mtight">◯</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></a>实现在校外访问校内的网络资源。</p>
-<h3 id="h3-u6211u4eecu9700u8981u4ec0u4e48">我们需要什么</h3><ul>
+<h2 id="h2-wo-men-yao-zuo-shen-me">我们要做什么</h2><p>我们将在校园网内计算机上使用<a href="https://github.com/fatedier/frp">frp</a>配置<a href="https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86">反向代理</a>并安装<a href="https://www.wireguard.com/">WireGuard<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow></mrow><mtext>®</mtext></msup></mrow><annotation encoding="application/x-tex">^{\text{®}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9852em;"></span><span class="mord"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9852em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord accent mtight"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8889em;"><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span class="mord mtight"><span class="mord">R</span></span></span><span style="top:-2.8944em;"><span class="pstrut" style="height:2.7em;"></span><span class="accent-body accent-full" style="left:0em;top:.2em;"><span class="mord mtight">◯</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></a>实现在校外访问校内的网络资源。</p>
+<h3 id="h3-wo-men-xu-yao-shen-me">我们需要什么</h3><ul>
 <li>一台在校园网内环境运行，并可以连接公网的计算机，比如<a href="https://www.raspberrypi.com/">树莓派</a>，本文会将其称为client。</li>
 <li>可选：一台在公网上运行的服务器，本文会将其称为server。<ul>
 <li>如果没有，可以使用例如<a href="https://www.natfrp.com/">SAKURA FRP</a><sup><a id="footnote-ref-1" href="#footnote-1" data-footnote-ref aria-describedby="footnote-label">1</a></sup>的网络服务商替代。</li>
@@ -213,7 +213,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="h3-u8fd9u4e9bu540du8bcdu662fu4ec0u4e48">这些名词是什么</h3><h4 id="h4-u6811u8393u6d3e">树莓派</h4><p>简单来说，它就是一台只有信用卡大小的迷你电脑。它的功耗不高，适合 24 小时守在宿舍里，帮我们转发网络信号。</p>
+<h3 id="h3-zhe-xie-ming-ci-shi-shen-me">这些名词是什么</h3><h4 id="h4-shu-mei-pai">树莓派</h4><p>简单来说，它就是一台只有信用卡大小的迷你电脑。它的功耗不高，适合 24 小时守在宿舍里，帮我们转发网络信号。</p>
 <h4 id="h4-ups">UPS</h4><p>由于我们的宿舍区24:00至次日6:00断电，断电时我们的服务自然无法继续，
 如果需要在期间保持client持续运行，我们就需要给它加个电池让它可以一直跑，这就是本场景中UPS（<strong>U</strong>ninterruptible <strong>P</strong>ower <strong>S</strong>upply，不间断电源）的主要作用。</p>
 <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mtable rowspacing="0.25em" columnalign="center center center center center" columnspacing="0.5em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="true"><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>220V AC</mtext></mstyle></menclose></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><munderover><mo stretchy="true" minsize="3.0em">→</mo><mpadded width="+0.6em" lspace="0.3em"><mrow></mrow></mpadded><mpadded width="+0.6em" lspace="0.3em"><mtext>AC</mtext></mpadded></munderover></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>UPS</mtext></mstyle></menclose></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><munderover><mo stretchy="true" minsize="3.0em">→</mo><mpadded width="+0.6em" lspace="0.3em"><mrow></mrow></mpadded><mpadded width="+0.6em" lspace="0.3em"><mtext>DC</mtext></mpadded></munderover></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><menclose notation="box"><mstyle scriptlevel="0" displaystyle="false"><mtext>Client</mtext></mstyle></menclose></mstyle></mtd></mtr><mtr></mtr></mtable><annotation encoding="application/x-tex">\begin{CD}
@@ -239,7 +239,7 @@
 <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mrow><mn>15</mn><mtext>W</mtext><mo>×</mo><mn>6</mn><mtext>h</mtext></mrow><mrow><mn>3.7</mn><mtext>V</mtext></mrow></mfrac><mo>×</mo><mn>1000</mn><mtext>mA</mtext><mi mathvariant="normal">/</mi><mtext>A</mtext><mo>≈</mo><mn>24324</mn><mtext>mAh</mtext></mrow><annotation encoding="application/x-tex">\frac{15 \text{W} \times 6 \text{h} }{3.7\text{V}} \times 1000\text{mA}/\text{A}
 \approx 24324\text{mAh}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.0574em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3.7</span><span class="mord text"><span class="mord">V</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">15</span><span class="mord text"><span class="mord">W</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">6</span><span class="mord text"><span class="mord">h</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1000</span><span class="mord text"><span class="mord">mA</span></span><span class="mord">/</span><span class="mord text"><span class="mord">A</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">24324</span><span class="mord text"><span class="mord">mAh</span></span></span></span></span></span>
 <p>的锂电池容量（以 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3.7</mn><mtext>V</mtext></mrow><annotation encoding="application/x-tex">3.7\text V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">3.7</span><span class="mord text"><span class="mord">V</span></span></span></span></span> 计算）。</p>
-<h4 id="h4-u53cdu5411u4ee3u7406">反向代理</h4><p><a href="https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86">维基百科</a>上是这样说的：</p>
+<h4 id="h4-fan-xiang-dai-li">反向代理</h4><p><a href="https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86">维基百科</a>上是这样说的：</p>
 <blockquote>
 <p>反向代理（Reverse proxy）在电脑网络中是代理服务器的一种。服务器根据客户端的请求，从其关系的一组或多组后端服务器（如Web服务器）上获取资源，然后再将这些资源返回给客户端，客户端只会得知反向代理的IP地址，而不知道在代理服务器后面的服务器集群的存在。</p>
 </blockquote>
@@ -321,7 +321,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 │└────────────────────────┘                          │
 └────────────────────────────────────────────────────┘
 </code></pre>
-<h2 id="h2-u6211u4eecu8981u600eu4e48u505a">我们要怎么做</h2><p>需要安装并配置的软件一览：</p>
+<h2 id="h2-wo-men-yao-zen-me-zuo">我们要怎么做</h2><p>需要安装并配置的软件一览：</p>
 <table>
 <thead>
 <tr>
@@ -342,25 +342,25 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <td>WireGuard（作为客户端）</td>
 </tr>
 </tbody></table>
-<h3 id="h3-u914du7f6eserveru4e0au7684frps">配置server上的frps</h3><div class="markdown-alert markdown-alert-note">
+<h3 id="h3-pei-zhiservershang-defrps">配置server上的frps</h3><div class="markdown-alert markdown-alert-note">
 <p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
 <p>如果没有，使用例如<a href="https://www.natfrp.com/">SAKURA FRP</a>的网络服务商替代时，可以直接跳过这一步，并直接参照<a href="https://doc.natfrp.com/app/http.html">它们的教程</a>配置。</p>
 </div>
 <p>我们先从公网服务器（server）开始，因为它要负责在外面“接应”校内的 client。</p>
-<h4 id="h4-1-u4e0bu8f7d-frp">1. 下载 frp</h4><p>在server上下载frps对应架构的压缩包并解压。</p>
-<h4 id="h4-2-u7f16u5199u914du7f6eu6587u4ef6">2. 编写配置文件</h4><p>新建一个名为 <code>frps.toml</code> 的文件，写入以下内容：</p>
+<h4 id="h4-1-xia-zai-frp">1. 下载 frp</h4><p>在server上下载frps对应架构的压缩包并解压。</p>
+<h4 id="h4-2-bian-xie-pei-zhi-wen-jian">2. 编写配置文件</h4><p>新建一个名为 <code>frps.toml</code> 的文件，写入以下内容：</p>
 <pre><code class="language-toml"><span class="hljs-attr">bindPort</span> = <span class="hljs-number">7000</span>           <span class="hljs-comment"># frp 服务端监听的端口</span>
 <span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;你的加密口令&quot;</span>  <span class="hljs-comment"># 只有拿着正确密码的 client 才能连接</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>这里的“加密口令”可以是你自定义的任意文本</p>
-<h4 id="h4-3-u542fu52a8u670du52a1u7aef">3. 启动服务端</h4><pre><code class="language-bash">./frps -c ./frps.toml
+<h4 id="h4-3-qi-dong-fu-wu-duan">3. 启动服务端</h4><pre><code class="language-bash">./frps -c ./frps.toml
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h3 id="h3-u914du7f6eclientu4e0au7684frpc">配置client上的frpc</h3><p>现在回到宿舍里的client，我们要告诉它如何找到外面的服务器。</p>
+<h3 id="h3-pei-zhiclientshang-defrpc">配置client上的frpc</h3><p>现在回到宿舍里的client，我们要告诉它如何找到外面的服务器。</p>
 <div class="markdown-alert markdown-alert-note">
 <p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
 <p>如果使用<a href="https://www.natfrp.com/">SAKURA FRP</a>，他们fork并修改了frpc，使其支持通过命令行的<code>-f</code>参数直接启动而不用编写配置文件，你可以在<a href="https://www.natfrp.com/tunnel/download">这里</a>下载并参照他们的教程运行。</p>
 </div>
-<h4 id="h4-1-u7f16u5199u914du7f6eu6587u4ef6">1. 编写配置文件</h4><p>新建 <code>frpc.toml</code>，这是实现穿透的关键：</p>
+<h4 id="h4-1-bian-xie-pei-zhi-wen-jian">1. 编写配置文件</h4><p>新建 <code>frpc.toml</code>，这是实现穿透的关键：</p>
 <pre><code class="language-toml"><span class="hljs-attr">serverAddr</span> = <span class="hljs-string">&quot;你的服务器公网IP&quot;</span>
 <span class="hljs-attr">serverPort</span> = <span class="hljs-number">7000</span>
 <span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;你的加密口令&quot;</span>
@@ -373,15 +373,15 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <span class="hljs-attr">remotePort</span> = <span class="hljs-number">51820</span>        <span class="hljs-comment"># 映射到服务器上的端口</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>这样配置后，外网用户可以通过 <code>server_ip:7000</code> 连接到 client 的服务。</p>
-<h4 id="h4-2-u542fu52a8u5ba2u6237u7aef">2. 启动客户端</h4><p>使用以下命令</p>
+<h4 id="h4-2-qi-dong-ke-hu-duan">2. 启动客户端</h4><p>使用以下命令</p>
 <pre><code class="language-bash">./frpc -c ./frpc.toml
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h3 id="h3-u5b89u88c5u5e76u914du7f6e-wireguard-u5b9eu73b0u5c40u57dfu7f51u5168u8bbfu95ee">安装并配置 WireGuard：实现局域网全访问</h3><p>当你通过 <code>frp</code> 穿透了 WireGuard 的 UDP 端口后，你不仅可以连接到这台服务器本身，还可以通过它作为跳板，访问其所在的整个校园网/局域网资源。</p>
-<h4 id="h4-1-u5b89u88c5-wireguard-client-u7aef">1. 安装 WireGuard (Client 端)</h4><p>在Client上安装WireGuard，例如如果使用debian系的发行版：</p>
+<h3 id="h3-an-zhuang-bing-pei-zhi-wireguard-shi-xian-ju-yu-wang-quan-fang-wen">安装并配置 WireGuard：实现局域网全访问</h3><p>当你通过 <code>frp</code> 穿透了 WireGuard 的 UDP 端口后，你不仅可以连接到这台服务器本身，还可以通过它作为跳板，访问其所在的整个校园网/局域网资源。</p>
+<h4 id="h4-1-an-zhuang-wireguard-client-duan">1. 安装 WireGuard (Client 端)</h4><p>在Client上安装WireGuard，例如如果使用debian系的发行版：</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> apt update
 <span class="hljs-built_in">sudo</span> apt install wireguard
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h4 id="h4-2-u5f00u542fu5185u6838u8f6cu53d1">2. 开启内核转发</h4><p>这是实现局域网访问的关键。你需要让 Linux 内核允许数据包在不同网卡间转发。</p>
+<h4 id="h4-2-kai-qi-nei-he-zhuan-fa">2. 开启内核转发</h4><p>这是实现局域网访问的关键。你需要让 Linux 内核允许数据包在不同网卡间转发。</p>
 <p>可以通过命令在临时修改，测试配置：</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> sysctl -w net.ipv4.ip_forward=1
 </code><button class="copy-btn" title="Copy">📋</button></pre>
@@ -392,11 +392,11 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <p>不同发行版可能具有不同配置，<code>/etc/sysctl.conf</code>可能不存在，这时也可以考虑将配置添加到<code>/etc/sysctl.d</code>文件夹中的一个新的文件中，如</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;net.ipv4.ip_forward=1&quot;</span> &gt; /etc/sysctl.d/9999-ip-forward.conf
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h4 id="h4-3-u751fu6210u5bc6u94a5u5bf9">3. 生成密钥对</h4><p>在 Client 和 User 端各执行一次，并记录下各自的公钥和私钥，我们需要在接下来的配置文件中输入它们。</p>
+<h4 id="h4-3-sheng-cheng-mi-yao-dui">3. 生成密钥对</h4><p>在 Client 和 User 端各执行一次，并记录下各自的公钥和私钥，我们需要在接下来的配置文件中输入它们。</p>
 <p>下面命令可以快速的完成这个步骤，它会将公钥和私钥保存为当前目录下的文件<code>publickey</code>与<code>privatekey</code>。</p>
 <pre><code class="language-bash">wg genkey | <span class="hljs-built_in">tee</span> privatekey | wg pubkey &gt; publickey
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h4 id="h4-4-u914du7f6e-client-u7aef-u5185u7f51u670du52a1u5668">4. 配置 Client 端 (内网服务器)</h4><p>编辑 <code>/etc/wireguard/wg0.conf</code>。为了让 User 能访问局域网，我们需要在接口启动时添加 <code>iptables</code> 规则来进行 NAT 伪装。</p>
+<h4 id="h4-4-pei-zhi-client-duan-nei-wang-fu-wu-qi">4. 配置 Client 端 (内网服务器)</h4><p>编辑 <code>/etc/wireguard/wg0.conf</code>。为了让 User 能访问局域网，我们需要在接口启动时添加 <code>iptables</code> 规则来进行 NAT 伪装。</p>
 <pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
 <span class="hljs-attr">Address</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.1</span>/<span class="hljs-number">24</span>
 <span class="hljs-attr">ListenPort</span> = <span class="hljs-number">51820</span>
@@ -421,7 +421,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
 <p>请务必修改配置文件其中的<code>&lt;Client的私钥&gt;</code>和<code>&lt;User的公钥&gt;</code>为实际密钥。</p>
 </div>
-<h4 id="h4-5-u914du7f6e-user-u7aef-u7528u6237u7535u8111">5. 配置 User 端 (用户电脑)</h4><p>先在User的电脑中也安装一个WireGuard。</p>
+<h4 id="h4-5-pei-zhi-user-duan-yong-hu-dian-nao">5. 配置 User 端 (用户电脑)</h4><p>先在User的电脑中也安装一个WireGuard。</p>
 <p>在 User 的 WireGuard 客户端中新建配置。关键点在于 <code>AllowedIPs</code> 的设置。</p>
 <pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
 <span class="hljs-attr">PrivateKey</span> = &lt;User的私钥&gt;
@@ -451,7 +451,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
 <p>请务必修改配置文件其中的<code>&lt;Client的私钥&gt;</code>和<code>&lt;User的公钥&gt;</code>为实际密钥；修改<code>&lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;</code>为实际地址和端口。</p>
 </div>
-<h4 id="h4-6-u542fu52a8wireguard">6. 启动WireGuard</h4><p>配置完成后，在 Client 执行</p>
+<h4 id="h4-6-qi-dongwireguard">6. 启动WireGuard</h4><p>配置完成后，在 Client 执行</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> wg-quick up wg0
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>启动WireGuard服务。</p>
@@ -464,14 +464,14 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
 <p>我们现在配置的WireGuard只支持同时一个用户使用，若需要多个用户使用，参加后面的“多用户同时连接”章节</p>
 </div>
-<h3 id="h3-u914du7f6eu5404u4e2au670du52a1u7684u81eau542fu52a8">配置各个服务的自启动</h3><p>我们需要配置frps, frpc, WireGuard三个服务的自动启动，让他们在开机或意外退出后可以自动重新启动。</p>
+<h3 id="h3-pei-zhi-ge-ge-fu-wu-de-zi-qi-dong">配置各个服务的自启动</h3><p>我们需要配置frps, frpc, WireGuard三个服务的自动启动，让他们在开机或意外退出后可以自动重新启动。</p>
 <p>下面以frpc为例说明如何配置，其他服务是类似的。</p>
 <p>在 Linux 系统里，<a href="https://en.wikipedia.org/wiki/Systemd"><code>systemd</code></a> 就像是一个大管家，我们可以写一张“任务清单”交给它，让它负责 <code>frpc</code> 的日常维护。</p>
-<h4 id="h4-1-u521bu5efaservice-u6587u4ef6">1. 创建Service 文件</h4><p>我们需要在系统中新建一个服务文件。请在终端输入：</p>
+<h4 id="h4-1-chuang-jianservice-wen-jian">1. 创建Service 文件</h4><p>我们需要在系统中新建一个服务文件。请在终端输入：</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> nano /etc/systemd/system/frpc.service
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>以创建<code>/etc/systemd/system/frpc.service</code>文件并编辑。</p>
-<h4 id="h4-2-u544au8bc9systemdu8be5u505au4ec0u4e48">2. 告诉systemd该做什么</h4><p>在打开的空白编辑器里，粘贴下面这段内容：</p>
+<h4 id="h4-2-gao-susystemdgai-zuo-shen-me">2. 告诉systemd该做什么</h4><p>在打开的空白编辑器里，粘贴下面这段内容：</p>
 <pre><code class="language-ini"><span class="hljs-section">[Unit]</span>
 <span class="hljs-attr">Description</span>=frp client for campus network
 <span class="hljs-attr">After</span>=network.target
@@ -489,7 +489,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
 <p>要把 <code>ExecStart</code> 里的 <code>/path/to/your/</code> 换成你实际的文件夹路径（比如 <code>/home/pi/frp/</code>）！</p>
 </div>
-<h4 id="h4-3-u8ba9u6e05u5355u6b63u5f0fu751fu6548">3. 让清单正式生效</h4><p>写好后，按 <code>Ctrl + O</code> 保存，再按 <code>Ctrl + X</code> 退出。然后执行下面这几条命令：</p>
+<h4 id="h4-3-rang-qing-dan-zheng-shi-sheng-xiao">3. 让清单正式生效</h4><p>写好后，按 <code>Ctrl + O</code> 保存，再按 <code>Ctrl + X</code> 退出。然后执行下面这几条命令：</p>
 <ol>
 <li><strong>刷新清单</strong>：
 <code>sudo systemctl daemon-reload</code></li>
@@ -498,11 +498,11 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <li><strong>现在立刻帮我启动</strong>：
 <code>sudo systemctl start frpc</code></li>
 </ol>
-<h4 id="h4-4-u68c0u67e5u670du52a1u72b6u6001">4. 检查服务状态</h4><p>执行下面的命令查看状态：</p>
+<h4 id="h4-4-jian-cha-fu-wu-zhuang-tai">4. 检查服务状态</h4><p>执行下面的命令查看状态：</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> systemctl status frpc
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>如果你看到绿色的 <span style="color:#06C762;"><code>active (running)</code></span>，那就说明我们的 <code>frpc</code> 已经成功穿透校园网，开始为你工作。</p>
-<h2 id="h2-u9700u8981u6ce8u610fu7684u4e8bu9879">需要注意的事项</h2><h3 id="h3-wireguard-u7684u81eau542fu52a8u7ba1u7406">WireGuard 的自启动管理</h3><p>WireGuard的.service有些许不同，在此附上如下。</p>
+<h2 id="h2-xu-yao-zhu-yi-de-shi-xiang">需要注意的事项</h2><h3 id="h3-wireguard-de-zi-qi-dong-guan-li">WireGuard 的自启动管理</h3><p>WireGuard的.service有些许不同，在此附上如下。</p>
 <pre><code class="language-ini"><span class="hljs-section">[Unit]</span>
 <span class="hljs-attr">Description</span>=WireGuard via wg-quick(<span class="hljs-number">8</span>) for %I
 <span class="hljs-attr">After</span>=network.target
@@ -532,7 +532,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <span class="hljs-comment"># 查看日志</span>
 <span class="hljs-built_in">sudo</span> journalctl -u wg-quick@wg0 -f
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h3 id="h3-u591au7528u6237-u591au8bbeu5907-u63a5u5165u914du7f6e">多用户（多设备）接入配置</h3><p>在 WireGuard 的架构中，<strong>身份验证与 IP 路由是绑定的</strong>。每一个连接端（User）都必须拥有独一无二的公私钥对，且在中心节点中被分配唯一的内网 IP 地址。</p>
+<h3 id="h3-duo-yong-hu-duo-she-bei-jie-ru-pei-zhi">多用户（多设备）接入配置</h3><p>在 WireGuard 的架构中，<strong>身份验证与 IP 路由是绑定的</strong>。每一个连接端（User）都必须拥有独一无二的公私钥对，且在中心节点中被分配唯一的内网 IP 地址。</p>
 <p>如果你直接将 User A 的配置文件复制给 User B 使用，不仅会导致密钥冲突，还会因为 IP 地址重复而导致路由混乱，最终造成两个设备互相顶号、掉线或无法联网。</p>
 <p>因此，接入多个用户（或设备）时，需要遵循以下三个步骤：</p>
 <ol>
@@ -540,7 +540,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <li><strong>分配 IP</strong>：为每一个新用户规划一个不重复的内网 IP（如 <code>10.0.0.2</code>, <code>10.0.0.3</code>）。</li>
 <li><strong>双向注册</strong>：在中心节点（Client）注册所有用户的公钥；在各用户设备上填入自己的私钥和中心节点的公钥。</li>
 </ol>
-<h4 id="h4-1-u8be6u7ec6u914du7f6eu903bu8f91">1. 详细配置逻辑</h4><p><strong>中心节点 (Client) 的变化：</strong></p>
+<h4 id="h4-1-xiang-xi-pei-zhi-luo-ji">1. 详细配置逻辑</h4><p><strong>中心节点 (Client) 的变化：</strong></p>
 <ul>
 <li><code>[Interface]</code> 部分保持不变（它定义了中心节点自己的地址和监听端口）。</li>
 <li>需要为每一个新用户增加一个独立的 <code>[Peer]</code> 区块。</li>
@@ -552,8 +552,8 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <li><code>[Interface]</code> 中填写自己的私钥 (<code>PrivateKey</code>) 和分配到的唯一 IP (<code>Address</code>)。</li>
 <li><code>[Peer]</code> 指向中心节点，所有用户的 <code>[Peer]</code> 部分基本相同（都指向同一个中心节点的公钥和 Endpoint）。</li>
 </ul>
-<h4 id="h4-2-u4feeu6539u540eu7684u914du7f6eu793au4f8b">2. 修改后的配置示例</h4><p>假设我们将中心节点定义为 Client（作为网关/服务器），并接入三个用户设备（User_A, User_B, User_C）。</p>
-<h5 id="h5-a-u4e2du5fc3u8282u70b9u914du7f6e-client">A. 中心节点配置 (Client)</h5><p>该文件位于中心节点设备上。注意观察 <code>[Peer]</code> 区块是如何一一对应用户的。</p>
+<h4 id="h4-2-xiu-gai-hou-de-pei-zhi-shi-li">2. 修改后的配置示例</h4><p>假设我们将中心节点定义为 Client（作为网关/服务器），并接入三个用户设备（User_A, User_B, User_C）。</p>
+<h5 id="h5-a-zhong-xin-jie-dian-pei-zhi-client">A. 中心节点配置 (Client)</h5><p>该文件位于中心节点设备上。注意观察 <code>[Peer]</code> 区块是如何一一对应用户的。</p>
 <pre><code class="language-toml"><span class="hljs-section">[Interface]</span>
 <span class="hljs-comment"># 中心节点的内网 IP，使用 /24 表示它属于该子网</span>
 <span class="hljs-attr">Address</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.1</span>/<span class="hljs-number">24</span>
@@ -588,7 +588,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <span class="hljs-comment"># 指定 User_C 只能使用 10.0.0.4 这个 IP 通信</span>
 <span class="hljs-attr">AllowedIPs</span> = <span class="hljs-number">10.0</span>.<span class="hljs-number">0.4</span>/<span class="hljs-number">32</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h5 id="h5-b-u7528u6237u7aefu914du7f6e-user_a">B. 用户端配置 (User_A)</h5><ul>
+<h5 id="h5-b-yong-hu-duan-pei-zhi-user_a">B. 用户端配置 (User_A)</h5><ul>
 <li><strong>身份</strong>：User A</li>
 <li><strong>IP</strong>：10.0.0.2</li>
 </ul>
@@ -609,7 +609,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <span class="hljs-comment"># NAT 保持活跃心跳（防止连接中断）</span>
 <span class="hljs-attr">PersistentKeepalive</span> = <span class="hljs-number">25</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h5 id="h5-c-u7528u6237u7aefu914du7f6e-user_b">C. 用户端配置 (User_B)</h5><ul>
+<h5 id="h5-c-yong-hu-duan-pei-zhi-user_b">C. 用户端配置 (User_B)</h5><ul>
 <li><strong>身份</strong>：User B</li>
 <li><strong>IP</strong>：10.0.0.3</li>
 </ul>
@@ -627,7 +627,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <span class="hljs-attr">Endpoint</span> = &lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;
 <span class="hljs-attr">PersistentKeepalive</span> = <span class="hljs-number">25</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h5 id="h5-d-u7528u6237u7aefu914du7f6e-user_c">D. 用户端配置 (User_C)</h5><ul>
+<h5 id="h5-d-yong-hu-duan-pei-zhi-user_c">D. 用户端配置 (User_C)</h5><ul>
 <li><strong>身份</strong>：User C</li>
 <li><strong>IP</strong>：10.0.0.4</li>
 </ul>
@@ -644,7 +644,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <span class="hljs-attr">Endpoint</span> = &lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;
 <span class="hljs-attr">PersistentKeepalive</span> = <span class="hljs-number">25</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h4 id="h4-3-u5173u952eu6ce8u610fu4e8bu9879">3. 关键注意事项</h4><ol>
+<h4 id="h4-3-guan-jian-zhu-yi-shi-xiang">3. 关键注意事项</h4><ol>
 <li><strong>公钥与私钥的配对</strong>：<ul>
 <li>切记：<strong>Client 配置文件</strong>中填写的 <code>[Peer] PublicKey</code>，必须是对应 <strong>User 配置文件</strong>中 <code>[Interface] PrivateKey</code> 生成的公钥。</li>
 </ul>
@@ -659,10 +659,10 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 </ul>
 </li>
 </ol>
-<h3 id="h3-ups-u7684u7535u6c60u5bb9u91cf">UPS 的电池容量</h3><p>树莓派低功耗待机不需要15W的功耗，不一定需要这么大电池容量，但具体功耗我也没测试过。</p>
-<h3 id="h3-u5728u6bcfu65e5u65adu7535u524du81eau52a8u5173u673a">在每日断电前自动关机</h3><p>如果不配备UPS，并且不想Client树莓派在宿舍断电时直接掉电的话，我们就需要在将要掉电前将树莓派关机。但是手动关机显然不太现实，可以编写脚本实现这点。</p>
+<h3 id="h3-ups-de-dian-chi-rong-liang">UPS 的电池容量</h3><p>树莓派低功耗待机不需要15W的功耗，不一定需要这么大电池容量，但具体功耗我也没测试过。</p>
+<h3 id="h3-zai-mei-ri-duan-dian-qian-zi-dong-guan-ji">在每日断电前自动关机</h3><p>如果不配备UPS，并且不想Client树莓派在宿舍断电时直接掉电的话，我们就需要在将要掉电前将树莓派关机。但是手动关机显然不太现实，可以编写脚本实现这点。</p>
 <p>学校的断电规则比较规律：在每天二十四点出头时，如果第二天要上课，就会断电直到早上六点。完全根据调休执行，但问题是调休规则并不规律。幸运的是，有<a href="https://timor.tech">好心人</a>提供了一个联网API，我可以每天查询明天是否放假，从而决定是否关机。</p>
-<h4 id="h4-1-u4e0du653eu5047u5c31u5173u673au7684u811au672c">1. 不放假就关机的脚本</h4><p>编写python脚本如下：</p>
+<h4 id="h4-1-bu-fang-jia-jiu-guan-ji-de-jiao-ben">1. 不放假就关机的脚本</h4><p>编写python脚本如下：</p>
 <pre><code class="language-python"><span class="hljs-keyword">import</span> datetime
 <span class="hljs-keyword">import</span> os
 <span class="hljs-keyword">import</span> time
@@ -749,7 +749,7 @@ LOG_FILE = __file__ + <span class="hljs-string">&quot;.log&quot;</span>
     main()
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>这个脚本会在执行后联网检查明天放不放假，如果不放假就关机，放假则不做任何事。为了防止刚好网络掉线情况，如果第一次检查失败，脚本会在十分钟后检查第二次。</p>
-<h4 id="h4-2-u6bcfu5929u8fd0u884cu5173u673au68c0u67e5">2. 每天运行关机检查</h4><p>接着，我们配置每天晚上23:40通过crontab自动运行这个脚本。通过命令</p>
+<h4 id="h4-2-mei-tian-yun-xing-guan-ji-jian-cha">2. 每天运行关机检查</h4><p>接着，我们配置每天晚上23:40通过crontab自动运行这个脚本。通过命令</p>
 <pre><code class="language-bash">crontab -e
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>编辑Cron 定时任务。在文件末尾添加一行：</p>
@@ -759,7 +759,7 @@ LOG_FILE = __file__ + <span class="hljs-string">&quot;.log&quot;</span>
 <p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
 <p>请确保 <code>python3</code> 和 <code>脚本</code> 的路径都是绝对路径。</p>
 </div>
-<h4 id="h4-3-u7ed9-shutdown-u8bbeu7f6eu514du5bc6">3. 给`shutdown`设置免密</h4><p>由于关机命令 <code>shutdown</code> 需要 root 权限，而定时任务自动运行时无法手动输入密码，我们需要为 <code>shutdown</code> 命令设置免密。</p>
+<h4 id="h4-3-gei-shutdown-she-zhi-mian-mi">3. 给`shutdown`设置免密</h4><p>由于关机命令 <code>shutdown</code> 需要 root 权限，而定时任务自动运行时无法手动输入密码，我们需要为 <code>shutdown</code> 命令设置免密。</p>
 <ol>
 <li>在终端输入：<code>sudo visudo</code></li>
 <li>在文件末尾添加以下内容（将 <code>username</code> 替换为你的实际用户名）：</li>
@@ -770,9 +770,9 @@ LOG_FILE = __file__ + <span class="hljs-string">&quot;.log&quot;</span>
 <p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
 <p>树莓派似乎本身就不用输密码，可以跳过这一步。</p>
 </div>
-<h3 id="h3-u81eau52a8u767bu9646u6821u56edu7f51">自动登陆校园网</h3><p>如果Client无法连接广域网，那这套方案是肯定不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的<a href="https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetworkDormArea.py">这个仓库</a>里就有这样一个脚本，可以用于登陆szu宿舍区校园网<sup><a id="footnote-ref-2" href="#footnote-2" data-footnote-ref aria-describedby="footnote-label">2</a></sup>。</p>
+<h3 id="h3-zi-dong-deng-lu-xiao-yuan-wang">自动登陆校园网</h3><p>如果Client无法连接广域网，那这套方案是肯定不可行的，而我们宿舍区网经常得重新登陆，所以需要一个能定时自动登陆校园网的方法。在我的<a href="https://github.com/chenyu76/some-SZU-LaTeX-templates/blob/main/loginSZUnetworkDormArea.py">这个仓库</a>里就有这样一个脚本，可以用于登陆szu宿舍区校园网<sup><a id="footnote-ref-2" href="#footnote-2" data-footnote-ref aria-describedby="footnote-label">2</a></sup>。</p>
 <p>为了解决有时校园网需要重新登陆的问题，我们配置另一个定时脚本和对应的service。</p>
-<h4 id="h4-1-u76d1u63a7u811au672c">1. 监控脚本</h4><p>我们需要写一个简单的 Shell 脚本来执行循环检测逻辑。</p>
+<h4 id="h4-1-jian-kong-jiao-ben">1. 监控脚本</h4><p>我们需要写一个简单的 Shell 脚本来执行循环检测逻辑。</p>
 <ol>
 <li>在目录下（假设是 <code>/home/user/scripts</code>）创建一个文件 <code>auto_login_monitor.sh</code>：</li>
 <li>写入以下内容：</li>
@@ -809,7 +809,7 @@ INTERVAL=300
 </ol>
 <pre><code class="language-bash"><span class="hljs-built_in">chmod</span> +x /home/user/scripts/auto_login_monitor.sh
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h4 id="h4-2-u521bu5efa-systemd-u670du52a1">2. 创建 Systemd 服务</h4><p>为了让这个脚本像系统服务一样在后台运行，并随开机启动，我们需要创建一个 <code>.service</code> 文件。</p>
+<h4 id="h4-2-chuang-jian-systemd-fu-wu">2. 创建 Systemd 服务</h4><p>为了让这个脚本像系统服务一样在后台运行，并随开机启动，我们需要创建一个 <code>.service</code> 文件。</p>
 <ol>
 <li>创建服务文件：
 <code>sudo nano /etc/systemd/system/auto-login.service</code></li>
@@ -833,7 +833,7 @@ INTERVAL=300
 <p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
 <p>请将 <code>your_username</code>、<code>user</code> 和 <code>ExecStart</code> 路径替换为你实际的用户名和路径。</p>
 </div>
-<h4 id="h4-3-u542fu52a8u5e76u6fc0u6d3bu670du52a1">3. 启动并激活服务</h4><p>执行以下命令让服务生效：</p>
+<h4 id="h4-3-qi-dong-bing-ji-huo-fu-wu">3. 启动并激活服务</h4><p>执行以下命令让服务生效：</p>
 <pre><code class="language-bash"><span class="hljs-comment"># 重新加载系统服务配置</span>
 <span class="hljs-built_in">sudo</span> systemctl daemon-reload
 <span class="hljs-comment"># 设置开机自启</span>
@@ -841,7 +841,7 @@ INTERVAL=300
 <span class="hljs-comment"># 立即启动服务</span>
 <span class="hljs-built_in">sudo</span> systemctl start auto-login.service
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h4 id="h4-u5982u4f55u7ba1u7406u670du52a1">如何管理服务</h4><ul>
+<h4 id="h4-ru-he-guan-li-fu-wu">如何管理服务</h4><ul>
 <li><strong>查看运行状态</strong>：<code>sudo systemctl status auto-login.service</code></li>
 <li><strong>查看实时日志</strong>（排查是否成功 ping 通）：<code>journalctl -u auto-login.service -f</code></li>
 <li><strong>停止服务</strong>：<code>sudo systemctl stop auto-login.service</code></li>
@@ -883,76 +883,76 @@ INTERVAL=300
             <div id="toc-content"><div class="toc">
     <ul></ul>
   </div> <ul>
-<li><a href="#h2-u6211u4eecu8981u505au4ec0u4e48">我们要做什么</a></li>
+<li><a href="#h2-wo-men-yao-zuo-shen-me">我们要做什么</a></li>
 <ul>
-<li><a href="#h3-u6211u4eecu9700u8981u4ec0u4e48">我们需要什么</a></li>
-<li><a href="#h3-u8fd9u4e9bu540du8bcdu662fu4ec0u4e48">这些名词是什么</a></li>
+<li><a href="#h3-wo-men-xu-yao-shen-me">我们需要什么</a></li>
+<li><a href="#h3-zhe-xie-ming-ci-shi-shen-me">这些名词是什么</a></li>
 <ul>
-<li><a href="#h4-u6811u8393u6d3e">树莓派</a></li>
+<li><a href="#h4-shu-mei-pai">树莓派</a></li>
 <li><a href="#h4-ups">UPS</a></li>
-<li><a href="#h4-u53cdu5411u4ee3u7406">反向代理</a></li>
+<li><a href="#h4-fan-xiang-dai-li">反向代理</a></li>
 <li><a href="#h4-frp">frp</a></li>
 <li><a href="#h4-wireguard">WireGuard</a></li>
 </ul>
 </ul>
-<li><a href="#h2-u6211u4eecu8981u600eu4e48u505a">我们要怎么做</a></li>
+<li><a href="#h2-wo-men-yao-zen-me-zuo">我们要怎么做</a></li>
 <ul>
-<li><a href="#h3-u914du7f6eserveru4e0au7684frps">配置server上的frps</a></li>
+<li><a href="#h3-pei-zhiservershang-defrps">配置server上的frps</a></li>
 <ul>
-<li><a href="#h4-1-u4e0bu8f7d-frp">1. 下载 frp</a></li>
-<li><a href="#h4-2-u7f16u5199u914du7f6eu6587u4ef6">2. 编写配置文件</a></li>
-<li><a href="#h4-3-u542fu52a8u670du52a1u7aef">3. 启动服务端</a></li>
+<li><a href="#h4-1-xia-zai-frp">1. 下载 frp</a></li>
+<li><a href="#h4-2-bian-xie-pei-zhi-wen-jian">2. 编写配置文件</a></li>
+<li><a href="#h4-3-qi-dong-fu-wu-duan">3. 启动服务端</a></li>
 </ul>
-<li><a href="#h3-u914du7f6eclientu4e0au7684frpc">配置client上的frpc</a></li>
+<li><a href="#h3-pei-zhiclientshang-defrpc">配置client上的frpc</a></li>
 <ul>
-<li><a href="#h4-1-u7f16u5199u914du7f6eu6587u4ef6">1. 编写配置文件</a></li>
-<li><a href="#h4-2-u542fu52a8u5ba2u6237u7aef">2. 启动客户端</a></li>
+<li><a href="#h4-1-bian-xie-pei-zhi-wen-jian">1. 编写配置文件</a></li>
+<li><a href="#h4-2-qi-dong-ke-hu-duan">2. 启动客户端</a></li>
 </ul>
-<li><a href="#h3-u5b89u88c5u5e76u914du7f6e-wireguard-u5b9eu73b0u5c40u57dfu7f51u5168u8bbfu95ee">安装并配置 WireGuard：实现局域网全访问</a></li>
+<li><a href="#h3-an-zhuang-bing-pei-zhi-wireguard-shi-xian-ju-yu-wang-quan-fang-wen">安装并配置 WireGuard：实现局域网全访问</a></li>
 <ul>
-<li><a href="#h4-1-u5b89u88c5-wireguard-client-u7aef">1. 安装 WireGuard (Client 端)</a></li>
-<li><a href="#h4-2-u5f00u542fu5185u6838u8f6cu53d1">2. 开启内核转发</a></li>
-<li><a href="#h4-3-u751fu6210u5bc6u94a5u5bf9">3. 生成密钥对</a></li>
-<li><a href="#h4-4-u914du7f6e-client-u7aef-u5185u7f51u670du52a1u5668">4. 配置 Client 端 (内网服务器)</a></li>
-<li><a href="#h4-5-u914du7f6e-user-u7aef-u7528u6237u7535u8111">5. 配置 User 端 (用户电脑)</a></li>
-<li><a href="#h4-6-u542fu52a8wireguard">6. 启动WireGuard</a></li>
+<li><a href="#h4-1-an-zhuang-wireguard-client-duan">1. 安装 WireGuard (Client 端)</a></li>
+<li><a href="#h4-2-kai-qi-nei-he-zhuan-fa">2. 开启内核转发</a></li>
+<li><a href="#h4-3-sheng-cheng-mi-yao-dui">3. 生成密钥对</a></li>
+<li><a href="#h4-4-pei-zhi-client-duan-nei-wang-fu-wu-qi">4. 配置 Client 端 (内网服务器)</a></li>
+<li><a href="#h4-5-pei-zhi-user-duan-yong-hu-dian-nao">5. 配置 User 端 (用户电脑)</a></li>
+<li><a href="#h4-6-qi-dongwireguard">6. 启动WireGuard</a></li>
 </ul>
-<li><a href="#h3-u914du7f6eu5404u4e2au670du52a1u7684u81eau542fu52a8">配置各个服务的自启动</a></li>
+<li><a href="#h3-pei-zhi-ge-ge-fu-wu-de-zi-qi-dong">配置各个服务的自启动</a></li>
 <ul>
-<li><a href="#h4-1-u521bu5efaservice-u6587u4ef6">1. 创建Service 文件</a></li>
-<li><a href="#h4-2-u544au8bc9systemdu8be5u505au4ec0u4e48">2. 告诉systemd该做什么</a></li>
-<li><a href="#h4-3-u8ba9u6e05u5355u6b63u5f0fu751fu6548">3. 让清单正式生效</a></li>
-<li><a href="#h4-4-u68c0u67e5u670du52a1u72b6u6001">4. 检查服务状态</a></li>
+<li><a href="#h4-1-chuang-jianservice-wen-jian">1. 创建Service 文件</a></li>
+<li><a href="#h4-2-gao-susystemdgai-zuo-shen-me">2. 告诉systemd该做什么</a></li>
+<li><a href="#h4-3-rang-qing-dan-zheng-shi-sheng-xiao">3. 让清单正式生效</a></li>
+<li><a href="#h4-4-jian-cha-fu-wu-zhuang-tai">4. 检查服务状态</a></li>
 </ul>
 </ul>
-<li><a href="#h2-u9700u8981u6ce8u610fu7684u4e8bu9879">需要注意的事项</a></li>
+<li><a href="#h2-xu-yao-zhu-yi-de-shi-xiang">需要注意的事项</a></li>
 <ul>
-<li><a href="#h3-wireguard-u7684u81eau542fu52a8u7ba1u7406">WireGuard 的自启动管理</a></li>
-<li><a href="#h3-u591au7528u6237-u591au8bbeu5907-u63a5u5165u914du7f6e">多用户（多设备）接入配置</a></li>
+<li><a href="#h3-wireguard-de-zi-qi-dong-guan-li">WireGuard 的自启动管理</a></li>
+<li><a href="#h3-duo-yong-hu-duo-she-bei-jie-ru-pei-zhi">多用户（多设备）接入配置</a></li>
 <ul>
-<li><a href="#h4-1-u8be6u7ec6u914du7f6eu903bu8f91">1. 详细配置逻辑</a></li>
-<li><a href="#h4-2-u4feeu6539u540eu7684u914du7f6eu793au4f8b">2. 修改后的配置示例</a></li>
+<li><a href="#h4-1-xiang-xi-pei-zhi-luo-ji">1. 详细配置逻辑</a></li>
+<li><a href="#h4-2-xiu-gai-hou-de-pei-zhi-shi-li">2. 修改后的配置示例</a></li>
 <ul>
-<li><a href="#h5-a-u4e2du5fc3u8282u70b9u914du7f6e-client">A. 中心节点配置 (Client)</a></li>
-<li><a href="#h5-b-u7528u6237u7aefu914du7f6e-user_a">B. 用户端配置 (User_A)</a></li>
-<li><a href="#h5-c-u7528u6237u7aefu914du7f6e-user_b">C. 用户端配置 (User_B)</a></li>
-<li><a href="#h5-d-u7528u6237u7aefu914du7f6e-user_c">D. 用户端配置 (User_C)</a></li>
+<li><a href="#h5-a-zhong-xin-jie-dian-pei-zhi-client">A. 中心节点配置 (Client)</a></li>
+<li><a href="#h5-b-yong-hu-duan-pei-zhi-user_a">B. 用户端配置 (User_A)</a></li>
+<li><a href="#h5-c-yong-hu-duan-pei-zhi-user_b">C. 用户端配置 (User_B)</a></li>
+<li><a href="#h5-d-yong-hu-duan-pei-zhi-user_c">D. 用户端配置 (User_C)</a></li>
 </ul>
-<li><a href="#h4-3-u5173u952eu6ce8u610fu4e8bu9879">3. 关键注意事项</a></li>
+<li><a href="#h4-3-guan-jian-zhu-yi-shi-xiang">3. 关键注意事项</a></li>
 </ul>
-<li><a href="#h3-ups-u7684u7535u6c60u5bb9u91cf">UPS 的电池容量</a></li>
-<li><a href="#h3-u5728u6bcfu65e5u65adu7535u524du81eau52a8u5173u673a">在每日断电前自动关机</a></li>
+<li><a href="#h3-ups-de-dian-chi-rong-liang">UPS 的电池容量</a></li>
+<li><a href="#h3-zai-mei-ri-duan-dian-qian-zi-dong-guan-ji">在每日断电前自动关机</a></li>
 <ul>
-<li><a href="#h4-1-u4e0du653eu5047u5c31u5173u673au7684u811au672c">1. 不放假就关机的脚本</a></li>
-<li><a href="#h4-2-u6bcfu5929u8fd0u884cu5173u673au68c0u67e5">2. 每天运行关机检查</a></li>
-<li><a href="#h4-3-u7ed9-shutdown-u8bbeu7f6eu514du5bc6">3. 给`shutdown`设置免密</a></li>
+<li><a href="#h4-1-bu-fang-jia-jiu-guan-ji-de-jiao-ben">1. 不放假就关机的脚本</a></li>
+<li><a href="#h4-2-mei-tian-yun-xing-guan-ji-jian-cha">2. 每天运行关机检查</a></li>
+<li><a href="#h4-3-gei-shutdown-she-zhi-mian-mi">3. 给`shutdown`设置免密</a></li>
 </ul>
-<li><a href="#h3-u81eau52a8u767bu9646u6821u56edu7f51">自动登陆校园网</a></li>
+<li><a href="#h3-zi-dong-deng-lu-xiao-yuan-wang">自动登陆校园网</a></li>
 <ul>
-<li><a href="#h4-1-u76d1u63a7u811au672c">1. 监控脚本</a></li>
-<li><a href="#h4-2-u521bu5efa-systemd-u670du52a1">2. 创建 Systemd 服务</a></li>
-<li><a href="#h4-3-u542fu52a8u5e76u6fc0u6d3bu670du52a1">3. 启动并激活服务</a></li>
-<li><a href="#h4-u5982u4f55u7ba1u7406u670du52a1">如何管理服务</a></li>
+<li><a href="#h4-1-jian-kong-jiao-ben">1. 监控脚本</a></li>
+<li><a href="#h4-2-chuang-jian-systemd-fu-wu">2. 创建 Systemd 服务</a></li>
+<li><a href="#h4-3-qi-dong-bing-ji-huo-fu-wu">3. 启动并激活服务</a></li>
+<li><a href="#h4-ru-he-guan-li-fu-wu">如何管理服务</a></li>
 </ul>
 </ul>
 </ul>

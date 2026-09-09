@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="zh" data-page-lang="zh">
+<html lang="en" data-page-lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>关于这个网站</title>
+    <title>A Preview of Some Interesting Optimization Algorithms</title>
 
     <link rel="stylesheet" href="/styles.css" />
     <link rel="icon" href="/favicon.png" type="image/png" />
@@ -185,44 +185,58 @@
               </button>
               
             </div>
-            <div id="heading"><h3>文章</h3>
-        <h1>关于这个网站</h1></div>
+            <div id="heading"><h3>Writings</h3>
+        <h1>A Preview of Some Interesting Optimization Algorithms</h1></div>
           </div>
 
           <div class="content-wrapper">
-            <div class="content"><p>这就是我的第一篇文章了。</p>
-<h2 id="h2-yuan-qi">缘起</h2><p>在几年前便闲得无聊用<a href="https://hexo.io/">hexo</a>搭过一次，但也许是我没有分享欲，也许是我肚子里没点墨水，搭建起来后便再也没管过它。荒废已久，长满了电子杂草。直到最近看到<a href="https://jinqking.github.io/">一个朋友的这个漂亮的 Github 主页</a>。（他真的写了很多内容！）才又萌发了重启它的念头。</p>
-<p>既然是重启，我自然是不想再来一遍hexo，于是在GPT的帮助下，凭借着玩<a href="https://screeps.com/">Screeps</a>学的一点JavaScript皮毛，还有现学现用的HTML和CSS知识把这个<del>简陋</del>简洁的网站做出来了。</p>
-<p>但我真的会在以后的日子里写些什么东西放在这个网页上吗？我也不确定，谁知道呢？</p>
-<p><img src="/img/%E6%88%91%E6%AD%A3%E5%9C%A8%E5%AD%A6%E7%94%A8%E5%90%89%E4%BB%96%E5%BC%B9%E8%BF%99%E9%A6%96%E6%AD%8C.jpg" alt="我正在学用吉他弹这首歌！ width:50%"></p>
-<p>时间会给出答案。</p>
-<p>此外，有多少人会看到这个地方呢？可能只是聊以慰籍罢了。</p>
-<h2 id="h2-ji-shu-shi-xian">技术实现</h2><p>除去用于渲染Markdown的<a href="https://marked.js.org/">Marked</a>库和许多文章本体之外，这个站就只有四个文件是关于网页渲染的：</p>
-<ul>
-<li><a href="index.html">index.html</a></li>
-<li><a href="script.js">script.js</a></li>
-<li><a href="styles.css">styles.css</a></li>
-<li><a href="toc.py">toc.py</a></li>
-</ul>
-<p>Markdown 文件按文件夹分类存放，并使用html和javascript通过“#”处理了所有文章请求，找到对应的Markdown文件后使用Marked处理成html，再加上css一个简单样式，使用github action部署，事就这样成了。</p>
-<p>所以我便可以使用<a href="https://obsidian.md/">Obsidian</a>方便地创建与修改网页内容了。</p>
-<p>但我可不想手写网站目录，于是就写了toc.py脚本，这是一段自修改Python代码，同时也是一段合法html网页。它每次运行会寻找目录下所有文档文件并整理成树状的可点击样式附在自己前面，这就是<a href="#toc.py">这个目录</a>了。</p>
-<h3 id="h3-24-07-28geng-xin">24/07/28更新</h3><ul>
-<li>现在可以加载js文件作为文章了，只要求要求js文件第一行是一个函数。文章内容是js文件第一行的函数的返回值。（当然也可以不返回东西）</li>
-<li>markdown文件中插入图片时在[ ]内插入“x%”即可将图片的宽度设为x%</li>
-</ul>
-<h3 id="h3-25-02-08geng-xin">25/02/08更新</h3><p>更新了网站架构，现在好像全都不一样啦！具体的有空再写，<a href="/%E6%96%87%E7%AB%A0/%E6%96%B0%E5%B9%B4%E6%96%B0%E4%B8%BB%E9%A2%98.md">可见此处</a></p>
-<h2 id="h2-todo-list">TODO List</h2><ul>
-<li>目录添加一项“最近更新”</li>
-<li>加入 Marked 代码高亮插件</li>
-<li>评论系统（现在先拿<a href="https://github.com/chenyu76/chenyu76.github.io/discussions">Github Discussions</a>替代吧！）</li>
-</ul>
-<h2 id="h2-known-bug">Known Bug</h2><ul>
-<li><del>按钮按太快时会导致网站卡死，无法切换页面</del></li>
-<li>toc.py在最后一个项目是空文件夹时虽然不会显示此文件夹但仍会显示连接线</li>
-</ul>
-</div>
-            <div id="footnote">缘起段完成于2024年6月20日</div>
+            <div class="content"><h2 id="h2-trust-region">Trust Region</h2><p><a href="https://en.wikipedia.org/wiki/Trust_region">Trust-region</a> methods are a family of methods. Their core idea is to maintain, around the current point, a region where a model is considered “trustworthy,” and to constrain candidate steps to remain within that region. Different trust-region algorithms may use different types of models and solution methods. In general, the algorithm compares the improvement predicted by the model with the actual improvement in the objective function, then accepts or rejects the candidate step and adjusts the size of the trust region accordingly. This animation shows one implementation that uses a local quadratic model based on the gradient.</p>
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 30px; width: 100%; flex-wrap: nowrap;">
+  <div style="flex: 0 0 70%; text-align: center;">
+    <iframe src="assets/animations/solver-preview/trust-region.html"
+            loading="lazy"
+            title="Trust Region algorithm demo"
+            style="width:100%; aspect-ratio:1/1; border:1px solid #d4dae2; border-radius:12px; background:#fff;"></iframe>
+    <div>Trust Region</div>
+  </div>
+</div><h2 id="h2-gradient-descent-gd">Gradient Descent (GD)</h2><p><a href="https://en.wikipedia.org/wiki/Gradient_descent">Gradient descent</a> computes the gradient of the entire objective function at each step and moves in the direction of the negative gradient.</p>
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 30px; width: 100%; flex-wrap: nowrap;">
+  <div style="flex: 0 0 70%; text-align: center;">
+    <iframe src="assets/animations/solver-preview/gradient-descent.html"
+            loading="lazy"
+            title="Gradient Descent algorithm demo"
+            style="width:100%; aspect-ratio:1/1; border:1px solid #d4dae2; border-radius:12px; background:#fff;"></iframe>
+    <div>Gradient Descent</div>
+  </div>
+</div><h2 id="h2-stochastic-gradient-descent-sgd">Stochastic Gradient Descent (SGD)</h2><p><a href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent">Stochastic gradient descent</a> can be viewed as a stochastic approximation of gradient descent: at each step, it randomly selects only one sample or one mini-batch. This sacrifices some accuracy in the direction of each individual step and may slow convergence, but significantly reduces the computational cost of each iteration, making it particularly suitable for high-dimensional, large-scale data problems.</p>
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 30px; width: 100%; flex-wrap: nowrap;">
+  <div style="flex: 0 0 70%; text-align: center;">
+    <iframe src="assets/animations/solver-preview/stochastic-gradient-descent.html"
+            loading="lazy"
+            title="Stochastic Gradient Descent algorithm demo"
+            style="width:100%; aspect-ratio:1/1; border:1px solid #d4dae2; border-radius:12px; background:#fff;"></iframe>
+    <div>Stochastic Gradient Descent</div>
+  </div>
+</div><h2 id="h2-direct-search-ds">Direct Search (DS)</h2><p><a href="https://en.wikipedia.org/wiki/Pattern_search_%28optimization%29">Direct search</a> does not use gradients. In each round, it probes the objective function from the current point along several predefined directions; this example uses the four coordinate directions—up, down, left, and right—and moves to the one producing the best improvement. When an improvement is found, it increases the shared step size; when none is found, it decreases the step size. As a result, it moves quickly through open regions and gradually becomes more cautious near the bottom of a valley.</p>
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 30px; width: 100%; flex-wrap: nowrap;">
+  <div style="flex: 0 0 70%; text-align: center;">
+    <iframe src="assets/animations/solver-preview/direct-search.html"
+            loading="lazy"
+            title="Direct Search algorithm demo"
+            style="width:100%; aspect-ratio:1/1; border:1px solid #d4dae2; border-radius:12px; background:#fff;"></iframe>
+    <div>Direct Search</div>
+  </div>
+</div><h2 id="h2-bds">BDS</h2><p><a href="https://github.com/blockwise-direct-search/bds">BDS</a> divides the variables into several blocks and searches them separately, making it a blockwise variant of direct search. In this example, the two coordinate axes are treated as two blocks. The algorithm alternately probes the positive and negative directions along one coordinate axis, maintaining an independent step size for each direction. When a direction produces an improvement, only its own step size is increased; when it fails, only its own step size is decreased. Thus, when the objective function has very different scales along different directions, the algorithm can adapt to them independently instead of forcing all directions to share a single step size.</p>
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 30px; width: 100%; flex-wrap: nowrap;">
+  <div style="flex: 0 0 70%; text-align: center;">
+    <iframe src="assets/animations/solver-preview/bds.html"
+            loading="lazy"
+            title="Blockwise Direct Search algorithm demo"
+            style="width:100%; aspect-ratio:1/1; border:1px solid #d4dae2; border-radius:12px; background:#fff;"></iframe>
+    <div>Blockwise Direct Search</div>
+  </div>
+</div></div>
+            <div id="footnote"></div>
           </div>
         </div>
 
@@ -247,14 +261,11 @@
             <div id="toc-content"><div class="toc">
     <ul></ul>
   </div> <ul>
-<li><a href="#h2-yuan-qi">缘起</a></li>
-<li><a href="#h2-ji-shu-shi-xian">技术实现</a></li>
-<ul>
-<li><a href="#h3-24-07-28geng-xin">24/07/28更新</a></li>
-<li><a href="#h3-25-02-08geng-xin">25/02/08更新</a></li>
-</ul>
-<li><a href="#h2-todo-list">TODO List</a></li>
-<li><a href="#h2-known-bug">Known Bug</a></li>
+<li><a href="#h2-trust-region">Trust Region</a></li>
+<li><a href="#h2-gradient-descent-gd">Gradient Descent (GD)</a></li>
+<li><a href="#h2-stochastic-gradient-descent-sgd">Stochastic Gradient Descent (SGD)</a></li>
+<li><a href="#h2-direct-search-ds">Direct Search (DS)</a></li>
+<li><a href="#h2-bds">BDS</a></li>
 </ul>
 </ul>
 </div></div>

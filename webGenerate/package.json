@@ -25,6 +25,7 @@
     "marked-alert": "^2.1.2",
     "marked-footnote": "^1.4.0",
     "marked-highlight": "^2.2.4",
-    "marked-katex-extension": "^5.1.8"
+    "marked-katex-extension": "^5.1.8",
+    "pinyin-pro": "^3.27.0"
   }
 }

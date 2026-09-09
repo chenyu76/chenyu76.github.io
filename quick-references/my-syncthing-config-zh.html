@@ -193,14 +193,14 @@
             <div class="content"><blockquote>
 <p><a href="https://syncthing.net/">Syncthing</a> is a <strong>continuous file synchronization</strong> program. It synchronizes files between two or more computers in real time, safely protected from prying eyes. Your data is your data alone and you deserve to choose where it is stored, whether it is shared with some third party, and how it’s transmitted over the internet.</p>
 </blockquote>
-<h2 id="h2-u57fau7840u5b89u88c5">基础安装</h2><p>基于Arch Linux</p>
+<h2 id="h2-ji-chu-an-zhuang">基础安装</h2><p>基于Arch Linux</p>
 <pre><code class="language-bash"><span class="hljs-comment"># 1. 安装本体</span>
 <span class="hljs-built_in">sudo</span> pacman -S syncthing
 
 <span class="hljs-comment"># 2. 安装 Syncthing Tray</span>
 yay -S syncthingtray-qt6
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h2 id="h2-u542fu52a8u6838u5fc3u670du52a1">启动核心服务</h2><p>使用 <code>systemd --user</code> 模式，这样不需要 root 权限，且配置文件位于 Home 目录下，方便迁移。</p>
+<h2 id="h2-qi-dong-he-xin-fu-wu">启动核心服务</h2><p>使用 <code>systemd --user</code> 模式，这样不需要 root 权限，且配置文件位于 Home 目录下，方便迁移。</p>
 <pre><code class="language-bash"><span class="hljs-comment"># 启动并设置开机自启</span>
 systemctl --user <span class="hljs-built_in">enable</span> --now syncthing.service
 
@@ -211,7 +211,7 @@ systemctl --user status syncthing.service
 <p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
 <p>此时可以通过浏览器访问 <code>http://127.0.0.1:8384</code> 进入管理界面。</p>
 </div>
-<h2 id="h2-u914du7f6e-syncthing-tray">配置 Syncthing Tray</h2><ol>
+<h2 id="h2-pei-zhi-syncthing-tray">配置 Syncthing Tray</h2><ol>
 <li>打开 Syncthing Tray设置。</li>
 <li>Tray -&gt; Connection:<ul>
 <li>Url: <code>http://localhost:8384</code></li>
@@ -226,8 +226,8 @@ systemctl --user status syncthing.service
 </li>
 </ol>
 <hr>
-<h2 id="h2-u6839u636eu63d2u7535u72b6u6001u5f00u5173syncthing">根据插电状态开关Syncthing</h2><p>我希望Syncthing只在我的笔记本插电的时候才同步，节省离电时的电量。</p>
-<h3 id="h3-u521bu5efau811au672cu6587u4ef6">创建脚本文件</h3><p>随便放在某个我喜欢的地方，比如</p>
+<h2 id="h2-gen-ju-cha-dian-zhuang-tai-kai-guansyncthing">根据插电状态开关Syncthing</h2><p>我希望Syncthing只在我的笔记本插电的时候才同步，节省离电时的电量。</p>
+<h3 id="h3-chuang-jian-jiao-ben-wen-jian">创建脚本文件</h3><p>随便放在某个我喜欢的地方，比如</p>
 <ul>
 <li><code>~/Application/syncthing_power_monitor.sh</code></li>
 <li><code>~/Executable/syncthing_power_monitor.sh</code></li>
@@ -276,7 +276,7 @@ POWER_SUPPLY_PATH=<span class="hljs-string">&quot;/sys/class/power_supply/<span 
 <p>给这个脚本赋予执行权限：</p>
 <pre><code class="language-bash"><span class="hljs-built_in">chmod</span> +x ~/.Executable/syncthing_power_monitor.sh
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h3 id="h3-u521bu5efa-systemd-unit">创建 Systemd Unit</h3><p>路径：<code>~/.config/systemd/user/syncthing-power-monitor.service</code></p>
+<h3 id="h3-chuang-jian-systemd-unit">创建 Systemd Unit</h3><p>路径：<code>~/.config/systemd/user/syncthing-power-monitor.service</code></p>
 <div class="markdown-alert markdown-alert-warning">
 <p class="markdown-alert-title"><svg class="octicon octicon-alert mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p>
 <p><code>ExecStart</code>需要按需修改脚本路径，<code>%h</code>会被解析为家目录</p>
@@ -295,7 +295,7 @@ POWER_SUPPLY_PATH=<span class="hljs-string">&quot;/sys/class/power_supply/<span 
 <span class="hljs-section">[Install]</span>
 <span class="hljs-attr">WantedBy</span>=default.target
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h3 id="h3-u6fc0u6d3bu76d1u63a7">激活监控</h3><pre><code class="language-bash">systemctl --user daemon-reload
+<h3 id="h3-ji-huo-jian-kong">激活监控</h3><pre><code class="language-bash">systemctl --user daemon-reload
 systemctl --user <span class="hljs-built_in">enable</span> --now syncthing-power-monitor.service
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 </div>
@@ -324,14 +324,14 @@ systemctl --user <span class="hljs-built_in">enable</span> --now syncthing-power
             <div id="toc-content"><div class="toc">
     <ul></ul>
   </div> <ul>
-<li><a href="#h2-u57fau7840u5b89u88c5">基础安装</a></li>
-<li><a href="#h2-u542fu52a8u6838u5fc3u670du52a1">启动核心服务</a></li>
-<li><a href="#h2-u914du7f6e-syncthing-tray">配置 Syncthing Tray</a></li>
-<li><a href="#h2-u6839u636eu63d2u7535u72b6u6001u5f00u5173syncthing">根据插电状态开关Syncthing</a></li>
+<li><a href="#h2-ji-chu-an-zhuang">基础安装</a></li>
+<li><a href="#h2-qi-dong-he-xin-fu-wu">启动核心服务</a></li>
+<li><a href="#h2-pei-zhi-syncthing-tray">配置 Syncthing Tray</a></li>
+<li><a href="#h2-gen-ju-cha-dian-zhuang-tai-kai-guansyncthing">根据插电状态开关Syncthing</a></li>
 <ul>
-<li><a href="#h3-u521bu5efau811au672cu6587u4ef6">创建脚本文件</a></li>
-<li><a href="#h3-u521bu5efa-systemd-unit">创建 Systemd Unit</a></li>
-<li><a href="#h3-u6fc0u6d3bu76d1u63a7">激活监控</a></li>
+<li><a href="#h3-chuang-jian-jiao-ben-wen-jian">创建脚本文件</a></li>
+<li><a href="#h3-chuang-jian-systemd-unit">创建 Systemd Unit</a></li>
+<li><a href="#h3-ji-huo-jian-kong">激活监控</a></li>
 </ul>
 </ul>
 </ul>

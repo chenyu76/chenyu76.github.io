@@ -191,7 +191,7 @@
 
           <div class="content-wrapper">
             <div class="content"><p>可能是<code>figure</code>和<code>hold on</code>的原因。</p>
-<h2 id="h2-u9519u8befu8303u4f8b">错误范例：</h2><pre><code class="language-matlab">x = [<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>];
+<h2 id="h2-cuo-wu-fan-li">错误范例：</h2><pre><code class="language-matlab">x = [<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>];
 y = [<span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">8</span> <span class="hljs-number">16</span>];
 z = [<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">7</span>];
 
@@ -201,7 +201,7 @@ loglog(x, y);
 loglog(x, z);
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>输出</p>
-<img src="./assets/matlab_loglog_fail.svg" /><h2 id="h2-u6b63u786eu8303u4f8b">正确范例：</h2><p>注意<code>hold on</code>的位置：</p>
+<img src="./assets/matlab_loglog_fail.svg" /><h2 id="h2-zheng-que-fan-li">正确范例：</h2><p>注意<code>hold on</code>的位置：</p>
 <pre><code class="language-matlab">x = [<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>];
 y = [<span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">8</span> <span class="hljs-number">16</span>];
 z = [<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">7</span>];
@@ -212,7 +212,7 @@ loglog(x, y);
 loglog(x, z);
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>输出</p>
-<img src="./assets/matlab_loglog_success.svg" /><h2 id="h2-u4e3au4ec0u4e48">为什么？</h2><p><code>hold on</code> 会固定当前坐标轴属性，包括 XScale 和 YScale，所以要么先 <code>loglog</code> 再 <code>hold on</code>，要么就再重新设置 XScale 和 YScale。</p>
+<img src="./assets/matlab_loglog_success.svg" /><h2 id="h2-wei-shen-me">为什么？</h2><p><code>hold on</code> 会固定当前坐标轴属性，包括 XScale 和 YScale，所以要么先 <code>loglog</code> 再 <code>hold on</code>，要么就再重新设置 XScale 和 YScale。</p>
 <pre><code class="language-matlab"><span class="hljs-built_in">hold</span> on
 loglog(x, y)
 set(gca, <span class="hljs-string">&#x27;XScale&#x27;</span>, <span class="hljs-string">&#x27;log&#x27;</span>, <span class="hljs-string">&#x27;YScale&#x27;</span>, <span class="hljs-string">&#x27;log&#x27;</span>)
@@ -243,9 +243,9 @@ set(gca, <span class="hljs-string">&#x27;XScale&#x27;</span>, <span class="hljs-
             <div id="toc-content"><div class="toc">
     <ul></ul>
   </div> <ul>
-<li><a href="#h2-u9519u8befu8303u4f8b">错误范例：</a></li>
-<li><a href="#h2-u6b63u786eu8303u4f8b">正确范例：</a></li>
-<li><a href="#h2-u4e3au4ec0u4e48">为什么？</a></li>
+<li><a href="#h2-cuo-wu-fan-li">错误范例：</a></li>
+<li><a href="#h2-zheng-que-fan-li">正确范例：</a></li>
+<li><a href="#h2-wei-shen-me">为什么？</a></li>
 </ul>
 </ul>
 </div></div>

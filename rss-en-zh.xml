@@ -4,6 +4,13 @@
       <title>Chen Yu's Website (English / 中文)</title>
       <description>English first</description>
 <item>
+            <title>A Preview of Some Interesting Optimization Algorithms</title>
+            <link>https://chenyu76.github.io/writings/solver-preview</link>
+            <description><![CDATA[]]></description>
+            <pubDate>Wed, 09 Sep 2026 00:00:00 GMT</pubDate>
+            <guid>https://chenyu76.github.io/writings/solver-preview</guid>
+          </item>
+<item>
             <title>Mimicking Word Documents Made of Nested Tables in LaTeX / 在LaTeX中模仿那些由一个又一个表格组成的Word文档</title>
             <link>https://chenyu76.github.io/writings/deans-office-latex</link>
             <description><![CDATA[]]></description>
