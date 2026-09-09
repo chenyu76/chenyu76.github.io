@@ -5,6 +5,7 @@ import markedAlert from "marked-alert";
 import markedFootnote from "marked-footnote";
 import { markedHighlight } from "marked-highlight";
 import markedKatex from "marked-katex-extension";
+import { pinyin } from "pinyin-pro";
 import path from "path";
 
 import { translatePath, detectLanguage, UI } from "./language.js";
@@ -184,14 +185,13 @@ export function convertMarkdown(inputPath: string): {
   const toc: TocItem[] = [];
   const renderer = new marked.Renderer();
   function createSlug(str: string) {
-    return str
-      .replace(
-        /[\u4e00-\u9fa5]/g,
-        (char: string) =>
-          `u${char.charCodeAt(0).toString(16).padStart(4, "0")}`,
-      )
+    const transliterated = str.replace(/[\u3400-\u9fff]+/g, (text) =>
+      pinyin(text, { toneType: "none" }),
+    );
+
+    return transliterated
       .toLowerCase()
-      .replace(/[^\w\u4e00-\u9fa5-]+/g, "-")
+      .replace(/[^a-z0-9_-]+/g, "-")
       .replace(/-+/g, "-")
       .replace(/^-+/, "")
       .replace(/-+$/, "");
