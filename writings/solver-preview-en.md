@@ -1,5 +1,7 @@
 # A Preview of Some Interesting Optimization Algorithms
 
+Trust region, gradient descent, stochastic gradient descent, direct search and blockwise direct search
+
 ## Trust Region
 
 [Trust-region](https://en.wikipedia.org/wiki/Trust_region) methods are a family of methods. Their core idea is to maintain, around the current point, a region where a model is considered “trustworthy,” and to constrain candidate steps to remain within that region. Different trust-region algorithms may use different types of models and solution methods. In general, the algorithm compares the improvement predicted by the model with the actual improvement in the objective function, then accepts or rejects the candidate step and adjusts the size of the trust region accordingly. This animation shows one implementation that uses a local quadratic model based on the gradient.
@@ -56,7 +58,7 @@
   </div>
 </div>
 
-## BDS
+## Blockwise Direct Search (BDS)
 
 [BDS](https://github.com/blockwise-direct-search/bds) divides the variables into several blocks and searches them separately, making it a blockwise variant of direct search. In this example, the two coordinate axes are treated as two blocks. The algorithm alternately probes the positive and negative directions along one coordinate axis, maintaining an independent step size for each direction. When a direction produces an improvement, only its own step size is increased; when it fails, only its own step size is decreased. Thus, when the objective function has very different scales along different directions, the algorithm can adapt to them independently instead of forcing all directions to share a single step size.
 

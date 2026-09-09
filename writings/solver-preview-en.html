@@ -126,7 +126,17 @@
                   <use href="#icon-dark-mode" />
                 </svg>
               </button>
-              
+              <a
+      href="solver-preview-zh.html"
+      class="lang-btn scroll-top-btn"
+      data-title-zh="切换到中文"
+      data-title-en="Switch to English"
+      title=""
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon">
+        <use href="#icon-language" />
+      </svg>
+    </a>
               <button
                 onclick="scrollToTop()"
                 data-title-zh="滚动到顶部"
@@ -183,14 +193,25 @@
                   <use href="#icon-dark-mode" />
                 </svg>
               </button>
-              
+              <a
+      href="solver-preview-zh.html"
+      class="lang-btn scroll-top-btn"
+      data-title-zh="切换到中文"
+      data-title-en="Switch to English"
+      title=""
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon">
+        <use href="#icon-language" />
+      </svg>
+    </a>
             </div>
             <div id="heading"><h3>Writings</h3>
         <h1>A Preview of Some Interesting Optimization Algorithms</h1></div>
           </div>
 
           <div class="content-wrapper">
-            <div class="content"><h2 id="h2-trust-region">Trust Region</h2><p><a href="https://en.wikipedia.org/wiki/Trust_region">Trust-region</a> methods are a family of methods. Their core idea is to maintain, around the current point, a region where a model is considered “trustworthy,” and to constrain candidate steps to remain within that region. Different trust-region algorithms may use different types of models and solution methods. In general, the algorithm compares the improvement predicted by the model with the actual improvement in the objective function, then accepts or rejects the candidate step and adjusts the size of the trust region accordingly. This animation shows one implementation that uses a local quadratic model based on the gradient.</p>
+            <div class="content"><p>Trust region, gradient descent, stochastic gradient descent, direct search and blockwise direct search</p>
+<h2 id="h2-trust-region">Trust Region</h2><p><a href="https://en.wikipedia.org/wiki/Trust_region">Trust-region</a> methods are a family of methods. Their core idea is to maintain, around the current point, a region where a model is considered “trustworthy,” and to constrain candidate steps to remain within that region. Different trust-region algorithms may use different types of models and solution methods. In general, the algorithm compares the improvement predicted by the model with the actual improvement in the objective function, then accepts or rejects the candidate step and adjusts the size of the trust region accordingly. This animation shows one implementation that uses a local quadratic model based on the gradient.</p>
 <div style="display: flex; justify-content: center; align-items: flex-start; gap: 30px; width: 100%; flex-wrap: nowrap;">
   <div style="flex: 0 0 70%; text-align: center;">
     <iframe src="assets/animations/solver-preview/trust-region.html"
@@ -226,7 +247,7 @@
             style="width:100%; aspect-ratio:1/1; border:1px solid #d4dae2; border-radius:12px; background:#fff;"></iframe>
     <div>Direct Search</div>
   </div>
-</div><h2 id="h2-bds">BDS</h2><p><a href="https://github.com/blockwise-direct-search/bds">BDS</a> divides the variables into several blocks and searches them separately, making it a blockwise variant of direct search. In this example, the two coordinate axes are treated as two blocks. The algorithm alternately probes the positive and negative directions along one coordinate axis, maintaining an independent step size for each direction. When a direction produces an improvement, only its own step size is increased; when it fails, only its own step size is decreased. Thus, when the objective function has very different scales along different directions, the algorithm can adapt to them independently instead of forcing all directions to share a single step size.</p>
+</div><h2 id="h2-blockwise-direct-search-bds">Blockwise Direct Search (BDS)</h2><p><a href="https://github.com/blockwise-direct-search/bds">BDS</a> divides the variables into several blocks and searches them separately, making it a blockwise variant of direct search. In this example, the two coordinate axes are treated as two blocks. The algorithm alternately probes the positive and negative directions along one coordinate axis, maintaining an independent step size for each direction. When a direction produces an improvement, only its own step size is increased; when it fails, only its own step size is decreased. Thus, when the objective function has very different scales along different directions, the algorithm can adapt to them independently instead of forcing all directions to share a single step size.</p>
 <div style="display: flex; justify-content: center; align-items: flex-start; gap: 30px; width: 100%; flex-wrap: nowrap;">
   <div style="flex: 0 0 70%; text-align: center;">
     <iframe src="assets/animations/solver-preview/bds.html"
@@ -265,7 +286,7 @@
 <li><a href="#h2-gradient-descent-gd">Gradient Descent (GD)</a></li>
 <li><a href="#h2-stochastic-gradient-descent-sgd">Stochastic Gradient Descent (SGD)</a></li>
 <li><a href="#h2-direct-search-ds">Direct Search (DS)</a></li>
-<li><a href="#h2-bds">BDS</a></li>
+<li><a href="#h2-blockwise-direct-search-bds">Blockwise Direct Search (BDS)</a></li>
 </ul>
 </ul>
 </div></div>
