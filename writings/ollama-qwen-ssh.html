@@ -1,0 +1,46 @@
+<!doctype html>
+    <html lang="zh">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ollama-qwen-ssh</title>
+        <link rel="stylesheet" href="/styles.css" />
+        <style>
+          .redirect-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background: var(--card-bg-color);
+            padding: 40px;
+            box-shadow: 0 0 1px var(--shadow);
+            max-width: 500px;
+          }
+          .redirect-box h1 {
+            margin: 0 0 1em;
+          }
+          .redirect-box a {
+            color: var(--link-color);
+          }
+        </style>
+        <script>
+          (function () {
+            var urls = { zh: "/writings/ollama-qwen-ssh-zh.html",
+en: "/writings/ollama-qwen-ssh-en.html" };
+            var browserLang = (navigator.language || "").startsWith("zh")
+              ? "zh"
+              : "en";
+            var target = urls[browserLang] || urls[Object.keys(urls)[0]];
+            window.location.replace(target);
+          })();
+        </script>
+      </head>
+      <body>
+        <div class="redirect-box">
+          <h1>ollama-qwen-ssh</h1>
+          <p>正在重定向到 / Redirecting to</p>
+          <p><a href="/writings/ollama-qwen-ssh-zh.html">/writings/ollama-qwen-ssh-zh.html</a> / <a href="/writings/ollama-qwen-ssh-en.html">/writings/ollama-qwen-ssh-en.html</a></p>
+        </div>
+      </body>
+    </html>
