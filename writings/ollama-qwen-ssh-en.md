@@ -4,7 +4,7 @@ Running Qwen 27B on a Linux server with a 24GB NVIDIA GPU, accessed by local age
 
 All commands in this post are run on Ubuntu 24.
 
-**This post is translated from Chinese by Qwen 3.8 27B. **
+**This post is translated from Chinese by Qwen 3.8 27B.**
 
 ## Setting Up the Server and Model
 
