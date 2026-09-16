@@ -266,7 +266,7 @@ EOF
 
 ollama create qwen3.8:27b-128k -f Modelfile.qwen128k
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<p>When done, <code>qwen3.8:27b-128k</code> should be available at Ollama&#39;s default address, port <code>http://localhost:11434</code>. You can do a quick test with:</p>
+<p>When done, <code>qwen3.8:27b-128k</code> should be available at Ollama&#39;s default address <code>http://localhost:11434</code>. You can do a quick test with:</p>
 <pre><code class="language-bash">ollama run qwen3.8:27b-128k
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <h2 id="h2-using-it-from-your-local-machine">Using It from Your Local Machine</h2><h3 id="h3-setting-up-the-client-s-ssh-port-forwarding">Setting Up the Client's SSH Port Forwarding</h3><p>Ollama&#39;s API is unencrypted, so exposing it directly to the public internet is not safe. If the server has remote SSH access configured (if not, you can <a href="/writings/how-to-expose-ssh-to-the-internet-with-frp/index-zh.html">set that up first</a>), you can use SSH port forwarding to securely access the server&#39;s Ollama.</p>

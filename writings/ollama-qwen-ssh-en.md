@@ -98,7 +98,7 @@ EOF
 ollama create qwen3.8:27b-128k -f Modelfile.qwen128k
 ```
 
-When done, `qwen3.8:27b-128k` should be available at Ollama's default address, port `http://localhost:11434`. You can do a quick test with:
+When done, `qwen3.8:27b-128k` should be available at Ollama's default address `http://localhost:11434`. You can do a quick test with:
 
 ```bash
 ollama run qwen3.8:27b-128k
