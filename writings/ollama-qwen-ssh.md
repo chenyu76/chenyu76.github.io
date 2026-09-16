@@ -98,7 +98,7 @@ EOF
 ollama create qwen3.8:27b-128k -f Modelfile.qwen128k
 ```
 
-完成后，`qwen3.8:27b-128k` 应该在Ollama的默认地址 `http://localhost:11434` 端口可用。可以通过
+完成后，`qwen3.8:27b-128k` 应该在Ollama的默认地址 `http://localhost:11434` 可用。可以通过
 
 ```bash
 ollama run qwen3.8:27b-128k
