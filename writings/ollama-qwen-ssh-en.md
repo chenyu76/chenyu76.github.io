@@ -245,3 +245,4 @@ See the [DeepSeek Harness model configuration documentation](https://github.com/
 - The protocol is `openai-completions`.
 - The "API key" can be anything, e.g. `ollama` (yes, because Ollama doesn't validate the key).
 
+2026/09/16
