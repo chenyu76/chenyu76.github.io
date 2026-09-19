@@ -247,4 +247,12 @@ http://127.0.0.1:11434/v1
 - 协议是`openai-completions`
 - “API 密钥”随便填，比如`ollama`（是的，因为ollama不验证密钥）
 
+有些选项（例如图片输入）不能在GUI上配置，可以在配置文件中将对应位置改为
+
+```yml
+        - id: qwen3.8:27b-128k
+          contextWindow: 131072
+          input: [text, image]
+```
+
 2026/09/16

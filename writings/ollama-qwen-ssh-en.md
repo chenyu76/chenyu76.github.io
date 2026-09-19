@@ -245,4 +245,12 @@ See the [DeepSeek Harness model configuration documentation](https://github.com/
 - The protocol is `openai-completions`.
 - The "API key" can be anything, e.g. `ollama` (yes, because Ollama doesn't validate the key).
 
+Some options (like image input) can not be configured in GUI. Edit them in config file:
+
+```yml
+        - id: qwen3.8:27b-128k
+          contextWindow: 131072
+          input: [text, image]
+```
+
 2026/09/16

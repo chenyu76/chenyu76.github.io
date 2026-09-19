@@ -404,6 +404,11 @@ ollama create qwen3.8:27b-128k -f Modelfile.qwen128k
 <li>The protocol is <code>openai-completions</code>.</li>
 <li>The &quot;API key&quot; can be anything, e.g. <code>ollama</code> (yes, because Ollama doesn&#39;t validate the key).</li>
 </ul>
+<p>Some options (like image input) can not be configured in GUI. Edit them in config file:</p>
+<pre><code class="language-yml">        <span class="hljs-bullet">-</span> <span class="hljs-attr">id:</span> <span class="hljs-string">qwen3.8:27b-128k</span>
+          <span class="hljs-attr">contextWindow:</span> <span class="hljs-number">131072</span>
+          <span class="hljs-attr">input:</span> [<span class="hljs-string">text</span>, <span class="hljs-string">image</span>]
+</code><button class="copy-btn" title="Copy">📋</button></pre>
 </div>
             <div id="footnote">2026/09/16</div>
           </div>
