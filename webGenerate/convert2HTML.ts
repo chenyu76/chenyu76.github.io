@@ -227,9 +227,7 @@ function generateLangButtonHtml(
       data-title-en="Switch to English"
       title=""
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon">
-        <use href="#icon-language" />
-      </svg>
+      <span class="icon icon-language" aria-hidden="true"></span>
     </a>`;
   }
   if (pageType === "article" && !altLangUrl) {
@@ -246,9 +244,7 @@ function langButtonDropdownHtml(): string {
       title=""
       aria-haspopup="true"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon">
-        <use href="#icon-language" />
-      </svg>
+      <span class="icon icon-language" aria-hidden="true"></span>
     </button>
     <div class="lang-dropdown">
       <div class="lang-options">
