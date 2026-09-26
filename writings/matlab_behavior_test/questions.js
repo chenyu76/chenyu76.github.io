@@ -417,4 +417,21 @@ disp(char('HELLO' - 'A' + 'a'))
     explanation :
         `MATLAB treats characters in arithmetic operations as their standard double-precision ASCII numeric values.`
   },
+  {
+    question : `
+What is the output of the following MATLAB program?
+\`\`\`
+x = hex2num('fff8000000000000');
+bits = cell(20000, 1);
+for k = 1:20000
+    bits{k} = num2hex(-x);
+end
+disp(all(strcmp(bits, num2hex(-x))))
+\`\`\`
+`,
+    options : [ "0", "1", "Error" ],
+    answer : 0,
+    explanation :
+        `The x here is NaN. This may be due to some JIT optimizations.`
+  },
 ];
