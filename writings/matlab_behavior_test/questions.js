@@ -426,7 +426,7 @@ bits = cell(20000, 1);
 for k = 1:20000
     bits{k} = num2hex(-x);
 end
-disp(all(strcmp(bits, num2hex(-x))))
+disp(isequal(bits{:}))
 \`\`\`
 `,
     options : [ "0", "1", "Error" ],

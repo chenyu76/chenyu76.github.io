@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      document.documentElement.dataset.theme = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches
+        ? "dark"
+        : "light";
+    </script>
+    <title>42mp: Fortran to Matlab</title>
+    <script type="module" crossorigin src="./assets/index-CjS1J5Eq.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-XyEcHRo8.css">
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <h1>42mp</h1>
+        <button id="about">About</button>
+        <small>Early Preview Version</small>
+      </div>
+      <form id="options">
+        <button
+          id="theme-toggle"
+          type="button"
+          class="icon-button"
+          aria-label="Switch to dark mode"
+          title="Switch to dark mode"
+        >
+          <span class="icon icon-theme" aria-hidden="true"></span>
+        </button>
+        <details id="options-panel">
+          <summary
+            class="icon-button"
+            role="button"
+            aria-label="Settings"
+            title="Settings"
+          >
+            <span class="icon icon-settings" aria-hidden="true"></span>
+          </summary>
+          <div class="options-panel">
+            <div class="options-list">
+              <label><input name="prima" type="checkbox" /> PRIMA</label>
+              <label
+                ><input name="simplify" type="checkbox" checked />
+                Simplify</label
+              >
+              <label
+                ><input name="debug" type="checkbox" /> Debug information</label
+              >
+              <label
+                ><input name="createSetup" type="checkbox" /> Generate
+                setup.m</label
+              >
+              <label
+                ><input name="bitConsistency" type="checkbox" /> Bit
+                consistency</label
+              >
+            </div>
+            <div class="options-fields">
+              <label
+                >Output layout
+                <select name="layout">
+                  <option value="flat">Flat</option>
+                  <option value="package">Package</option>
+                </select></label
+              >
+              <fieldset id="layout-options" disabled>
+                <label
+                  >Package name<input
+                    name="packageName"
+                    type="text"
+                    value="translated"
+                    required
+                /></label>
+              </fieldset>
+              <label
+                >Column width <small>≤0 disables wrapping</small
+                ><input
+                  name="maxColumnWidth"
+                  type="number"
+                  step="1"
+                  min="-2147483648"
+                  max="2147483647"
+                  value="0"
+                  required
+              /></label>
+              <label
+                >Preamble
+                <textarea
+                  name="preamble"
+                  rows="2"
+                  spellcheck="false"
+                ></textarea>
+              </label>
+              <p id="package-note" hidden>
+                Package layout takes priority over setup.m.
+              </p>
+            </div>
+          </div>
+        </details>
+      </form>
+      <button
+        id="open-file"
+        class="icon-button"
+        aria-label="Open file"
+        title="Open file"
+      >
+        <span class="icon icon-upload-file" aria-hidden="true"></span>
+      </button>
+      <button
+        id="open-directory"
+        class="icon-button"
+        aria-label="Open folder"
+        title="Open folder"
+      >
+        <span class="icon icon-upload-folder" aria-hidden="true"></span>
+      </button>
+      <input
+        id="file-picker"
+        type="file"
+        accept=".f,.f90,.f95,.f03,.f08,.for,.f77"
+        hidden
+      />
+      <input
+        id="directory-picker"
+        type="file"
+        webkitdirectory
+        multiple
+        hidden
+      />
+    </header>
+    <pre id="error" role="alert" hidden></pre>
+    <main>
+      <section aria-label="Fortran input">
+        <div class="pane-heading">
+          <h2>Fortran</h2>
+          <span id="source-path">main.f90</span>
+          <label class="toggle"
+            ><input id="auto-translate" type="checkbox" checked /> Auto
+            translate</label
+          ><button
+            id="translate"
+            class="icon-button"
+            aria-label="Convert"
+            title="Convert"
+            disabled
+            hidden
+          >
+            <span class="icon icon-convert" aria-hidden="true"></span></button
+          ><span id="status" role="status" aria-live="polite"></span>
+        </div>
+        <div class="pane-body">
+          <nav id="source-tree" aria-label="Source files"></nav>
+          <div class="editor">
+            <pre id="source-highlight" aria-hidden="true"></pre>
+            <textarea
+              id="source"
+              aria-label="Fortran source"
+              spellcheck="false"
+              autocapitalize="off"
+              wrap="off"
+            ></textarea>
+          </div>
+        </div>
+      </section>
+      <section aria-label="MATLAB output">
+        <div class="pane-heading" id="output-heading">
+          <h2>MATLAB</h2>
+          <span id="output-path"></span
+          ><button
+            id="save"
+            class="icon-button"
+            aria-label="Save"
+            title="Save"
+            disabled
+          >
+            <span class="icon icon-save" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="pane-body">
+          <nav id="output-tree" aria-label="Output files"></nav>
+          <div class="editor" id="output-editor">
+            <pre id="output-highlight" aria-hidden="true"></pre>
+            <pre id="output" tabindex="0" aria-label="Translated output"></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+    <dialog id="about-dialog" aria-labelledby="about-title">
+      <h2 id="about-title">About</h2>
+      <p>
+        42mp: Fortran to Matlab for PRIMA. This web interface runs locally
+        on your machine.
+      </p>
+      <p>
+        Edit the Fortran on the left and the matching MATLAB appears on the
+        right.
+      </p>
+      <h3>Source</h3>
+      <p>
+        <a href="https://github.com/chenyu76/42mp"
+          >github.com/chenyu76/42mp</a
+        >
+      </p>
+      <h3>Libraries used here</h3>
+      <p>Thanks to the developers of the following projects.</p>
+      <ul>
+        <li>
+          <a href="https://github.com/101arrowz/fflate">fflate</a>: builds the
+          ZIP archive for downloads.
+        </li>
+        <li>
+          <a href="https://github.com/catppuccin/catppuccin">Catppuccin</a>:
+          interface and syntax-highlighting colours.
+        </li>
+        <li>
+          <a href="https://github.com/bjorn3/browser_wasi_shim"
+            >browser_wasi_shim</a
+          >: provides the WASI environment the compiled translator starts in.
+        </li>
+        <li>
+          <a href="https://fonts.google.com/icons"
+            >Google Fonts / Material Symbols</a
+          >, licensed under
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>.
+        </li>
+        <li>
+          Besides, the haskell code is based on lots of Haskell packages, listed
+          in
+          <a href="https://github.com/chenyu76/42mp/blob/main/42mp.cabal"
+            >the cabal file</a
+          >.
+        </li>
+      </ul>
+      <form method="dialog"><button>Close</button></form>
+    </dialog>
+  </body>
+</html>
