@@ -751,6 +751,10 @@ td {
   cursor: pointer;
 }
 
+.lang-toggle {
+  box-shadow: none;
+}
+
 .lang-options {
   display: flex;
   flex-direction: column;
