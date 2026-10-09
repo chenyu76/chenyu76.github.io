@@ -249,10 +249,6 @@ function langButtonDropdownHtml(): string {
     <div class="lang-dropdown">
       <div class="lang-options">
         <label class="lang-option">
-          <input type="radio" value="auto" class="lang-radio" />
-          <span>${UI.follow_system.zh} / ${UI.follow_system.en}</span>
-        </label>
-        <label class="lang-option">
           <input type="radio" value="zh" class="lang-radio" />
           <span>${UI.chinese.zh}</span>
         </label>

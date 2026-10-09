@@ -27,14 +27,15 @@ const langJs = html`
       return "auto";
     }
 
+    function getSystemLang() {
+      const language = navigator.languages?.[0] || navigator.language || "";
+      return language.toLowerCase().split(/[-_]/)[0];
+    }
+
     function getEffectiveLang() {
       const lang = getLang();
       if (lang === "auto") {
-        return navigator.languages
-          ?.find((l) => l.startsWith("zh"))
-          ?.startsWith("zh") || navigator.language?.startsWith("zh")
-          ? "zh"
-          : "en";
+        return getSystemLang() === "zh" ? "zh" : "en";
       }
       return lang;
     }
@@ -46,7 +47,6 @@ const langJs = html`
     }
 
     function applyLanguage() {
-      const mode = getLang();
       const elang = getEffectiveLang();
       const showBoth = getShowBoth();
 
@@ -67,7 +67,7 @@ const langJs = html`
       updateNavLinks(elang);
 
       document.querySelectorAll(".lang-radio").forEach((r) => {
-        r.checked = r.value === getLang();
+        r.checked = r.value === elang;
       });
 
       document.querySelectorAll(".lang-show-both").forEach((cb) => {
@@ -119,13 +119,10 @@ const langJs = html`
       });
 
       document.querySelectorAll(".lang-radio").forEach((radio) => {
-        radio.addEventListener("change", (e) => {
+        radio.addEventListener("click", (e) => {
           if (!e.target.checked) return;
           const val = e.target.value;
-          document.querySelectorAll(".lang-radio").forEach((r) => {
-            r.checked = r.value === val;
-          });
-          localStorage.setItem(LANG_KEY, val);
+          localStorage.setItem(LANG_KEY, val === getSystemLang() ? "auto" : val);
           applyLanguage();
         });
       });
@@ -149,6 +146,10 @@ const langJs = html`
           closeAllLangDropdowns();
         }
       });
+    });
+
+    window.addEventListener("languagechange", () => {
+      if (getLang() === "auto") applyLanguage();
     });
   </script>
 `;
