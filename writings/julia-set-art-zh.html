@@ -142,7 +142,7 @@
 <p>本页面内容由tex转换而来，但看上去显示问题似乎多多，更推荐阅读此<a href="/writings/julia-set.pdf">PDF版本</a></p>
 <p><img src="/img/mandelbrot_trans_axis.png" alt="Mandelbrot集"></p>
 <p><img src="/img/julia_-0.77+0.1i_1000_1080p.png" alt="julia_-0.77+0.1i_1000_1080p_Rainbow_z(0.6,0)_1.png"></p>
-<h1 id="h1-dong-li-xi-tong-yujuliaji">动力系统与Julia集</h1><p>在数学中，动力系统是一个重要的研究领域，关注系统状态随时间变化的行为。动力系统可以理解为一条规则，系统的每个状态会在这条规则下发生变化。通过不断重复这个规则，我们可以揭示系统内部潜在的模式和结构。当这一思想应用于复数平面时，就进入了一个充满几何美感的领域，即复动力系统。而在复动力系统中，Julia
+<h1 id="h1-dong-li-xi-tong-yu-julia-ji">动力系统与Julia集</h1><p>在数学中，动力系统是一个重要的研究领域，关注系统状态随时间变化的行为。动力系统可以理解为一条规则，系统的每个状态会在这条规则下发生变化。通过不断重复这个规则，我们可以揭示系统内部潜在的模式和结构。当这一思想应用于复数平面时，就进入了一个充满几何美感的领域，即复动力系统。而在复动力系统中，Julia
 集、Fatou 集 和 Mandelbrot 集
 是三个经典的研究对象，它们为我们展示了复平面上的一个简单结构居然能生成无比复杂的结构与迷人的图形。</p>
 <h2 id="h2-dong-li-xi-tong-yu-fu-ping-mian">动力系统与复平面</h2><p>在复动力系统中，我们通常研究一个复变量的映射 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(z)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.044em;">z</span><span class="mclose">)</span></span></span></span>，它将复数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.044em;">z</span></span></span></span>
@@ -231,7 +231,7 @@ Mandelbrot 集为复平面上所有使得初始值 <span class="katex"><span cla
 值生成的 Julia 集的连通性信息。Mandelbrot
 集的形状独特，具有复杂的边界和丰富的分形结构，与 Julia
 集一样展示出自相似性。</p>
-<h1 id="h1-juliaji-de-ji-suan-ji-hui-zhi">Julia集的计算机绘制</h1><h2 id="h2-li-lun-ji-chu">理论基础</h2><p>借助计算机，我们可以对复平面上的每个点逐一进行迭代，判断它们是否发散，并将这些信息以颜色表示出来，生成
+<h1 id="h1-julia-ji-de-ji-suan-ji-hui-zhi">Julia集的计算机绘制</h1><h2 id="h2-li-lun-ji-chu">理论基础</h2><p>借助计算机，我们可以对复平面上的每个点逐一进行迭代，判断它们是否发散，并将这些信息以颜色表示出来，生成
 Julia 集的图像。 使我们得以直观感受到这一分形世界的无限美感。</p>
 <p>我们需要以下定理来保证绘图的准确性。</p>
 <p>::: {#判断法 .theorem}
@@ -279,7 +279,7 @@ Julia 集的图像。 使我们得以直观感受到这一分形世界的无限�
 <li>根据数据的特点和展示需求，设计一个颜色梯度。例如，从冷到热、从低到高、从浅到深等。常见的颜色梯度包括蓝色到红色、绿色到黄色等。这些渐变色可以帮助人们快速识别数据中的趋势和异常。</li>
 <li>为了增强颜色的表现力，颜色映射函数常将数值范围划分为多个区间，每个区间内定义不同的颜色过渡方式。这种分段过渡使得颜色变化更加平滑和连贯，同时也能突出特定区间内的数据特征。</li>
 </ul>
-<h3 id="h3-yi-ge-jing-dian-de-yan-se-ying-shejet">一个经典的颜色映射Jet</h3><p>Jet颜色映射是一种广泛应用于科学数据可视化的彩虹色谱映射函数，最初由MATLAB引入。它将标量数据值映射到从蓝色到红色的连续颜色梯度，具体颜色顺序通常为蓝色、青色、绿色、黄色和红色。Jet颜色映射因其直观的色彩过渡和高对比度，常用于显示温度分布、地形高度、流场等数据。然而，值得注意的是，Jet映射并非感知上均匀的色彩映射，可能会引入视觉伪影或误导性的信息，因此在某些应用中需谨慎使用。</p>
+<h3 id="h3-yi-ge-jing-dian-de-yan-se-ying-she-jet">一个经典的颜色映射Jet</h3><p>Jet颜色映射是一种广泛应用于科学数据可视化的彩虹色谱映射函数，最初由MATLAB引入。它将标量数据值映射到从蓝色到红色的连续颜色梯度，具体颜色顺序通常为蓝色、青色、绿色、黄色和红色。Jet颜色映射因其直观的色彩过渡和高对比度，常用于显示温度分布、地形高度、流场等数据。然而，值得注意的是，Jet映射并非感知上均匀的色彩映射，可能会引入视觉伪影或误导性的信息，因此在某些应用中需谨慎使用。</p>
 <p>Jet颜色映射函数通常定义在闭区间 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0, 1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span> 上，将输入标量 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span></span></span></span>
 映射到RGB颜色空间中的红色（R）、绿色（G）和蓝色（B）分量。</p>
 <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mo fence="true">[</mo><mtable rowspacing="0.16em" columnalign="center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>R</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>G</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>B</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow><mo>=</mo><mrow><mo fence="true">[</mo><mtable rowspacing="0.16em" columnalign="center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>clamp</mtext><mo stretchy="false">(</mo><mn>1.5</mn><mo>−</mo><mi mathvariant="normal">∣</mi><mn>4</mn><mi>t</mi><mo>−</mo><mn>3</mn><mi mathvariant="normal">∣</mi><mo separator="true">,</mo><mtext> </mtext><mn>0</mn><mo separator="true">,</mo><mtext> </mtext><mn>1</mn><mo stretchy="false">)</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>clamp</mtext><mo stretchy="false">(</mo><mn>1.5</mn><mo>−</mo><mi mathvariant="normal">∣</mi><mn>4</mn><mi>t</mi><mo>−</mo><mn>2</mn><mi mathvariant="normal">∣</mi><mo separator="true">,</mo><mtext> </mtext><mn>0</mn><mo separator="true">,</mo><mtext> </mtext><mn>1</mn><mo stretchy="false">)</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>clamp</mtext><mo stretchy="false">(</mo><mn>1.5</mn><mo>−</mo><mi mathvariant="normal">∣</mi><mn>4</mn><mi>t</mi><mo>−</mo><mn>1</mn><mi mathvariant="normal">∣</mi><mo separator="true">,</mo><mtext> </mtext><mn>0</mn><mo separator="true">,</mo><mtext> </mtext><mn>1</mn><mo stretchy="false">)</mo></mrow></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{bmatrix}
@@ -327,7 +327,7 @@ M347 1759 V0 H263 V1759 v0 v1759 h84z"/></svg></span></span></span><span class="
             </div>
             <div id="toc-content"><div class="toc">
     <ul></ul>
-  </div> <li><a href="#h1-dong-li-xi-tong-yujuliaji">动力系统与Julia集</a></li>
+  </div> <li><a href="#h1-dong-li-xi-tong-yu-julia-ji">动力系统与Julia集</a></li>
 <ul>
 <li><a href="#h2-dong-li-xi-tong-yu-fu-ping-mian">动力系统与复平面</a></li>
 <li><a href="#h2-gaston-julia-he-beno-t-mandelbrot-de-yan-jiu">Gaston Julia 和 Benoît Mandelbrot 的研究</a></li>
@@ -339,13 +339,13 @@ M347 1759 V0 H263 V1759 v0 v1759 h84z"/></svg></span></span></span><span class="
 </ul>
 <li><a href="#h2-mandelbrot-ji-ta-yu-julia-ji-de-guan-xi">Mandelbrot 集，它与 Julia 集的关系</a></li>
 </ul>
-<li><a href="#h1-juliaji-de-ji-suan-ji-hui-zhi">Julia集的计算机绘制</a></li>
+<li><a href="#h1-julia-ji-de-ji-suan-ji-hui-zhi">Julia集的计算机绘制</a></li>
 <ul>
 <li><a href="#h2-li-lun-ji-chu">理论基础</a></li>
 <li><a href="#h2-ji-suan-ji-hui-zhi-luo-ji">计算机绘制逻辑</a></li>
 <li><a href="#h2-wei-sheng-cheng-de-tu-xiang-zhuo-se">为生成的图像着色</a></li>
 <ul>
-<li><a href="#h3-yi-ge-jing-dian-de-yan-se-ying-shejet">一个经典的颜色映射Jet</a></li>
+<li><a href="#h3-yi-ge-jing-dian-de-yan-se-ying-she-jet">一个经典的颜色映射Jet</a></li>
 </ul>
 </ul>
 </ul>

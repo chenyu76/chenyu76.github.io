@@ -207,7 +207,7 @@ ollama create qwen3.8:27b-128k -f Modelfile.qwen128k
 <pre><code class="language-bash">ollama run qwen3.8:27b-128k
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>快速测试。</p>
-<h2 id="h2-zai-ben-di-dian-nao-shang-shi-yong">在本地电脑上使用</h2><h3 id="h3-pei-zhi-ke-hu-duan-desshduan-kou-zhuan-fa">配置客户端的SSH端口转发</h3><p>Ollama提供的接口没有加密，直接将其暴露在公网并不安全。如果服务器配置了远程SSH访问（如果没有，可以参考<a href="/writings/how-to-expose-ssh-to-the-internet-with-frp/index-zh.html">这里配置</a>），就可以使用SSH的端口转发功能，安全地接入服务器的Ollama。</p>
+<h2 id="h2-zai-ben-di-dian-nao-shang-shi-yong">在本地电脑上使用</h2><h3 id="h3-pei-zhi-ke-hu-duan-de-ssh-duan-kou-zhuan-fa">配置客户端的SSH端口转发</h3><p>Ollama提供的接口没有加密，直接将其暴露在公网并不安全。如果服务器配置了远程SSH访问（如果没有，可以参考<a href="/writings/how-to-expose-ssh-to-the-internet-with-frp/index-zh.html">这里配置</a>），就可以使用SSH的端口转发功能，安全地接入服务器的Ollama。</p>
 <p>在本地电脑上运行下面命令便可将服务器的11434端口上的服务转发到本地的11435端口。如果11435端口被占用可以随便换一个端口。</p>
 <pre><code class="language-bash">ssh -N \
   -L 127.0.0.1:11435:127.0.0.1:11434 \
@@ -381,7 +381,7 @@ ollama create qwen3.8:27b-128k -f Modelfile.qwen128k
 </ul>
 <li><a href="#h2-zai-ben-di-dian-nao-shang-shi-yong">在本地电脑上使用</a></li>
 <ul>
-<li><a href="#h3-pei-zhi-ke-hu-duan-desshduan-kou-zhuan-fa">配置客户端的SSH端口转发</a></li>
+<li><a href="#h3-pei-zhi-ke-hu-duan-de-ssh-duan-kou-zhuan-fa">配置客户端的SSH端口转发</a></li>
 <ul>
 <li><a href="#h4-bao-cun-pei-zhi">保存配置</a></li>
 </ul>

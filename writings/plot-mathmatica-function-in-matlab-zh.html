@@ -135,7 +135,7 @@
 <p>给wxf写的</p>
 </blockquote>
 <p>当然你也可以直接使用Mathematica画图，但那样会比较慢，见<a href="/quick-references/mathematica/jet-colormap.html">此处</a></p>
-<h2 id="h2-jiangmathematica-cheng-xu-dao-chu-daomatlab">将Mathematica 程序导出到Matlab</h2><p>你可以用很多种方法导出，我写了个简陋的脚本，粘到程序里就行：</p>
+<h2 id="h2-jiang-mathematica-cheng-xu-dao-chu-dao-matlab">将Mathematica 程序导出到Matlab</h2><p>你可以用很多种方法导出，我写了个简陋的脚本，粘到程序里就行：</p>
 <pre><code class="language-Mathematica"><span class="hljs-built_in">SetDirectory</span><span class="hljs-punctuation">[</span><span class="hljs-built_in">NotebookDirectory</span><span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">]</span><span class="hljs-operator">;</span>
 <span class="hljs-variable">ToMATLAB</span><span class="hljs-punctuation">[</span><span class="hljs-type">f_</span><span class="hljs-operator">,</span> <span class="hljs-type">name_</span><span class="hljs-punctuation">]</span> <span class="hljs-operator">:=</span> 
   <span class="hljs-built_in">Export</span><span class="hljs-punctuation">[</span><span class="hljs-variable">name</span> <span class="hljs-operator">&lt;&gt;</span> <span class="hljs-string">&quot;.m&quot;</span><span class="hljs-operator">,</span> 

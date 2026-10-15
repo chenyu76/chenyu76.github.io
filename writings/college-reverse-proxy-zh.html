@@ -283,7 +283,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <td>WireGuard（作为客户端）</td>
 </tr>
 </tbody></table>
-<h3 id="h3-pei-zhiservershang-defrps">配置server上的frps</h3><div class="markdown-alert markdown-alert-note">
+<h3 id="h3-pei-zhi-server-shang-de-frps">配置server上的frps</h3><div class="markdown-alert markdown-alert-note">
 <p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
 <p>如果没有，使用例如<a href="https://www.natfrp.com/">SAKURA FRP</a>的网络服务商替代时，可以直接跳过这一步，并直接参照<a href="https://doc.natfrp.com/app/http.html">它们的教程</a>配置。</p>
 </div>
@@ -296,7 +296,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <p>这里的“加密口令”可以是你自定义的任意文本</p>
 <h4 id="h4-3-qi-dong-fu-wu-duan">3. 启动服务端</h4><pre><code class="language-bash">./frps -c ./frps.toml
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h3 id="h3-pei-zhiclientshang-defrpc">配置client上的frpc</h3><p>现在回到宿舍里的client，我们要告诉它如何找到外面的服务器。</p>
+<h3 id="h3-pei-zhi-client-shang-de-frpc">配置client上的frpc</h3><p>现在回到宿舍里的client，我们要告诉它如何找到外面的服务器。</p>
 <div class="markdown-alert markdown-alert-note">
 <p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
 <p>如果使用<a href="https://www.natfrp.com/">SAKURA FRP</a>，他们fork并修改了frpc，使其支持通过命令行的<code>-f</code>参数直接启动而不用编写配置文件，你可以在<a href="https://www.natfrp.com/tunnel/download">这里</a>下载并参照他们的教程运行。</p>
@@ -392,7 +392,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
 <p>请务必修改配置文件其中的<code>&lt;Client的私钥&gt;</code>和<code>&lt;User的公钥&gt;</code>为实际密钥；修改<code>&lt;frp服务器公网IP&gt;:&lt;frp映射后的UDP端口&gt;</code>为实际地址和端口。</p>
 </div>
-<h4 id="h4-6-qi-dongwireguard">6. 启动WireGuard</h4><p>配置完成后，在 Client 执行</p>
+<h4 id="h4-6-qi-dong-wireguard">6. 启动WireGuard</h4><p>配置完成后，在 Client 执行</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> wg-quick up wg0
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>启动WireGuard服务。</p>
@@ -408,11 +408,11 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <h3 id="h3-pei-zhi-ge-ge-fu-wu-de-zi-qi-dong">配置各个服务的自启动</h3><p>我们需要配置frps, frpc, WireGuard三个服务的自动启动，让他们在开机或意外退出后可以自动重新启动。</p>
 <p>下面以frpc为例说明如何配置，其他服务是类似的。</p>
 <p>在 Linux 系统里，<a href="https://en.wikipedia.org/wiki/Systemd"><code>systemd</code></a> 就像是一个大管家，我们可以写一张“任务清单”交给它，让它负责 <code>frpc</code> 的日常维护。</p>
-<h4 id="h4-1-chuang-jianservice-wen-jian">1. 创建Service 文件</h4><p>我们需要在系统中新建一个服务文件。请在终端输入：</p>
+<h4 id="h4-1-chuang-jian-service-wen-jian">1. 创建Service 文件</h4><p>我们需要在系统中新建一个服务文件。请在终端输入：</p>
 <pre><code class="language-bash"><span class="hljs-built_in">sudo</span> nano /etc/systemd/system/frpc.service
 </code><button class="copy-btn" title="Copy">📋</button></pre>
 <p>以创建<code>/etc/systemd/system/frpc.service</code>文件并编辑。</p>
-<h4 id="h4-2-gao-susystemdgai-zuo-shen-me">2. 告诉systemd该做什么</h4><p>在打开的空白编辑器里，粘贴下面这段内容：</p>
+<h4 id="h4-2-gao-su-systemd-gai-zuo-shen-me">2. 告诉systemd该做什么</h4><p>在打开的空白编辑器里，粘贴下面这段内容：</p>
 <pre><code class="language-ini"><span class="hljs-section">[Unit]</span>
 <span class="hljs-attr">Description</span>=frp client for campus network
 <span class="hljs-attr">After</span>=network.target
@@ -836,13 +836,13 @@ INTERVAL=300
 </ul>
 <li><a href="#h2-wo-men-yao-zen-me-zuo">我们要怎么做</a></li>
 <ul>
-<li><a href="#h3-pei-zhiservershang-defrps">配置server上的frps</a></li>
+<li><a href="#h3-pei-zhi-server-shang-de-frps">配置server上的frps</a></li>
 <ul>
 <li><a href="#h4-1-xia-zai-frp">1. 下载 frp</a></li>
 <li><a href="#h4-2-bian-xie-pei-zhi-wen-jian">2. 编写配置文件</a></li>
 <li><a href="#h4-3-qi-dong-fu-wu-duan">3. 启动服务端</a></li>
 </ul>
-<li><a href="#h3-pei-zhiclientshang-defrpc">配置client上的frpc</a></li>
+<li><a href="#h3-pei-zhi-client-shang-de-frpc">配置client上的frpc</a></li>
 <ul>
 <li><a href="#h4-1-bian-xie-pei-zhi-wen-jian">1. 编写配置文件</a></li>
 <li><a href="#h4-2-qi-dong-ke-hu-duan">2. 启动客户端</a></li>
@@ -854,12 +854,12 @@ INTERVAL=300
 <li><a href="#h4-3-sheng-cheng-mi-yao-dui">3. 生成密钥对</a></li>
 <li><a href="#h4-4-pei-zhi-client-duan-nei-wang-fu-wu-qi">4. 配置 Client 端 (内网服务器)</a></li>
 <li><a href="#h4-5-pei-zhi-user-duan-yong-hu-dian-nao">5. 配置 User 端 (用户电脑)</a></li>
-<li><a href="#h4-6-qi-dongwireguard">6. 启动WireGuard</a></li>
+<li><a href="#h4-6-qi-dong-wireguard">6. 启动WireGuard</a></li>
 </ul>
 <li><a href="#h3-pei-zhi-ge-ge-fu-wu-de-zi-qi-dong">配置各个服务的自启动</a></li>
 <ul>
-<li><a href="#h4-1-chuang-jianservice-wen-jian">1. 创建Service 文件</a></li>
-<li><a href="#h4-2-gao-susystemdgai-zuo-shen-me">2. 告诉systemd该做什么</a></li>
+<li><a href="#h4-1-chuang-jian-service-wen-jian">1. 创建Service 文件</a></li>
+<li><a href="#h4-2-gao-su-systemd-gai-zuo-shen-me">2. 告诉systemd该做什么</a></li>
 <li><a href="#h4-3-rang-qing-dan-zheng-shi-sheng-xiao">3. 让清单正式生效</a></li>
 <li><a href="#h4-4-jian-cha-fu-wu-zhuang-tai">4. 检查服务状态</a></li>
 </ul>

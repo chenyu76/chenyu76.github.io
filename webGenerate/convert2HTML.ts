@@ -186,7 +186,7 @@ export function convertMarkdown(inputPath: string): {
   const renderer = new marked.Renderer();
   function createSlug(str: string) {
     const transliterated = str.replace(/[\u3400-\u9fff]+/g, (text) =>
-      pinyin(text, { toneType: "none" }),
+      `-${pinyin(text, { toneType: "none" })}-`,
     );
 
     return transliterated

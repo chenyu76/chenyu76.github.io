@@ -296,7 +296,7 @@ scp -P 6000 ./test.txt &lt;用户名&gt;@&lt;IP&gt;:~/
 <li>系统解耦： 即使 Workstation 意外崩溃或重启，Client 的隧道依然在线。</li>
 </ul>
 <h3 id="h3-yun-fu-wu-qi-de-fang-wen-kong-zhi">云服务器的访问控制</h3><p>部分租赁的云服务器须在服务器设置中手动放行使用的端口，否则外部流量会被云服务商的防火墙拦截。</p>
-<h3 id="h3-xian-cheng-defrpfu-wu-shang">现成的frp服务商</h3><p>互联网上有许多内网穿透服务提供商，使用他们的服务往往比单独购入一个云服务器的性价比高很多，并且可能具有更方便的配置流程。</p>
+<h3 id="h3-xian-cheng-de-frp-fu-wu-shang">现成的frp服务商</h3><p>互联网上有许多内网穿透服务提供商，使用他们的服务往往比单独购入一个云服务器的性价比高很多，并且可能具有更方便的配置流程。</p>
 <p>笔者目前使用的是<a href="https://www.natfrp.com/">Sakura frp</a>（我没有收他们的广告费），他们的教程可以在<a href="https://doc.natfrp.com/">这里</a>查看。
 使用他们的服务可以省去配置frps的步骤。</p>
 <h3 id="h3-tong-shi-chuan-tou-xu-duo-fu-wu">同时穿透许多服务</h3><p>如果除了远程SSH外，还需要访问别的服务，可以考虑直接<a href="https://chenyu76.github.io/writings/college-reverse-proxy.html">穿透一个VPN</a>。</p>
@@ -340,7 +340,7 @@ scp -P 6000 ./test.txt &lt;用户名&gt;@&lt;IP&gt;:~/
 <ul>
 <li><a href="#h3-client-fei-bi-xu">Client 非必须</a></li>
 <li><a href="#h3-yun-fu-wu-qi-de-fang-wen-kong-zhi">云服务器的访问控制</a></li>
-<li><a href="#h3-xian-cheng-defrpfu-wu-shang">现成的frp服务商</a></li>
+<li><a href="#h3-xian-cheng-de-frp-fu-wu-shang">现成的frp服务商</a></li>
 <li><a href="#h3-tong-shi-chuan-tou-xu-duo-fu-wu">同时穿透许多服务</a></li>
 </ul>
 </ul>

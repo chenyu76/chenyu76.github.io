@@ -283,19 +283,19 @@
 <li>支持列格式修饰符：<br><code>&gt;{\raggedright}</code> 左对齐 | <code>&gt;{\centering}</code> 居中 | <code>&gt;{\raggedleft}</code> 右对齐</li>
 </ul>
 <hr>
-<h2 id="h2-quan-ju-zeng-da-biao-ge-hang-ju">全局增大表格行距</h2><h3 id="h3-fang-fa1-tiao-zheng-hang-gao-xi-shu">方法1：调整行高系数</h3><pre><code class="language-latex"><span class="hljs-keyword">\renewcommand</span>{<span class="hljs-keyword">\arraystretch</span>}{1.5} <span class="hljs-comment">% 默认1.0，1.5为1.5倍行距</span>
+<h2 id="h2-quan-ju-zeng-da-biao-ge-hang-ju">全局增大表格行距</h2><h3 id="h3-fang-fa-1-tiao-zheng-hang-gao-xi-shu">方法1：调整行高系数</h3><pre><code class="language-latex"><span class="hljs-keyword">\renewcommand</span>{<span class="hljs-keyword">\arraystretch</span>}{1.5} <span class="hljs-comment">% 默认1.0，1.5为1.5倍行距</span>
 <span class="hljs-keyword">\begin</span>{tabular}{ccc}
   ...
 <span class="hljs-keyword">\end</span>{tabular}
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h3 id="h3-fang-fa2-makecell-hong-bao">方法2：`makecell` 宏包</h3><pre><code class="language-latex"><span class="hljs-keyword">\usepackage</span>{makecell}
+<h3 id="h3-fang-fa-2-makecell-hong-bao">方法2：`makecell` 宏包</h3><pre><code class="language-latex"><span class="hljs-keyword">\usepackage</span>{makecell}
 <span class="hljs-keyword">\setcellgapes</span>{4pt}   <span class="hljs-comment">% 设置单元格间距</span>
 <span class="hljs-keyword">\makegapedcells</span>      <span class="hljs-comment">% 应用间距设置</span>
 <span class="hljs-keyword">\begin</span>{tabular}{ccc}
   ...
 <span class="hljs-keyword">\end</span>{tabular}
 </code><button class="copy-btn" title="Copy">📋</button></pre>
-<h3 id="h3-fang-fa3-setspace-hong-bao-ying-xiang-zheng-ge-wen-dang">方法3：`setspace` 宏包（影响整个文档）</h3><pre><code class="language-latex"><span class="hljs-keyword">\usepackage</span>{setspace}
+<h3 id="h3-fang-fa-3-setspace-hong-bao-ying-xiang-zheng-ge-wen-dang">方法3：`setspace` 宏包（影响整个文档）</h3><pre><code class="language-latex"><span class="hljs-keyword">\usepackage</span>{setspace}
 <span class="hljs-keyword">\onehalfspacing</span>      <span class="hljs-comment">% 1.5倍行距</span>
 <span class="hljs-keyword">\doublespacing</span>       <span class="hljs-comment">% 2倍行距</span>
 </code><button class="copy-btn" title="Copy">📋</button></pre>
@@ -342,9 +342,9 @@
 <li><a href="#h2-tabularx-zhi-neng-biao-ge">`tabularx` 智能表格</a></li>
 <li><a href="#h2-quan-ju-zeng-da-biao-ge-hang-ju">全局增大表格行距</a></li>
 <ul>
-<li><a href="#h3-fang-fa1-tiao-zheng-hang-gao-xi-shu">方法1：调整行高系数</a></li>
-<li><a href="#h3-fang-fa2-makecell-hong-bao">方法2：`makecell` 宏包</a></li>
-<li><a href="#h3-fang-fa3-setspace-hong-bao-ying-xiang-zheng-ge-wen-dang">方法3：`setspace` 宏包（影响整个文档）</a></li>
+<li><a href="#h3-fang-fa-1-tiao-zheng-hang-gao-xi-shu">方法1：调整行高系数</a></li>
+<li><a href="#h3-fang-fa-2-makecell-hong-bao">方法2：`makecell` 宏包</a></li>
+<li><a href="#h3-fang-fa-3-setspace-hong-bao-ying-xiang-zheng-ge-wen-dang">方法3：`setspace` 宏包（影响整个文档）</a></li>
 </ul>
 </ul>
 </ul>

@@ -37,7 +37,7 @@ echo "=== Processing ATRI ==="
 python gif2js.py atri.gif gif_matrix.js
 
 echo "=== Build scripts.js ==="
-FILES="character.js gif_matrix.js glyph_data.js land.js main.js pampas_grass.js pixel_text_renderer.js sky_element.js"
+FILES="character.js gif_matrix.js glyph_data.js land.js main.js pampas_grass.js pixel_text_renderer.js sky_element.js page_background.js"
 
 if [ "$1" = "--debug" ]; then
   echo "    debug mode: concatenating files"
