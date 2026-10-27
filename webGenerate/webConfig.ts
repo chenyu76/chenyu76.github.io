@@ -45,12 +45,21 @@ export type RecommendItem =
  * 如果不指定，会尝试从md文件最后一行读出来
  *
  * title / info:
- * 单语言快捷字段（向后兼容）。如果无 _zh/_en 后缀字段，detectLanguage() 自动判定语言
+ * 单语言快捷字段。通过 detectLanguage() 判定语言
  *
  * title_zh / title_en / info_zh / info_en:
  * 双语显式字段。有 title_zh → 该卡片有中文版；有 title_en → 该卡片有英文版
  */
 export const recommend: RecommendItem[] = [
+  {
+    link: "https://github.com/chenyu76/ascii2tikz/",
+    date: 20261027,
+    title_zh: "ASCII to TikZ",
+    title_en: "ASCII to TikZ",
+    info_en:
+      "(Github repo) Quickly draw simple TikZ graph using ASCII diagram.",
+    info_zh: "（GitHub 仓库）用ASCII快速绘制简单TikZ图",
+  },
   {
     link: "writings/solver-preview",
     date: 20260909,
