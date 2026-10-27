@@ -1,25 +1,58 @@
 export type Lang = "zh" | "en";
 
-export function detectLanguage(content: string): Lang {
-  let total = 0;
-  let chinese = 0;
-  for (const ch of content) {
-    const cp = ch.codePointAt(0)!;
-    if (cp <= 0x7f) {
-      total++;
-      continue;
-    }
-    if (
-      (cp >= 0x4e00 && cp <= 0x9fff) ||
-      (cp >= 0x3400 && cp <= 0x4dbf) ||
-      (cp >= 0xf900 && cp <= 0xfaff)
-    ) {
-      chinese++;
-    }
-    total++;
+export function detectLanguage(content: string, fallback: Lang = "zh"): Lang {
+  if (!content) return fallback;
+
+  const text = stripNoise(content);
+
+  const han = (text.match(/\p{Script=Han}/gu) || []).length;
+  const kana = (text.match(/[\p{Script=Hiragana}\p{Script=Katakana}]/gu) || [])
+    .length;
+  const hangul = (text.match(/\p{Script=Hangul}/gu) || []).length;
+  const latinWords = (text.match(/[\p{Script=Latin}]+/gu) || []).length;
+
+  const zhUnits = han + kana + hangul;
+
+  // 没有任何有效文字（纯符号 / emoji / 空文档）
+  if (zhUnits + latinWords === 0) return fallback;
+  // 完全没有东亚文字 → 英文
+  if (zhUnits === 0) return "en";
+
+  // 用"东亚字符数" vs "英文单词数"作为对比
+  const ratio = zhUnits / (zhUnits + latinWords);
+
+  // 中文占比够高 → 中文
+  if (ratio >= 0.35) return "zh";
+  // 中文占比被英文稀释，但绝对量不小（比如短标题「学习 React Hooks」）→ 仍判中文
+  if (han >= 5 && ratio >= 0.2) return "zh";
+
+  return "en";
+
+  /** 剥掉代码 / URL / Markdown 语法等噪声，只留下真正的"文字" */
+  function stripNoise(input: string): string {
+    return (
+      input
+        // fenced code block（成对）
+        .replace(/^[ \t]*```[\s\S]*?^[ \t]*```/gm, " ")
+        .replace(/^[ \t]*~~~[\s\S]*?^[ \t]*~~~/gm, " ")
+        // 未闭合的 fenced code（流式渲染常见）直接丢到末尾
+        .replace(/^[ \t]*```[\s\S]*$/gm, " ")
+        .replace(/^[ \t]*~~~[\s\S]*$/gm, " ")
+        // 行内代码
+        .replace(/`[^`\n]*`/g, " ")
+        // HTML 注释 / 标签
+        .replace(/<!--[\s\S]*?-->/g, " ")
+        .replace(/<[^>]*>/g, " ")
+        // Markdown 图片 / 链接：[text](url) -> text
+        .replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1")
+        // 裸 URL
+        .replace(/https?:\/\/\S+/g, " ")
+        // 行首结构符号（标题、引用、列表、分隔线等）
+        .replace(/^[\s>#+*\-=~]+/gm, " ")
+        // 强调 / 删除线符号
+        .replace(/[*_~`]+/g, " ")
+    );
   }
-  if (total === 0) return "zh";
-  return chinese / total >= 0.1 ? "zh" : "en";
 }
 
 const DIR_TRANSLATIONS: Record<string, Record<Lang, string>> = {
