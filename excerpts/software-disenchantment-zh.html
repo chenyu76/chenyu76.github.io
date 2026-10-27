@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="en" data-page-lang="en">
+<html lang="zh" data-page-lang="zh">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>使 Mathematica 中共轭的导数等于导数的共轭</title>
+    <title>软件幻灭</title>
 
     <link rel="stylesheet" href="/styles.css" />
     <link rel="icon" href="/favicon.png" type="image/png" />
 
-    <link rel="stylesheet" href="/styles-code.css" />
+    <meta http-equiv="refresh" content="3;url=https://tonsky.me/blog/disenchantment/zh/" />
   </head>
 
   <body>
@@ -126,25 +126,16 @@
               </button>
               
             </div>
-            <div id="heading"><h3>Quick References/mathematica</h3>
-        <h1>使 Mathematica 中共轭的导数等于导数的共轭</h1></div>
+            <div id="heading"><h3>摘录</h3>
+        <h1>Redirecting to 软件幻灭</h1></div>
           </div>
 
           <div class="content-wrapper">
-            <div class="content"><pre><code class="language-Mathematica"><span class="hljs-comment">(* 使共轭的导数等于导数的共轭 *)</span>
-<span class="hljs-variable">excluded</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;ExcludedFunctions&quot;</span> <span class="hljs-operator">/.</span>
-   <span class="hljs-punctuation">(</span><span class="hljs-string">&quot;DifferentiationOptions&quot;</span> <span class="hljs-operator">/.</span> 
-     <span class="hljs-built_in">SystemOptions</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;DifferentiationOptions&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">)</span><span class="hljs-operator">;</span>
-<span class="hljs-built_in">SetSystemOptions</span><span class="hljs-punctuation">[</span>
-  <span class="hljs-string">&quot;DifferentiationOptions&quot;</span> <span class="hljs-operator">-&gt;</span> 
-   <span class="hljs-string">&quot;ExcludedFunctions&quot;</span> <span class="hljs-operator">-&gt;</span> <span class="hljs-built_in">Union</span><span class="hljs-punctuation">[</span><span class="hljs-variable">excluded</span><span class="hljs-operator">,</span> <span class="hljs-punctuation">{</span><span class="hljs-built_in">Conjugate</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">]</span><span class="hljs-operator">;</span>
-<span class="hljs-built_in">Unprotect</span><span class="hljs-punctuation">[</span><span class="hljs-built_in">Conjugate</span><span class="hljs-punctuation">]</span><span class="hljs-operator">;</span>
-<span class="hljs-built_in">Conjugate</span> <span class="hljs-operator">/:</span> <span class="hljs-built_in">D</span><span class="hljs-punctuation">[</span><span class="hljs-built_in">Conjugate</span><span class="hljs-punctuation">[</span><span class="hljs-type">f_</span><span class="hljs-punctuation">]</span><span class="hljs-operator">,</span> <span class="hljs-type">x__</span><span class="hljs-punctuation">]</span> <span class="hljs-operator">:=</span> <span class="hljs-built_in">Conjugate</span><span class="hljs-punctuation">[</span><span class="hljs-built_in">D</span><span class="hljs-punctuation">[</span><span class="hljs-variable">f</span><span class="hljs-operator">,</span> <span class="hljs-variable">x</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">]</span>
-<span class="hljs-built_in">Protect</span><span class="hljs-punctuation">[</span><span class="hljs-built_in">Conjugate</span><span class="hljs-punctuation">]</span><span class="hljs-operator">;</span>
-</code><button class="copy-btn" title="Copy">📋</button></pre>
-<p>Reference:</p>
-<p><a href="https://mathematica.stackexchange.com/questions/91356/derivative-of-conjugate-multivariate-function">Carl Woll at mathematica.stackexchange.com</a></p>
-</div>
+            <div class="content"><p>
+        Redirecting to
+        <a href="https://tonsky.me/blog/disenchantment/zh/">https://tonsky.me/blog/disenchantment/zh/</a> in 3
+        seconds...
+      </p></div>
             <div id="footnote"></div>
           </div>
         </div>
@@ -185,22 +176,6 @@
       <div id="toc-content-mobile"></div>
     </div>
 
-    
-      <script>
-        document.querySelectorAll(".copy-btn").forEach((btn) => {
-          btn.addEventListener("click", async () => {
-            const pre = btn.parentElement;
-            const code = pre.querySelector("code");
-            try {
-              await navigator.clipboard.writeText(code.innerText);
-              btn.textContent = " ✓ ";
-              setTimeout(() => (btn.textContent = "📋"), 1500);
-            } catch (err) {
-              console.error(err);
-            }
-          });
-        });
-      </script>
     
   </body>
 </html>

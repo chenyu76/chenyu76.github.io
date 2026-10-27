@@ -246,6 +246,34 @@
             
           >
             <div class="card-top">
+              <h2><a href="https://github.com/chenyu76/ascii2tikz/">ASCII to TikZ</a></h2>
+              <p>（GitHub 仓库）用ASCII快速绘制简单TikZ图</p>
+            </div>
+            <div class="card-bottom">2026年10月27日</div>
+          </div>
+        
+
+
+          <div
+            class="card content"
+            data-lang="en"
+            
+          >
+            <div class="card-top">
+              <h2><a href="https://github.com/chenyu76/ascii2tikz/">ASCII to TikZ</a></h2>
+              <p>(Github repo) Quickly draw simple TikZ graph using ASCII diagram.</p>
+            </div>
+            <div class="card-bottom">October 27, 2026</div>
+          </div>
+        
+
+
+          <div
+            class="card content"
+            data-lang="zh"
+            
+          >
+            <div class="card-top">
               <h2><a href="/writings/solver-preview-zh.html">一些有趣的优化算法预览</a></h2>
               <p>信赖域、梯度下降、随机梯度下降、直接搜索、分块直接搜索</p>
             </div>
@@ -638,7 +666,7 @@
              data-fallback="true"
           >
             <div class="card-top">
-              <h2><a href="/program/7-piece-puzzle/Readme and solution-en.html">一个拼图游戏</a></h2>
+              <h2><a href="/program/7-piece-puzzle/Readme and solution-zh.html">一个拼图游戏</a></h2>
               <p>关卡随机生成的拼图游戏</p>
             </div>
             <div class="card-bottom">2024年9月09日</div>
@@ -871,7 +899,10 @@
         radio.addEventListener("click", (e) => {
           if (!e.target.checked) return;
           const val = e.target.value;
-          localStorage.setItem(LANG_KEY, val === getSystemLang() ? "auto" : val);
+          localStorage.setItem(
+            LANG_KEY,
+            val === getSystemLang() ? "auto" : val,
+          );
           applyLanguage();
         });
       });

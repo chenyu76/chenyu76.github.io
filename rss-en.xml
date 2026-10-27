@@ -4,6 +4,13 @@
       <title>Chen Yu's Website (English)</title>
       <description>English articles</description>
 <item>
+            <title>ASCII to TikZ</title>
+            <link>https://github.com/chenyu76/ascii2tikz/</link>
+            <description><![CDATA[(Github repo) Quickly draw simple TikZ graph using ASCII diagram.]]></description>
+            <pubDate>Tue, 27 Oct 2026 00:00:00 GMT</pubDate>
+            <guid>https://github.com/chenyu76/ascii2tikz/</guid>
+          </item>
+<item>
             <title>A Preview of Some Interesting Optimization Algorithms / 一些有趣的优化算法预览</title>
             <link>https://chenyu76.github.io/writings/solver-preview</link>
             <description><![CDATA[]]></description>

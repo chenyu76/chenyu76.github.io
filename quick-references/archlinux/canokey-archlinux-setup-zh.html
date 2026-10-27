@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="zh" data-page-lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>在 Arch Linux 上使用 CanoKey 登录 GDM 和认证 sudo</title>
+
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+
+    <link rel="stylesheet" href="/styles-code.css" />
+  </head>
+
+  <body>
+    <script>
+      (function () {
+        var t = localStorage.getItem("theme");
+        t =
+          t === "light" || t === "dark"
+            ? t
+            : window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
+    <iframe
+      id="iframe-background"
+      src="/img/pixelart/index.html"
+      title="background"
+    ></iframe>
+
+    <div id="spacer"></div>
+
+    <div class="shrinked anime-spacer"></div>
+
+    <div id="content-wrapper-bg">
+      <div id="main-grid-container">
+        <div id="left-sidebar" class="sidebar">
+          <div class="sidebar-card">
+            <div class="vertical-buttons">
+              <a
+                href="/toc.html"
+                data-title-zh="文档索引"
+                data-title-en="Document Index"
+                title=""
+                class="fade-in"
+                ><span class="icon icon-folder" aria-hidden="true"></span
+              ></a>
+              <a
+                href="/index.html"
+                data-title-zh="返回主页"
+                data-title-en="Home"
+                title=""
+                class="fade-in"
+                ><span class="icon icon-home" aria-hidden="true"></span
+              ></a>
+              <a
+                href="/About.html"
+                class="nav-lang-aware fade-in"
+                data-href-base="/About.html"
+                data-title-zh="关于"
+                data-title-en="About"
+                title=""
+                ><span class="icon icon-info" aria-hidden="true"></span
+              ></a>
+              <button
+                id="theme-toggle"
+                onclick="toggleTheme()"
+                data-title-zh="切换深色模式"
+                data-title-en="Toggle Dark Mode"
+                title=""
+                class="scroll-top-btn fade-in"
+              >
+                <span class="icon icon-theme" aria-hidden="true"></span>
+              </button>
+              
+              <button
+                onclick="scrollToTop()"
+                data-title-zh="滚动到顶部"
+                data-title-en="Scroll to Top"
+                title=""
+                class="scroll-top-btn fade-in"
+              >
+                <span class="icon icon-arrow-upward" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div id="title-container">
+            <div id="top-buttons-wrapper" class="top-buttons">
+              <a
+                href="/toc.html"
+                data-title-zh="文档索引"
+                data-title-en="Document Index"
+                title=""
+                class="fade-in"
+                ><span class="icon icon-folder" aria-hidden="true"></span></a
+              ><a
+                href="/index.html"
+                data-title-zh="返回主页"
+                data-title-en="Home"
+                title=""
+                class="fade-in"
+                ><span class="icon icon-home" aria-hidden="true"></span></a
+              ><a
+                href="/About.html"
+                class="nav-lang-aware fade-in"
+                data-href-base="/About.html"
+                data-title-zh="关于"
+                data-title-en="About"
+                title=""
+                ><span class="icon icon-info" aria-hidden="true"></span
+              ></a>
+              <button
+                id="theme-toggle-mobile"
+                onclick="toggleTheme()"
+                data-title-zh="切换深色模式"
+                data-title-en="Toggle Dark Mode"
+                title=""
+                class="scroll-top-btn fade-in"
+              >
+                <span class="icon icon-theme" aria-hidden="true"></span>
+              </button>
+              
+            </div>
+            <div id="heading"><h3>速查/archlinux</h3>
+        <h1>在 Arch Linux 上使用 CanoKey 登录 GDM 和认证 sudo</h1></div>
+          </div>
+
+          <div class="content-wrapper">
+            <div class="content"><p>通过 <code>pam-u2f</code>，可以用触摸 CanoKey 的方式代替 GDM 登录和 sudo 认证时的账户密码，同时保留密码作为备用。</p>
+<h2 id="h2-usb-quan-xian">USB 权限</h2><p>见<a href="https://docs.canokeys.org/zh-hans/userguide/setup/#_3_1_udev">CanoKey 官方 Linux 系统配置</a>。摘录如下</p>
+<p>文件：<code>/etc/udev/rules.d/69-canokeys.rules</code></p>
+<pre><code class="language-udev"># GnuPG/pcsclite
+SUBSYSTEM!=&quot;usb&quot;, GOTO=&quot;canokeys_rules_end&quot;
+ACTION!=&quot;add|change&quot;, GOTO=&quot;canokeys_rules_end&quot;
+ATTRS{idVendor}==&quot;20a0&quot;, ATTRS{idProduct}==&quot;42d4&quot;, ENV{ID_SMARTCARD_READER}=&quot;1&quot;
+LABEL=&quot;canokeys_rules_end&quot;
+
+# FIDO2
+# note that if you find this line in 70-fido.rules, you can ignore it
+KERNEL==&quot;hidraw*&quot;, SUBSYSTEM==&quot;hidraw&quot;, ATTRS{idVendor}==&quot;20a0&quot;, ATTRS{idProduct}==&quot;42d4&quot;, TAG+=&quot;uaccess&quot;, GROUP=&quot;plugdev&quot;, MODE=&quot;0660&quot;
+
+# make this usb device accessible for users, used in WebUSB
+# change the mode so unprivileged users can access it, insecure rule, though
+SUBSYSTEMS==&quot;usb&quot;, ATTR{idVendor}==&quot;20a0&quot;, ATTR{idProduct}==&quot;42d4&quot;, MODE:=&quot;0666&quot;
+# if the above works for WebUSB (web console), you may change into a more secure way
+# choose one of the following rules
+# note if you use &quot;plugdev&quot;, make sure you have this group and the wanted user is in that group
+#SUBSYSTEMS==&quot;usb&quot;, ATTR{idVendor}==&quot;20a0&quot;, ATTR{idProduct}==&quot;42d4&quot;, GROUP=&quot;plugdev&quot;, MODE=&quot;0660&quot;
+#SUBSYSTEMS==&quot;usb&quot;, ATTR{idVendor}==&quot;20a0&quot;, ATTR{idProduct}==&quot;42d4&quot;, TAG+=&quot;uaccess&quot;
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<pre><code class="language-bash">sudoedit /etc/udev/rules.d/69-canokeys.rules <span class="hljs-comment"># 然后在文件中加入上面内容</span>
+<span class="hljs-built_in">sudo</span> udevadm control --reload-rules &amp;&amp; <span class="hljs-built_in">sudo</span> udevadm trigger
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<h2 id="h2-an-zhuang-pam-mo-kuai">安装 PAM 模块</h2><p>见 <a href="https://wiki.archlinux.org/title/Universal_2nd_Factor#Installing_the_PAM_module">ArchWiki：Installing the PAM module</a>。</p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> pacman -Syu pam-u2f
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p><code>pam-u2f</code> 也支持 CanoKey 等兼容 U2F/FIDO2 的密钥，不限于 YubiKey。</p>
+<h2 id="h2-xiu-gai-qian-bei-fen">修改前备份</h2><p>见 <a href="https://wiki.archlinux.org/title/Universal_2nd_Factor#Passwordless_sudo">ArchWiki：Passwordless sudo</a>。修改认证配置前，打开一个独立终端并保留 root shell，方便配置出错时恢复：</p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> -i
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>建议在这个 root shell 中备份配置，直到全部测试完成再关闭。</p>
+<h2 id="h2-deng-ji-mi-yao">登记密钥</h2><p>见 <a href="https://wiki.archlinux.org/title/Universal_2nd_Factor#Adding_a_key">ArchWiki：Adding a key</a> 和 <a href="https://developers.yubico.com/pam-u2f/Manuals/pamu2fcfg.1.html">pamu2fcfg 手册</a>。</p>
+<p>插入 CanoKey，在需要使用密钥认证的普通用户账户下执行：</p>
+<pre><code class="language-bash"><span class="hljs-built_in">mkdir</span> -p ~/.config/Yubico
+pamu2fcfg -u <span class="hljs-string">&quot;<span class="hljs-subst">$(id -un)</span>&quot;</span> \
+  -o pam://canokey-local \
+  -i pam://canokey-local \
+  &gt; ~/.config/Yubico/canokey-pam
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>如果提示输入 PIN，输入密钥的 FIDO2 PIN，按回车后按设备提示触摸。</p>
+<p>完成后可以检查输出文件：</p>
+<pre><code class="language-bash"><span class="hljs-built_in">cat</span> ~/.config/Yubico/canokey-pam
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>文件应包含以当前用户名和冒号开头的一行登记信息。</p>
+<h3 id="h3-xi-tong-deng-ji-wen-jian">系统登记文件</h3><p>见 <a href="https://developers.yubico.com/pam-u2f/Manuals/pam_u2f.8.html">pam_u2f 手册的 authfile 和 Caveats</a>。</p>
+<p>本文选择 <code>/etc/u2f_mappings</code>，让登录前即可读取登记信息，不依赖家目录解密。</p>
+<pre><code class="language-bash"><span class="hljs-built_in">chmod</span> 600 ~/.config/Yubico/canokey-pam
+<span class="hljs-built_in">sudo</span> install -o root -g root -m 600 \
+  ~/.config/Yubico/canokey-pam /etc/u2f_mappings
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>注意这条命令会覆盖已有的 <code>/etc/u2f_mappings</code>。后续配置 PAM 读取 <code>/etc/u2f_mappings</code>，不再读取用户目录中的中间副本。</p>
+<h2 id="h2-sudo-chu-mo-ren-zheng-mi-ma-bei-yong">sudo：触摸认证，密码备用</h2><p>见 <a href="https://wiki.archlinux.org/title/Universal_2nd_Factor#Passwordless_sudo">ArchWiki：Passwordless sudo</a>，参数定义见 <a href="https://developers.yubico.com/pam-u2f/Manuals/pam_u2f.8.html">pam_u2f 手册</a>。</p>
+<pre><code class="language-bash">sudoedit /etc/pam.d/sudo
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>在原有第一条 <code>auth</code> 规则前加入下面一整行，保留原有其他配置：</p>
+<pre><code class="language-pam">auth sufficient pam_u2f.so authfile=/etc/u2f_mappings origin=pam://canokey-local appid=pam://canokey-local cue userpresence=1 pinverification=0 userverification=0
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>例如：</p>
+<pre><code class="language-pam">#%PAM-1.0
+auth sufficient pam_u2f.so authfile=/etc/u2f_mappings origin=pam://canokey-local appid=pam://canokey-local cue userpresence=1 pinverification=0 userverification=0
+auth        include     system-auth
+account     include     system-auth
+session     include     system-auth
+session     optional    pam_systemd.so class=none
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p><code>sufficient</code> 使密钥认证成功时可以提前通过 auth 阶段，前提是此前没有未满足的 <code>required</code> 失败；失败时继续后面的密码认证。保留 <code>auth include system-auth</code> 才能继续使用原有密码路径。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>authfile</code></td>
+<td>指定系统登记文件</td>
+</tr>
+<tr>
+<td><code>origin</code>、<code>appid</code></td>
+<td>与登记时使用的标识一致</td>
+</tr>
+<tr>
+<td><code>cue</code></td>
+<td>显示触摸提示</td>
+</tr>
+<tr>
+<td><code>userpresence=1</code></td>
+<td>要求触摸确认</td>
+</tr>
+<tr>
+<td><code>pinverification=0</code>、<code>userverification=0</code></td>
+<td>不主动要求 PIN 或生物识别</td>
+</tr>
+</tbody></table>
+<h2 id="h2-gdm-chu-mo-deng-lu-mi-ma-bei-yong">GDM：触摸登录，密码备用</h2><p>GDM 是 <a href="https://www.gnome.org/">Gnome</a> 附带的登录管理器。</p>
+<p><a href="https://wiki.archlinux.org/title/Universal_2nd_Factor#GDM_login">ArchWiki：GDM login</a> 提供的是使用 <code>required</code> 的双因素示例。下面将其调整为 <code>sufficient</code>，用于触摸替代密码，并保留原有密码路径。</p>
+<h3 id="h3-jian-li-ben-di-pei-zhi">建立本地配置</h3><p>见 <a href="https://man.archlinux.org/man/pam.d.5">pam.d(5)</a>。</p>
+<p>先复制默认配置：</p>
+<pre><code class="language-bash"><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">cp</span> -a /usr/lib/pam.d/gdm-password /etc/pam.d/gdm-password
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>如果已经存在，直接编辑，不要再次复制覆盖：</p>
+<pre><code class="language-bash">sudoedit /etc/pam.d/gdm-password
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p><code>/etc/pam.d/</code> 中的同名文件会完整覆盖 <code>/usr/lib/pam.d/</code> 中的软件包默认文件。
+使用 <code>/etc</code> 保存本机调整，可以保留软件包提供的默认文件，方便以后比较和恢复。</p>
+<h3 id="h3-tian-jia-ren-zheng-gui-ze">添加认证规则</h3><p>将下面三行放在原有第一条 <code>auth</code> 规则前：</p>
+<pre><code class="language-pam">auth required pam_shells.so
+auth requisite pam_nologin.so
+auth sufficient pam_u2f.so authfile=/etc/u2f_mappings origin=pam://canokey-local appid=pam://canokey-local cue userpresence=1 pinverification=0 userverification=0
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>前两行保留 Arch  <code>system-login</code> 认证栈中的 shell 与禁止登录状态检查。
+以常见的 GDM 默认配置为例，修改后为：</p>
+<pre><code class="language-pam">#%PAM-1.0
+
+auth       required                    pam_shells.so
+auth       requisite                   pam_nologin.so
+auth       sufficient                  pam_u2f.so authfile=/etc/u2f_mappings origin=pam://canokey-local appid=pam://canokey-local cue userpresence=1 pinverification=0 userverification=0
+
+auth       include                     system-local-login
+auth       optional                    pam_gnome_keyring.so
+
+account    include                     system-local-login
+
+password   include                     system-local-login
+password   optional                    pam_gnome_keyring.so use_authtok
+
+session    include                     system-local-login
+session    optional                    pam_gnome_keyring.so auto_start
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>注意：不要把 Wiki 双因素示例中的 <code>nouserok</code> 加进这条 <code>sufficient</code> 规则。<a href="https://developers.yubico.com/pam-u2f/Manuals/pam_u2f.8.html">模块手册</a>指出，<code>nouserok</code> 会使未登记用户或登记文件缺失等情况返回成功，在这里可能导致跳过密码认证。</p>
+<h2 id="h2-qi-ta">其它</h2><h3 id="h3-deng-ji-ti-shi-fido_err_user_action_timeout">登记提示 FIDO_ERR_USER_ACTION_TIMEOUT</h3><p>例如：</p>
+<pre><code class="language-text">Enter PIN for /dev/hidraw14:
+error: fido_dev_make_cred (47) FIDO_ERR_USER_ACTION_TIMEOUT
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>因为输入密钥后要摸一下canokey的按钮，不要傻等着。</p>
+<h3 id="h3-geng-huan-huo-zeng-jia-mi-yao">更换或增加密钥</h3><p>先按“修改前备份”保存配置，再将新登记写到新文件，检查成功后合并或替换 <code>/etc/u2f_mappings</code>。如果更换 <code>pam://canokey-local</code>，需要重新登记，并同步修改 sudo、GDM 两处的标识。</p>
+<p>多把密钥的格式见 <a href="https://wiki.archlinux.org/title/Universal_2nd_Factor#Adding_a_key">ArchWiki：Adding a key</a> 和 <a href="https://developers.yubico.com/pam-u2f/Manuals/pamu2fcfg.1.html">pamu2fcfg 的 <code>-n</code> 参数</a>。同一账户的多把密钥放在同一行，后续密钥用 <code>-n</code> 省略用户名。</p>
+<p>密钥丢失时，用密码登录后删除系统登记文件中的旧凭据，或替换为新的有效登记。</p>
+<h3 id="h3-sheng-ji-hou-bi-jiao-gdm-pei-zhi">升级后比较 GDM 配置</h3><pre><code class="language-bash">diff -u /usr/lib/pam.d/gdm-password /etc/pam.d/gdm-password
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>参见<a href="https://wiki.archlinux.org/title/Pacman/Pacnew_and_Pacsave">pacman/Pacnew and Pacsave</a></p>
+<h3 id="h3-che-xiao-mi-yao-ren-zheng">撤销密钥认证</h3><p>删除相应pam文件中的对应内容即可。</p>
+<p>2026-10-19</p>
+</div>
+            <div id="footnote"></div>
+          </div>
+        </div>
+
+        <div class="bottom-button mobile-only">
+          <button
+            onclick="scrollToTop()"
+            data-title-zh="滚动到顶部"
+            data-title-en="Scroll to Top"
+            title=""
+          >
+            <span class="icon icon-arrow-upward" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <div id="right-sidebar" class="sidebar">
+          <div id="toc-card" class="sidebar-card">
+            <div class="toc-header" data-text-zh="目录" data-text-en="Contents">
+              目录
+            </div>
+            <div id="toc-content"><div class="toc">
+    <ul></ul>
+  </div> <ul>
+<li><a href="#h2-usb-quan-xian">USB 权限</a></li>
+<li><a href="#h2-an-zhuang-pam-mo-kuai">安装 PAM 模块</a></li>
+<li><a href="#h2-xiu-gai-qian-bei-fen">修改前备份</a></li>
+<li><a href="#h2-deng-ji-mi-yao">登记密钥</a></li>
+<ul>
+<li><a href="#h3-xi-tong-deng-ji-wen-jian">系统登记文件</a></li>
+</ul>
+<li><a href="#h2-sudo-chu-mo-ren-zheng-mi-ma-bei-yong">sudo：触摸认证，密码备用</a></li>
+<li><a href="#h2-gdm-chu-mo-deng-lu-mi-ma-bei-yong">GDM：触摸登录，密码备用</a></li>
+<ul>
+<li><a href="#h3-jian-li-ben-di-pei-zhi">建立本地配置</a></li>
+<li><a href="#h3-tian-jia-ren-zheng-gui-ze">添加认证规则</a></li>
+</ul>
+<li><a href="#h2-qi-ta">其它</a></li>
+<ul>
+<li><a href="#h3-deng-ji-ti-shi-fido_err_user_action_timeout">登记提示 FIDO_ERR_USER_ACTION_TIMEOUT</a></li>
+<li><a href="#h3-geng-huan-huo-zeng-jia-mi-yao">更换或增加密钥</a></li>
+<li><a href="#h3-sheng-ji-hou-bi-jiao-gdm-pei-zhi">升级后比较 GDM 配置</a></li>
+<li><a href="#h3-che-xiao-mi-yao-ren-zheng">撤销密钥认证</a></li>
+</ul>
+</ul>
+</ul>
+</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/script.js"></script>
+
+    <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+      <span class="icon icon-toc" aria-hidden="true"></span>
+    </button>
+
+    <div id="toc-mobile-wrapper">
+      <div class="toc-header-mobile">
+        <span data-text-zh="目录" data-text-en="Contents">目录</span>
+        <button onclick="toggleToc()" class="toc-close-btn">×</button>
+      </div>
+      <div id="toc-content-mobile"></div>
+    </div>
+
+    
+      <script>
+        document.querySelectorAll(".copy-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const pre = btn.parentElement;
+            const code = pre.querySelector("code");
+            try {
+              await navigator.clipboard.writeText(code.innerText);
+              btn.textContent = " ✓ ";
+              setTimeout(() => (btn.textContent = "📋"), 1500);
+            } catch (err) {
+              console.error(err);
+            }
+          });
+        });
+      </script>
+    
+  </body>
+</html>
