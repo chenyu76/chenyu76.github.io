@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh" data-page-lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neovide 标题栏中文不显示</title>
+
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+
+    <link rel="stylesheet" href="/styles-code.css" />
+  </head>
+
+  <body>
+    <script>
+      (function () {
+        var t = localStorage.getItem("theme");
+        t =
+          t === "light" || t === "dark"
+            ? t
+            : window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
+    <iframe
+      id="iframe-background"
+      src="/img/pixelart/index.html"
+      title="background"
+    ></iframe>
+
+    <div id="spacer"></div>
+
+    <div class="shrinked anime-spacer"></div>
+
+    <div id="content-wrapper-bg">
+      <div id="main-grid-container">
+        <div id="left-sidebar" class="sidebar">
+          <div class="sidebar-card">
+            <div class="vertical-buttons">
+              <a
+                href="/toc.html"
+                data-title-zh="文档索引"
+                data-title-en="Document Index"
+                title=""
+                class="fade-in"
+                ><span class="icon icon-folder" aria-hidden="true"></span
+              ></a>
+              <a
+                href="/index.html"
+                data-title-zh="返回主页"
+                data-title-en="Home"
+                title=""
+                class="fade-in"
+                ><span class="icon icon-home" aria-hidden="true"></span
+              ></a>
+              <a
+                href="/About.html"
+                class="nav-lang-aware fade-in"
+                data-href-base="/About.html"
+                data-title-zh="关于"
+                data-title-en="About"
+                title=""
+                ><span class="icon icon-info" aria-hidden="true"></span
+              ></a>
+              <button
+                id="theme-toggle"
+                onclick="toggleTheme()"
+                data-title-zh="切换深色模式"
+                data-title-en="Toggle Dark Mode"
+                title=""
+                class="scroll-top-btn fade-in"
+              >
+                <span class="icon icon-theme" aria-hidden="true"></span>
+              </button>
+              
+              <button
+                onclick="scrollToTop()"
+                data-title-zh="滚动到顶部"
+                data-title-en="Scroll to Top"
+                title=""
+                class="scroll-top-btn fade-in"
+              >
+                <span class="icon icon-arrow-upward" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div id="title-container">
+            <div id="top-buttons-wrapper" class="top-buttons">
+              <a
+                href="/toc.html"
+                data-title-zh="文档索引"
+                data-title-en="Document Index"
+                title=""
+                class="fade-in"
+                ><span class="icon icon-folder" aria-hidden="true"></span></a
+              ><a
+                href="/index.html"
+                data-title-zh="返回主页"
+                data-title-en="Home"
+                title=""
+                class="fade-in"
+                ><span class="icon icon-home" aria-hidden="true"></span></a
+              ><a
+                href="/About.html"
+                class="nav-lang-aware fade-in"
+                data-href-base="/About.html"
+                data-title-zh="关于"
+                data-title-en="About"
+                title=""
+                ><span class="icon icon-info" aria-hidden="true"></span
+              ></a>
+              <button
+                id="theme-toggle-mobile"
+                onclick="toggleTheme()"
+                data-title-zh="切换深色模式"
+                data-title-en="Toggle Dark Mode"
+                title=""
+                class="scroll-top-btn fade-in"
+              >
+                <span class="icon icon-theme" aria-hidden="true"></span>
+              </button>
+              
+            </div>
+            <div id="heading"><h3>速查/archlinux</h3>
+        <h1>Neovide 标题栏中文不显示</h1></div>
+          </div>
+
+          <div class="content-wrapper">
+            <div class="content"><p>在当前 GNOME Wayland 环境中，Neovide 标题栏读取独立的标题字体设置且不会fallback。标题字体默认为 <code>Adwaita Sans Bold 11</code>，不包含中文字形。</p>
+<p>只需要将标题字体设为 Noto CJK（需要<code>noto-fonts</code>包）或者别有中文字形的字体：</p>
+<pre><code class="language-bash">gsettings <span class="hljs-built_in">set</span> org.gnome.desktop.wm.preferences titlebar-font <span class="hljs-string">&#x27;Noto Sans CJK SC Bold 11&#x27;</span>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+<p>如需恢复原设置：</p>
+<pre><code class="language-bash">gsettings <span class="hljs-built_in">set</span> org.gnome.desktop.wm.preferences titlebar-font <span class="hljs-string">&#x27;Adwaita Sans Bold 11&#x27;</span>
+</code><button class="copy-btn" title="Copy">📋</button></pre>
+</div>
+            <div id="footnote">2026/10/28</div>
+          </div>
+        </div>
+
+        <div class="bottom-button mobile-only">
+          <button
+            onclick="scrollToTop()"
+            data-title-zh="滚动到顶部"
+            data-title-en="Scroll to Top"
+            title=""
+          >
+            <span class="icon icon-arrow-upward" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <div id="right-sidebar" class="sidebar">
+          <div id="toc-card" class="sidebar-card">
+            <div class="toc-header" data-text-zh="目录" data-text-en="Contents">
+              目录
+            </div>
+            <div id="toc-content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/script.js"></script>
+
+    <button id="toc-mobile-btn" onclick="toggleToc()" title="目录">
+      <span class="icon icon-toc" aria-hidden="true"></span>
+    </button>
+
+    <div id="toc-mobile-wrapper">
+      <div class="toc-header-mobile">
+        <span data-text-zh="目录" data-text-en="Contents">目录</span>
+        <button onclick="toggleToc()" class="toc-close-btn">×</button>
+      </div>
+      <div id="toc-content-mobile"></div>
+    </div>
+
+    
+      <script>
+        document.querySelectorAll(".copy-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const pre = btn.parentElement;
+            const code = pre.querySelector("code");
+            try {
+              await navigator.clipboard.writeText(code.innerText);
+              btn.textContent = " ✓ ";
+              setTimeout(() => (btn.textContent = "📋"), 1500);
+            } catch (err) {
+              console.error(err);
+            }
+          });
+        });
+      </script>
+    
+  </body>
+</html>

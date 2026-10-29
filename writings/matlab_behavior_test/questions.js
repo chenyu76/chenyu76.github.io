@@ -1,7 +1,7 @@
 const questions = [
   {
     question :
-        "Which of the following is the correct MATLAB command-line output after running the `disp('\\n')`?",
+        "Which of the following is the correct MATLAB command-line output after running `disp('\\n')`?",
     options : [
       "```>> disp('\\n')\n>>```", "```>> disp('\\n')\n\n>>```",
       "```>> disp('\\n')\n\\n\n>>```"
@@ -62,7 +62,15 @@ const questions = [
     options : [ "1 (true)", "0 (false)", "[1, 1, 1]", "Error" ],
     answer : 0,
     explanation :
-        "MATLAB performed an implicit type conversion, converting the char vector to a string."
+        "MATLAB performs an implicit type conversion, converting the character vector to a string."
+  },
+  {
+    question :
+        "What is the result of evaluating `double('1') == double(\"1\")` in MATLAB?",
+    options : [ "1 (true)", "0 (false)", "Error", "[]" ],
+    answer : 1,
+    explanation :
+        "`double('1')` converts the character '1' to its numeric character code, 49, whereas `double(\"1\")` converts the string \"1\" to the numeric value 1. Therefore, `49 == 1` evaluates to `0` (false)."
   },
   {
     question : `
@@ -70,20 +78,20 @@ What is the output of the following MATLAB program?
 \`\`\`
 str1='str1';
 str2="str2";
-disp(str1(4)==str(4))
+disp(str1(4)==str2(4))
 \`\`\`
 `,
     options : [ "0 (false)", "1 (true)", "Error" ],
     answer : 2,
     explanation :
-        "Index exceeds the number of array elements. Index must not exceed 1 since `str2` is a 1x1 string."
+        "The index exceeds the number of array elements. It must not exceed 1 because `str2` is a 1x1 string array."
   },
   {
     question : "What is the result of evaluating `\"\"\"\" == ''''` in MATLAB?",
     options : [ "1 (true)", "0 (false)", "[]", "Error" ],
     answer : 1,
     explanation :
-        "`\"\"\"\"` will be parsed as a string containing `\"`, while `''''` will be parsed as a char vector containing `'`. Even with implicit type conversion, they are not equal."
+        "`\"\"\"\"` will be parsed as a string containing `\"`, while `''''` will be parsed as a character vector containing `'`. Even with implicit type conversion, they are not equal."
   },
   {
     question :
@@ -95,7 +103,7 @@ disp(str1(4)==str(4))
   },
   {
     question :
-        "What is the return of evaluating\n`length('M') == length(\"M\")`?",
+        "What is the result of evaluating\n`length('M') == length(\"M\")`?",
     options : [ "1 (true)", "0 (false)", "Error", "Empty array" ],
     answer : 0,
     explanation :
@@ -103,7 +111,7 @@ disp(str1(4)==str(4))
   },
   {
     question :
-        "What is the return of evaluating\n`length('MATLAB') == length(\"MATLAB\")`?",
+        "What is the result of evaluating\n`length('MATLAB') == length(\"MATLAB\")`?",
     options : [ "1 (true)", "0 (false)", "Error", "Empty array" ],
     answer : 1,
     explanation :
@@ -147,20 +155,20 @@ disp(str1(4)==str(4))
         "MATLAB evaluates operators from left to right. It first evaluates `(3 > 2)`, which returns logical `1` (true). It then evaluates `1 > 1`, which evaluates to `0` (false)."
   },
   {
-    question : "What is the result of evaluating the equality `~ 1==2`?",
+    question : "What is the result of evaluating the expression `~ 1==2`?",
     options : [ "1 (true)", "NaN", "Error", "0 (false)" ],
     answer : 3,
-    explanation : "`~` has a higher priority."
+    explanation : "`~` has higher precedence than `==`, so MATLAB evaluates `(~1) == 2`, which is false."
   },
   {
-    question : "What is the result of evaluating the equality `i==j`?",
+    question : "What is the result of evaluating the expression `i==j`?",
     options : [ "1 (true)", "NaN", "Error", "0 (false)" ],
     answer : 0,
-    explanation : "Without assignment, `i` and `j` are both imaginary units."
+    explanation : "If neither has been assigned a value, `i` and `j` both represent the imaginary unit."
   },
   {
     question :
-        "What is the output of comparing two Not-a-Number values: `disp(NaN == NaN)`?",
+        "What is the output of comparing two NaN (Not-a-Number) values: `disp(NaN == NaN)`?",
     options : [ "0 (false)", "1 (true)", "NaN", "[]" ],
     answer : 0,
     explanation :
@@ -169,18 +177,18 @@ disp(str1(4)==str(4))
   {
     question :
         "What is the output of comparing two empty arrays: `disp([] == [])`?",
-    options : [ "0 (false)", "1 (true)", "[]", "" ],
+    options : [ "0 (false)", "1 (true)", "[]", "No output" ],
     answer : 3,
     explanation :
-        "MATLAB trys to compare elements in the matrix, so the result is a 0x0 logical array."
+        "MATLAB compares the arrays element by element, so the result is a 0x0 logical array."
   },
   {
     question :
         "What is the output of comparing two empty arrays: `disp([] == [[]])`?",
-    options : [ "0 (false)", "1 (true)", "[]", "" ],
+    options : [ "0 (false)", "1 (true)", "[]", "No output" ],
     answer : 3,
     explanation :
-        "MATLAB trys to compare elements in the matrix, so the result is a 0x0 logical array."
+        "MATLAB compares the arrays element by element, so the result is a 0x0 logical array."
   },
   {
     question :
@@ -188,7 +196,7 @@ disp(str1(4)==str(4))
     options : [ "44", "300", "255", "Error" ],
     answer : 2,
     explanation :
-        "MATLAB uses saturation arithmetic for integer types by default. Any operation that exceeds the maximum value for the type (`255` for `uint8`) is capped at that maximum value, rather than wrapping around like in C/C++."
+        "MATLAB uses saturation arithmetic for integer types by default. Any operation that exceeds the maximum value for the type (`255` for `uint8`) is capped at that maximum value, rather than wrapping around."
   },
   {
     question : "What does the function `sum([])` return?",
@@ -199,7 +207,7 @@ disp(str1(4)==str(4))
   },
   {
     question :
-        "What is the mathematical output and data type of `true + true`?",
+        "What are the value and data type of `true + true`?",
     options : [ "true (logical)", "1 (logical)", "2 (double)", "Error" ],
     answer : 2,
     explanation :
@@ -216,7 +224,7 @@ disp(ndims(vec));
     options : [ "0", "1", "2", "3" ],
     answer : 2,
     explanation :
-        "`vec` is 1x3 double. `N = ndims(A)` returns the number of dimensions in the array A. The number of dimensions is always greater than or equal to 2. "
+        "`vec` is a 1x3 double array. `N = ndims(A)` returns the number of dimensions of the array `A`. The number of dimensions is always greater than or equal to 2."
   },
   {
     question : `
@@ -229,7 +237,7 @@ disp(ndims(mat));
     options : [ "0", "1", "2", "3", "4" ],
     answer : 2,
     explanation :
-        "`mat` is 2x2 double. `N = ndims(A)` returns the number of dimensions in the array A. The number of dimensions is always greater than or equal to 2. "
+        "`mat` is a 2x2 double array. `N = ndims(A)` returns the number of dimensions of the array `A`. The number of dimensions is always greater than or equal to 2."
   },
   {
     question : `
@@ -242,14 +250,14 @@ disp(ndims(ten));
     options : [ "0", "1", "2", "3", "4" ],
     answer : 2,
     explanation :
-        "`ten` is 2x4 double. `N = ndims(A)` returns the number of dimensions in the array A. The number of dimensions is always greater than or equal to 2. Unfortunately you cannot construct a tensor in MATLAB like this."
+        "`ten` is a 2x4 double array. `N = ndims(A)` returns the number of dimensions of the array `A`. The number of dimensions is always greater than or equal to 2.This syntax creates a two-dimensional array, rather than a higher-dimensional tensor."
   },
   {
     question : `
 What is the output of the following MATLAB program?
 \`\`\`
 vec = [1, 2, 3];
-disp(ismartix(vec));
+disp(ismatrix(vec));
 \`\`\`
 `,
     options : [ "0", "1" ],
@@ -261,7 +269,7 @@ disp(ismartix(vec));
 What is the output of the following MATLAB program?
 \`\`\`
 sca = 1;
-disp(ismartix(sca));
+disp(ismatrix(sca));
 \`\`\`
 `,
     options : [ "0", "1" ],
@@ -282,7 +290,7 @@ disp(ismatrix(ten));
   },
   {
     question : `
-What is the output of the following MATLAB program:
+What is the output of the following MATLAB program?
 \`\`\`
 ten = ones(1,1,1);
 disp(ismatrix(ten));
@@ -324,12 +332,12 @@ disp(s1==s2);
     explanation : `I don't know :( 
 
 <a href="https://www.mathworks.com/matlabcentral/answers/2183830-unexpected-size-change-when-assigning-a-scalar-to-a-0x0-matrix-using-indexing">
-See my question in MATLAB help Center.
+See my question on MATLAB Answers.
 </a>`
   },
   {
     question :
-        `Which of the following MATLAB codes can correctly create the graph with the logarithmic coordinate axis？`,
+        `Which of the following MATLAB code snippets correctly plots both curves with logarithmic scales on both axes?`,
     options : [
       `\`\`\`
 x = [1 2 3 4];
@@ -355,29 +363,29 @@ loglog(x, z);
     ],
     answer : 0,
     explanation :
-        "`hold on` will fix the current coordinate axis properties, including XScale and YScale. Therefore, either `loglog` first and then `hold on`, or reset XScale and YScale again."
+        "`hold on` preserves the current axes properties, including `XScale` and `YScale`. Therefore, either call `loglog` before `hold on`, or explicitly set `XScale` and `YScale` to logarithmic scales afterward."
   },
   {
     question : `
-Which of the following statement can print out \`NaN\`?
+Which of the following statements can print \`NaN\`?
 `,
     options : [
-      "`fprintf(string(NaN))`", "`fprintf(num2str(NaN))`", "fprintf(NaN)",
-      "All of three", "Neither"
+      "`fprintf(string(NaN))`", "`fprintf(num2str(NaN))`", "`fprintf(NaN)`",
+      "All three", "None of the above"
     ],
     answer : 1,
-    explanation : "`string(NaN)` returns a `<missing>`."
+    explanation : "`string(NaN)` returns a missing string value."
   },
   {
     question : `
-Which of the following statement can print out \`missing\`?
+Which of the following statements can print \`missing\`?
 `,
     options : [
       "`fprintf(string(missing))`", "`fprintf(num2str(missing))`",
-      "fprintf(missing)", "All of three", "Neither"
+      "`fprintf(missing)`", "All three", "None of the above"
     ],
     answer : 4,
-    explanation : "Most of functions in MATLAB don't accept `missing`."
+    explanation : "Most MATLAB functions do not accept `missing`."
   },
   {
     question : `
@@ -387,10 +395,10 @@ diff = unicode2native("A")-unicode2native("a");
 disp(char('HELLO' - diff))
 \`\`\`
 `,
-    options : [ "hello", "HELLO", "Error using  - " ],
+    options : [ "hello", "HELLO", "Error using -" ],
     answer : 2,
     explanation :
-        `\`unicode2native\` returns a uint8 number. Use \`double(unicode2native(.))\` to convert it.`
+        `\`unicode2native\` returns a \`uint8\` value. Use \`double(unicode2native(...))\` to convert it.`
   },
   {
     question : `
@@ -400,10 +408,10 @@ diff = double(unicode2native("A")-unicode2native("a"));
 disp(char('HELLO' - diff))
 \`\`\`
 `,
-    options : [ "hello", "HELLO", "Error using  - " ],
+    options : [ "hello", "HELLO", "Error using -" ],
     answer : 1,
     explanation :
-        `Arithmetic operations performed directly on integer data types (here is uint8 of \`unicode2native\`) use saturation arithmetic. This means that if a result falls outside the range of the data type [0, 255], it is clipped to the nearest boundary.`
+        `Arithmetic operations performed directly on integer data types (here, the \`uint8\` values returned by \`unicode2native\`) use saturation arithmetic. This means that if a result falls outside the range of the data type ([0, 255] for \`uint8\`), it is clipped to the nearest boundary.`
   },
   {
     question : `
@@ -412,7 +420,7 @@ What is the output of the following MATLAB program?
 disp(char('HELLO' - 'A' + 'a')) 
 \`\`\`
 `,
-    options : [ "hello", "HELLO", "Error using  - " ],
+    options : [ "hello", "HELLO", "Error using -" ],
     answer : 0,
     explanation :
         `MATLAB treats characters in arithmetic operations as their standard double-precision ASCII numeric values.`
@@ -432,6 +440,6 @@ disp(isequal(bits{:}))
     options : [ "0", "1", "Error" ],
     answer : 0,
     explanation :
-        `The x here is NaN. This may be due to some JIT optimizations.`
+        `Here, \`x\` is NaN. The observed result may be due to JIT optimizations.`
   },
 ];
